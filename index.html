@@ -1920,6 +1920,22 @@ ul.selfkeys{margin:6px 0 0;padding-left:20px}
 .scrmodel>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}.scrmodel>summary::-webkit-details-marker{display:none}.scrmodel[open] .scrreveal{display:none}.scrmodel>summary h3{margin:0}
 .scrresult .row{margin-top:8px}
 @media (max-width:520px){.scrcall .scrstepbtn span{display:none}.scrcall .scrstepbtn.on span{display:inline}}
+
+/* screen-share: tables palette, key notes, back */
+.scrsqlgrid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;align-items:start}
+.scrsqlmain{display:flex;flex-direction:column;gap:10px;min-width:0}
+.scrschema{position:sticky;top:64px;max-height:calc(100vh - 150px);overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 8px}
+.scrtblbtn{display:none}
+@media (max-width:1100px){.scrsqlgrid{grid-template-columns:minmax(0,1fr)}.scrschema{display:none}.scrtblbtn{display:inline}}
+.scrdrawer{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px}
+.scrtreehead{margin:2px 6px 8px;font-size:12.5px;color:var(--muted);line-height:1.4}
+.scrtree .stab.used>summary .stn{color:var(--accent);font-weight:800}
+.scrtree .stab.used{border-left:3px solid var(--accent);border-radius:4px;background:rgba(0,168,132,.06)}
+.scrkeys{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;font-size:13px;color:var(--muted);padding:0 2px}
+.scrkeys kbd{font:600 12px var(--mono);color:var(--ink);background:var(--hover);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:2px 7px}
+.scrkeytip{flex-basis:100%;font-size:12.5px}
+.scrback{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:700;font-size:14px;border-radius:999px;padding:7px 14px;cursor:pointer;margin-bottom:12px}
+.scrback:hover{border-color:var(--accent)}
 </style>
 </head>
 <body class="booting">
@@ -2208,7 +2224,7 @@ ul.selfkeys{margin:6px 0 0;padding-left:20px}
 
     <section class="scrhome">
       <div class="scrhico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="2.5" y="4" width="19" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 9.5l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="scrhtxt"><span class="scrnew">New</span><h2>Screen-share technical round</h2><p>Solve SQL, Python, Power BI and RWA tasks live, the way interviewers now test you on a shared screen.</p></div>
+      <div class="scrhtxt"><h2>Screen-share technical round</h2><p>Solve SQL, Python, Power BI and RWA tasks live, the way interviewers now test you on a shared screen.</p></div>
       <button class="btn primary big" id="goScreen" type="button">Start a live task</button>
     </section>
 
@@ -4826,8 +4842,8 @@ If the idea cannot be shown with a query (pure theory), set "applies":false, sti
 /* ---------- SQL Lab UI ---------- */
 /* ---------- schema browser ---------- */
 const LAB_SCHEMA="CR_DWH";
-const LAB_GROUPS=[["Customers and accounts",["customer_dim","accounts"]],["Balances and risk",["account_snapshot","snapshot_feed_stg","payments"]],["Exposures and capital",["exposures","client_group_map","capital"]],["Finance and source systems",["gl_balances","product_gl_map","src_core_banking"]]];
-const LAB_DESC={customer_dim:"Customers, with history (SCD Type 2)",accounts:"One row per account",account_snapshot:"Month-end balances, arrears, IFRS 9 stage",snapshot_feed_stg:"Staging feed: some accounts loaded twice",payments:"Payments and their status",exposures:"Customer exposure after credit risk mitigation",client_group_map:"Connected-client groups",capital:"Tier 1 capital",gl_balances:"General ledger closing balances",product_gl_map:"Product to GL account mapping",src_core_banking:"Source system balances"};
+const LAB_GROUPS=[["Customers and accounts",["customer_dim","accounts"]],["Balances and risk",["account_snapshot","snapshot_feed_stg","payments"]],["Exposures and capital",["rwa_exposures","exposures","client_group_map","capital"]],["Finance and source systems",["gl_balances","product_gl_map","src_core_banking"]]];
+const LAB_DESC={rwa_exposures:"Exposures with CCF and risk weight, for RWA",customer_dim:"Customers, with history (SCD Type 2)",accounts:"One row per account",account_snapshot:"Month-end balances, arrears, IFRS 9 stage",snapshot_feed_stg:"Staging feed: some accounts loaded twice",payments:"Payments and their status",exposures:"Customer exposure after credit risk mitigation",client_group_map:"Connected-client groups",capital:"Tier 1 capital",gl_balances:"General ledger closing balances",product_gl_map:"Product to GL account mapping",src_core_banking:"Source system balances"};
 function schemaTree(db,{insert,preview}){
   const box=el("div",{class:"stree"});
   const names=db?(db.exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY 1")[0]||{values:[]}).values.map(v=>v[0]):Object.keys(LAB_COLS).sort();
@@ -4880,7 +4896,7 @@ async function renderLab(body){
   const ed=el("section",{class:"led3"},
     el("div",{class:"l3edhead"},dial,el("span",{class:"ledsp"}),tblB,copyB),
     drawer, ta,
-    el("div",{class:"l3edfoot"},runB,el("span",{class:"lkbd",text:"Ctrl + Enter"}),el("span",{class:"ledsp"}),useB));
+    el("div",{class:"l3edfoot"},runB,el("span",{class:"lkbd",text:/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent)?"⌘ Cmd + Enter to run":"Ctrl + Enter to run"}),el("span",{class:"ledsp"}),useB));
   wrap.append(ed);
   const noteBox=el("div",{class:"labnotes"}); wrap.append(noteBox);
   const out=el("section",{class:"lres3"}); wrap.append(out);
@@ -5516,13 +5532,31 @@ function scrDb(sync){
 }
 function scrSql(t,work,finish){
   const ta=el("textarea",{class:"labsql scrsql",spellcheck:"false","aria-label":"SQL editor",autocomplete:"off",autocapitalize:"off"});
-  ta.value=SCR.sql[t.id]||(LAB.dialect==="oracle"?"-- Oracle\nSELECT \nFROM   rwa_exposures\n":"-- Teradata\nSEL \nFROM   rwa_exposures\n");
+  const firstTbl=((t.td.match(/\bFROM\s+(\w+)/i)||[])[1])||"rwa_exposures";
+  ta.value=SCR.sql[t.id]||(LAB.dialect==="oracle"?`-- Oracle\nSELECT \nFROM   ${firstTbl}\n`:`-- Teradata\nSELECT \nFROM   ${firstTbl}\n`);
   const dial=el("div",{class:"l3dial",role:"radiogroup","aria-label":"SQL dialect"});
   ["teradata","oracle"].forEach(d=>{ const b=el("button",{type:"button",role:"radio","aria-checked":String(LAB.dialect===d),text:d==="teradata"?"Teradata":"Oracle"}); b.addEventListener("click",()=>{ LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} dial.querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",String(x===b))); }); dial.append(b); });
   const runB=el("button",{class:"lrun",type:"button"},el("span",{text:"Run"}),el("b",{"aria-hidden":"true",text:" ❯"}));
   const subB=el("button",{class:"btn",type:"button",text:"Submit answer"});
-  const out=el("div",{class:"lres3 scrres"},el("p",{class:"l3empty",text:"Press Run (or Ctrl + Enter) to see your result."}));
-  work.append(el("section",{class:"led3"},el("div",{class:"l3edhead"},dial,el("span",{class:"ledsp"}),el("span",{class:"muted small",text:"rwa_exposures · account_snapshot · customer_dim"})),ta,el("div",{class:"l3edfoot"},runB,el("span",{class:"lkbd",text:"Ctrl + Enter"}),el("span",{class:"ledsp"}),subB)),out);
+  const MAC=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
+  const KEY=MAC?"⌘ Cmd + Enter":"Ctrl + Enter";
+  const out=el("div",{class:"lres3 scrres"},el("p",{class:"l3empty",text:`Your result appears here. Click Run or press ${KEY}.`}));
+  const tblB=el("button",{class:"l3link scrtblbtn",type:"button","aria-expanded":"false",text:"Show tables"});
+  const keys=el("div",{class:"scrkeys"},
+    el("span",{},el("kbd",{text:KEY}),el("span",{text:" run the query"})),
+    el("span",{},el("kbd",{text:"Tab"}),el("span",{text:" indent"})),
+    el("span",{class:"scrkeytip",text:"Tip: click a column in the tables list to add it to your query."}));
+  const editor=el("section",{class:"led3"},el("div",{class:"l3edhead"},dial,el("span",{class:"ledsp"}),tblB),ta,el("div",{class:"l3edfoot"},runB,el("span",{class:"ledsp"}),subB));
+  // tables palette: on the right on wide screens, a drawer under the editor on small ones
+  const used=new Set((t.td.match(/\b(FROM|JOIN)\s+(\w+)/gi)||[]).map(x=>x.split(/\s+/).pop().toLowerCase()));
+  const insert=txt=>{ const st=ta.selectionStart??ta.value.length, en=ta.selectionEnd??st; ta.setRangeText(txt,st,en,"end"); ta.focus(); SCR.sql[t.id]=ta.value; };
+  const preview=async n=>{ try{ await scrDb(); const r=labRun(scrDb(true),`SELECT * FROM ${n} LIMIT 20`).results.pop(); out.innerHTML=""; out.append(el("div",{class:"l3meta"},el("b",{text:`Preview: ${n}`}),el("span",{text:"first 20 rows · your query is unchanged"})),el("div",{class:"tw labtw"},labTable(r))); }catch(e){} };
+  const mkTree=()=>{ const box=el("div",{class:"scrtree"},el("p",{class:"scrtreehead",text:"Tables for this task are open and marked green. Click Preview to peek at the data."}),schemaTree(null,{insert,preview}));
+    box.querySelectorAll("details.stab").forEach(d=>{ const n=d.querySelector(".stn").textContent; if(used.has(n.toLowerCase())){ d.open=true; d.classList.add("used"); } }); return box; };
+  const aside=el("aside",{class:"scrschema","aria-label":"Tables"},mkTree());
+  const drawer=el("div",{class:"scrdrawer",hidden:true});
+  tblB.addEventListener("click",()=>{ drawer.hidden=!drawer.hidden; if(!drawer.hidden&&!drawer.childNodes.length) drawer.append(mkTree()); tblB.textContent=drawer.hidden?"Show tables":"Hide tables"; tblB.setAttribute("aria-expanded",String(!drawer.hidden)); });
+  work.append(el("div",{class:"scrsqlgrid"},el("div",{class:"scrsqlmain"},editor,keys,drawer,out),aside));
   ta.addEventListener("input",()=>{ SCR.sql[t.id]=ta.value; });
   const exec=async()=>{
     out.innerHTML=""; out.append(el("p",{class:"l3empty",text:LAB.db?"Running…":"Starting the SQL engine (first run only)…"}));
@@ -6143,6 +6177,9 @@ function renderScreen(body){
   if(SCR.view==="task" && SCR.id) return renderScrTask(body);
   body.innerHTML="";
   const done=scrDone();
+  const home=el("button",{class:"scrback",type:"button"},el("span",{"aria-hidden":"true",text:"‹"}),el("span",{text:"Back to home"}));
+  home.addEventListener("click",()=>{ showView("home"); });
+  body.append(home);
   const intro=el("section",{class:"card scrintro"},
     el("h3",{text:"Practise the screen-share round"}),
     el("p",{class:"muted",text:"In this round you share your screen and solve a task while you explain your thinking. Practise it in three steps:"}),
@@ -6198,15 +6235,18 @@ function renderScreen(body){
   });
   body.append(ul);
 }
-function scrOpen(id,body){ SCR.view="task"; SCR.id=id; SCR.stage="learn"; SCR.start=Date.now(); renderScreen(body); scrTop(body); }
+function scrOpen(id,body){ const wasTask=SCR.view==="task"; SCR.view="task"; SCR.id=id; SCR.stage="learn"; SCR.start=Date.now(); try{ if(!wasTask) history.pushState({scr:"task"},""); }catch(e){} renderScreen(body); scrTop(body); }
+function scrBackToList(body){ clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; try{ if(history.state&&history.state.scr==="task") { SCR.__popping=true; history.back(); } }catch(e){} renderScreen(body); scrTop(body); }
+/* the browser's and phone's own Back button also returns to the task list */
+window.addEventListener("popstate",()=>{ if(SCR.__popping){ SCR.__popping=false; return; } if(SCR.view==="task"){ const b=document.getElementById("toolBody"); clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; if(b&&CUR_PANE==="t:screen"){ renderScreen(b); scrTop(b); } } });
 function scrTop(body){ const sc=body.closest(".toolscroll,.pane,#toolBody")||body; try{ sc.scrollTop=0; }catch(e){} try{ window.scrollTo(0,0); }catch(e){} }
 
 /* ---------- a task: Learn → Solve → Review ---------- */
 function renderScrTask(body){
   const t=scrTask(SCR.id); body.innerHTML="";
   const inRound=!!SCR.round;
-  const back=el("button",{class:"btn small",type:"button",text:"‹ All tasks"});
-  back.addEventListener("click",()=>{ clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; renderScreen(body); scrTop(body); });
+  const back=el("button",{class:"btn small",type:"button",title:"Back to the task list"},el("span",{"aria-hidden":"true",text:"‹ "}),el("span",{text:"Back"}));
+  back.addEventListener("click",()=>scrBackToList(body));
   const stepBtns={}; const stepper=el("nav",{class:"scrstepper","aria-label":"Steps"});
   [["learn","1","Learn"],["solve","2","Solve"],["review","3","Review"]].forEach(([k,n,label])=>{ const b=el("button",{type:"button",class:"scrstepbtn","data-stage":k},el("i",{text:n}),el("span",{text:label})); b.addEventListener("click",()=>{ if(!b.disabled) go(k); }); stepBtns[k]=b; stepper.append(b); });
   const timeEl=el("b",{class:"scrtime"}); const clock=el("span",{class:"scrclock",hidden:true},timeEl);
@@ -6300,7 +6340,7 @@ function scrAfter(t,after){
   } else {
     if(SCR.round){ const d=scrDone(); nav.append(el("p",{class:"scrsum",text:`Mock interview complete: ${SCR.round.filter(id=>d[id]&&d[id].ok).length} of ${SCR.round.length} solved.`})); }
     const again=el("button",{class:"btn",type:"button",text:"Try again"}); again.addEventListener("click",()=>scrOpen(t.id,body));
-    const bk=el("button",{class:"btn primary",type:"button",text:"Back to all tasks"}); bk.addEventListener("click",()=>{ SCR.view="lobby"; SCR.round=null; renderScreen(body); scrTop(body); });
+    const bk=el("button",{class:"btn primary",type:"button",text:"Back to all tasks"}); bk.addEventListener("click",()=>scrBackToList(body));
     nav.append(again,bk);
   }
   after.append(fu,m,nav);
