@@ -1873,6 +1873,53 @@ ul.selfkeys{margin:6px 0 0;padding-left:20px}
 
 /* removed from the first page on request */
 .lpstage .eyebrow,#likeBar{display:none!important}
+
+/* ===== Screen-share round: simple layout ===== */
+.scrintro h3{margin:0 0 4px;font-size:18px}.scrintro>p{margin:0 0 8px}
+.scrsteps3{margin:6px 0 6px;padding-left:22px;line-height:1.7}.scrsteps3 li::marker{font-weight:800;color:var(--accent)}
+.scrday{margin-top:6px;border-top:1px solid var(--line);padding-top:8px}.scrday summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--accent)}
+.scrday .scrshare{margin-top:6px}
+.scrintro .scrphone{margin:10px 0 0}
+.scrlabel{margin:18px 2px 8px;font-size:14px;letter-spacing:.02em}
+.scrlabelrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.scrchips{display:flex;flex-wrap:wrap;gap:8px}.scrchips.small{margin-bottom:10px}
+.scrchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;border-radius:999px;padding:7px 13px;cursor:pointer}
+.scrchip em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--muted);background:var(--hover);border-radius:999px;padding:1px 7px}
+.scrchip[aria-selected="true"],.scrchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.scrchip[aria-selected="true"] em{background:rgba(255,255,255,.22);color:#fff}
+.scrchips.small .scrchip{font-size:12.5px;padding:5px 11px}
+.scrbanknote{margin:8px 2px 0;line-height:1.5}
+.scrnext{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border:1px solid rgba(0,168,132,.45);background:rgba(0,168,132,.08);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.scrnext>div:first-child{display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px}.scrnext b{font-size:16px}
+.scrnextbtns{display:flex;gap:8px;flex-wrap:wrap}
+.scritem{display:flex!important;align-items:center;gap:12px;grid-template-columns:none!important;grid-template-areas:none!important}
+.scrdot{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:800;border:1px solid var(--line);color:var(--muted)}
+.scrdot.ok{background:var(--accent);border-color:var(--accent);color:#fff}.scrdot.try{border-color:#c9a227;color:#c9a227}
+.scrmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.scrsub2{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.scrbank{font-size:11.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.scrbank.rep{color:#c9a227;border-color:rgba(201,162,39,.5)}
+.scrgo{flex:none;font-size:22px;color:var(--muted)}
+.scrcall{gap:8px!important}
+.scrstepper{display:flex;gap:4px;flex-wrap:wrap}
+.scrstepbtn{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:#aebac1;font:inherit;font-size:13px;font-weight:700;border-radius:999px;padding:5px 10px;cursor:pointer}
+.scrstepbtn i{font-style:normal;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;border:1px solid #3a4d57}
+.scrstepbtn.on{background:rgba(0,168,132,.22);color:#fff}.scrstepbtn.on i{background:#00a884;border-color:#00a884;color:#fff}
+.scrstepbtn:disabled{opacity:.4;cursor:default}
+.scrstage{margin-top:12px}
+.scrchoose{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.scropt{display:flex;align-items:flex-start;gap:12px;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;border-radius:14px;padding:14px 16px;cursor:pointer}
+.scropt:hover{border-color:var(--accent)}
+.scropt>span:last-child{display:flex;flex-direction:column;gap:4px}.scropt b{font-size:15.5px}.scropt small{color:var(--muted);line-height:1.45;font-size:13px}
+.scropt.teach{border-color:rgba(120,90,255,.55);background:linear-gradient(180deg,rgba(120,90,255,.12),rgba(120,90,255,.03)),var(--panel)}
+.scropti{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:800;background:rgba(0,168,132,.16);color:var(--accent)}
+.scrstage .tch{margin-top:0}
+.scrsrcs{margin-top:8px}.scrsrcs summary{cursor:pointer;font-size:13px;font-weight:700;color:#c9a227}.scrsrcs .srcbadge{margin-top:6px}
+.scrlikely{margin:8px 0 0}
+.scrtalk{margin:10px 0}.scrtalk summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted)}.scrtalk .scrthinkw{margin-top:8px}
+.scrmodel>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}.scrmodel>summary::-webkit-details-marker{display:none}.scrmodel[open] .scrreveal{display:none}.scrmodel>summary h3{margin:0}
+.scrresult .row{margin-top:8px}
+@media (max-width:520px){.scrcall .scrstepbtn span{display:none}.scrcall .scrstepbtn.on span{display:inline}}
 </style>
 </head>
 <body class="booting">
@@ -5461,125 +5508,6 @@ function scrThink(placeholder){
   return {wrap,ta};
 }
 
-/* ---------- lobby ---------- */
-function renderScreen(body){
-  clearInterval(SCR.timer);
-  if(SCR.view==="task" && SCR.id) return renderScrTask(body);
-  body.innerHTML="";
-  const redraw=()=>renderScreen(body);
-  const done=scrDone();
-  const brief=el("section",{class:"card scrbrief"},
-    el("div",{class:"scrtag",text:"Technical round · screen share"}),
-    el("h3",{text:"Solve it live while the interviewer watches"}),
-    el("p",{text:"Many BFSI roles now include a live exercise. You join on a laptop, share your screen, and solve SQL, Python, Power BI or RWA tasks while you talk the interviewer through your thinking."}),
-    el("ul",{class:"scrticks"},
-      el("li",{text:"Join on a laptop with a reliable internet connection."}),
-      el("li",{text:"Close personal tabs, email and chat pop-ups before you share."}),
-      el("li",{text:"Share one window, not your whole screen, if you can."}),
-      el("li",{text:"Talk as you type: say what you're about to do, then do it."}),
-      el("li",{text:"Check your result out loud: row counts, totals, anything odd."})),
-    el("p",{class:"muted small",text:"Every task has a teacher: press “Teach me first” and it explains the idea from zero, with a simple example, then solves it with you step by step."}));
-  body.append(brief);
-  const tabs=el("nav",{class:"l3tabs scrtracks",role:"tablist","aria-label":"Which interview"});
-  Object.entries(SCR_TRACKS).forEach(([k,v])=>{ const b=el("button",{type:"button",role:"tab","aria-selected":String(SCR.track===k),"data-track":k,text:v.label}); b.addEventListener("click",()=>{ SCR.track=k; renderScreen(body); }); tabs.append(b); });
-  body.append(tabs,el("p",{class:"muted small scrtracksub",text:SCR_TRACKS[SCR.track].sub}));
-  const inTrack=t=>(t.track||["rwa"]).includes(SCR.track);
-  if(scrIsPhone()) body.append(el("div",{class:"scrphone"},el("b",{text:"Best on a laptop. "}),"Real screen-share rounds need a laptop. You can practise here, but try it on a laptop to rehearse properly."));
-  const shareHost=el("div"); const paintShare=()=>{ shareHost.innerHTML=""; shareHost.append(scrSharePill(paintShare)); }; paintShare(); body.append(shareHost);
-
-  const trackTasks=SCR_TASKS.filter(inTrack); const solved=trackTasks.filter(t=>done[t.id]&&done[t.id].ok).length;
-  const R=SCR_TRACKS[SCR.track].round;
-  const mock=el("section",{class:"card scrmock"},
-    el("div",{},el("h3",{text:"Mock technical round"}),el("p",{class:"muted",text:`${R.length} tasks back to back, about ${R.reduce((a,id)=>a+scrTask(id).min,0)} minutes: ${[...new Set(R.map(id=>SCR_SKILLS[scrTask(id).type]))].join(", ")}. ${solved}/${trackTasks.length} tasks solved so far.`})));
-  const go=el("button",{class:"btn primary big",type:"button",text:"Start the mock round"});
-  go.addEventListener("click",()=>{ SCR.round=R.slice(); SCR.ri=0; scrOpen(SCR.round[0],body); });
-  mock.append(go); body.append(mock);
-
-  SCR_GROUPS.forEach(([type,label,sub])=>{
-    if(!trackTasks.some(t=>t.type===type)) return;
-    const c=el("section",{class:"card scrgrp"},el("h3",{text:label}),el("p",{class:"muted small",text:sub}));
-    const list=el("div",{class:"scrlist"});
-    trackTasks.filter(t=>t.type===type).forEach(t=>{
-      const st=done[t.id]; const b=el("button",{class:"scritem",type:"button","data-scr":t.id},
-        el("span",{class:"scrskill "+t.type,text:SCR_SKILLS[t.type]}),
-        el("span",{class:"scrtitle"},t.title,DB_SRC[t.id]?el("span",{class:"scrrep",text:" · reported at Deutsche Bank"}):null),
-        el("span",{class:"scrmeta",text:`${t.min} min`}),
-        el("span",{class:"scrst"+(st&&st.ok?" ok":st?" try":""),text:st&&st.ok?"✓ Done":st?"Tried":""}));
-      b.addEventListener("click",()=>{ SCR.round=null; scrOpen(t.id,body); });
-      list.append(b);
-    });
-    c.append(list); body.append(c);
-  });
-}
-function scrOpen(id,body){ SCR.view="task"; SCR.id=id; SCR.start=Date.now(); renderScreen(body); const sc=body.closest(".toolscroll,.pane,#toolBody")||body; try{ sc.scrollTop=0; }catch(e){} }
-
-/* ---------- a task, as if on a screen-share call ---------- */
-function renderScrTask(body){
-  const t=scrTask(SCR.id); body.innerHTML="";
-  const inRound=!!SCR.round;
-  const timeEl=el("b",{class:"scrtime"});
-  const back=el("button",{class:"btn small",type:"button",text:inRound?"End round":"All tasks"});
-  back.addEventListener("click",()=>{ clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; renderScreen(body); });
-  const shareHost=el("span",{class:"scrcallshare"});
-  const paintShare=()=>{ shareHost.innerHTML=""; shareHost.append(SCR.share?el("span",{class:"scrlive"},el("i"),"Sharing"):el("span",{class:"scrsim",text:"Screen-share practice"})); };
-  paintShare();
-  const bar=el("div",{class:"scrcall"},shareHost,
-    el("span",{class:"scrstep",text:inRound?`Task ${SCR.ri+1} of ${SCR.round.length}`:SCR_SKILLS[t.type]}),
-    el("span",{class:"ledsp"}),
-    el("span",{class:"scrclock"},el("span",{class:"muted small",text:"Time "}),timeEl),
-    back);
-  body.append(bar);
-  const limit=t.min*60;
-  const tick=()=>{ if(!timeEl.isConnected){ clearInterval(SCR.timer); return; } const left=limit-Math.round((Date.now()-SCR.start)/1000); timeEl.textContent=scrFmt(left); timeEl.classList.toggle("over",left<0); timeEl.classList.toggle("low",left>=0&&left<60); };
-  tick(); SCR.timer=setInterval(tick,1000);
-
-  const ivw=el("div",{class:"scrask"},
-    el("div",{class:"scrwho"},el("span",{class:"scrav",text:"IV"}),el("div",{},el("b",{text:"Interviewer"}),el("span",{class:"muted small",text:`${SCR_SKILLS[t.type]} · about ${t.min} minutes`}))),
-    el("h3",{text:t.title}),
-    el("p",{text:t.ask}));
-  if(t.type==="sql") ivw.append(el("p",{class:"scrout"},el("b",{text:"Return: "}),t.out),el("p",{class:"muted small",text:"Practice tables: rwa_exposures, account_snapshot, customer_dim and the rest of the SQL Lab schema. Dates are written DATE 'YYYY-MM-DD'."}));
-  if(t.type==="python") ivw.append(el("p",{class:"muted small",text:"Columns: "+RWA_COLS.replace(/^rwa_exposures/,"")}));
-  if(t.data){ const tb=el("table",{class:"t scrdata"}); t.data.forEach(([k,v])=>tb.append(el("tr",{},el("th",{text:k}),el("td",{text:v})))); ivw.append(tb); }
-  if(DB_SRC[t.id]) ivw.append(srcBadge(DB_SRC[t.id]));
-  else if((t.track||[]).includes("db") && SCR.track==="db") ivw.append(el("div",{class:"srcbadge gen"},el("span",{class:"srck",text:"Likely topic"}),el("span",{text:"From Deutsche Bank BFA VP job adverts · not a reported interview question"})));
-  body.append(ivw);
-
-  const lesson=teachPanel(t);
-  const teachB=el("button",{class:"btn tchbtn",type:"button"},el("span",{class:"tchav sm",text:"T"}),el("span",{text:"Teach me first"}));
-  const hintB=el("button",{class:"l3link",type:"button",text:"Just a nudge"});
-  const hintP=el("p",{class:"scrhint",hidden:true,text:t.hint||("Start with: "+t.keys[0])});
-  hintB.addEventListener("click",()=>{ hintP.hidden=!hintP.hidden; });
-  teachB.addEventListener("click",()=>{ if(!lesson) return; lesson.hidden=!lesson.hidden; if(!lesson.hidden) lesson.scrollIntoView({behavior:"smooth",block:"start"}); });
-  body.append(el("div",{class:"scrhintrow"},lesson?teachB:null,hintB),hintP);
-  if(lesson) body.append(lesson);
-
-  const think=scrThink(t.type==="talk"?"Step 1: … Step 2: … What I'd tell the head of reporting: …":"Before you start, say your plan. For example: first I'll filter to the reporting date, then…");
-  const work=el("section",{class:"scrwork"});
-  const result=el("section",{class:"scrresult",hidden:true});
-  const after=el("section",{class:"scrafter",hidden:true});
-
-  if(t.type==="talk"){ think.ta.rows=8; work.append(think.wrap); }
-  else body.append(think.wrap);
-  body.append(work,result,after);
-
-  const finish=(ok,msg)=>{
-    scrMark(t.id,ok);
-    result.hidden=false; result.innerHTML="";
-    result.className="scrresult "+(ok===true?"ok":ok===false?"bad":"neutral");
-    result.append(msg);
-    scrAfter(t,after,body,think.ta);
-  };
-
-  if(t.type==="sql") scrSql(t,work,finish);
-  else if(t.type==="calc") scrCalc(t,work,finish);
-  else if(t.type==="python"||t.type==="dax") scrCode(t,work,finish,think.ta);
-  else {
-    const sub=el("button",{class:"lrun",type:"button",text:"I've finished explaining"});
-    sub.addEventListener("click",async()=>{ sub.disabled=true; await scrReview(t,think.ta.value,"",finish); sub.disabled=false; });
-    work.append(el("div",{class:"scrfoot"},sub));
-  }
-}
-
 /* a fresh copy of the practice data for every run, separate from the SQL Lab's own copy */
 function scrDb(sync){
   const mk=()=>{ try{ SCR.db&&SCR.db.close(); }catch(e){} const db=new LAB.SQL.Database(); labRegister(db); labRun(db,LAB_SEED); SCR.db=db; return db; };
@@ -5677,36 +5605,6 @@ Reply with only JSON: {"verdict":"strong"|"good"|"partly"|"not yet","good":["max
   finish(null,box);
 }
 
-/* follow-up questions, model answer, next step */
-function scrAfter(t,after,body,thinkTa){
-  after.hidden=false; after.innerHTML="";
-  const fu=el("div",{class:"card scrprobes"},el("h3",{text:"The interviewer follows up"}),el("p",{class:"muted small",text:"Answer each one out loud before you reveal what a strong answer says."}));
-  t.probes.forEach(([q,a],i)=>{ const d=el("details",{class:"scrprobe"}); d.append(el("summary",{},el("span",{class:"scrq",text:`${i+1}. ${q}`}),el("span",{class:"scrreveal",text:"Show a strong answer"})),el("p",{text:a})); fu.append(d); });
-  after.append(fu);
-  const m=el("div",{class:"card scrmodel"},el("h3",{text:"Model answer"}));
-  if(t.type==="sql"){
-    const code=LAB.dialect==="oracle"?t.ora:t.td;
-    const pre=el("pre",{class:"sql"}); const c=el("code"); c.innerHTML=hl(code); pre.append(c);
-    const open=el("button",{class:"btn small",type:"button",text:"Open in SQL Lab"}); open.addEventListener("click",()=>openLab({sql:code}));
-    m.append(el("p",{class:"muted small",text:LAB.dialect==="oracle"?"Oracle version":"Teradata version"}),pre,el("div",{class:"row"},open));
-  } else if(t.model){ m.append(el("pre",{class:"sql scrpre"},el("code",{text:t.model}))); }
-  if(t.keys) m.append(el("p",{class:"scrsub",text:"What the interviewer listens for:"}),el("ul",{},t.keys.map(k=>el("li",{text:k}))));
-  after.append(m);
-  const nav=el("div",{class:"scrnav"});
-  if(SCR.round && SCR.ri<SCR.round.length-1){
-    const nx=el("button",{class:"btn primary",type:"button",text:"Next task ›"}); nx.addEventListener("click",()=>{ SCR.ri++; scrOpen(SCR.round[SCR.ri],body); }); nav.append(nx);
-  } else if(SCR.round){
-    const d=scrDone(); const got=SCR.round.filter(id=>d[id]&&d[id].ok).length;
-    nav.append(el("p",{class:"scrsum",text:`Round complete: ${got} of ${SCR.round.length} tasks solved.`}));
-    const bk=el("button",{class:"btn primary",type:"button",text:"Back to all tasks"}); bk.addEventListener("click",()=>{ SCR.view="lobby"; SCR.round=null; renderScreen(body); }); nav.append(bk);
-  } else {
-    const bk=el("button",{class:"btn",type:"button",text:"Back to all tasks"}); bk.addEventListener("click",()=>{ SCR.view="lobby"; renderScreen(body); });
-    const again=el("button",{class:"btn",type:"button",text:"Try again"}); again.addEventListener("click",()=>scrOpen(t.id,body));
-    nav.append(again,bk);
-  }
-  after.append(nav);
-  setTimeout(()=>{ try{ after.previousElementSibling.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){} },50);
-}
 
 /* =====================================================================
    TEACHER: explains each screen-share task from zero, in simple words,
@@ -6041,8 +5939,7 @@ function teachPanel(t){
   const L=LESSON[t.id]; if(!L) return null;
   const box=el("section",{class:"tch",hidden:true});
   const head=el("div",{class:"tchhead"},el("span",{class:"tchav",text:"T"}),el("div",{},el("b",{text:"Your teacher"}),el("span",{class:"muted small",text:"Let's take it slowly. No question is silly."})));
-  const close=el("button",{class:"l3link",type:"button",text:"Close lesson"}); close.addEventListener("click",()=>{ box.hidden=true; });
-  head.append(el("span",{class:"ledsp"}),close);
+
   box.append(head);
   box.append(el("div",{class:"tchsec"},el("h4",{text:"1. The idea in plain words"}),el("p",{text:L.idea}),el("p",{class:"tchlike"},el("b",{text:"In everyday life: "}),L.like)));
   box.append(el("div",{class:"tchsec"},el("h4",{text:"2. A tiny example"}),el("pre",{class:"tchex",text:L.ex})));
@@ -6094,10 +5991,319 @@ Reply with only JSON: {"answer":"max 90 words","example":"max 40 words","check":
     }catch(e){ ans.innerHTML=""; ans.append(el("p",{class:"muted",text:"The teacher couldn't answer just now. Please try again in a minute."})); }
   });
   ask.append(q,el("div",{class:"row"},go),ans); box.append(ask);
-  const ready=el("button",{class:"btn primary",type:"button",text:"I'm ready: let me try it myself"});
-  ready.addEventListener("click",()=>{ box.hidden=true; const w=document.querySelector(".scrwork textarea, .scrwork input, .scrthinkw .scrthink"); if(w){ w.scrollIntoView({behavior:"smooth",block:"center"}); w.focus({preventScroll:true}); } });
+  const ready=el("button",{class:"btn primary",type:"button",text:"I'm ready: let me solve it ›"});
+  ready.addEventListener("click",()=>{ if(window.scrGo) window.scrGo("solve"); });
   box.append(el("div",{class:"tchready"},ready));
   return box;
+}
+
+/* =====================================================================
+   SCREEN-SHARE ROUND · simple layout
+   Lobby: 1 pick a bank → 2 pick a task.  Task: Learn → Solve → Review.
+   Every bank label comes from a public candidate report (or, for Deutsche
+   Bank, its own job adverts), shown on the task.
+   ===================================================================== */
+const BANKS=[["db","Deutsche Bank"],["hsbc","HSBC"],["barclays","Barclays"],["lloyds","Lloyds Banking Group"],["natwest","NatWest"],["sc","Standard Chartered"],["jpm","J.P. Morgan"]];
+const BANK_NAME=Object.fromEntries(BANKS);
+const S_=(b,o)=>Object.assign({b,site:"Glassdoor"},o);
+const BANK_SRC={
+ d1:[S_("db",DB_SRC.d1)], d2:[S_("db",DB_SRC.d2)], d8:[S_("db",DB_SRC.d8)], d11:[S_("db",DB_SRC.d11)], d12:[S_("db",DB_SRC.d12)],
+ d3:[S_("db",DB_SRC.d3),
+     S_("sc",{co:"Standard Chartered",role:"Business Analyst",asked:"Left Join SQL queries and general BA questions",url:"https://www.glassdoor.fr/Entretien/Standard-Chartered-Bank-Entretien-E226853-RVW88032953.htm"}),
+     S_("natwest",{kind:"topic",co:"NatWest",role:"Data Analyst",asked:"Types of SQL joins. Basic SQL syntax",site:"AmbitionBox",url:"https://ambitionbox.com/interviews/natwest-interview-questions"})],
+ d4:[S_("db",DB_SRC.d4),
+     S_("jpm",{kind:"topic",co:"J.P. Morgan",role:"Role not stated",asked:"sql with lead and lag function",url:"https://www.glassdoor.ie/Interview/J-P-Morgan-Interview-E145-RVW64448187.htm"})],
+ j1:[S_("jpm",{co:"J.P. Morgan",role:"Role not stated",asked:"difference between rank and row_number",url:"https://www.glassdoor.ie/Interview/J-P-Morgan-Interview-E145-RVW64448187.htm"})],
+ h1:[S_("hsbc",{co:"HSBC",role:"Business Analyst",where:"Hong Kong",when:"2015",asked:"SQL statement on outer joins",url:"https://www.glassdoor.it/Colloquio/HSBC-Colloquio-E3482-RVW7867406.htm"})],
+ h2:[S_("hsbc",{co:"HSBC",role:"Business Analyst",where:"Hyderabad",when:"Oct 2025",asked:"what is the SQL execution flow",url:"https://fr.glassdoor.ch/Entretien/HSBC-Entretien-E3482-RVW100887613.htm"})],
+ bc1:[S_("barclays",{co:"Barclays",role:"Senior Business Analyst",when:"Mar 2026",asked:"SQL business case to pull the data",url:"https://www.glassdoor.ca/Interview/Barclays-Interview-E3456-RVW22577729.htm"})],
+ b1:[S_("barclays",{kind:"topic",co:"Barclays",role:"Data Analyst",asked:"few were asked about python and Power BI",url:"https://www.glassdoor.co.in/Interview/Barclays-Interview-E3456-RVW90102759.htm"})],
+ p1:[S_("barclays",{kind:"topic",co:"Barclays",role:"Data Analyst",asked:"few were asked about python and Power BI",url:"https://www.glassdoor.co.in/Interview/Barclays-Interview-E3456-RVW90102759.htm"})],
+ p2:[S_("barclays",{kind:"topic",co:"Barclays",role:"Analyst",asked:"technical rounds focused on SQL, Python, data analysis",url:"https://www.glassdoor.co.nz/Interview/Barclays-Interview-E3456-RVW103950629.htm"})],
+ l1:[S_("lloyds",{co:"Lloyds Banking Group",role:"Data Engineer",asked:"how would you find duplicates?",url:"https://static.glassdoor.es/Interview/Lloyds-Banking-Group-Interview-E316191-RVW90875917.htm"})],
+ l2:[S_("lloyds",{co:"Lloyds Banking Group",role:"Audit Data Analyst",where:"London",when:"Nov 2022",asked:"How to find an outlier in the given dataset",url:"https://www.glassdoor.com/Interview/Lloyds-Banking-Group-Interview-E316191-RVW71002808.htm"})],
+ n1:[S_("natwest",{co:"NatWest",role:"Lead Business Analyst",where:"Gurgaon",asked:"ER diagrams, data modeling",url:"https://www.glassdoor.com.au/Interview/NatWest-Group-Interview-E10222-RVW687743.htm"})]
+};
+
+/* ---------- questions from other banks ---------- */
+SCR_TASKS.push(
+ {id:"h1",type:"sql",min:10,title:"Reconcile source to warehouse with a FULL OUTER JOIN",
+  ask:"src_core_banking holds the source system's balances for 30 Sep 2026. Compare it with account_snapshot for the same date. List every account that is missing on either side, or whose balances differ by more than 1p.",
+  out:"account_id, source_balance, warehouse_balance, issue ('Missing in source', 'Missing in warehouse' or 'Balance differs')",
+  hint:"FULL OUTER JOIN keeps unmatched rows from both sides. Use COALESCE for the account_id and a CASE for the issue.",
+  td:"SELECT COALESCE(s.account_id, w.account_id) AS account_id,\n       s.balance AS source_balance,\n       w.balance AS warehouse_balance,\n       CASE WHEN s.account_id IS NULL THEN 'Missing in source'\n            WHEN w.account_id IS NULL THEN 'Missing in warehouse'\n            ELSE 'Balance differs' END AS issue\nFROM   src_core_banking s\nFULL   OUTER JOIN (SELECT account_id, balance\n                   FROM   account_snapshot\n                   WHERE  snapshot_date = DATE '2026-09-30') w\n  ON   w.account_id = s.account_id\nWHERE  s.account_id IS NULL\nOR     w.account_id IS NULL\nOR     ABS(s.balance - w.balance) > 0.01;",
+  keys:["Uses FULL OUTER JOIN so gaps on both sides show","Filters the warehouse to the date before joining","Uses a tolerance for money, not exact equality","Labels each break so the business can act"],
+  probes:[["What's the difference between LEFT, RIGHT and FULL OUTER joins?","LEFT keeps everything from the first table. RIGHT keeps everything from the second. FULL keeps everything from both, with blanks where there's no match."],
+          ["You find three breaks. What next?","Check each with the source owner, find the root cause (timing, a late adjustment, a failed load), fix it, and record it in the break log."]]},
+ {id:"h2",type:"talk",min:6,title:"Explain the SQL execution order",
+  ask:"Here's a query: SELECT product_code, COUNT(*) AS n FROM accounts WHERE open_date >= DATE '2022-01-01' GROUP BY product_code HAVING COUNT(*) > 1 ORDER BY n DESC. Talk me through the order in which the database actually runs it, and why that matters.",
+  keys:["FROM (and JOINs) first, then WHERE","Then GROUP BY, then HAVING","Then SELECT, then ORDER BY, then TOP or FETCH FIRST","So a SELECT alias can't be used in WHERE (Oracle), and window functions need QUALIFY or an inline view","Uses this order to debug: where do the rows drop out?"],
+  probes:[["Why can't you use the alias n in the WHERE clause?","WHERE runs before SELECT, so the alias doesn't exist yet. Oracle rejects it; Teradata is more forgiving."],
+          ["WHERE versus HAVING?","WHERE filters rows before grouping. HAVING filters groups after the totals are worked out."]]},
+ {id:"bc1",type:"sql",min:10,title:"Business case: customers in arrears",
+  ask:"The collections team asks: 'Which customers were 30 or more days past due on 30 Sep 2026, and how much do they owe?' Give one row per customer with the number of accounts in arrears, the total balance and the worst days past due. Largest balance first.",
+  out:"customer_id, accounts_in_arrears, total_balance, worst_dpd",
+  hint:"Filter days_past_due >= 30 on the snapshot date, then GROUP BY customer_id with COUNT, SUM and MAX.",
+  td:"SELECT s.customer_id,\n       COUNT(*) AS accounts_in_arrears,\n       SUM(s.balance) AS total_balance,\n       MAX(s.days_past_due) AS worst_dpd\nFROM   account_snapshot s\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    s.days_past_due >= 30\nGROUP  BY s.customer_id\nORDER  BY total_balance DESC;",
+  ordered:true,
+  keys:["Clarifies the definitions first: which date, 30+ means 'at least 30'","Chooses the grain: one row per customer","Uses COUNT, SUM and MAX in one GROUP BY","Checks the total against the snapshot before sending"],
+  probes:[["Before writing SQL, what would you ask the stakeholder?","What decision this supports, the as-at date, the exact arrears definition, which products are in scope, and the format they need."],
+          ["How do you make sure the numbers are right?","Reconcile the total balance and count to the full snapshot, spot-check a few customers, and state any exclusions."]]},
+ {id:"l1",type:"sql",min:6,title:"Find duplicate keys",
+  ask:"Is account_id unique in snapshot_feed_stg for 30 Sep 2026? Show every account that appears more than once, with how many times.",
+  out:"account_id, loads",
+  hint:"GROUP BY account_id, then HAVING COUNT(*) > 1.",
+  td:"SELECT account_id, COUNT(*) AS loads\nFROM   snapshot_feed_stg\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY account_id\nHAVING COUNT(*) > 1;",
+  keys:["Groups by the key and counts","Uses HAVING (not WHERE) to filter the counts","Explains how to fix it: keep the latest load"],
+  probes:[["How else could you check a column is unique?","Compare COUNT(*) with COUNT(DISTINCT account_id). If they differ, there are duplicates."],
+          ["How do you remove the duplicates?","Keep one row per key with ROW_NUMBER() ordered by load time, newest first."]]},
+ {id:"l2",type:"sql",min:10,title:"Spot outliers",
+  ask:"Find accounts on 30 Sep 2026 whose balance is more than 30% above the average balance for their product. Show the product average rounded to 2 decimal places.",
+  out:"account_id, product_code, balance, product_avg",
+  hint:"Work out the average per product in a subquery, join it back, then compare.",
+  td:"SELECT s.account_id, s.product_code, s.balance, ROUND(p.avg_balance, 2) AS product_avg\nFROM   account_snapshot s\nJOIN  (SELECT product_code, AVG(balance) AS avg_balance\n       FROM   account_snapshot\n       WHERE  snapshot_date = DATE '2026-09-30'\n       GROUP  BY product_code) p\n  ON   p.product_code = s.product_code\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    s.balance > 1.3 * p.avg_balance;",
+  keys:["Compares like with like: each account against its own product","Builds the average in a subquery and joins back","Mentions other outlier methods (standard deviation, percentiles)","Checks outliers are real before excluding them"],
+  probes:[["What other ways are there to find outliers?","More than 2 or 3 standard deviations from the mean, outside the 1st to 99th percentile, or beyond 1.5 times the inter-quartile range."],
+          ["Do you delete outliers?","No. Investigate first. Many are real (a large mortgage). Only exclude with a documented reason."]]},
+ {id:"j1",type:"sql",min:8,title:"ROW_NUMBER vs RANK vs DENSE_RANK",
+  ask:"Rank the exposures in rwa_exposures by risk weight, highest first, showing ROW_NUMBER, RANK and DENSE_RANK side by side. For ROW_NUMBER, break ties by exposure_id. Ignore rows with no risk weight.",
+  out:"exposure_id, risk_weight, row_num, rnk, dense_rnk · ordered by row_num",
+  hint:"Three window functions with the same ORDER BY risk_weight DESC; add exposure_id only to ROW_NUMBER.",
+  td:"SELECT exposure_id, risk_weight,\n       ROW_NUMBER() OVER (ORDER BY risk_weight DESC, exposure_id) AS row_num,\n       RANK()       OVER (ORDER BY risk_weight DESC) AS rnk,\n       DENSE_RANK() OVER (ORDER BY risk_weight DESC) AS dense_rnk\nFROM   rwa_exposures\nWHERE  risk_weight IS NOT NULL\nORDER  BY row_num;",
+  ordered:true,
+  keys:["Explains ties: ROW_NUMBER never ties, RANK skips numbers, DENSE_RANK doesn't","Adds a tie-break so ROW_NUMBER is repeatable","Knows when to use each (top-n, dedupe, league tables)"],
+  probes:[["Four exposures share 75%. What does each function give them?","ROW_NUMBER: 4, 5, 6, 7. RANK: 4, 4, 4, 4, then jumps to 8. DENSE_RANK: 4, 4, 4, 4, then 5."],
+          ["Which one do you use to remove duplicates?","ROW_NUMBER, because it gives exactly one row number 1 per group."]]},
+ {id:"n1",type:"talk",min:10,title:"Design a data model for a loan book",
+  ask:"Share your screen and sketch the data model (an ER diagram) for a simple loan book: customers, accounts, monthly balances, payments and products. Name the tables, their keys and how they link.",
+  keys:["Entities: customer, account, product, monthly balance snapshot, payment","Primary keys for each, e.g. account_id; snapshot key = account_id + snapshot_date","Relationships: one customer has many accounts; one account has many snapshots and payments","History handled with SCD Type 2 on customer (effective dates)","Mentions reference data (products) and a date dimension"],
+  probes:[["What's the primary key of the monthly balance table?","account_id plus snapshot_date: one row per account per month."],
+          ["How do you keep a customer's history?","SCD Type 2: a new row with effective_from and effective_to dates whenever an attribute changes, and a current flag."]]}
+);
+SCR_TASKS.forEach(t=>{ t.track=t.track||["rwa"]; });
+Object.assign(LESSON,{
+ h1:{idea:"Two systems should hold the same balances. A FULL OUTER JOIN lines them up and keeps rows that exist on only one side, so nothing hides.",
+  like:"Like comparing two guest lists for a wedding: who's on both, who's only on yours, who's only on your partner's.",
+  ex:"Source: A £10, B £20. Warehouse: A £10, C £5.\nFULL JOIN → A matches, B missing in warehouse, C missing in source.",
+  steps:[["Take the warehouse balances for the date as a small table 'w'.","SELECT account_id, balance\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30';"],
+         ["Join source 's' to it with FULL OUTER JOIN so both sides are kept.","SELECT s.account_id AS src_id, w.account_id AS dwh_id, s.balance AS source_balance, w.balance AS warehouse_balance\nFROM   src_core_banking s\nFULL   OUTER JOIN (SELECT account_id, balance FROM account_snapshot\n                   WHERE snapshot_date = DATE '2026-09-30') w\n  ON   w.account_id = s.account_id;"],
+         ["Keep only the problems, and label each one.","SELECT COALESCE(s.account_id, w.account_id) AS account_id,\n       s.balance AS source_balance,\n       w.balance AS warehouse_balance,\n       CASE WHEN s.account_id IS NULL THEN 'Missing in source'\n            WHEN w.account_id IS NULL THEN 'Missing in warehouse'\n            ELSE 'Balance differs' END AS issue\nFROM   src_core_banking s\nFULL   OUTER JOIN (SELECT account_id, balance\n                   FROM   account_snapshot\n                   WHERE  snapshot_date = DATE '2026-09-30') w\n  ON   w.account_id = s.account_id\nWHERE  s.account_id IS NULL\nOR     w.account_id IS NULL\nOR     ABS(s.balance - w.balance) > 0.01;"]],
+  traps:["Using an INNER JOIN, which hides missing accounts.","Comparing money with = instead of a small tolerance."],
+  check:TQ("Which join shows rows missing from EITHER table?",["INNER","LEFT","FULL OUTER","CROSS"],2,"FULL OUTER keeps unmatched rows from both sides.")},
+ h2:{idea:"You write SQL starting with SELECT, but the database reads it in a different order: first it finds the rows, then filters, groups, and only then picks the columns.",
+  like:"Like cooking: get the ingredients (FROM), throw away bad ones (WHERE), sort into bowls (GROUP BY), keep the full bowls (HAVING), plate up (SELECT), arrange the plates (ORDER BY).",
+  ex:"WHERE open_date >= 2022 runs before GROUP BY, so old accounts are never counted.",
+  steps:[["FROM: which table(s), and joins.",""],["WHERE: drop rows you don't want.",""],["GROUP BY: make the piles.",""],["HAVING: drop piles you don't want.",""],["SELECT: choose and name the columns.",""],["ORDER BY, then TOP or FETCH FIRST.",""]],
+  traps:["Using a SELECT alias in WHERE.","Filtering a total in WHERE instead of HAVING."],
+  check:TQ("Which runs first?",["SELECT","WHERE","ORDER BY","HAVING"],1,"WHERE runs right after FROM, long before SELECT.")},
+ bc1:{idea:"A business case question tests two things: do you ask the right questions first, and can you turn the answer into clean SQL.",
+  like:"Like a tailor: measure first (clarify), then cut (write SQL), then check the fit (reconcile).",
+  ex:"'30 or more days' means days_past_due >= 30, not > 30. One word changes the list.",
+  steps:[["Find the accounts in arrears on the date.","SELECT customer_id, account_id, balance, days_past_due\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nAND    days_past_due >= 30;"],
+         ["One row per customer: count, total and worst arrears.","SELECT s.customer_id,\n       COUNT(*) AS accounts_in_arrears,\n       SUM(s.balance) AS total_balance,\n       MAX(s.days_past_due) AS worst_dpd\nFROM   account_snapshot s\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    s.days_past_due >= 30\nGROUP  BY s.customer_id\nORDER  BY total_balance DESC;"]],
+  traps:["Writing > 30 when the ask is 30 or more.","Forgetting the date, so three months get added together."],
+  check:TQ("'30 or more days past due' in SQL is…",["days_past_due > 30","days_past_due >= 30","days_past_due = 30","days_past_due < 30"],1,">= includes exactly 30.")},
+ l1:{idea:"A key should appear once. To check, group by the key and count. Any count above 1 is a duplicate.",
+  like:"Like checking a class register: if a name appears twice, something went wrong.",
+  ex:"1002, 1002, 1003 → 1002 has count 2: duplicate.",
+  steps:[["Count rows per account.","SELECT account_id, COUNT(*) AS loads\nFROM   snapshot_feed_stg\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY account_id;"],
+         ["Keep only counts above 1. HAVING filters groups.","SELECT account_id, COUNT(*) AS loads\nFROM   snapshot_feed_stg\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY account_id\nHAVING COUNT(*) > 1;"]],
+  traps:["Writing WHERE COUNT(*) > 1: totals can't go in WHERE.","Forgetting the date filter."],
+  check:TQ("COUNT(*) is 10 and COUNT(DISTINCT account_id) is 8. What does that tell you?",["All unique","There are duplicates","2 nulls","Nothing"],1,"Two extra rows share keys with others.")},
+ l2:{idea:"An outlier is a value far from the others. We compare each account with the average of similar accounts, the same product.",
+  like:"Like spotting a giant in a primary-school class photo: compare with the other children, not with adults.",
+  ex:"Card balances average £7,000. A £10,000 card balance is 43% above: an outlier at our 30% rule.",
+  steps:[["Average balance per product.","SELECT product_code, AVG(balance) AS avg_balance\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY product_code;"],
+         ["Join it back to each account and keep those 30% above.","SELECT s.account_id, s.product_code, s.balance, ROUND(p.avg_balance, 2) AS product_avg\nFROM   account_snapshot s\nJOIN  (SELECT product_code, AVG(balance) AS avg_balance\n       FROM   account_snapshot\n       WHERE  snapshot_date = DATE '2026-09-30'\n       GROUP  BY product_code) p\n  ON   p.product_code = s.product_code\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    s.balance > 1.3 * p.avg_balance;"]],
+  traps:["Comparing a mortgage with the average of all products.","Deleting outliers without checking them."],
+  check:TQ("Average £100. Which is more than 30% above?",["£120","£130","£131","£90"],2,"30% above £100 is £130, so it must be more than £130.")},
+ j1:{idea:"All three give rows a position number. They only differ when there's a tie.",
+  like:"Like a race with a tie for 4th. ROW_NUMBER forces an order. RANK gives both 4th, then skips to 6th. DENSE_RANK gives both 4th, then 5th.",
+  ex:"Weights 100, 75, 75, 65\nROW_NUMBER 1, 2, 3, 4 · RANK 1, 2, 2, 4 · DENSE_RANK 1, 2, 2, 3",
+  steps:[["Start with ROW_NUMBER. Add exposure_id so ties are broken the same way every time.","SELECT exposure_id, risk_weight,\n       ROW_NUMBER() OVER (ORDER BY risk_weight DESC, exposure_id) AS row_num\nFROM   rwa_exposures\nWHERE  risk_weight IS NOT NULL\nORDER  BY row_num;"],
+         ["Add RANK and DENSE_RANK next to it and compare the 75% rows.","SELECT exposure_id, risk_weight,\n       ROW_NUMBER() OVER (ORDER BY risk_weight DESC, exposure_id) AS row_num,\n       RANK()       OVER (ORDER BY risk_weight DESC) AS rnk,\n       DENSE_RANK() OVER (ORDER BY risk_weight DESC) AS dense_rnk\nFROM   rwa_exposures\nWHERE  risk_weight IS NOT NULL\nORDER  BY row_num;"]],
+  traps:["No tie-break on ROW_NUMBER, so results change between runs.","Using RANK when you need exactly one row per group."],
+  check:TQ("Values 9, 9, 8. RANK of 8?",["2","3","1","4"],1,"Two share rank 1, so RANK jumps to 3.")},
+ n1:{idea:"A data model is a map of your tables and how they connect. Each table has a key that makes each row unique, and links point from one table to another.",
+  like:"Like a family tree: each person once, with lines showing who belongs to whom.",
+  ex:"customer (customer_id) 1 ─── many account (account_id, customer_id)\naccount 1 ─── many monthly snapshot (account_id + snapshot_date)",
+  steps:[["List the things: customer, account, product, monthly balance, payment.",""],["Give each a key: customer_id, account_id, product_code, (account_id, snapshot_date), payment_id.",""],["Draw the links: customer → accounts → snapshots and payments; product → accounts.",""],["Add history: customer details change, so use SCD Type 2 with effective dates.",""]],
+  traps:["Putting balances on the account table (they change every month).","No key on the snapshot table."],
+  check:TQ("One customer can have many accounts. This is…",["one-to-one","one-to-many","many-to-many","no relationship"],1,"One customer, many accounts.")}
+});
+
+function scrBanksOf(t){ const s=new Set((BANK_SRC[t.id]||[]).map(x=>x.b)); if((t.track||[]).includes("db")) s.add("db"); return [...s]; }
+function scrReported(t,b){ return (BANK_SRC[t.id]||[]).some(x=>x.b===b); }
+const SCR_LEVEL={sql:1,calc:2,python:3,dax:3,talk:4};
+SCR.bank=SCR.bank||"all"; SCR.skill=SCR.skill||"all"; SCR.stage="learn";
+
+/* ---------- lobby ---------- */
+function renderScreen(body){
+  clearInterval(SCR.timer);
+  if(SCR.view==="task" && SCR.id) return renderScrTask(body);
+  body.innerHTML="";
+  const done=scrDone();
+  const intro=el("section",{class:"card scrintro"},
+    el("h3",{text:"Practise the screen-share round"}),
+    el("p",{class:"muted",text:"In this round you share your screen and solve a task while you explain your thinking. Practise it in three steps:"}),
+    el("ol",{class:"scrsteps3"},
+      el("li",{},el("b",{text:"Pick a bank"}),el("span",{text:" to see questions reported at that bank, or keep All banks."})),
+      el("li",{},el("b",{text:"Open a task."}),el("span",{text:" Learn it with the teacher if it's new, then solve it yourself."})),
+      el("li",{},el("b",{text:"Answer the follow-ups"}),el("span",{text:" and compare with the model answer."}))));
+  const chk=el("details",{class:"scrday"},el("summary",{text:"Interview-day checklist"}),
+    el("ul",{class:"scrticks"},["Join on a laptop with a reliable internet connection.","Close personal tabs, email and chat pop-ups before you share.","Share one window, not your whole screen, if you can.","Talk as you type: say what you're about to do, then do it.","Check your result out loud: row counts, totals, anything odd."].map(x=>el("li",{text:x}))));
+  const shareHost=el("div"); const paintShare=()=>{ shareHost.innerHTML=""; shareHost.append(scrSharePill(paintShare)); }; paintShare(); chk.append(shareHost);
+  intro.append(chk);
+  if(scrIsPhone()) intro.append(el("p",{class:"scrphone"},el("b",{text:"Best on a laptop. "}),"You can practise here, but the real round needs a laptop."));
+  body.append(intro);
+
+  // 1. bank
+  const inBank=t=>SCR.bank==="all"||scrBanksOf(t).includes(SCR.bank);
+  const bankRow=el("div",{class:"scrchips",role:"tablist","aria-label":"Bank"});
+  const chip=(k,label,n)=>{ const b=el("button",{type:"button",role:"tab",class:"scrchip","aria-selected":String(SCR.bank===k),"data-bank":k},el("span",{text:label}),el("em",{text:String(n)})); b.addEventListener("click",()=>{ SCR.bank=k; SCR.skill="all"; renderScreen(body); }); return b; };
+  bankRow.append(chip("all","All banks",SCR_TASKS.length));
+  BANKS.forEach(([k,label])=>{ const n=SCR_TASKS.filter(t=>scrBanksOf(t).includes(k)).length; if(n) bankRow.append(chip(k,label,n)); });
+  body.append(el("h4",{class:"scrlabel",text:"1. Pick a bank"}),bankRow);
+  if(SCR.bank!=="all") body.append(el("p",{class:"muted small scrbanknote",text:SCR.bank==="db"
+    ? "✓ Reported = a candidate described this question at Deutsche Bank. The rest are likely topics from Deutsche Bank's own Business Functional Analyst (VP) job adverts."
+    : `✓ Reported = a candidate described this question or topic at ${BANK_NAME[SCR.bank]} on a public interview site. Open a task to see the role, place and source.`}));
+
+  // 2. task
+  const pool=SCR_TASKS.filter(inBank);
+  const skills=[["all","All"],["sql","SQL"],["calc","Calculations"],["python","Python"],["dax","Power BI"],["talk","Functional"]].filter(([k])=>k==="all"||pool.some(t=>t.type===k));
+  if(!skills.some(([k])=>k===SCR.skill)) SCR.skill="all";
+  const list=pool.filter(t=>SCR.skill==="all"||t.type===SCR.skill).sort((a,b)=>SCR_LEVEL[a.type]-SCR_LEVEL[b.type]);
+  const skillRow=el("div",{class:"scrchips small"});
+  if(skills.length>2) skills.forEach(([k,label])=>{ const b=el("button",{type:"button",class:"scrchip","aria-pressed":String(SCR.skill===k),"data-skill":k,text:label}); b.addEventListener("click",()=>{ SCR.skill=k; renderScreen(body); }); skillRow.append(b); });
+  const solvedN=list.filter(t=>done[t.id]&&done[t.id].ok).length;
+  body.append(el("div",{class:"scrlabelrow"},el("h4",{class:"scrlabel",text:"2. Pick a task"}),el("span",{class:"muted small",text:`${solvedN} of ${list.length} solved`})),skillRow);
+
+  const next=list.find(t=>!(done[t.id]&&done[t.id].ok))||list[0];
+  if(next){
+    const start=el("button",{class:"btn primary",type:"button",text:"Start ›"}); start.addEventListener("click",()=>{ SCR.round=null; scrOpen(next.id,body); });
+    const round=pool.filter(t=>!(done[t.id]&&done[t.id].ok)).slice(0,4); const rr=round.length>=2?round:pool.slice(0,4);
+    const mock=el("button",{class:"btn",type:"button",text:`Mock interview · ${rr.length} tasks`}); mock.addEventListener("click",()=>{ SCR.round=rr.map(t=>t.id); SCR.ri=0; scrOpen(SCR.round[0],body); });
+    body.append(el("section",{class:"scrnext"},el("div",{},el("span",{class:"muted small",text:solvedN?"Up next":"Start here"}),el("b",{text:next.title}),el("span",{class:"muted small",text:`${SCR_SKILLS[next.type]} · ${next.min} min`})),el("div",{class:"scrnextbtns"},start,pool.length>1?mock:null)));
+  }
+  const ul=el("div",{class:"scrlist"});
+  list.forEach((t,i)=>{
+    const st=done[t.id];
+    const tags=scrBanksOf(t).map(b=>el("span",{class:"scrbank"+(scrReported(t,b)?" rep":"")},(scrReported(t,b)?"✓ ":"")+BANK_NAME[b]));
+    const row=el("button",{class:"scritem",type:"button","data-scr":t.id},
+      el("span",{class:"scrdot"+(st&&st.ok?" ok":st?" try":""),text:st&&st.ok?"✓":String(i+1)}),
+      el("span",{class:"scrmain"},el("span",{class:"scrtitle",text:t.title}),el("span",{class:"scrsub2"},el("span",{class:"scrskill "+t.type,text:SCR_SKILLS[t.type]}),el("span",{class:"scrmeta",text:`${t.min} min`}),...tags)),
+      el("span",{class:"scrgo","aria-hidden":"true",text:"›"}));
+    row.addEventListener("click",()=>{ SCR.round=null; scrOpen(t.id,body); });
+    ul.append(row);
+  });
+  body.append(ul);
+}
+function scrOpen(id,body){ SCR.view="task"; SCR.id=id; SCR.stage="learn"; SCR.start=Date.now(); renderScreen(body); scrTop(body); }
+function scrTop(body){ const sc=body.closest(".toolscroll,.pane,#toolBody")||body; try{ sc.scrollTop=0; }catch(e){} try{ window.scrollTo(0,0); }catch(e){} }
+
+/* ---------- a task: Learn → Solve → Review ---------- */
+function renderScrTask(body){
+  const t=scrTask(SCR.id); body.innerHTML="";
+  const inRound=!!SCR.round;
+  const back=el("button",{class:"btn small",type:"button",text:"‹ All tasks"});
+  back.addEventListener("click",()=>{ clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; renderScreen(body); scrTop(body); });
+  const stepBtns={}; const stepper=el("nav",{class:"scrstepper","aria-label":"Steps"});
+  [["learn","1","Learn"],["solve","2","Solve"],["review","3","Review"]].forEach(([k,n,label])=>{ const b=el("button",{type:"button",class:"scrstepbtn","data-stage":k},el("i",{text:n}),el("span",{text:label})); b.addEventListener("click",()=>{ if(!b.disabled) go(k); }); stepBtns[k]=b; stepper.append(b); });
+  const timeEl=el("b",{class:"scrtime"}); const clock=el("span",{class:"scrclock",hidden:true},timeEl);
+  body.append(el("div",{class:"scrcall"},back,stepper,el("span",{class:"ledsp"}),inRound?el("span",{class:"scrstep",text:`Task ${SCR.ri+1}/${SCR.round.length}`}):null,clock));
+
+  // the question (Learn and Solve)
+  const q=el("section",{class:"scrask"},
+    el("div",{class:"scrwho"},el("span",{class:"scrav",text:"IV"}),el("div",{},el("b",{text:"Interviewer"}),el("span",{class:"muted small",text:`${SCR_SKILLS[t.type]} · about ${t.min} minutes`}))),
+    el("h3",{text:t.title}), el("p",{text:t.ask}));
+  if(t.type==="sql") q.append(el("p",{class:"scrout"},el("b",{text:"Return: "}),t.out));
+  if(t.type==="python"&&/rwa_exposures/.test(t.ask)) q.append(el("p",{class:"muted small",text:"Columns: "+RWA_COLS.replace(/^rwa_exposures/,"")}));
+  if(t.data){ const tb=el("table",{class:"t scrdata"}); t.data.forEach(([k,v])=>tb.append(el("tr",{},el("th",{text:k}),el("td",{text:v})))); q.append(tb); }
+  const srcs=BANK_SRC[t.id]||[];
+  if(srcs.length){ const d=el("details",{class:"scrsrcs"},el("summary",{text:`✓ Reported at ${[...new Set(srcs.map(s=>BANK_NAME[s.b]))].join(", ")} · see source`})); srcs.forEach(s=>d.append(srcBadge(s))); q.append(d); }
+  else if((t.track||[]).includes("db")) q.append(el("p",{class:"muted small scrlikely",text:"Likely Deutsche Bank topic, from its Business Functional Analyst (VP) job adverts. Not a reported question."}));
+  else q.append(el("p",{class:"muted small scrlikely",text:"Practice question built from a regulatory-reporting job description. Not tied to one bank."}));
+  body.append(q);
+
+  // LEARN
+  const learn=el("section",{class:"scrstage","data-s":"learn"});
+  const lesson=teachPanel(t);
+  const choose=el("div",{class:"scrchoose"});
+  const teachB=el("button",{class:"scropt teach",type:"button"},el("span",{class:"tchav"},"T"),el("span",{},el("b",{text:"Teach me first"}),el("small",{text:"New to this? The teacher explains it from zero and solves it with you, step by step."})));
+  const skipB=el("button",{class:"scropt",type:"button"},el("span",{class:"scropti",text:"›"}),el("span",{},el("b",{text:"I'm ready to solve it"}),el("small",{text:"Skip the lesson and start the timer."})));
+  teachB.addEventListener("click",()=>{ choose.hidden=true; if(lesson){ lesson.hidden=false; lesson.scrollIntoView({behavior:"smooth",block:"start"}); } });
+  skipB.addEventListener("click",()=>go("solve"));
+  choose.append(lesson?teachB:null,skipB); learn.append(choose); if(lesson) learn.append(lesson);
+  body.append(learn);
+
+  // SOLVE
+  const solve=el("section",{class:"scrstage","data-s":"solve",hidden:true});
+  const hintB=el("button",{class:"l3link",type:"button",text:"Need a hint?"});
+  const hintP=el("p",{class:"scrhint",hidden:true,text:t.hint||("Start with: "+t.keys[0])});
+  hintB.addEventListener("click",()=>{ hintP.hidden=!hintP.hidden; });
+  const relearn=lesson?el("button",{class:"l3link",type:"button",text:"Back to the lesson"}):null; if(relearn) relearn.addEventListener("click",()=>{ go("learn"); choose.hidden=true; lesson.hidden=false; });
+  const think=scrThink(t.type==="talk"?"Type your answer here, the way you'd say it. Step 1: … Step 2: …":"Say your plan before you type. For example: first I'll filter to the reporting date, then…");
+  const work=el("div",{class:"scrwork"});
+  solve.append(el("div",{class:"scrhintrow"},hintB,relearn),hintP);
+  if(t.type==="talk"){ think.ta.rows=8; work.append(think.wrap); }
+  else { const d=el("details",{class:"scrtalk"},el("summary",{text:"Explain your approach (optional — in the real round you say it out loud)"}),think.wrap); solve.append(d); }
+  solve.append(work); body.append(solve);
+
+  // REVIEW
+  const review=el("section",{class:"scrstage","data-s":"review",hidden:true});
+  const result=el("div",{class:"scrresult"}); const after=el("div",{class:"scrafter"});
+  review.append(result,after); body.append(review);
+
+  const finish=(ok,msg)=>{
+    scrMark(t.id,ok);
+    result.innerHTML=""; result.className="scrresult "+(ok===true?"ok":ok===false?"bad":"neutral"); result.append(msg);
+    if(ok===false){ const again=el("button",{class:"btn small",type:"button",text:"Keep working on it"}); again.addEventListener("click",()=>go("solve")); result.append(el("div",{class:"row"},again)); }
+    scrAfter(t,after,body); go("review");
+  };
+  if(t.type==="sql") scrSql(t,work,finish);
+  else if(t.type==="calc") scrCalc(t,work,finish);
+  else if(t.type==="python"||t.type==="dax") scrCode(t,work,finish,think.ta);
+  else { const sub=el("button",{class:"lrun",type:"button",text:"I've finished explaining"}); sub.addEventListener("click",async()=>{ sub.disabled=true; await scrReview(t,think.ta.value,"",finish); sub.disabled=false; }); work.append(el("div",{class:"scrfoot"},sub)); }
+
+  const limit=t.min*60; let started=false;
+  const tick=()=>{ if(!timeEl.isConnected){ clearInterval(SCR.timer); return; } const left=limit-Math.round((Date.now()-SCR.start)/1000); timeEl.textContent=scrFmt(left); timeEl.classList.toggle("over",left<0); timeEl.classList.toggle("low",left>=0&&left<60); };
+  function go(stage){
+    SCR.stage=stage;
+    [learn,solve,review].forEach(s=>s.hidden=s.dataset.s!==stage);
+    q.hidden=stage==="review";
+    Object.entries(stepBtns).forEach(([k,b])=>{ b.classList.toggle("on",k===stage); b.disabled=(k==="review"&&!result.childNodes.length); });
+    if(stage==="solve"){ if(!started){ started=true; SCR.start=Date.now(); tick(); clearInterval(SCR.timer); SCR.timer=setInterval(tick,1000); } clock.hidden=false; const f=work.querySelector("textarea,input"); if(f) setTimeout(()=>{ try{ f.focus({preventScroll:true}); }catch(e){} },50); }
+    else clock.hidden=stage!=="review"?true:clock.hidden;
+    scrTop(body);
+  }
+  window.scrGo=go;
+  go(SCR.stage||"learn");
+}
+
+/* follow-up questions, model answer, next step */
+function scrAfter(t,after){
+  const body=after.closest("#toolBody")||document.getElementById("toolBody");
+  after.innerHTML="";
+  const fu=el("div",{class:"card scrprobes"},el("h3",{text:"The interviewer follows up"}),el("p",{class:"muted small",text:"Answer each one out loud first, then reveal a strong answer."}));
+  t.probes.forEach(([qq,a],i)=>{ const d=el("details",{class:"scrprobe"}); d.append(el("summary",{},el("span",{class:"scrq",text:`${i+1}. ${qq}`}),el("span",{class:"scrreveal",text:"Show a strong answer"})),el("p",{text:a})); fu.append(d); });
+  const m=el("details",{class:"card scrmodel"},el("summary",{},el("h3",{text:"Model answer"}),el("span",{class:"scrreveal",text:"Show"})));
+  if(t.type==="sql"){
+    const code=(LAB.dialect==="oracle"&&t.ora)?t.ora:t.td;
+    const pre=el("pre",{class:"sql"}); const c=el("code"); c.innerHTML=hl(code); pre.append(c);
+    const open=el("button",{class:"btn small",type:"button",text:"Open in SQL Lab"}); open.addEventListener("click",()=>openLab({sql:code}));
+    m.append(el("p",{class:"muted small",text:(LAB.dialect==="oracle"&&t.ora)?"Oracle version":"Teradata version (works in Oracle too unless it uses TOP or QUALIFY)"}),pre,el("div",{class:"row"},open));
+  } else if(t.model){ m.append(el("pre",{class:"sql scrpre"},el("code",{text:t.model}))); }
+  if(t.keys) m.append(el("p",{class:"scrsub",text:"What the interviewer listens for:"}),el("ul",{},t.keys.map(k=>el("li",{text:k}))));
+  const nav=el("div",{class:"scrnav"});
+  if(SCR.round && SCR.ri<SCR.round.length-1){
+    const nx=el("button",{class:"btn primary",type:"button",text:"Next task ›"}); nx.addEventListener("click",()=>{ SCR.ri++; scrOpen(SCR.round[SCR.ri],body); }); nav.append(nx);
+  } else {
+    if(SCR.round){ const d=scrDone(); nav.append(el("p",{class:"scrsum",text:`Mock interview complete: ${SCR.round.filter(id=>d[id]&&d[id].ok).length} of ${SCR.round.length} solved.`})); }
+    const again=el("button",{class:"btn",type:"button",text:"Try again"}); again.addEventListener("click",()=>scrOpen(t.id,body));
+    const bk=el("button",{class:"btn primary",type:"button",text:"Back to all tasks"}); bk.addEventListener("click",()=>{ SCR.view="lobby"; SCR.round=null; renderScreen(body); scrTop(body); });
+    nav.append(again,bk);
+  }
+  after.append(fu,m,nav);
 }
 
 </script>
