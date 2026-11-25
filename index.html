@@ -1842,6 +1842,37 @@ ul.selfkeys{margin:6px 0 0;padding-left:20px}
 .scrq{font-weight:600;line-height:1.45}.scrreveal{font-size:12.5px;color:var(--accent);font-weight:700}.scrprobe[open] .scrreveal{display:none}.scrprobe p{margin:8px 0 0;line-height:1.5;padding:8px 12px;border-radius:8px;background:rgba(0,168,132,.08)}
 .scrpre{white-space:pre;overflow:auto;max-height:420px}
 .scrnav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.scrsum{margin:0 auto 0 0;font-weight:700}
+
+/* ===== Teacher ===== */
+.scrtracks{margin:12px 0 4px}.scrtracksub{margin:2px 2px 0}
+.scrrep{font-weight:500;font-size:12px;color:#c9a227}
+.tchbtn{display:inline-flex;align-items:center;gap:8px;font-weight:700;border:1px solid rgba(120,90,255,.5);background:rgba(120,90,255,.12);color:var(--ink)}
+.scrhintrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tchav{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,#8b7bff,#53bdeb);color:#fff}.tchav.sm{width:22px;height:22px;font-size:12px}
+.tch{margin-top:12px;border:1px solid rgba(120,90,255,.45);border-radius:16px;padding:16px 18px;background:linear-gradient(180deg,rgba(120,90,255,.09),rgba(120,90,255,.02)),var(--panel)}
+.tchhead{display:flex;align-items:center;gap:10px}.tchhead>div{display:flex;flex-direction:column}
+.tchsec{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}.tchsec h4{margin:0 0 6px;font-size:15px;color:#8b7bff}
+.tchsec p{margin:0 0 8px;line-height:1.6;font-size:15px}
+.tchlike{background:rgba(255,209,102,.1);border-left:3px solid #ffd166;border-radius:6px;padding:8px 12px}
+.tchex{white-space:pre-wrap;font:14px/1.6 var(--mono);background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0;color:var(--ink)}
+.tchstep{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--panel)}
+.tchstepn{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tchsay{font-size:15.5px!important;margin:6px 0 10px!important}
+.tchcode{margin:0 0 8px;white-space:pre;overflow:auto}
+.tchout{margin-top:8px;max-height:260px;overflow:auto}
+.tchnav{display:flex;align-items:center;gap:10px;margin-top:10px}.tchnav .btn:last-child{margin-left:auto}
+.tchdots{display:flex;gap:5px}.tchdots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.tchdots i.on{background:#8b7bff}.tchdots i.done{background:rgba(139,123,255,.45)}
+.tchq{font-weight:600}
+.tchopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.tchopt{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left}
+.tchopt.right{border-color:var(--accent);background:rgba(0,168,132,.14)}.tchopt.wrong{border-color:#e5484d;background:rgba(229,72,77,.1)}
+.tchfb{margin-top:8px!important}
+.tchans{margin-top:8px}
+.tchready{display:flex;justify-content:flex-end;margin-top:14px}
+@media (max-width:520px){.tchnav{flex-wrap:wrap}.tchdots{order:3;width:100%;justify-content:center}}
+
+/* removed from the first page on request */
+.lpstage .eyebrow,#likeBar{display:none!important}
 </style>
 </head>
 <body class="booting">
@@ -5236,7 +5267,7 @@ const SCR_GROUPS=[
  ["calc","RWA and capital calculations","Work it out on screen, then enter the number. Checked automatically."],
  ["python","Python (pandas)","Write the code as you would in a notebook. Reviewed against a model answer."],
  ["dax","Power BI (DAX)","Write the measures as you would in Power BI Desktop. Reviewed against a model answer."],
- ["talk","Talk-through scenario","No code: share your plan and explain it out loud."]
+ ["talk","Functional analysis and talk-throughs","No code: type your plan on screen and explain it out loud."]
 ];
 const RWA_COLS="rwa_exposures(exposure_id, customer_id, reporting_date, exposure_class, product_code, drawn_amount, undrawn_amount, ccf, risk_weight)";
 const SCR_TASKS=[
@@ -5447,25 +5478,31 @@ function renderScreen(body){
       el("li",{text:"Share one window, not your whole screen, if you can."}),
       el("li",{text:"Talk as you type: say what you're about to do, then do it."}),
       el("li",{text:"Check your result out loud: row counts, totals, anything odd."})),
-    el("p",{class:"muted small",text:"Tasks are built from a current BFSI job description asking for high-volume data analysis, SQL, Python, Power BI, and knowledge of RWA and capital reporting."}));
+    el("p",{class:"muted small",text:"Every task has a teacher: press “Teach me first” and it explains the idea from zero, with a simple example, then solves it with you step by step."}));
   body.append(brief);
+  const tabs=el("nav",{class:"l3tabs scrtracks",role:"tablist","aria-label":"Which interview"});
+  Object.entries(SCR_TRACKS).forEach(([k,v])=>{ const b=el("button",{type:"button",role:"tab","aria-selected":String(SCR.track===k),"data-track":k,text:v.label}); b.addEventListener("click",()=>{ SCR.track=k; renderScreen(body); }); tabs.append(b); });
+  body.append(tabs,el("p",{class:"muted small scrtracksub",text:SCR_TRACKS[SCR.track].sub}));
+  const inTrack=t=>(t.track||["rwa"]).includes(SCR.track);
   if(scrIsPhone()) body.append(el("div",{class:"scrphone"},el("b",{text:"Best on a laptop. "}),"Real screen-share rounds need a laptop. You can practise here, but try it on a laptop to rehearse properly."));
   const shareHost=el("div"); const paintShare=()=>{ shareHost.innerHTML=""; shareHost.append(scrSharePill(paintShare)); }; paintShare(); body.append(shareHost);
 
-  const solved=SCR_TASKS.filter(t=>done[t.id]&&done[t.id].ok).length;
+  const trackTasks=SCR_TASKS.filter(inTrack); const solved=trackTasks.filter(t=>done[t.id]&&done[t.id].ok).length;
+  const R=SCR_TRACKS[SCR.track].round;
   const mock=el("section",{class:"card scrmock"},
-    el("div",{},el("h3",{text:"Mock technical round"}),el("p",{class:"muted",text:`4 tasks back to back, about 45 minutes: SQL, Python, Power BI and an RWA calculation. ${solved}/${SCR_TASKS.length} tasks solved so far.`})));
+    el("div",{},el("h3",{text:"Mock technical round"}),el("p",{class:"muted",text:`${R.length} tasks back to back, about ${R.reduce((a,id)=>a+scrTask(id).min,0)} minutes: ${[...new Set(R.map(id=>SCR_SKILLS[scrTask(id).type]))].join(", ")}. ${solved}/${trackTasks.length} tasks solved so far.`})));
   const go=el("button",{class:"btn primary big",type:"button",text:"Start the mock round"});
-  go.addEventListener("click",()=>{ SCR.round=SCR_ROUND.slice(); SCR.ri=0; scrOpen(SCR.round[0],body); });
+  go.addEventListener("click",()=>{ SCR.round=R.slice(); SCR.ri=0; scrOpen(SCR.round[0],body); });
   mock.append(go); body.append(mock);
 
   SCR_GROUPS.forEach(([type,label,sub])=>{
+    if(!trackTasks.some(t=>t.type===type)) return;
     const c=el("section",{class:"card scrgrp"},el("h3",{text:label}),el("p",{class:"muted small",text:sub}));
     const list=el("div",{class:"scrlist"});
-    SCR_TASKS.filter(t=>t.type===type).forEach(t=>{
+    trackTasks.filter(t=>t.type===type).forEach(t=>{
       const st=done[t.id]; const b=el("button",{class:"scritem",type:"button","data-scr":t.id},
         el("span",{class:"scrskill "+t.type,text:SCR_SKILLS[t.type]}),
-        el("span",{class:"scrtitle",text:t.title}),
+        el("span",{class:"scrtitle"},t.title,DB_SRC[t.id]?el("span",{class:"scrrep",text:" · reported at Deutsche Bank"}):null),
         el("span",{class:"scrmeta",text:`${t.min} min`}),
         el("span",{class:"scrst"+(st&&st.ok?" ok":st?" try":""),text:st&&st.ok?"✓ Done":st?"Tried":""}));
       b.addEventListener("click",()=>{ SCR.round=null; scrOpen(t.id,body); });
@@ -5503,12 +5540,18 @@ function renderScrTask(body){
   if(t.type==="sql") ivw.append(el("p",{class:"scrout"},el("b",{text:"Return: "}),t.out),el("p",{class:"muted small",text:"Practice tables: rwa_exposures, account_snapshot, customer_dim and the rest of the SQL Lab schema. Dates are written DATE 'YYYY-MM-DD'."}));
   if(t.type==="python") ivw.append(el("p",{class:"muted small",text:"Columns: "+RWA_COLS.replace(/^rwa_exposures/,"")}));
   if(t.data){ const tb=el("table",{class:"t scrdata"}); t.data.forEach(([k,v])=>tb.append(el("tr",{},el("th",{text:k}),el("td",{text:v})))); ivw.append(tb); }
+  if(DB_SRC[t.id]) ivw.append(srcBadge(DB_SRC[t.id]));
+  else if((t.track||[]).includes("db") && SCR.track==="db") ivw.append(el("div",{class:"srcbadge gen"},el("span",{class:"srck",text:"Likely topic"}),el("span",{text:"From Deutsche Bank BFA VP job adverts · not a reported interview question"})));
   body.append(ivw);
 
-  const hintB=el("button",{class:"l3link",type:"button",text:"Need a nudge?"});
+  const lesson=teachPanel(t);
+  const teachB=el("button",{class:"btn tchbtn",type:"button"},el("span",{class:"tchav sm",text:"T"}),el("span",{text:"Teach me first"}));
+  const hintB=el("button",{class:"l3link",type:"button",text:"Just a nudge"});
   const hintP=el("p",{class:"scrhint",hidden:true,text:t.hint||("Start with: "+t.keys[0])});
   hintB.addEventListener("click",()=>{ hintP.hidden=!hintP.hidden; });
-  body.append(el("div",{class:"scrhintrow"},hintB),hintP);
+  teachB.addEventListener("click",()=>{ if(!lesson) return; lesson.hidden=!lesson.hidden; if(!lesson.hidden) lesson.scrollIntoView({behavior:"smooth",block:"start"}); });
+  body.append(el("div",{class:"scrhintrow"},lesson?teachB:null,hintB),hintP);
+  if(lesson) body.append(lesson);
 
   const think=scrThink(t.type==="talk"?"Step 1: … Step 2: … What I'd tell the head of reporting: …":"Before you start, say your plan. For example: first I'll filter to the reporting date, then…");
   const work=el("section",{class:"scrwork"});
@@ -5663,6 +5706,398 @@ function scrAfter(t,after,body,thinkTa){
   }
   after.append(nav);
   setTimeout(()=>{ try{ after.previousElementSibling.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){} },50);
+}
+
+/* =====================================================================
+   TEACHER: explains each screen-share task from zero, in simple words,
+   with an everyday comparison, a tiny example and a step-by-step solve.
+   Plus a Deutsche Bank VP Business Functional Analyst track.
+   ===================================================================== */
+
+/* ---------- Deutsche Bank · VP Business Functional Analyst track ---------- */
+const DB_JD="Deutsche Bank job adverts for Business Functional Analyst (VP, Pune) ask for SQL and Python, data quality and reference data, JSON/XML feeds, data modelling, functional specifications (BRD/FSD) and regulatory requirements.";
+const DB_SRC={
+ d1:{co:"Deutsche Bank",role:"Data Analyst",where:"Birmingham",asked:"Find the third highest Salary using SQL",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/Deutsche-Bank-Interview-E3150-RVW99453521.htm"},
+ d2:{kind:"topic",co:"Deutsche Bank",role:"Data Analyst",where:"Mumbai",when:"May 2026",asked:"SQL concepts, joins, window functions, CTEs, optimization",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/Deutsche-Bank-Interview-E3150-RVW99453521.htm"},
+ d3:{kind:"topic",co:"Deutsche Bank",role:"Technology Analyst",asked:"Name the 3 types of SQL joins and the differences between them.",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/Deutsche-Bank-Interview-E3150-RVW5365925.htm"},
+ d4:{kind:"topic",co:"Deutsche Bank",role:"Data Analyst",where:"Mumbai",when:"May 2026",asked:"window functions, CTEs",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/Deutsche-Bank-Interview-E3150-RVW99453521.htm"},
+ d8:{co:"Deutsche Bank",role:"Role not stated",asked:"What headings would you have in a functional specification?",site:"Glassdoor",url:"https://www.glassdoor.co.in/Interview/Deutsche-Bank-Interview-E3150-RVW727135.htm"},
+ d11:{kind:"topic",co:"Deutsche Bank",role:"Analyst",where:"Pune",when:"Oct 2023",asked:"BASEL norms and a couple of ratios",site:"Glassdoor",url:"https://www.glassdoor.ca/Interview/Deutsche-Bank-Interview-E3150-RVW95424318.htm"},
+ d12:{kind:"topic",co:"Deutsche Bank",role:"Analyst",where:"Pune",when:"Oct 2023",asked:"BASEL norms and a couple of ratios",site:"Glassdoor",url:"https://www.glassdoor.ca/Interview/Deutsche-Bank-Interview-E3150-RVW95424318.htm"}
+};
+SCR_TASKS.forEach(t=>{ t.track=t.track||["rwa"]; });
+["s4","p2","r3","a1"].forEach(id=>{ const t=SCR_TASKS.find(x=>x.id===id); if(t) t.track.push("db"); });
+SCR_TASKS.push(
+ {id:"d1",type:"sql",track:["db"],min:8,title:"The third-highest balance",
+  ask:"Using account_snapshot for 30 Sep 2026, find the account with the third-highest balance. If two accounts share a balance, they share a rank.",
+  out:"account_id, balance",
+  hint:"DENSE_RANK() OVER (ORDER BY balance DESC) = 3. Teradata: QUALIFY. Oracle: wrap it in an inline view.",
+  td:"SELECT account_id, balance\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nQUALIFY DENSE_RANK() OVER (ORDER BY balance DESC) = 3;",
+  ora:"SELECT account_id, balance\nFROM  (SELECT account_id, balance,\n              DENSE_RANK() OVER (ORDER BY balance DESC) AS rnk\n       FROM   account_snapshot\n       WHERE  snapshot_date = DATE '2026-09-30') t\nWHERE  rnk = 3;",
+  keys:["Filters to one date first","Uses DENSE_RANK and can explain how it differs from RANK and ROW_NUMBER","Knows Oracle has no QUALIFY, so uses an inline view"],
+  probes:[["What's the difference between ROW_NUMBER, RANK and DENSE_RANK?","With ties at 100, 100, 90: ROW_NUMBER gives 1, 2, 3. RANK gives 1, 1, 3. DENSE_RANK gives 1, 1, 2."],
+          ["Can you do it without window functions?","Yes: find the largest balance smaller than the second-largest, using nested MAX or a correlated subquery. It is harder to read and slower on big tables."]]},
+ {id:"d2",type:"sql",track:["db"],min:10,title:"Keep only the latest load (CTE + window function)",
+  ask:"The staging feed snapshot_feed_stg sometimes loads the same account twice on 30 Sep 2026. Write a query using a CTE (a WITH clause) that keeps only the latest load for each account.",
+  out:"account_id, balance, load_ts",
+  hint:"WITH ranked AS (… ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY load_ts DESC) AS rn …) SELECT … WHERE rn = 1.",
+  td:"WITH ranked AS (\n  SELECT account_id, balance, load_ts,\n         ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY load_ts DESC) AS rn\n  FROM   snapshot_feed_stg\n  WHERE  snapshot_date = DATE '2026-09-30'\n)\nSELECT account_id, balance, load_ts\nFROM   ranked\nWHERE  rn = 1;",
+  ora:"WITH ranked AS (\n  SELECT account_id, balance, load_ts,\n         ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY load_ts DESC) AS rn\n  FROM   snapshot_feed_stg\n  WHERE  snapshot_date = DATE '2026-09-30'\n)\nSELECT account_id, balance, load_ts\nFROM   ranked\nWHERE  rn = 1;",
+  keys:["PARTITION BY the key, ORDER BY load time newest first","Filters rn = 1 outside the CTE","Explains why the feed duplicated and how to stop it"],
+  probes:[["Why not just use MAX(load_ts) with GROUP BY?","You would get the latest time but not the balance from that same row. You'd need to join back. ROW_NUMBER keeps the whole row in one pass."],
+          ["How would you stop duplicates reaching the warehouse?","Add a duplicate-key check at load time, reject or quarantine the second load, and alert the feed owner."]]},
+ {id:"d3",type:"sql",track:["db"],min:8,title:"Accounts with no settled payment (LEFT JOIN)",
+  ask:"Find every account in the accounts table with no SETTLED payment in September 2026.",
+  out:"account_id, product_code",
+  hint:"LEFT JOIN payments with the date and status conditions inside the ON clause, then keep rows where the payment side IS NULL.",
+  td:"SELECT a.account_id, a.product_code\nFROM   accounts a\nLEFT   JOIN payments p\n  ON   p.account_id = a.account_id\n AND   p.status = 'SETTLED'\n AND   p.payment_date BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\nWHERE  p.payment_id IS NULL;",
+  ora:"SELECT a.account_id, a.product_code\nFROM   accounts a\nLEFT   JOIN payments p\n  ON   p.account_id = a.account_id\n AND   p.status = 'SETTLED'\n AND   p.payment_date BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\nWHERE  p.payment_id IS NULL;",
+  keys:["Uses LEFT JOIN so accounts with no match are kept","Puts the payment filters in ON, not WHERE","Can name inner, left/right and full outer joins and when to use each"],
+  probes:[["What happens if you move the status filter into the WHERE clause?","The LEFT JOIN quietly becomes an INNER JOIN. Accounts with no payment have NULL status, so they get filtered out: the opposite of what you want."],
+          ["Name the main join types.","INNER: only matches. LEFT: everything from the left, matches from the right. FULL OUTER: everything from both. CROSS: every combination."]]},
+ {id:"d4",type:"sql",track:["db"],min:10,title:"Month-on-month change with LAG",
+  ask:"For credit-card accounts (product_code 'CC') in account_snapshot, show each month's balance and the change from the previous month for the same account. The first month has no change.",
+  out:"account_id, snapshot_date, balance, change · ordered by account, then date",
+  hint:"balance - LAG(balance) OVER (PARTITION BY account_id ORDER BY snapshot_date).",
+  td:"SELECT account_id, snapshot_date, balance,\n       balance - LAG(balance) OVER (PARTITION BY account_id ORDER BY snapshot_date) AS change\nFROM   account_snapshot\nWHERE  product_code = 'CC'\nORDER  BY account_id, snapshot_date;",
+  ora:"SELECT account_id, snapshot_date, balance,\n       balance - LAG(balance) OVER (PARTITION BY account_id ORDER BY snapshot_date) AS change\nFROM   account_snapshot\nWHERE  product_code = 'CC'\nORDER  BY account_id, snapshot_date;",
+  ordered:true,
+  keys:["PARTITION BY account so accounts don't mix","ORDER BY date inside the window","Explains why the first month is NULL"],
+  probes:[["What does PARTITION BY do here?","It restarts the window for each account, so one account's last month is never compared with the next account's first month."],
+          ["How would you show the change in percent?","(balance - LAG(balance)) * 100.0 / NULLIF(LAG(balance), 0), so a zero balance doesn't cause an error."]]},
+ {id:"d5",type:"sql",track:["db"],min:8,title:"Completeness check on a new data feed",
+  ask:"We're onboarding a new feed, snapshot_feed_stg. Which accounts are in the 30 Sep 2026 warehouse snapshot (account_snapshot) but missing from the feed for that date?",
+  out:"account_id, product_code, balance",
+  hint:"NOT EXISTS (SELECT 1 FROM snapshot_feed_stg f WHERE f.account_id = s.account_id AND f.snapshot_date = s.snapshot_date).",
+  td:"SELECT s.account_id, s.product_code, s.balance\nFROM   account_snapshot s\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    NOT EXISTS (SELECT 1\n                   FROM   snapshot_feed_stg f\n                   WHERE  f.account_id = s.account_id\n                   AND    f.snapshot_date = s.snapshot_date);",
+  ora:"SELECT s.account_id, s.product_code, s.balance\nFROM   account_snapshot s\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    NOT EXISTS (SELECT 1\n                   FROM   snapshot_feed_stg f\n                   WHERE  f.account_id = s.account_id\n                   AND    f.snapshot_date = s.snapshot_date);",
+  keys:["Uses NOT EXISTS (or LEFT JOIN … IS NULL)","Matches on both account and date","Turns the result into a completeness percentage and an action"],
+  probes:[["Why NOT EXISTS rather than NOT IN?","NOT IN returns nothing at all if the subquery contains a NULL. NOT EXISTS handles NULLs safely."],
+          ["12 of 20 accounts are missing. What do you tell the business?","Completeness is 40%, so the feed is not fit for use yet. Raise it with the source owner, agree a fix date and keep the old feed running."]]},
+ {id:"d6",type:"python",track:["db"],min:15,title:"Validate a JSON trade feed in pandas",
+  ask:"A new upstream system sends trades as JSON: a list of records with trade_id, book, notional, currency and trade_date. Load it, check that every mandatory field is present, notional is a positive number, currency is three letters and trade_id is unique. Produce an exceptions report.",
+  starter:"import json\nimport pandas as pd\n\nwith open(\"trades.json\") as f:\n    records = json.load(f)\n\n# your code here\n",
+  model:"import json\nimport pandas as pd\n\nwith open(\"trades.json\") as f:\n    df = pd.json_normalize(json.load(f))\n\nmandatory = [\"trade_id\", \"book\", \"notional\", \"currency\", \"trade_date\"]\nissues = []\n\nfor col in mandatory:                                   # 1. completeness\n    missing = df[col].isna() if col in df else pd.Series(True, index=df.index)\n    issues.append(df[missing].assign(rule=f\"{col} missing\"))\n\nnotional = pd.to_numeric(df[\"notional\"], errors=\"coerce\")  # 2. validity\nissues.append(df[~(notional > 0)].assign(rule=\"notional not a positive number\"))\nissues.append(df[~df[\"currency\"].astype(str).str.fullmatch(r\"[A-Z]{3}\")].assign(rule=\"bad currency code\"))\nissues.append(df[df[\"trade_id\"].duplicated(keep=False)].assign(rule=\"duplicate trade_id\"))  # 3. uniqueness\n\nexceptions = pd.concat(issues)[[\"trade_id\", \"rule\"]]\nprint(f\"{len(df)} trades, {exceptions['trade_id'].nunique()} with issues\")\nprint(exceptions.groupby(\"rule\").size())",
+  keys:["Flattens the JSON into a table (json_normalize)","Checks completeness, validity and uniqueness as separate rules","Converts notional safely (errors='coerce') instead of crashing","Produces an exceptions report with the rule that failed, plus a summary"],
+  probes:[["What are the main data-quality dimensions?","Completeness, validity, accuracy, consistency, uniqueness and timeliness."],
+          ["Where should these rules live long-term?","In the onboarding pipeline as automated controls, documented in the functional spec, with owners and thresholds, and reported on a data-quality dashboard."]]},
+ {id:"d7",type:"talk",track:["db"],min:10,title:"Draft a functional specification live",
+  ask:"We're onboarding a new regulatory data feed from a trading system into the finance warehouse. Share your screen and draft the outline of the functional specification: the headings you'd use and one line on what goes under each.",
+  keys:["Purpose, scope and out of scope","Business requirements traced to functional requirements (with IDs)","Source-to-target data mapping and transformation rules","Data-quality rules and exception handling","Non-functional requirements: volumes, timings, security, audit","Assumptions, dependencies, open questions, and sign-off and change control"],
+  probes:[["How is a BRD different from an FSD?","The BRD says what the business needs and why. The FSD says how the system will behave to meet it: screens, data, rules and interfaces."],
+          ["What non-functional requirements matter for a regulatory feed?","Delivery time (SLA), data volumes, performance, availability, security and access, audit trail and data retention."],
+          ["How do you prove every requirement was built and tested?","A traceability matrix linking each requirement to its design, test cases and test results."]]},
+ {id:"d8",type:"talk",track:["db"],min:8,title:"Functional specification: which headings?",
+  ask:"Tell me, as you type them on screen, the headings you'd have in a functional specification, and why each one matters.",
+  keys:["Introduction: purpose, scope, glossary","Current state and target state process","Functional requirements, numbered and traceable","Data requirements: mapping, rules, reference data","Interfaces and non-functional requirements","Assumptions, risks, dependencies, and approvals"],
+  probes:[["Who signs off a functional specification?","The business owner for the requirements, and the technology lead for feasibility. For regulatory work, often compliance or the reporting owner too."],
+          ["A developer says a requirement is ambiguous. What do you do?","Clarify with the business, update the spec with an example and acceptance criteria, and record the change in the version history."]]},
+ {id:"d9",type:"talk",track:["db"],min:10,title:"Regulatory requirement to user stories",
+  ask:"A regulation says: 'Firms must report all exposures above EUR 10 million to a single client group, monthly, within 15 business days.' Share your screen and turn this into two or three user stories with acceptance criteria.",
+  keys:["Uses the 'As a… I want… so that…' format","Writes acceptance criteria as Given / When / Then","Covers the threshold, the client-group aggregation and the deadline","Names data needed: exposures, client-group mapping, FX rates to EUR","Mentions edge cases: exactly at the threshold, missing group mapping, currency conversion date"],
+  probes:[["Give me one acceptance criterion for the threshold.","Given a client group with total exposure of EUR 10,000,001, when the monthly report runs, then the group appears on the report."],
+          ["Which exposure counts: before or after credit risk mitigation?","Clarify with the regulation and compliance. Large-exposure rules usually look at both, and the spec must say which."]]},
+ {id:"d10",type:"talk",track:["db"],min:10,title:"Source-to-target mapping for a JSON feed",
+  ask:"A JSON trade record has trade_id, counterparty.lei, amount.value, amount.currency and tradeDate (text, 'DD/MM/YYYY'). The target table has trade_id, lei, notional_eur and trade_date (DATE). Share your screen and write the mapping, including any transformation rules.",
+  keys:["Maps each target column to a source path (for example counterparty.lei to lei)","Converts amount to EUR using an agreed FX rate and rate date","Converts the date text to a DATE with the stated format","Says what happens when a field is missing or invalid (reject, default or flag)","Mentions reference-data checks, such as the LEI being valid"],
+  probes:[["Which FX rate would you use?","The rate agreed in the reporting methodology, usually the reporting-date closing rate from the golden source. Document it in the spec."],
+          ["How do you test the mapping?","Write test cases for each rule, including bad data, run sample records end to end, and reconcile counts and totals from source to target."]]},
+ {id:"d11",type:"calc",track:["db"],min:4,title:"Leverage ratio",
+  ask:"A bank has Tier 1 capital of €50bn and a leverage exposure measure of €1,250bn. What is its leverage ratio, in percent?",
+  data:[["Tier 1 capital","€50bn"],["Leverage exposure measure","€1,250bn"]],
+  answer:4, unit:"%",
+  work:["Leverage ratio = Tier 1 ÷ exposure measure","50 ÷ 1,250 = 0.04 = 4.0%"],
+  keys:["Uses Tier 1 capital, not total capital","Knows the exposure measure is not risk-weighted","Compares with the 3% minimum"],
+  probes:[["How is the leverage ratio different from the CET1 ratio?","The leverage ratio ignores risk weights: every euro counts equally. It is a simple backstop to the risk-based ratios."],
+          ["What's the minimum?","3% under Basel III. Global systemically important banks hold an extra buffer on top."]]},
+ {id:"d12",type:"calc",track:["db"],min:4,title:"Liquidity coverage ratio",
+  ask:"A bank holds €120bn of high-quality liquid assets (HQLA). Its expected net cash outflows over the next 30 stressed days are €100bn. What is its liquidity coverage ratio (LCR), in percent?",
+  data:[["High-quality liquid assets","€120bn"],["Net cash outflows (30 days)","€100bn"]],
+  answer:120, unit:"%",
+  work:["LCR = HQLA ÷ net cash outflows over 30 days","120 ÷ 100 = 1.2 = 120%"],
+  keys:["Divides liquid assets by 30-day net outflows","Compares with the 100% minimum"],
+  probes:[["What counts as HQLA?","Cash, central bank reserves and high-quality government bonds (Level 1), plus some other assets with haircuts and caps (Level 2)."],
+          ["LCR versus NSFR?","LCR covers 30 days of stress. The net stable funding ratio (NSFR) looks at funding stability over one year."]]}
+);
+const SCR_TRACKS={
+ rwa:{label:"Regulatory reporting analyst",sub:"Based on a job advert asking for high-volume data analysis, SQL, Python, Power BI, and RWA and capital reporting.",round:["s2","p1","b1","r1"]},
+ db:{label:"Deutsche Bank · VP Business Functional Analyst",sub:DB_JD,round:["d1","d6","d8","d11"]}
+};
+SCR.track=SCR.track||"rwa";
+
+/* ---------- lessons: the teacher's notes for every task ---------- */
+const TQ=(q,opts,a,why)=>({q,opts,a,why});
+const LESSON={
+ s1:{idea:"A bank must keep money aside for every loan, in case it isn't repaid. RWA (risk-weighted assets) is the number that decides how much. Riskier loans count for more.",
+  like:"Think of luggage on a flight. A light bag (a safe loan) counts a little; a heavy one (a risky loan) counts a lot. RWA is the total weight of all the bags.",
+  ex:"Loan: £100 drawn, £50 more the customer could still draw, 40% likely to be drawn (CCF), risk weight 100%.\nEAD = 100 + 50 × 40% = 120.\nRWA = 120 × 100% = 120.",
+  steps:[["Start by looking at the table. Every row is one loan (an exposure).","SELECT *\nFROM   rwa_exposures;"],
+         ["Keep only the reporting date we care about.","SELECT *\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30';"],
+         ["Rows with no risk weight can't be calculated. Leave them out, but remember to tell someone about them.","SELECT *\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND    risk_weight IS NOT NULL;"],
+         ["Now the maths. EAD is the drawn amount plus the part of the undrawn amount we expect to be used.","SELECT exposure_id, exposure_class,\n       drawn_amount + undrawn_amount * ccf AS ead\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND    risk_weight IS NOT NULL;"],
+         ["RWA is EAD times the risk weight. Then sort, biggest first.","SELECT exposure_id, exposure_class,\n       drawn_amount + undrawn_amount * ccf AS ead,\n       (drawn_amount + undrawn_amount * ccf) * risk_weight AS rwa\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND    risk_weight IS NOT NULL\nORDER  BY rwa DESC;"]],
+  traps:["Forgetting the undrawn amount: customers can still borrow it.","Writing risk_weight = NULL. Nothing ever equals NULL; use IS NULL or IS NOT NULL.","Silently dropping bad rows. Always say how many you excluded."],
+  check:TQ("A loan has £200 drawn, nothing undrawn and a 50% risk weight. What is the RWA?",["£50","£100","£200","£400"],1,"EAD is £200. £200 × 50% = £100.")},
+ s2:{idea:"Management don't want 12 rows; they want one total per type of customer. GROUP BY puts rows into piles, and SUM adds up each pile.",
+  like:"Like sorting coins into jars by type, then counting each jar.",
+  ex:"Retail: 3,975 + 15,000 + 11,250 + 3,975 = 34,200.\nOne line: Retail, 34,200.",
+  steps:[["Work out RWA for each row first, exactly as before.","SELECT exposure_class,\n       (drawn_amount + undrawn_amount * ccf) * risk_weight AS rwa\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND    risk_weight IS NOT NULL;"],
+         ["Now put rows with the same class into one pile, and add up each pile with SUM.","SELECT exposure_class,\n       SUM((drawn_amount + undrawn_amount * ccf) * risk_weight) AS total_rwa\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND    risk_weight IS NOT NULL\nGROUP  BY exposure_class;"],
+         ["Biggest pile on top, so the main driver jumps out.","SELECT exposure_class,\n       SUM((drawn_amount + undrawn_amount * ccf) * risk_weight) AS total_rwa\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND    risk_weight IS NOT NULL\nGROUP  BY exposure_class\nORDER  BY total_rwa DESC;"]],
+  traps:["Multiplying SUM(EAD) by AVG(risk_weight). Always multiply row by row, then add.","Selecting a column that isn't in GROUP BY or inside SUM."],
+  check:TQ("Which part of the query creates one row per exposure class?",["WHERE","ORDER BY","GROUP BY","SUM"],2,"GROUP BY makes the piles. SUM adds up what's in each pile.")},
+ s3:{idea:"Before running any calculation, check the ingredients. Rows with missing values give wrong or missing results.",
+  like:"Like checking you have every ingredient before you start cooking, not halfway through.",
+  ex:"A row with risk_weight blank: we can't calculate its RWA.\nA row with £3,000 undrawn but no CCF: we can't calculate its EAD.",
+  steps:[["Find rows with no risk weight. Use IS NULL: blank never equals anything, not even blank.","SELECT *\nFROM   rwa_exposures\nWHERE  risk_weight IS NULL;"],
+         ["Add the second rule with OR. Put brackets around the pair of conditions so they stay together.","SELECT *\nFROM   rwa_exposures\nWHERE  risk_weight IS NULL\nOR    (undrawn_amount > 0 AND ccf IS NULL);"],
+         ["Limit it to the reporting date, and choose the columns asked for.","SELECT exposure_id, customer_id, drawn_amount, undrawn_amount, ccf, risk_weight\nFROM   rwa_exposures\nWHERE  reporting_date = DATE '2026-09-30'\nAND   (risk_weight IS NULL OR (undrawn_amount > 0 AND ccf IS NULL));"]],
+  traps:["Writing = NULL instead of IS NULL.","Forgetting brackets around the OR, so the date filter only applies to half the rule."],
+  check:TQ("What does 'WHERE risk_weight = NULL' return?",["Rows with a blank risk weight","Every row","No rows at all","An error"],2,"Comparing with NULL is never true, so no rows come back. Use IS NULL.")},
+ s4:{idea:"We compare each account with itself one month earlier. To do that, we put two copies of the table side by side: August on the left, September on the right.",
+  like:"Like laying last month's bank statement next to this month's and comparing line by line.",
+  ex:"Account 1011: August £8,635, September £9,637.\nChange = 9,637 − 8,635 = 1,002. 1,002 ÷ 8,635 = 11.6%. More than 10%, so it's on the list.",
+  steps:[["Take the August rows and call them 'a'.","SELECT a.account_id, a.balance\nFROM   account_snapshot a\nWHERE  a.snapshot_date = DATE '2026-08-31';"],
+         ["Join the same table again as 's' for September, matching on the same account.","SELECT a.account_id, a.balance AS aug_balance, s.balance AS sep_balance\nFROM   account_snapshot a\nJOIN   account_snapshot s\n  ON   s.account_id = a.account_id\n AND   s.snapshot_date = DATE '2026-09-30'\nWHERE  a.snapshot_date = DATE '2026-08-31';"],
+         ["Work out the percentage change. Use the August balance as the starting point.","SELECT a.account_id, a.balance AS aug_balance, s.balance AS sep_balance,\n       ROUND((s.balance - a.balance) * 100.0 / a.balance, 1) AS pct_change\nFROM   account_snapshot a\nJOIN   account_snapshot s\n  ON   s.account_id = a.account_id\n AND   s.snapshot_date = DATE '2026-09-30'\nWHERE  a.snapshot_date = DATE '2026-08-31';"],
+         ["Keep moves bigger than 10%, up or down. ABS removes the minus sign so falls count too.","SELECT a.account_id, a.balance AS aug_balance, s.balance AS sep_balance,\n       ROUND((s.balance - a.balance) * 100.0 / a.balance, 1) AS pct_change\nFROM   account_snapshot a\nJOIN   account_snapshot s\n  ON   s.account_id = a.account_id\n AND   s.snapshot_date = DATE '2026-09-30'\nWHERE  a.snapshot_date = DATE '2026-08-31'\nAND    ABS(s.balance - a.balance) > 0.10 * a.balance;"]],
+  traps:["Forgetting ABS, so only increases show.","Dividing by the September balance instead of August.","A zero August balance divides by zero: use NULLIF."],
+  check:TQ("A balance goes from £200 to £170. What is the change in percent?",["−15%","−17.6%","+15%","−30%"],0,"(170 − 200) ÷ 200 = −0.15, so −15%.")},
+ s5:{idea:"Two tables: one with the money (rwa_exposures) and one with the names (customer_dim). We join them on customer_id. customer_dim keeps history, so we only take the current row.",
+  like:"Like a phone book that keeps your old addresses too. You only want today's address.",
+  ex:"Customer 106 has two rows in customer_dim: an old one (is_current = 'N') and today's one (is_current = 'Y'). Join both and their RWA counts twice.",
+  steps:[["Add up RWA per customer.","SELECT r.customer_id,\n       SUM((r.drawn_amount + r.undrawn_amount * r.ccf) * r.risk_weight) AS total_rwa\nFROM   rwa_exposures r\nWHERE  r.risk_weight IS NOT NULL\nGROUP  BY r.customer_id;"],
+         ["Join customer_dim to get the name. Only the current row!","SELECT r.customer_id, c.last_name,\n       SUM((r.drawn_amount + r.undrawn_amount * r.ccf) * r.risk_weight) AS total_rwa\nFROM   rwa_exposures r\nJOIN   customer_dim c\n  ON   c.customer_id = r.customer_id\n AND   c.is_current = 'Y'\nWHERE  r.risk_weight IS NOT NULL\nGROUP  BY r.customer_id, c.last_name;"],
+         ["Sort biggest first and keep the top 3. Teradata uses TOP 3.","SELECT TOP 3 r.customer_id, c.last_name,\n       SUM((r.drawn_amount + r.undrawn_amount * r.ccf) * r.risk_weight) AS total_rwa\nFROM   rwa_exposures r\nJOIN   customer_dim c\n  ON   c.customer_id = r.customer_id\n AND   c.is_current = 'Y'\nWHERE  r.risk_weight IS NOT NULL\nGROUP  BY r.customer_id, c.last_name\nORDER  BY total_rwa DESC;"]],
+  traps:["Forgetting is_current = 'Y', which double counts customers with history.","Using TOP in Oracle: write FETCH FIRST 3 ROWS ONLY at the end instead."],
+  check:TQ("Why filter customer_dim on is_current = 'Y'?",["To make it faster","To avoid counting customers with history twice","Because names change daily","It's required by SQL"],1,"Old and current rows would both match, doubling that customer's RWA.")},
+ s6:{idea:"RWA density tells you how risky a pile of loans is on average: RWA divided by EAD. It must be a weighted average, so big loans count more.",
+  like:"Your exam average across subjects with different marks. You add up all marks and divide by the total possible, not average the percentages.",
+  ex:"Retail: total RWA 34,200 ÷ total EAD 45,600 = 75%.",
+  steps:[["Total EAD and total RWA per class.","SELECT exposure_class,\n       SUM(drawn_amount + undrawn_amount * ccf) AS total_ead,\n       SUM((drawn_amount + undrawn_amount * ccf) * risk_weight) AS total_rwa\nFROM   rwa_exposures\nWHERE  risk_weight IS NOT NULL\nGROUP  BY exposure_class;"],
+         ["Divide one by the other and turn it into a percentage. Multiply by 100.0 so the maths keeps decimals.","SELECT exposure_class,\n       SUM(drawn_amount + undrawn_amount * ccf) AS total_ead,\n       SUM((drawn_amount + undrawn_amount * ccf) * risk_weight) AS total_rwa,\n       ROUND(SUM((drawn_amount + undrawn_amount * ccf) * risk_weight) * 100.0\n             / SUM(drawn_amount + undrawn_amount * ccf), 1) AS rwa_density_pct\nFROM   rwa_exposures\nWHERE  risk_weight IS NOT NULL\nGROUP  BY exposure_class\nORDER  BY rwa_density_pct DESC;"]],
+  traps:["Using AVG(risk_weight), which ignores loan size.","Integer division: 1 / 4 can give 0 in some databases. Multiply by 100.0 first."],
+  check:TQ("Two loans: £100 at 100% and £900 at 0%. What is the RWA density?",["50%","10%","100%","0%"],1,"RWA = 100. EAD = 1,000. 100 ÷ 1,000 = 10%. A simple average would wrongly say 50%.")},
+ r1:{idea:"An undrawn line is money the customer can still borrow. The bank must hold capital for the part it expects them to use. The CCF (credit conversion factor) is that expected share.",
+  like:"Like a credit card limit. You've spent £1,000 but could spend £500 more. The bank plans for you spending some of that £500.",
+  ex:"£100 drawn, £100 undrawn, CCF 50% → EAD = 100 + 50 = 150.",
+  steps:[["Convert the undrawn amount: 500,000 × 40% = 200,000.",""],["Add it to what's already drawn: EAD = 1,000,000 + 200,000 = 1,200,000.",""],["Apply the risk weight: 1,200,000 × 100% = £1,200,000.",""]],
+  traps:["Ignoring the undrawn amount (answer £1,000,000).","Applying the CCF to the drawn amount too."],
+  check:TQ("£50 drawn, £50 undrawn, CCF 20%, risk weight 100%. RWA?",["£50","£60","£100","£70"],1,"EAD = 50 + 10 = 60. RWA = 60.")},
+ r2:{idea:"If a safer party promises to pay when the customer can't (a guarantee), the bank can use the safer party's risk weight for the part that's covered.",
+  like:"Like a parent co-signing a phone contract. For the part the parent covers, the shop worries less.",
+  ex:"£100 loan at 100%. £40 guaranteed by a bank at 20%.\n£60 × 100% + £40 × 20% = 60 + 8 = 68.",
+  steps:[["Split the loan: covered £200,000 and not covered £300,000.",""],["Not covered: 300,000 × 100% = 300,000.",""],["Covered: 200,000 × 20% = 40,000.",""],["Add them: £340,000.",""]],
+  traps:["Using 20% on the whole loan.","Forgetting to check the guarantee is eligible."],
+  check:TQ("Why use 20% for the guaranteed part?",["It's a rule of thumb","Because that part's risk is now the guarantor's","Because the loan is smaller","To lower capital"],1,"If the customer fails, the guarantor pays, so the risk is the guarantor's.")},
+ r3:{idea:"The CET1 ratio shows how strong the bank's best-quality capital is compared with its risk. Higher is safer.",
+  like:"Like savings compared with your monthly bills. £3,000 saved against £1,000 of bills is a ratio of 300%.",
+  ex:"CET1 £10, RWA £100 → 10 ÷ 100 = 10%.",
+  steps:[["Write the formula: CET1 ÷ RWA.",""],["180 ÷ 1,500 = 0.12.",""],["Turn it into a percentage: 12.0%.",""]],
+  traps:["Dividing RWA by capital (gives 833%).","Forgetting the buffers when judging whether 12% is enough."],
+  check:TQ("CET1 £45m, RWA £500m. CET1 ratio?",["9%","11.1%","4.5%","45%"],0,"45 ÷ 500 = 0.09 = 9%.")},
+ r4:{idea:"Banks with their own risk models can get low RWA. The output floor stops it going too low: at least 72.5% of the standard method's figure.",
+  like:"Like a minimum fare for a taxi. Even a very short ride costs at least the minimum.",
+  ex:"Model says 50, standard says 100. Floor = 72.5. Use 72.5.",
+  steps:[["Find the floor: 72.5% × 1,200 = 870.",""],["Compare with the model figure, 800.",""],["Take the higher: £870m.",""]],
+  traps:["Taking 72.5% of the model figure instead of the standardised one.","Taking the lower figure."],
+  check:TQ("Model RWA 900, standardised 1,000, floor 72.5%. Which RWA is used?",["725","900","1,000","1,625"],1,"The floor is 725. 900 is higher, so the model figure stands.")},
+ r5:{idea:"When a loan defaults, it's riskier, so its risk weight goes up. But money already set aside (provisions) is taken off first.",
+  like:"Like a broken phone: you've already put £20 aside for repairs, so you only worry about what's left.",
+  ex:"£100 loan, £10 provision, 150% → (100 − 10) × 150% = 135.",
+  steps:[["Before default: 20,000 × 75% = 15,000.",""],["Take off provisions: 20,000 − 2,000 = 18,000.",""],["Apply 150%: 18,000 × 150% = 27,000.",""],["Say the change: up £12,000.",""]],
+  traps:["Forgetting to subtract provisions (gives 30,000).","Keeping the old 75% weight."],
+  check:TQ("£10,000 defaulted loan, £1,000 provision, 150% weight. RWA?",["£15,000","£13,500","£9,000","£10,000"],1,"(10,000 − 1,000) × 150% = 13,500.")},
+ p1:{idea:"pandas is a Python tool that works like a spreadsheet you control with code. We load the file, set aside bad rows, add two new columns and total them by group.",
+  like:"Like an Excel sheet: filter out bad rows, add two formula columns, then a pivot table.",
+  ex:"df[\"ead\"] = df[\"drawn_amount\"] + df[\"undrawn_amount\"] * df[\"ccf\"]\nThis fills the whole column in one go, like dragging a formula down.",
+  steps:[["Load the file into a table called df.","import pandas as pd\ndf = pd.read_csv(\"rwa_exposures.csv\")"],
+         ["Mark the bad rows, then split the table in two: bad and ok.","bad = df[\"risk_weight\"].isna() | (df[\"undrawn_amount\"].gt(0) & df[\"ccf\"].isna())\nexceptions = df[bad]\nok = df[~bad].copy()"],
+         ["Add the EAD and RWA columns.","ok[\"ead\"] = ok[\"drawn_amount\"] + ok[\"undrawn_amount\"] * ok[\"ccf\"].fillna(0)\nok[\"rwa\"] = ok[\"ead\"] * ok[\"risk_weight\"]"],
+         ["Group by class and sort: this is your pivot table.","by_class = (ok.groupby(\"exposure_class\", as_index=False)[\"rwa\"].sum()\n              .sort_values(\"rwa\", ascending=False))"],
+         ["Prove nothing was lost.","assert len(ok) + len(exceptions) == len(df)"]],
+  traps:["Looping over rows with a for loop: slow on big files.","Dropping bad rows without reporting them.","Forgetting .copy(), then getting a warning when adding columns."],
+  check:TQ("What does ~bad mean?",["Rows that are bad","Rows that are NOT bad","Delete bad rows","Count bad rows"],1,"~ means 'not', so df[~bad] keeps the good rows.")},
+ p2:{idea:"Reconciliation means comparing two lists that should agree and explaining every difference.",
+  like:"Like checking your bank statement against your own notes: missing items on either side, and amounts that don't match.",
+  ex:"Source: account 1, £100. Warehouse: account 1, £90 → a value break of £10.\nSource has account 2, warehouse doesn't → missing in warehouse.",
+  steps:[["Make sure each account appears only once on each side.","assert not src[\"account_id\"].duplicated().any()\nassert not dwh[\"account_id\"].duplicated().any()"],
+         ["An outer merge keeps everything from both sides. indicator=True tells you where each row came from.","rec = src.merge(dwh, on=\"account_id\", how=\"outer\",\n                suffixes=(\"_src\", \"_dwh\"), indicator=True)"],
+         ["Work out the difference and label each row.","rec[\"diff\"] = rec[\"balance_src\"].fillna(0) - rec[\"balance_dwh\"].fillna(0)\nrec[\"break_type\"] = \"match\"\nrec.loc[rec[\"_merge\"] == \"left_only\", \"break_type\"] = \"missing in warehouse\"\nrec.loc[rec[\"_merge\"] == \"right_only\", \"break_type\"] = \"missing in source\"\nrec.loc[(rec[\"_merge\"] == \"both\") & (rec[\"diff\"].abs() > 0.01), \"break_type\"] = \"value break\""],
+         ["Summarise: how many and how much for each type of break.","print(rec[rec[\"break_type\"] != \"match\"].groupby(\"break_type\")[\"diff\"].agg([\"count\", \"sum\"]))"]],
+  traps:["Using an inner merge, which hides missing accounts.","Comparing money with == instead of a small tolerance."],
+  check:TQ("Which merge keeps accounts that are only on one side?",["inner","left","outer","cross"],2,"An outer merge keeps everything from both sides.")},
+ b1:{idea:"In Power BI, a measure is a formula that recalculates whenever someone clicks a filter. SUMX works out a formula row by row, then adds the results.",
+  like:"Like a calculator that redoes the bill every time you tick or untick items.",
+  ex:"Two rows: (100 at 100%) and (100 at 0%).\nSUMX gives 100 + 0 = 100. SUM(EAD) × AVERAGE(weight) gives 200 × 50% = 100: right here by luck, wrong as soon as sizes differ.",
+  steps:[["Total EAD: for each row, drawn plus undrawn times CCF, then add.","Total EAD =\nSUMX ( Exposures,\n       Exposures[drawn_amount] + Exposures[undrawn_amount] * Exposures[ccf] )"],
+         ["Total RWA: same, times the risk weight.","Total RWA =\nSUMX ( Exposures,\n       ( Exposures[drawn_amount] + Exposures[undrawn_amount] * Exposures[ccf] )\n         * Exposures[risk_weight] )"],
+         ["Density: DIVIDE is a safe divide that doesn't break on zero.","RWA Density % =\nDIVIDE ( [Total RWA], [Total EAD] )"],
+         ["Count the problem rows so they show on the dashboard.","Missing Risk Weight =\nCOUNTROWS ( FILTER ( Exposures, ISBLANK ( Exposures[risk_weight] ) ) )"]],
+  traps:["SUM of one column times SUM of another.","Using the / sign and getting errors when EAD is zero."],
+  check:TQ("Why use SUMX instead of SUM for RWA?",["It's faster","RWA must be worked out per row, then added","SUM doesn't work in Power BI","SUMX rounds numbers"],1,"Each row has its own risk weight, so multiply per row first.")},
+ b2:{idea:"Time comparisons in Power BI need a calendar table. CALCULATE lets you say: work out this measure, but for last month.",
+  like:"Like asking 'what was my phone bill last month?' while looking at this month's bill.",
+  ex:"September RWA 110, August 100 → change 10, which is 10%.",
+  steps:[["Last month's RWA: the same measure, shifted back one month.","RWA Prev Month =\nCALCULATE ( [Total RWA], DATEADD ( 'Date'[Date], -1, MONTH ) )"],
+         ["The change is this month minus last month.","RWA MoM Change =\n[Total RWA] - [RWA Prev Month]"],
+         ["Percentage with a safe divide.","RWA MoM % =\nDIVIDE ( [RWA MoM Change], [RWA Prev Month] )"],
+         ["Snapshots must not be added across months. Show the last one instead.","RWA (month-end) =\nCALCULATE ( [Total RWA], LASTDATE ( 'Date'[Date] ) )"]],
+  traps:["No proper Date table, so DATEADD returns blanks.","Adding up three month-end snapshots for a quarter."],
+  check:TQ("A user picks Q3 (Jul–Sep). Monthly RWA is 100, 105, 110. What should Q3 show?",["315","105","110","100"],2,"RWA is a snapshot, so show the quarter-end figure: 110.")},
+ a1:{idea:"When a number jumps, an interviewer wants a calm, step-by-step plan, not a guess. First prove it's real, then break it down, then explain.",
+  like:"Like a doctor: check the thermometer works, then find where it hurts, then explain the cause.",
+  ex:"RWA up 15%. Breakdown shows Corporate +40%, all else flat. Within Corporate, one new £2bn loan explains most of it. That's your answer.",
+  steps:[["Is it real? Check all feeds arrived once, the date is right, and FX rates loaded.",""],["Where is it? Break the move down by class, legal entity and business line.",""],["Why? Split volume (more lending) from risk (downgrades, defaults, rule changes).",""],["Prove it: reconcile to the ledger and the source.",""],["Tell people: what you know, what you don't yet, and when you will.",""]],
+  traps:["Jumping to a cause before checking the data.","Giving a long technical answer with no clear message."],
+  check:TQ("What's the first thing to check when a number jumps?",["Call the regulator","Whether the data is complete and loaded once","Rewrite the query","Change the risk weights"],1,"Many jumps are data problems: a late or double-loaded feed.")},
+ d1:{idea:"To find 'the third highest', we give every row a position number in order, then pick position 3. DENSE_RANK gives equal values the same number.",
+  like:"Like race results. Two runners tie for first: both get gold, and the next runner gets silver (DENSE_RANK), not bronze.",
+  ex:"Balances 500, 400, 400, 300.\nDENSE_RANK: 1, 2, 2, 3 → the third highest is 300.",
+  steps:[["Look at the 30 Sep balances, biggest first.","SELECT account_id, balance\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nORDER  BY balance DESC;"],
+         ["Add a rank number next to each row.","SELECT account_id, balance,\n       DENSE_RANK() OVER (ORDER BY balance DESC) AS rnk\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30';"],
+         ["Keep rank 3. In Teradata, QUALIFY filters on the rank directly.","SELECT account_id, balance\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nQUALIFY DENSE_RANK() OVER (ORDER BY balance DESC) = 3;"]],
+  traps:["Using ROW_NUMBER, which ignores ties.","Putting the window function in WHERE: it isn't allowed. Use QUALIFY or an inline view."],
+  check:TQ("Salaries 90, 90, 80, 70. DENSE_RANK of 80?",["2","3","1","4"],0,"90 and 90 share rank 1, so 80 gets rank 2.")},
+ d2:{idea:"A CTE (WITH clause) is a named mini-table you create at the top of a query. ROW_NUMBER numbers the loads for each account, newest first, so number 1 is the one to keep.",
+  like:"Like a draft on scrap paper: you work it out first, give it a name, then use it.",
+  ex:"Account 1002 loaded at 02:15 and again at 18:40.\nNewest first: 18:40 → 1, 02:15 → 2. Keep 1.",
+  steps:[["Number each account's loads, newest first.","SELECT account_id, balance, load_ts,\n       ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY load_ts DESC) AS rn\nFROM   snapshot_feed_stg\nWHERE  snapshot_date = DATE '2026-09-30';"],
+         ["Wrap it in a WITH clause, name it 'ranked', and keep row 1.","WITH ranked AS (\n  SELECT account_id, balance, load_ts,\n         ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY load_ts DESC) AS rn\n  FROM   snapshot_feed_stg\n  WHERE  snapshot_date = DATE '2026-09-30'\n)\nSELECT account_id, balance, load_ts\nFROM   ranked\nWHERE  rn = 1;"]],
+  traps:["Forgetting PARTITION BY, which numbers the whole table as one list.","Ordering oldest first and keeping the stale load."],
+  check:TQ("What does PARTITION BY account_id do?",["Sorts by account","Restarts the numbering for each account","Deletes duplicates","Groups and sums"],1,"Each account gets its own 1, 2, 3…")},
+ d3:{idea:"A LEFT JOIN keeps every row from the first table, even when there's no match in the second. Where there's no match, the second table's columns are blank (NULL). That lets us find what's missing.",
+  like:"Like a class register next to today's homework pile. Students with no homework show an empty space.",
+  ex:"Accounts: 1, 2, 3. Settled payments: account 1 only.\nLEFT JOIN → 1 matched, 2 blank, 3 blank. Keep the blanks: 2 and 3.",
+  steps:[["Start with every account.","SELECT a.account_id, a.product_code\nFROM   accounts a;"],
+         ["LEFT JOIN September settled payments. The conditions go in ON so unmatched accounts survive.","SELECT a.account_id, a.product_code, p.payment_id\nFROM   accounts a\nLEFT   JOIN payments p\n  ON   p.account_id = a.account_id\n AND   p.status = 'SETTLED'\n AND   p.payment_date BETWEEN DATE '2026-09-01' AND DATE '2026-09-30';"],
+         ["Keep only the accounts with no match.","SELECT a.account_id, a.product_code\nFROM   accounts a\nLEFT   JOIN payments p\n  ON   p.account_id = a.account_id\n AND   p.status = 'SETTLED'\n AND   p.payment_date BETWEEN DATE '2026-09-01' AND DATE '2026-09-30'\nWHERE  p.payment_id IS NULL;"]],
+  traps:["Putting the status filter in WHERE, which turns it into an inner join.","Using an INNER JOIN, which can never show what's missing."],
+  check:TQ("Which join shows rows from table A that have no match in table B?",["INNER JOIN","LEFT JOIN from A, then B IS NULL","CROSS JOIN","Any join"],1,"LEFT JOIN keeps all of A; the unmatched ones have NULLs from B.")},
+ d4:{idea:"LAG looks back one row. With PARTITION BY account and ORDER BY date, 'one row back' means 'the same account last month'.",
+  like:"Like reading your height chart: each mark compared with the mark just before it.",
+  ex:"Account 1011: Jul 8,231 → Aug 8,635 → Sep 9,637.\nChanges: (none), +404, +1,002.",
+  steps:[["Show the card balances in order.","SELECT account_id, snapshot_date, balance\nFROM   account_snapshot\nWHERE  product_code = 'CC'\nORDER  BY account_id, snapshot_date;"],
+         ["Bring last month's balance alongside with LAG.","SELECT account_id, snapshot_date, balance,\n       LAG(balance) OVER (PARTITION BY account_id ORDER BY snapshot_date) AS prev_balance\nFROM   account_snapshot\nWHERE  product_code = 'CC'\nORDER  BY account_id, snapshot_date;"],
+         ["Subtract to get the change.","SELECT account_id, snapshot_date, balance,\n       balance - LAG(balance) OVER (PARTITION BY account_id ORDER BY snapshot_date) AS change\nFROM   account_snapshot\nWHERE  product_code = 'CC'\nORDER  BY account_id, snapshot_date;"]],
+  traps:["No PARTITION BY: one account's July is compared with another's September.","Expecting a value in the first month: there's nothing before it, so it's NULL."],
+  check:TQ("What is LAG(balance) in each account's first month?",["0","The same balance","NULL","An error"],2,"There is no earlier row, so it's NULL (blank).")},
+ d5:{idea:"A completeness check asks: did everything that should arrive actually arrive? NOT EXISTS finds rows in one list with no partner in another.",
+  like:"Like a guest list at the door: who's on the list but hasn't arrived?",
+  ex:"Warehouse has accounts 1–20. Feed has 1–8. Missing: 9–20, so 12 of 20 (60%) are missing.",
+  steps:[["Take the warehouse accounts for 30 Sep.","SELECT s.account_id, s.product_code, s.balance\nFROM   account_snapshot s\nWHERE  s.snapshot_date = DATE '2026-09-30';"],
+         ["Keep those with no matching row in the feed for the same date.","SELECT s.account_id, s.product_code, s.balance\nFROM   account_snapshot s\nWHERE  s.snapshot_date = DATE '2026-09-30'\nAND    NOT EXISTS (SELECT 1\n                   FROM   snapshot_feed_stg f\n                   WHERE  f.account_id = s.account_id\n                   AND    f.snapshot_date = s.snapshot_date);"]],
+  traps:["NOT IN with a NULL in the list returns nothing at all.","Matching on account only, ignoring the date."],
+  check:TQ("20 accounts expected, 8 arrived. Completeness?",["8%","40%","60%","12%"],1,"8 ÷ 20 = 40%.")},
+ d6:{idea:"JSON is how systems send data to each other: records with named fields, sometimes nested. We flatten it into a table, then test each rule and list what fails.",
+  like:"Like checking application forms: every box filled, numbers make sense, no one applied twice.",
+  ex:"{\"trade_id\": \"T1\", \"notional\": -5, \"currency\": \"EURO\"}\nFails two rules: notional not positive, and currency not three letters.",
+  steps:[["Load the JSON and flatten it into a table.","import json\nimport pandas as pd\nwith open(\"trades.json\") as f:\n    df = pd.json_normalize(json.load(f))"],
+         ["Completeness: any mandatory field missing?","mandatory = [\"trade_id\", \"book\", \"notional\", \"currency\", \"trade_date\"]\nissues = [df[df[c].isna()].assign(rule=f\"{c} missing\") for c in mandatory]"],
+         ["Validity: notional must be a positive number; currency three capital letters.","notional = pd.to_numeric(df[\"notional\"], errors=\"coerce\")\nissues.append(df[~(notional > 0)].assign(rule=\"notional not a positive number\"))\nissues.append(df[~df[\"currency\"].astype(str).str.fullmatch(r\"[A-Z]{3}\")].assign(rule=\"bad currency code\"))"],
+         ["Uniqueness, then one exceptions report.","issues.append(df[df[\"trade_id\"].duplicated(keep=False)].assign(rule=\"duplicate trade_id\"))\nexceptions = pd.concat(issues)[[\"trade_id\", \"rule\"]]\nprint(exceptions.groupby(\"rule\").size())"]],
+  traps:["Letting the script crash on the first bad value instead of reporting it.","Checking only some rules and calling the data clean."],
+  check:TQ("Which data-quality dimension is 'trade_id appears twice'?",["Completeness","Validity","Uniqueness","Timeliness"],2,"Each trade should appear once: that's uniqueness.")},
+ d7:{idea:"A functional specification explains exactly how a system must behave so developers can build it and testers can test it. It turns 'what the business wants' into 'what the system does'.",
+  like:"Like an architect's drawing: the family says 'three bedrooms'; the drawing shows sizes, doors and wiring.",
+  ex:"Business need: 'report large exposures monthly'.\nFunctional requirement FR-12: 'The system shall sum exposures by client group and flag groups above €10m on the 5th business day.'",
+  steps:[["Introduction: purpose, scope, out of scope, glossary.",""],["Requirements: each business need mapped to numbered functional requirements.",""],["Data: source-to-target mapping, transformation rules, reference data.",""],["Quality: data checks, what happens to rejected records.",""],["Non-functional: volumes, timings, security, audit trail.",""],["Close: assumptions, risks, dependencies, open questions, sign-off.",""]],
+  traps:["Writing vague requirements like 'the system should be fast'.","No IDs, so nothing can be traced to tests."],
+  check:TQ("Which document says HOW the system will meet the need?",["Business case","BRD","Functional specification","Test summary"],2,"The BRD says what and why; the FSD says how.")},
+ d8:{idea:"The interviewer wants to see you know a functional spec's shape and why each part exists.",
+  like:"Like a recipe card: ingredients, steps, cooking time and how to tell it's done.",
+  ex:"Heading: 'Data requirements'. Why: developers need to know where each field comes from and how it changes.",
+  steps:[["Introduction and scope.",""],["Current and target process.",""],["Functional requirements with IDs.",""],["Data requirements and mapping.",""],["Interfaces and non-functional requirements.",""],["Assumptions, risks, dependencies and approvals.",""]],
+  traps:["Listing headings without saying why each matters.","Forgetting non-functional requirements."],
+  check:TQ("Which section helps testers most directly?",["Glossary","Numbered requirements with acceptance criteria","Version history","Introduction"],1,"Testers write one or more tests per numbered requirement.")},
+ d9:{idea:"A user story is a short request from a user's point of view. Acceptance criteria say exactly how we'll know it's done, often as Given / When / Then.",
+  like:"Like ordering a cake: 'As a host, I want a chocolate cake for 10 people, so that everyone gets a slice.' Done when: it's chocolate, it serves 10, it's ready by 6 pm.",
+  ex:"As a reporting analyst, I want client-group exposures summed in EUR, so that I can see groups above €10m.\nGiven a group at €10,000,001, when the report runs, then the group is flagged.",
+  steps:[["Story 1: aggregate exposures by client group, in EUR.",""],["Story 2: flag groups above €10m and produce the monthly report.",""],["Story 3: deliver it within 15 business days, with an alert if late.",""],["For each, write Given / When / Then, including the edge cases.",""]],
+  traps:["Writing one giant story.","No edge cases: exactly €10m, missing group mapping, FX date."],
+  check:TQ("Which part of a story says WHY?",["As a…","I want…","So that…","Given…"],2,"'So that…' gives the business reason.")},
+ d10:{idea:"A source-to-target mapping is a table that says, for every target field: where it comes from, and what we do to it on the way.",
+  like:"Like a removals list: which box goes to which room, and what needs assembling on arrival.",
+  ex:"Target trade_date ← source tradeDate. Rule: convert text 'DD/MM/YYYY' to DATE. If invalid, reject the record.",
+  steps:[["trade_id ← trade_id. Straight copy, must be unique.",""],["lei ← counterparty.lei. Check it's a valid 20-character LEI.",""],["notional_eur ← amount.value converted from amount.currency, using the agreed FX rate and date.",""],["trade_date ← tradeDate, converted from 'DD/MM/YYYY' to DATE.",""],["For each, say what happens when the value is missing or invalid.",""]],
+  traps:["No FX rule, or no rate date.","Ignoring bad data: every rule needs a fallback."],
+  check:TQ("Where does 'lei' come from?",["trade_id","counterparty.lei","amount.currency","tradeDate"],1,"The dot means the field sits inside the 'counterparty' part of the record.")},
+ d11:{idea:"The leverage ratio is a simple safety check: capital divided by everything the bank has lent or invested, with no risk weights.",
+  like:"Like a house deposit: £50k down on a £1.25m house is 4%.",
+  ex:"Tier 1 £3, exposures £100 → 3%, exactly the minimum.",
+  steps:[["Formula: Tier 1 ÷ exposure measure.",""],["50 ÷ 1,250 = 0.04.",""],["4.0%, above the 3% minimum.",""]],
+  traps:["Using RWA instead of the total exposure measure.","Using total capital instead of Tier 1."],
+  check:TQ("Tier 1 €30bn, exposure €1,000bn. Leverage ratio?",["3%","30%","0.3%","33%"],0,"30 ÷ 1,000 = 3%.")},
+ d12:{idea:"The LCR checks a bank could survive 30 days of a cash run using assets it can sell quickly.",
+  like:"Like having enough cash in your wallet for a month of bills if your salary stopped.",
+  ex:"Liquid assets 90, outflows 100 → 90%. Below 100%, so not enough.",
+  steps:[["Formula: HQLA ÷ net cash outflows over 30 days.",""],["120 ÷ 100 = 1.2.",""],["120%, above the 100% minimum.",""]],
+  traps:["Flipping the division.","Counting assets that aren't high quality."],
+  check:TQ("HQLA €80bn, net outflows €100bn. LCR?",["125%","80%","20%","180%"],1,"80 ÷ 100 = 80%, below the 100% minimum.")}
+};
+
+/* ---------- teacher UI ---------- */
+function teachPanel(t){
+  const L=LESSON[t.id]; if(!L) return null;
+  const box=el("section",{class:"tch",hidden:true});
+  const head=el("div",{class:"tchhead"},el("span",{class:"tchav",text:"T"}),el("div",{},el("b",{text:"Your teacher"}),el("span",{class:"muted small",text:"Let's take it slowly. No question is silly."})));
+  const close=el("button",{class:"l3link",type:"button",text:"Close lesson"}); close.addEventListener("click",()=>{ box.hidden=true; });
+  head.append(el("span",{class:"ledsp"}),close);
+  box.append(head);
+  box.append(el("div",{class:"tchsec"},el("h4",{text:"1. The idea in plain words"}),el("p",{text:L.idea}),el("p",{class:"tchlike"},el("b",{text:"In everyday life: "}),L.like)));
+  box.append(el("div",{class:"tchsec"},el("h4",{text:"2. A tiny example"}),el("pre",{class:"tchex",text:L.ex})));
+  // step by step
+  const st=el("div",{class:"tchsec"},el("h4",{text:"3. Let's solve it together, one step at a time"}));
+  const stepBox=el("div",{class:"tchstep"}); st.append(stepBox); box.append(st);
+  let i=0;
+  const paint=()=>{
+    stepBox.innerHTML="";
+    const [say,code]=L.steps[i];
+    stepBox.append(el("div",{class:"tchstepn",text:`Step ${i+1} of ${L.steps.length}`}),el("p",{class:"tchsay",text:say}));
+    let out=null;
+    if(code){
+      const pre=el("pre",{class:"sql tchcode"}); const c=el("code"); if(t.type==="sql") c.innerHTML=hl(code); else c.textContent=code; pre.append(c); stepBox.append(pre);
+      if(t.type==="sql"){ const run=el("button",{class:"btn small",type:"button",text:"Run this step"}); out=el("div",{class:"tchout"}); run.addEventListener("click",async()=>{ out.innerHTML=""; out.append(el("p",{class:"l3empty",text:"Running…"})); try{ await scrDb(); const r=labRun(scrDb(true),code).results.pop(); out.innerHTML=""; if(r&&r.columns.length){ const v=labVisible(r); out.append(el("div",{class:"l3meta"},el("b",{text:`${v.values.length} row${v.values.length===1?"":"s"}`})),el("div",{class:"tw labtw"},labTable(r))); } else out.append(el("p",{class:"l3ok",text:"Done."})); }catch(e){ out.innerHTML=""; out.append(el("p",{class:"l3err",text:labFriendly(String(e.message||e))})); } }); stepBox.append(el("div",{class:"row"},run),out); }
+    }
+    const nav=el("div",{class:"tchnav"});
+    const prev=el("button",{class:"btn small",type:"button",text:"‹ Back",disabled:i===0}); prev.addEventListener("click",()=>{ i--; paint(); });
+    const next=el("button",{class:"btn small primary",type:"button",text:i===L.steps.length-1?"Got it ✓":"Next step ›"}); next.addEventListener("click",()=>{ if(i<L.steps.length-1){ i++; paint(); } else { traps.hidden=false; chk.hidden=false; ask.hidden=false; traps.scrollIntoView({behavior:"smooth",block:"start"}); } });
+    nav.append(prev,el("span",{class:"tchdots"},L.steps.map((_,k)=>el("i",{class:k===i?"on":k<i?"done":""}))),next);
+    stepBox.append(nav);
+  };
+  paint();
+  const traps=el("div",{class:"tchsec",hidden:true},el("h4",{text:"4. Mistakes people make"}),el("ul",{},L.traps.map(x=>el("li",{text:x}))));
+  box.append(traps);
+  const chk=el("div",{class:"tchsec",hidden:true},el("h4",{text:"5. Quick check"}),el("p",{class:"tchq",text:L.check.q}));
+  const opts=el("div",{class:"tchopts"}); const fb=el("p",{class:"tchfb",hidden:true});
+  L.check.opts.forEach((o,k)=>{ const b=el("button",{class:"tchopt",type:"button",text:o}); b.addEventListener("click",()=>{ opts.querySelectorAll("button").forEach(x=>x.classList.remove("right","wrong")); b.classList.add(k===L.check.a?"right":"wrong"); fb.hidden=false; fb.textContent=(k===L.check.a?"Yes! ":"Not quite. ")+L.check.why; opts.querySelectorAll("button")[L.check.a].classList.add("right"); }); opts.append(b); });
+  chk.append(opts,fb); box.append(chk);
+  // ask the teacher
+  const ask=el("div",{class:"tchsec",hidden:true},el("h4",{text:"6. Still unsure? Ask your teacher"}));
+  const q=el("textarea",{class:"scrthink tchaskq",rows:"2",placeholder:"For example: why do we multiply by the CCF? What does PARTITION mean?"});
+  const go=el("button",{class:"btn small primary",type:"button",text:"Ask"}); const ans=el("div",{class:"tchans"});
+  go.addEventListener("click",async()=>{
+    const question=q.value.trim(); if(!question) return;
+    ans.innerHTML="";
+    if(typeof SAMPLE==="undefined"||!SAMPLE){ ans.append(el("p",{class:"muted",text:"The AI teacher isn't switched on yet. Re-read step by step above, or ask a colleague using 'Ask a colleague' in the menu."})); return; }
+    ans.append(el("p",{class:"muted",text:"Your teacher is thinking…"}));
+    try{
+      const x=await SAMPLE.json(`You are a patient, warm teacher. Your student is an adult who has never learned this topic. Answer their question in very simple words: sentences of 12 words or fewer, no jargon (or explain each term in a few plain words), one everyday comparison, and one tiny worked example with small numbers. Never make them feel silly.
+Topic: ${t.title}
+Task: ${t.ask}
+The lesson so far: ${L.idea}
+Student's question: ${question}
+Reply with only JSON: {"answer":"max 90 words","example":"max 40 words","check":"one short question to check they understood"}`,{modelTier:"default"});
+      ans.innerHTML=""; ans.append(el("p",{text:String(x.answer||"")}));
+      if(x.example) ans.append(el("pre",{class:"tchex",text:String(x.example)}));
+      if(x.check) ans.append(el("p",{class:"tchq",text:"Try this: "+String(x.check)}));
+    }catch(e){ ans.innerHTML=""; ans.append(el("p",{class:"muted",text:"The teacher couldn't answer just now. Please try again in a minute."})); }
+  });
+  ask.append(q,el("div",{class:"row"},go),ans); box.append(ask);
+  const ready=el("button",{class:"btn primary",type:"button",text:"I'm ready: let me try it myself"});
+  ready.addEventListener("click",()=>{ box.hidden=true; const w=document.querySelector(".scrwork textarea, .scrwork input, .scrthinkw .scrthink"); if(w){ w.scrollIntoView({behavior:"smooth",block:"center"}); w.focus({preventScroll:true}); } });
+  box.append(el("div",{class:"tchready"},ready));
+  return box;
 }
 
 </script>
