@@ -2101,6 +2101,21 @@ body.v-home .fbfab{display:inline-flex}
 .ide-ora textarea.ide-ta{caret-color:#2b5a83}
 .ide-body{grid-template-columns:265px minmax(0,1fr)}
 .ide .stc{font-size:10px;padding:0 5px}
+
+/* ===== Step-by-step explanations ===== */
+.learnbx{margin:10px 0;border:1px solid rgba(120,90,255,.4);border-radius:14px;background:linear-gradient(180deg,rgba(120,90,255,.10),rgba(120,90,255,.02));padding:4px 14px 10px}
+.learnbx>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:8px 0;font-weight:800;color:#a99bff}
+.learnbx>summary::-webkit-details-marker{display:none}
+.learnbx>summary::after{content:"▾";margin-left:auto;transition:transform .2s;opacity:.7}.learnbx:not([open])>summary::after{transform:rotate(-90deg)}
+.learnic{font-size:18px}
+.learnlike{margin:2px 0 10px;padding:8px 12px;border-radius:10px;background:rgba(255,209,102,.12);border-left:3px solid #ffd166;line-height:1.55}
+.learnsteps{margin:0;padding:0;list-style:none;counter-reset:ls;display:flex;flex-direction:column;gap:8px}
+.learnsteps li{counter-increment:ls;position:relative;padding-left:38px;line-height:1.55;min-height:26px}
+.learnsteps li::before{content:counter(ls);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(135deg,#8b7bff,#00a884)}
+.learnsteps li:not(:last-child)::after{content:"";position:absolute;left:12px;top:28px;bottom:-8px;width:2px;background:rgba(139,123,255,.35)}
+.learnans{margin:12px 0 0;padding:9px 12px;border-radius:10px;background:rgba(0,168,132,.14);border-left:3px solid #00a884;line-height:1.5}
+.learnbx.compact{padding:2px 10px 8px}.learnbx.compact .learnsteps li{font-size:14px}
+:root:not([data-theme="dark"]) .learnbx>summary{color:#5b47e0}
 </style>
 </head>
 <body class="booting">
@@ -3677,6 +3692,451 @@ function attachSimple(list){ list.forEach(m=>{ if(SIMPLE[m.id]) m.s=SIMPLE[m.id]
 
 </script>
 <script>
+/* Step-by-step explanations, written so a class 10 student can follow.
+   l = an everyday comparison, s = steps that build up to the answer, a = the answer in one line. */
+const LEARN={
+rp2:{l:"Like a tailor making a suit: measure first, then cut, then check it fits.",
+ s:["Ask what decision the data will support. 'Which customers should we call?' needs different data from 'How much do we lend?'.","Agree the details: which date, what counts (for example 'in arrears' means 30+ days late), and one row per what: per customer or per account?","Find the tables that hold this, and join them on matching keys so nothing is counted twice.","Before sending, check your totals against a trusted number, such as the monthly report."],
+ a:"Clarify the need first, agree definitions, write the query carefully, then check the totals before you share."},
+rp1:{l:"Like cooking: you gather ingredients before you plate the food.",
+ s:["FROM comes first: the database picks the tables, like taking ingredients out of the fridge.","WHERE throws away rows you don't want, like removing bad vegetables.","GROUP BY puts rows into piles, then HAVING keeps only the piles you want.","SELECT picks and names the columns, then ORDER BY arranges them, then TOP or FETCH FIRST keeps the first few."],
+ a:"FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → TOP/FETCH FIRST."},
+q1:{l:"You can't call a dish by its name before you've cooked it.",
+ s:["The database reads FROM first, then WHERE, then GROUP BY, HAVING, SELECT, and finally ORDER BY.","An alias is a nickname you give a column in SELECT, for example 'balance * 1.1 AS stressed'.","WHERE runs before SELECT, so when WHERE runs, the nickname 'stressed' doesn't exist yet.","ORDER BY runs after SELECT, so the nickname works there."],
+ a:"WHERE runs before SELECT, so a SELECT nickname can't be used in WHERE (repeat the formula or use a CTE)."},
+q2:{l:"WHERE checks each student; HAVING checks each class after marks are added up.",
+ s:["Imagine a table of loans, one row per loan.","WHERE filters single rows before any adding up: 'only UK loans'.","GROUP BY then makes piles, for example one pile per branch, and SUM adds each pile.","HAVING filters the piles after adding: 'only branches with more than £1 million in loans'."],
+ a:"WHERE filters rows before grouping; HAVING filters groups after totals are worked out."},
+m1:{l:"A cook opens the fridge before choosing what to serve.",
+ s:["The question asks which part of a query the database handles first.","Before it can filter or pick columns, it must know which table it is reading.","Table names live in the FROM clause (with any JOINs)."],
+ a:"FROM (including JOINs) runs first."},
+q3:{l:"Two class lists: who is on both, who is on one, and every possible pair.",
+ s:["INNER JOIN keeps only students on both lists.","LEFT JOIN keeps everyone on the first list; if there's no match on the second, those boxes are blank (NULL). RIGHT JOIN is the mirror image. FULL OUTER keeps everyone from both lists.","CROSS JOIN pairs every row with every other row: 10 × 10 = 100 rows.","A blank (NULL) key never matches anything, not even another blank.","If you write a condition on the second table in WHERE, the blank rows fail it and disappear, so your LEFT JOIN behaves like an INNER JOIN. Put that condition in ON instead."],
+ a:"INNER = matches only; LEFT/RIGHT = keep one side; FULL = keep both; CROSS = every pair. Filters on the right table belong in ON."},
+q4:{l:"A race where two runners tie.",
+ s:["Three runners finish with times 10s, 10s and 12s.","ROW_NUMBER gives 1, 2, 3: it forces an order even for a tie.","RANK gives 1, 1, 3: both share first, then it skips a number.","DENSE_RANK gives 1, 1, 2: both share first, and it doesn't skip."],
+ a:"Ties: ROW_NUMBER 1,2,3 · RANK 1,1,3 · DENSE_RANK 1,1,2. Use ROW_NUMBER to keep one row, DENSE_RANK for 'Nth highest'."},
+m2:{l:"Counting how many forms have the 'date' box filled in.",
+ s:["There are 5 accounts.","COUNT(default_date) counts only rows where default_date has a value.","2 accounts have a blank (NULL) date, so they are skipped.","5 − 2 = 3."],
+ a:"3."},
+q6:{l:"Merging two guest lists: with or without crossing out repeated names.",
+ s:["UNION joins two lists and removes duplicates.","To remove duplicates, the database has to sort or compare everything: extra work.","UNION ALL just stacks the two lists, keeping every row.","Most of the time the lists don't overlap, so UNION ALL is faster and safer: it never hides rows."],
+ a:"UNION removes duplicates (slower); UNION ALL keeps all rows. Default to UNION ALL unless you need duplicates removed."},
+q7:{l:"A blank box on a form: you don't know the value, so you can't count, add or compare it.",
+ s:["COUNT(*) counts every row; COUNT(column) skips blanks.","SUM and AVG ignore blanks, so an average can come out higher than it should.","Comparing with a blank (= or <>) is never true, so rows with blanks quietly drop out of filters.","NOT IN with a blank in the list returns nothing at all.","Example bug: arrears reported too low because accounts with a blank 'days past due' were dropped."],
+ a:"NULLs are skipped by COUNT(col), SUM and AVG, fail every comparison, and break NOT IN. Handle them on purpose."},
+m3:{l:"'Not on the list' can't be answered if one name on the list is unreadable.",
+ s:["NOT IN checks: is this account different from every value in the list?","The list is 101 and a blank (NULL).","Is 205 different from a blank? Unknown. So the whole check is unknown, never true.","Every row fails, so nothing comes back."],
+ a:"No rows are returned. Use NOT EXISTS instead."},
+q8:{l:"Rough work on scrap paper (CTE), a calculation inside a sentence (subquery), or a notebook you keep for the day (temporary table).",
+ s:["A CTE (WITH …) names a step at the top of the query. It makes long logic easy to read, step by step.","A subquery is a query inside another query. Good for a small, one-off check.","A volatile or temporary table saves results for your session. Good when the same middle result is used many times or the data is big.","Pick the simplest one that keeps the query readable and fast."],
+ a:"CTE for readability, subquery for small one-offs, temporary table when you reuse a big middle result."},
+q9:{l:"Checking if a student is on the sports list: look through the list, stop at the first match, or match every row.",
+ s:["IN compares each row against a list of values.","EXISTS stops as soon as it finds one match: handy for 'is there at least one?'.","A JOIN can repeat rows if the other table has many matches per key.","Modern databases often run IN and EXISTS the same way; NOT EXISTS is safer than NOT IN when blanks exist."],
+ a:"Use EXISTS/IN for 'is there a match?'; use JOIN when you need columns from the other table. Prefer NOT EXISTS over NOT IN."},
+m4:{l:"Two runners tie for first.",
+ s:["The balances are 500, 500 and 400, largest first.","DENSE_RANK gives equal values the same number.","Both 500s get 1. The next value, 400, gets the next number without skipping: 2."],
+ a:"1, 1, 2."},
+q10:{l:"Looking at last month's school report next to this month's.",
+ s:["LAG looks one row back; LEAD looks one row forward.","Sort each account's rows by month (PARTITION BY account, ORDER BY month).","Now LAG(days_past_due) gives last month's arrears next to this month's.","Compare them: did the account get worse, better or stay the same? That's how roll rates are built."],
+ a:"Use LAG/LEAD to compare an account with its own previous or next month: arrears moves, balance change, stage change."},
+q11:{l:"Sharing work among many workers: give each one a fair pile.",
+ s:["Teradata splits data across many workers called AMPs.","It decides where each row goes by scrambling (hashing) the Primary Index value.","If many rows share the same Primary Index value, they all land on one worker. That's skew.","One overloaded worker makes the whole query wait, so choose a Primary Index with many different values."],
+ a:"The Primary Index decides which AMP stores a row; skew is uneven spread, and it slows everything down."},
+m5:{l:"'Keep all students' but then 'only those with a library card' leaves only students with cards.",
+ s:["LEFT JOIN keeps every loan, even those with no collateral; their collateral columns are blank.","The WHERE clause then asks for coll_type = 'PROPERTY'.","Blank never equals 'PROPERTY', so loans without collateral are removed.","What's left is only loans that matched: an INNER JOIN."],
+ a:"It behaves like an INNER JOIN. Move the condition into ON to keep all loans."},
+q12:{l:"HAVING filters groups after adding up; QUALIFY filters after ranking.",
+ s:["To get the latest record per account, number each account's rows, newest first, with ROW_NUMBER.","Keep the row numbered 1.","In Teradata, write QUALIFY ROW_NUMBER() OVER (…) = 1 right in the query.","In Oracle there's no QUALIFY, so put the numbering in an inner query and filter rn = 1 outside."],
+ a:"QUALIFY filters on window-function results (Teradata). Without it, wrap the query and filter outside."},
+q13:{l:"Your 20-minute drive to work now takes 3 hours: what changed, the road or the traffic?",
+ s:["Ask what changed: more data, a new join, a code release, old statistics, or a busy month-end system.","Look at the query plan (EXPLAIN) to see which step is slow.","Check the usual causes: missing statistics, skewed data, a join that multiplies rows, or functions on columns in WHERE.","Fix the cause, test it, and compare the timing again."],
+ a:"Find what changed, read the plan, fix the slow step (stats, skew, joins), then measure again."},
+m6:{l:"QUALIFY is to rankings what HAVING is to totals.",
+ s:["A window function (like ROW_NUMBER) is worked out at the SELECT stage.","WHERE runs earlier, so it can't use it.","Teradata has a special clause that runs after window functions: QUALIFY."],
+ a:"QUALIFY."},
+q14:{l:"An address book: rub out the old address (Type 1), add a new line with dates (Type 2), or keep one 'previous address' box (Type 3).",
+ s:["Type 1 overwrites the old value: no history.","Type 2 adds a new row with 'valid from' and 'valid to' dates, so you keep full history.","Type 3 keeps just one previous value in an extra column.","To see Type 2 'as at' a date, pick the row where effective_from ≤ that date and effective_to ≥ that date."],
+ a:"Type 1 overwrites, Type 2 keeps dated history rows, Type 3 keeps one previous value. 'As at' = the row valid on that date."},
+q15:{l:"Finding names written twice on a class register, then crossing out the extra copies.",
+ s:["Find: GROUP BY the business key and keep groups with COUNT(*) > 1.","Remove: number the rows for each key with ROW_NUMBER, newest first.","Keep row 1 and delete (or ignore) the rest.","Tell the data owner why duplicates appeared, so it doesn't happen again."],
+ a:"GROUP BY … HAVING COUNT(*) > 1 to find; ROW_NUMBER and keep 1 to remove."},
+m7:{l:"Money needs exact pennies, like a bank statement, not a rough guess.",
+ s:["Money must add up exactly to the penny.","FLOAT stores numbers approximately, so tiny errors creep in.","DECIMAL stores exact digits, for example 18 digits with 2 after the point."],
+ a:"DECIMAL(18,2) or similar fixed precision."},
+q16:{l:"Finding the second-tallest student in each class.",
+ s:["Split the rows by product (PARTITION BY product).","Inside each product, rank balances from highest to lowest with DENSE_RANK, so equal balances share a rank.","Keep rows where the rank = 2 (or N).","This works for any N, unlike tricks with MAX."],
+ a:"DENSE_RANK() OVER (PARTITION BY product ORDER BY balance DESC) = N."},
+q17:{l:"A running total is like a piggy bank growing each month; a moving average is the average of the last three months.",
+ s:["Sort months in order.","Running total: SUM(amount) OVER (ORDER BY month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW).","3-month moving average: AVG(amount) OVER (ORDER BY month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW).","Write ROWS explicitly; the default can behave oddly when two rows share the same month."],
+ a:"Window functions with an explicit ROWS frame: SUM for running total, AVG over 3 rows for moving average."},
+m8:{l:"A sorting machine decides which shelf a parcel goes to from its postcode.",
+ s:["Teradata spreads rows across workers called AMPs.","It runs the Primary Index value through a hashing formula.","The result tells it which AMP stores that row."],
+ a:"The hash of the Primary Index value."},
+q18:{l:"Turning a long list of 'month and amount' into a table with one column per month, like a timetable.",
+ s:["Group by account.","For January: SUM(CASE WHEN month = 'Jan' THEN balance END) AS jan.","Repeat for each month.","This works in any database, even without a PIVOT command."],
+ a:"Conditional aggregation: SUM(CASE WHEN month = … THEN balance END) per month."},
+q19:{l:"Measuring money with a ruler that's slightly bent: small errors add up.",
+ s:["FLOAT stores numbers in binary, so 0.1 can't be stored exactly.","Add up millions of amounts and the tiny errors grow.","Then the warehouse doesn't match the ledger by a few pence, and the reconciliation fails.","DECIMAL stores exact digits, so pennies always add up."],
+ a:"FLOAT is approximate and causes penny breaks; DECIMAL is exact."},
+m9:{l:"A diary that keeps every old address with the dates you lived there.",
+ s:["The question asks which type keeps full history.","Type 1 overwrites, Type 3 keeps one old value.","Type 2 adds a new row each time, with effective-from and effective-to dates."],
+ a:"Type 2."},
+q20:{l:"Updating a phone book: change numbers for people already in it, add new people.",
+ s:["New data arrives with keys, for example account IDs.","If the key already exists in the table, update its values.","If the key is new, insert a new row.","MERGE does both in one statement, which is cleaner and faster than separate steps."],
+ a:"MERGE = update existing keys and insert new ones in one step; used for daily warehouse loads."},
+q23:{l:"Checking your maths homework before handing it in.",
+ s:["Compare row counts and totals with the source system and the general ledger.","Test tricky cases: blanks, duplicates, accounts on the boundary of a rule.","Spot-check a few accounts by hand from start to finish.","Ask a colleague or the business to review the logic before it goes to UAT."],
+ a:"Reconcile counts and totals, test edge cases, trace samples by hand, and get a review."},
+m10:{l:"If you don't say how far back to look, the database uses its own rule.",
+ s:["The query sorts by date but doesn't say which rows to include.","With ORDER BY and no frame, the default is RANGE from the start up to the current row.","RANGE treats rows with the same date as one, which can surprise you."],
+ a:"RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW."},
+q25:{l:"A recipe: first ask how many guests and which dishes, then cook.",
+ s:["Clarify: drawn or committed amount? Which date counts? Include top-ups? Which currency?","Filter the last 12 months and group by month and product.","Use LAG to get the previous month's total for each product.","Growth % = (this month − last month) ÷ last month × 100, using NULLIF to avoid dividing by zero."],
+ a:"Agree definitions, total by month and product, then compare with LAG to get month-on-month growth."},
+q26:{l:"Spotting a student whose grades fell from C to F within one term.",
+ s:["Find the first month each account hit 30+ days past due.","Find whether it reached 90+ within the next 3 months.","Join or use window functions to compare those dates for the same account.","Keep accounts where both happened within 3 months."],
+ a:"Find the first 30+ date and check for a 90+ date within 3 months for the same account."},
+m11:{l:"Two sealed envelopes: you can't say their contents are equal without opening them.",
+ s:["NULL means 'unknown'.","Is one unknown equal to another unknown? We can't know.","So the result is UNKNOWN, which WHERE treats as not true."],
+ a:"UNKNOWN (treated as not true). Use IS NULL."},
+q27:{l:"A table showing how many students moved from grade A to B, B to C, and so on.",
+ s:["For each account, put last month's arrears bucket next to this month's using LAG.","Count accounts for each pair: 'from bucket' and 'to bucket'.","Divide each count by the total in its 'from bucket' row to get percentages.","Each row then shows where accounts in that bucket went."],
+ a:"Pair last month's bucket with this month's, count each pair, and turn the counts into row percentages."}
+};
+Object.assign(LEARN,{
+q28:{l:"Matching your shopping receipts against your bank statement, product by product.",
+ s:["Add up warehouse balances by product.","Map each product to its general ledger (GL) account and get the GL balance.","Put them side by side with a FULL OUTER JOIN, so a product missing on either side still shows.","Difference = warehouse − GL. Flag any difference bigger than the agreed tolerance, for example £1."],
+ a:"Total by product, line up with the GL using FULL OUTER JOIN, and flag differences above tolerance."},
+m12:{l:"Students in the choir who are not in the football team.",
+ s:["We want rows in the first list that are not in the second.","UNION adds lists; INTERSECT keeps rows in both.","MINUS (Oracle and Teradata) or EXCEPT (standard SQL) takes the second list away from the first."],
+ a:"MINUS / EXCEPT."},
+q29:{l:"Checking the class register against the school office list: who's missing from yours?",
+ s:["Take every account in the source system for the date.","Look for each one in the warehouse with NOT EXISTS (or LEFT JOIN … IS NULL).","Accounts with no match are missing: a completeness problem.","Also check the other way: accounts in the warehouse but not in source (for example closed accounts still reported)."],
+ a:"Source NOT EXISTS in warehouse = missing; check both directions."},
+q30:{l:"Picking the top 3 scorers in each house at school.",
+ s:["Agree what 'exposure' means: drawn only, or drawn plus undrawn × CCF?","Add up exposure per customer.","Rank customers within each segment with ROW_NUMBER or DENSE_RANK (PARTITION BY segment, ORDER BY exposure DESC).","Keep ranks 1 to 3."],
+ a:"Total per customer, rank within segment, keep the top 3."},
+m13:{l:"HAVING checks each class's total, not each student.",
+ s:["WHERE works on single rows, before grouping.","GROUP BY makes piles and adds them up.","HAVING then keeps or drops whole piles."],
+ a:"Groups after aggregation."},
+q31:{l:"Not lending too much to one family: if they fail, you shouldn't fail with them.",
+ s:["Link customers who belong together (a group of connected clients).","Add up each group's exposure.","Compare it with Tier 1 capital: 10% or more must be reported; above 25% is a breach of the limit.","Flag each group as 'report' or 'breach'."],
+ a:"Sum exposure by connected group; ≥10% of Tier 1 is reportable, >25% breaches the limit."},
+q32:{l:"A list of friends who owe you money and haven't paid you back for two months.",
+ s:["Find accounts in arrears today.","Find each account's latest payment date.","LEFT JOIN payments so accounts that have never paid still appear (their payment date is blank).","Keep accounts where the last payment is more than 60 days ago, or blank."],
+ a:"Arrears accounts LEFT JOIN last payment; keep no payment in 60 days or never paid."},
+m14:{l:"Picking each student's latest test, with a fair rule if two tests share the same day.",
+ s:["We want one row per account: the newest.","ROW_NUMBER numbers each account's rows, newest snapshot_date first.","If two rows share a date, the extra sort on load_ts breaks the tie the same way every time.","Keep row number 1."],
+ a:"ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY snapshot_date DESC, load_ts DESC) = 1."},
+q33:{l:"Comparing school year groups by how many failed a test after one year in school.",
+ s:["Group loans by the quarter they started (their vintage).","For each vintage, look at loans 12 months after they started.","Default rate = loans defaulted by month 12 ÷ loans in the vintage.","Leave out vintages younger than 12 months, or they'll look better than they are."],
+ a:"Group by start quarter, measure defaults at 12 months on book, and exclude young vintages."},
+q34:{l:"House rules for forms: every box filled, numbers that make sense, no duplicates.",
+ s:["Completeness: key fields must not be blank (customer_id, balance).","Validity: values must make sense (balance not negative, currency three letters).","Uniqueness: one row per account per date.","Code one: SELECT * FROM loans WHERE customer_id IS NULL OR balance IS NULL."],
+ a:"Completeness, validity and uniqueness rules, each written as a query that lists the failing rows."},
+m15:{l:"Looking at last month's report card next to this month's.",
+ s:["We need the same account's value one month earlier.","LAG looks back one row in the order you choose.","Order by month within each account, and LAG gives last month's bucket."],
+ a:"LAG."},
+q35:{l:"Finding each separate spell of being late for school, with start and end dates.",
+ s:["List each account's months in order and mark whether it was in arrears.","Number all months (row number 1). Number only the arrears months (row number 2).","Within one unbroken spell, 'row number 1 − row number 2' stays the same. That value labels the spell.","Group by that label to get each spell's start, end and length."],
+ a:"The difference of two row numbers is constant inside each run; group by it to get each episode."},
+q36:{l:"Spotting that 'Priya Sharma, 12 MG Road' and 'P. Sharma, 12 M.G. Rd' are the same person.",
+ s:["Clean the data first: same case, remove extra spaces and punctuation.","Match on strong fields: date of birth plus postcode plus surname.","Use fuzzy matching for names that are spelled slightly differently.","Send likely matches for a person to review; don't merge automatically."],
+ a:"Standardise, match on several fields, use fuzzy name matching, and review before merging."},
+m16:{l:"Comparing two lists where either one may have extra names.",
+ s:["We must see GL accounts with no warehouse match, and warehouse balances with no GL account.","LEFT JOIN keeps only one side's extras; INNER keeps neither.","FULL OUTER JOIN keeps unmatched rows from both sides."],
+ a:"FULL OUTER JOIN."},
+q51:{l:"Rules for a school's report cards: accurate, complete, on time, and checked.",
+ s:["BCBS 239 is a set of 14 principles from the Basel Committee (2013) on risk data and reporting.","Main themes: good governance, solid data systems, accurate and complete data, timely and useful reports.","Example: you document where each key number comes from (lineage) and add checks that it reconciles.","It applies to the biggest banks, and supervisors expect other large banks to follow it too."],
+ a:"14 principles for accurate, complete, timely risk data and reporting, with clear governance."},
+q52:{l:"The handful of answers on an exam that carry most of the marks.",
+ s:["A Critical Data Element (CDE) is a field that would badly mislead a key report if it were wrong, for example default date.","Find them by tracing the important numbers in key reports back to their fields.","Give each one an owner, a clear definition and data-quality checks.","Monitor the checks and fix breaks quickly."],
+ a:"A field whose error would materially misstate a key report; identify by tracing reports back, then give it an owner, definition and controls."},
+m17:{l:"Count the rules on the list.",
+ s:["BCBS 239 was published in 2013.","It has principles for governance, data aggregation, reporting and supervisors.","They add up to 14."],
+ a:"14."},
+q55:{l:"An inspector found problems in your homework method; you fix the method, not just the answers.",
+ s:["Read each finding and find its root cause: data, process, people, systems or governance.","Turn findings into a plan with owners and deadlines.","Fix the data and add controls so the problem can't come back.","Show evidence that each fix works and report progress."],
+ a:"Map each finding to its root cause, plan fixes with owners, add controls, and prove they work."},
+m18:{l:"Spreadsheets someone built on their own computer.",
+ s:["Regulators worry about tools built outside proper IT control.","These are usually spreadsheets or small databases run by users.","They're called End-User Computing (EUC)."],
+ a:"End-User Computing."},
+q56:{l:"Checks before posting an important letter: right address, signed, copied.",
+ s:["Preventive controls stop errors: access limits, locked templates, automatic data feeds.","Detective controls catch errors: reconciliations, variance checks against last period, validation rules.","Maker-checker: one person prepares, another reviews.","Sign-off by the accountable senior manager before submission."],
+ a:"Preventive controls, detective checks (reconciliations, variance analysis), maker-checker review, and senior sign-off."},
+q59:{l:"Two report cards: one on how safe the bank is (COREP), one on its finances (FINREP).",
+ s:["COREP covers capital and risk: own funds, credit risk (C 07 standardised, C 08 IRB), large exposures, leverage, liquidity.","FINREP covers financial information: balance sheet, income, and non-performing and forborne loans (F 18, F 19).","Both use the same reporting framework and templates.","A BA needs to know which data feeds which template."],
+ a:"COREP = capital and risk (e.g. C 07, C 08, large exposures); FINREP = financial statements (e.g. F 18, F 19)."},
+q60:{l:"An updated rulebook for how much safety money banks must hold.",
+ s:["Basel 3.1 is the final set of Basel III reforms.","In the UK, the PRA confirmed the rules in PS1/26 (January 2026). Most apply from 1 January 2027.","It changes how risk weights are worked out, especially for property and corporate loans, and adds the output floor.","For data: new fields (like loan-to-value at the right dates), more detail, and new templates."],
+ a:"The final Basel III package; most UK rules apply from 1 January 2027, bringing new risk-weight rules, the output floor and new data needs."},
+m19:{l:"The person in charge of the school's accounts signs the finance reports.",
+ s:["SMCR gives named senior people clear responsibilities.","Regulatory reporting is a finance responsibility.","It usually sits with the Chief Finance function, SMF2."],
+ a:"SMF2 Chief Finance."},
+q61:{l:"A minimum fare in a taxi: however short the ride, you pay at least that.",
+ s:["Banks with their own models (IRB) can get low risk numbers (RWA).","The output floor says: your RWA can't be lower than 72.5% of what the standard method gives.","So IRB banks must also calculate RWA the standard way, for every exposure.","That needs extra data the standard method uses, plus reconciliation between the two."],
+ a:"Model RWA can't fall below 72.5% of standardised RWA, so IRB banks need both calculations and the data for each."},
+q62:{l:"The regulator redesigning its forms so banks send better data with less effort.",
+ s:["The PRA and Bank of England launched Future Banking Data in 2025.","Its aim is to cut the cost of reporting and improve the data supervisors get.","It may change templates, data definitions and how data is sent.","A BA should follow it because it will change requirements, data models and timelines."],
+ a:"A PRA/Bank of England programme to make regulatory reporting cheaper and better; it will change future reporting requirements."},
+m20:{l:"The date the new rulebook comes into force.",
+ s:["The PRA finalised Basel 3.1 in PS1/26.","It set the main start date for most rules.","That date is the start of 2027."],
+ a:"1 January 2027."},
+q63:{l:"Don't put too many eggs in one basket.",
+ s:["Add up the bank's exposure to one client or a group of connected clients.","If it's 10% or more of Tier 1 capital, it's a large exposure and must be reported.","It must not exceed 25% of Tier 1 after allowed risk reductions (stricter between the largest banks).","Breaches must be reported to the regulator straight away."],
+ a:"Large exposure at 10% of Tier 1; limit 25% of Tier 1; report breaches immediately."},
+m21:{l:"The final level of the minimum fare.",
+ s:["The output floor phases in over several years.","It reaches its final level by 2030.","That level is 72.5% of standardised RWA."],
+ a:"72.5%."},
+q64:{l:"A regular report card on a lender's mortgage book.",
+ s:["MLAR stands for Mortgage Lending and Administration Return.","Mortgage lenders and administrators send it to the regulators.","It covers new lending, balances, arrears and possessions.","Regulators use it to watch the mortgage market and each lender's risk."],
+ a:"The Mortgage Lending and Administration Return, sent by mortgage lenders to the FCA/PRA."},
+q65:{l:"Telling the credit score companies each month how customers are paying.",
+ s:["Lenders send monthly data on each account to Experian, Equifax and TransUnion.","It includes balances, whether payments were made, arrangements and defaults.","Mistakes hurt real people: a wrong 'missed payment' can lower someone's credit score.","Common problems: wrong status codes, late files, and missing updates after a dispute."],
+ a:"Monthly account data shared with the credit agencies; errors can unfairly damage customers' credit records."},
+q66:{l:"Helping people who are behind on payments, fairly and by the rules.",
+ s:["Key data: how far behind, payment plans, forbearance, breathing-space flags, vulnerability flags, fees.","Rules: treat customers fairly, stop certain actions during breathing space, and don't overcharge fees.","Reports must show arrears, forbearance and recoveries correctly.","Wrong flags can mean unfair treatment and regulatory breaches."],
+ a:"Arrears, arrangements, forbearance, breathing-space and vulnerability data must be right so customers are treated fairly and reported correctly."},
+m22:{l:"The most you're allowed to lend to one family.",
+ s:["Large exposures are measured against Tier 1 capital.","Reporting starts at 10%.","The hard limit is 25%."],
+ a:"25% of Tier 1 capital."},
+q67:{l:"COREP is the private report to the regulator; Pillar 3 is the public version for everyone.",
+ s:["Pillar 3 means banks publish information on their capital, risks and liquidity.","Much of it uses the same numbers as COREP.","So the two must be consistent.","A BA checks the published numbers reconcile to what was reported."],
+ a:"Pillar 3 is public disclosure; it draws on the same numbers as COREP, so they must match."},
+q68:{l:"You realise after posting a letter that it had the wrong figure.",
+ s:["Confirm the error and work out how big it is, including the effect on key ratios.","Tell the right people quickly: reporting lead, compliance, senior manager.","Agree with the regulator whether to resubmit, and do it.","Find the root cause and add a control so it can't happen again."],
+ a:"Confirm and size it, escalate, resubmit as agreed, fix the root cause and add a control."},
+m23:{l:"The point where a loan becomes big enough that the regulator wants to hear about it.",
+ s:["Large exposures are compared with Tier 1 capital.","The limit is 25%.","Reporting starts earlier, at 10%."],
+ a:"10% of Tier 1."},
+q69:{l:"Guessing how much you could lose lending a friend money.",
+ s:["PD: how likely they are not to pay back (for example 2%).","EAD: how much they owe when that happens (for example £1,000).","LGD: what share you lose after getting some back (for example 40%).","Expected Loss = PD × LGD × EAD = 2% × 40% × £1,000 = £8.","Standardised uses risk weights set by the regulator; IRB uses the bank's own approved models for PD, LGD and EAD."],
+ a:"EL = PD × LGD × EAD. Standardised uses set risk weights; IRB uses the bank's own models."}
+});
+Object.assign(LEARN,{
+q70:{l:"Traffic lights for loans: green (fine), amber (getting worse), red (in trouble).",
+ s:["Stage 1 (green): the loan is fine. Set aside money for losses that could happen in the next 12 months.","Stage 2 (amber): risk has gone up a lot since the loan started (SICR). Set aside money for losses over the loan's whole life.","Stage 3 (red): the loan is credit-impaired, for example in default. Lifetime losses, and interest is worked out on the net amount.","SICR triggers: the chance of default has risen a lot, the loan is 30+ days late, it's on a watchlist, or it has been forborne."],
+ a:"Stage 1 = 12-month loss; Stage 2 (big rise in risk, e.g. 30+ days late) = lifetime loss; Stage 3 (impaired) = lifetime loss on the net amount."},
+m24:{l:"Each report has a number, like a form number at the post office.",
+ s:["FINREP templates cover financial information.","F 18 covers performing and non-performing loans.","F 19 covers forborne loans: ones where the bank gave the borrower a concession."],
+ a:"F 19."},
+q71:{l:"Saving for next year's car repairs versus for every repair over the car's whole life.",
+ s:["12-month ECL: the losses expected from defaults that could happen in the next 12 months.","Lifetime ECL: the losses expected over the whole remaining life of the loan.","Banks run several economic scenarios (good, normal, bad), each with a weight.","The ECL is the weighted average of the losses in those scenarios."],
+ a:"12-month ECL covers defaults in the next year; lifetime covers the whole life; both use weighted economic scenarios."},
+q72:{l:"A student is 'failing' if they're very late with homework or clearly won't hand it in.",
+ s:["A borrower is in default if they are 90 days past due on a material amount.","'Material' has two tests set by the PRA: an amount in pounds and a percentage of the exposure.","Or the bank thinks they are unlikely to pay (for example bankruptcy).","After they're up to date again, they must stay clean for a probation period (at least 3 months, longer if restructured) before leaving default."],
+ a:"Default = 90+ days past due on a material amount, or unlikely to pay; exit only after a probation period."},
+m25:{l:"The name of the regulator's project to redesign reporting.",
+ s:["The PRA and Bank of England started a programme in 2025.","Its goal is cheaper, better regulatory reporting.","It's called Future Banking Data."],
+ a:"Future Banking Data."},
+q73:{l:"Forbearance is giving a struggling friend more time to pay; non-performing means the debt has gone bad.",
+ s:["Forbearance: the bank gives a concession to a borrower in difficulty, such as a payment holiday or a longer term.","Non-performing: the loan is 90+ days past due, or the borrower is unlikely to pay.","A loan can be both: forborne and non-performing.","FINREP shows forborne loans in F 19 and non-performing in F 18; for IFRS 9, forbearance usually moves a loan at least to Stage 2."],
+ a:"Forbearance = a concession to a struggling borrower; non-performing = 90+ days late or unlikely to pay. Reported in F 19 and F 18."},
+m26:{l:"Credit files show a default after several missed months, not after one.",
+ s:["One missed payment shows as arrears, not default.","Industry principles say a default is usually recorded after a few months of arrears.","That's typically 3 to 6 months."],
+ a:"When 3 to 6 months in arrears."},
+q74:{l:"A weather app's forecast, adjusted by hand because you know a storm the app doesn't.",
+ s:["Models calculate expected losses from past data.","Sometimes they miss new risks, like a cost-of-living squeeze.","Management adds an overlay (adjustment) to cover that.","Auditors and regulators check overlays closely because they're judgement: they want evidence, approval and a plan to remove them."],
+ a:"Overlays are judgement-based adjustments to model results; they're scrutinised because they can be used to move numbers without evidence."},
+m27:{l:"Amber light: plan for the whole journey, not just the next mile.",
+ s:["Stage 1 uses 12-month expected loss.","Stage 2 means risk has risen a lot.","So Stage 2 uses lifetime expected loss."],
+ a:"Lifetime ECL."},
+q75:{l:"Saving for a loss in advance, giving up on a debt, and getting some money back later.",
+ s:["Provision: money set aside in advance for losses you expect.","Write-off: removing the debt from the books when there's no real hope of getting it back. (In the US this is called a charge-off.)","Recovery: money collected after a write-off.","Recoveries reduce the loss; they're reported separately."],
+ a:"Provision = set aside in advance; write-off (charge-off in the US) = remove an unrecoverable debt; recovery = cash collected afterwards."},
+q76:{l:"Watching how many students slip a grade, how many recover, and how each year group does.",
+ s:["Roll rate: the % of accounts that move from one arrears bucket to a worse one, for example from 30 to 60 days late.","Cure rate: the % that go back to being up to date.","Vintage analysis: compare groups of loans by when they started.","Together they show whether lending is getting riskier and whether collections are working."],
+ a:"Roll rate = worsening, cure rate = recovering, vintage = comparing loan groups by start date."},
+q77:{l:"A credit card: what you've spent plus a share of what you could still spend.",
+ s:["Drawn balance: what's owed now, for example £3,000.","Undrawn: the unused limit, for example £2,000.","CCF: the share of the unused limit expected to be used before default, for example 20%.","EAD = 3,000 + 20% × 2,000 = £3,400."],
+ a:"EAD = drawn balance + CCF × undrawn limit."},
+q115:{l:"Sorting post into the right box, then reading the price from that box's chart.",
+ s:["Decide the exposure class: sovereign, bank, corporate, retail, property, defaulted and so on.","Find the rule for that class: an external rating, a loan-to-value band, or a fixed weight such as 75% for retail.","Apply any credit risk mitigation, such as guarantees or collateral.","Basel 3.1 changes the property tables (by loan-to-value), corporate weights, and CCFs, and adds more data needs."],
+ a:"Class → rule (rating, LTV or fixed) → mitigation → risk weight. Basel 3.1 changes the tables and adds data needs."},
+m28:{l:"A warning bell that rings at a set point unless you can prove otherwise.",
+ s:["IFRS 9 says risk has risen a lot (SICR) if a loan is more than a certain number of days late.","Banks can only argue against this with good evidence (it's 'rebuttable').","The number is 30 days past due."],
+ a:"30 days past due."},
+q116:{l:"Security for a loan: something you hold (collateral) or someone who promises to pay (a guarantee).",
+ s:["Funded protection: the bank holds something of value, like cash or bonds.","Unfunded protection: someone else promises to pay, like a guarantee.","Simple approach: use the collateral's risk weight for the covered part. Comprehensive approach: reduce the exposure by the collateral value after haircuts.","Data needed: collateral type and value, dates, currency, legal eligibility, guarantor details."],
+ a:"Funded = collateral, unfunded = guarantees; simple swaps risk weights, comprehensive reduces exposure after haircuts."},
+q117:{l:"Banks that marked their own homework get stricter rules.",
+ s:["Some portfolios can no longer use the bank's own advanced models (for example large companies and financial institutions).","Models must use minimum values (input floors) for PD and LGD.","The output floor limits how low model results can go.","For data: more fields, more reconciliations, and standardised numbers alongside model numbers."],
+ a:"Fewer advanced models, input floors and the output floor, so more data and parallel standardised calculations."},
+m29:{l:"Expected loss = how likely × how much you lose × how much is owed.",
+ s:["PD = 2% = 0.02.","LGD = 40% = 0.40.","EAD = £100,000.","0.02 × 0.40 × 100,000 = £800."],
+ a:"£800."},
+q118:{l:"A step-by-step bill: start with the full price, take off discounts, then apply the tax rate.",
+ s:["C 07 starts with the original exposure for each standardised class.","It subtracts provisions, moves guaranteed parts to the guarantor's class, and applies collateral.","Then it applies CCFs and risk weights to get RWA.","C 08 does the same for IRB, using PD and LGD. To reconcile to FINREP, start from accounting balances and explain differences (scope, provisions, off-balance-sheet items)."],
+ a:"C 07: original exposure → provisions → mitigation → CCF → risk weight → RWA. C 08 is the IRB version; reconcile to FINREP by explaining each difference."},
+q119:{l:"A broken phone: you've already set some money aside, so you only worry about the rest.",
+ s:["Take the unsecured part of the defaulted loan.","Compare specific provisions with that unsecured part.","Provisions below 20% → risk weight 150%. 20% or more → 100%.","So the provision data must be accurate, because it changes the risk weight."],
+ a:"Unsecured defaulted exposure is weighted 150% if specific provisions are under 20%, otherwise 100%."},
+m30:{l:"After being ill, you need a few healthy weeks before you're signed fit.",
+ s:["A borrower who was in default pays up again.","They must stay well for a probation period before leaving default.","For non-restructured exposures that minimum is 3 months."],
+ a:"3 months."},
+m31:{l:"A longer trial period after a special arrangement.",
+ s:["A forborne loan got a concession, such as a payment holiday.","Even if it's now performing, it stays 'forborne' for a while.","The minimum probation is 2 years."],
+ a:"2 years."},
+m32:{l:"Earning interest on what you realistically expect to get back.",
+ s:["Stage 3 loans are credit-impaired.","The bank already holds an allowance for expected losses.","So interest is worked out on the amount after that allowance: the net carrying amount."],
+ a:"The net carrying amount (amortised cost after allowance)."},
+m33:{l:"Credit card owed amount plus a share of the unused limit.",
+ s:["Drawn: what's already borrowed.","Undrawn: the unused limit.","CCF: the share of undrawn expected to be used.","EAD = drawn + CCF × undrawn."],
+ a:"Drawn balance + CCF × undrawn limit."},
+m34:{l:"Less money set aside means a higher risk charge.",
+ s:["The loan is in default.","Specific provisions are below 20% of the unsecured part.","The rule for that case is a 150% risk weight."],
+ a:"150%."},
+m35:{l:"Form numbers: C 07 is for the standard method.",
+ s:["COREP credit risk has separate template families.","Standardised approach exposures go in C 07.","IRB exposures go in C 08."],
+ a:"C 07."},
+m36:{l:"Form numbers: C 08 is for banks' own models.",
+ s:["Standardised approach uses C 07.","Banks with approved models use the IRB approach.","IRB credit risk is reported in C 08."],
+ a:"C 08."},
+m37:{l:"A partly-trusted student: allowed to estimate one number, the teacher gives the rest.",
+ s:["Foundation IRB is the simpler model-based approach.","The bank estimates the chance of default (PD) itself.","LGD and EAD (CCF) come from the regulator's set values."],
+ a:"PD only."},
+m38:{l:"If a reliable parent guarantees part of the loan, that part is as safe as the parent.",
+ s:["Part of the loan is guaranteed by a third party.","If the borrower fails, the guarantor pays.","So the guaranteed part uses the guarantor's risk weight."],
+ a:"The guarantor's risk weight."},
+x1:{l:"Sharing 7 sweets between 2 children with no cutting: each gets 3.",
+ s:["Both numbers are whole numbers (INTEGER).","Integer division drops the fraction.","7 ÷ 2 = 3.5 → 3."],
+ a:"3. Use 7.0/2 or CAST to get 3.5."},
+x2:{l:"10 bank accounts, but only 4 different owners.",
+ s:["COUNT(DISTINCT customer_id) counts different customers, not rows.","There are 10 rows but only 4 different customer IDs.","So the answer is 4."],
+ a:"4."},
+x3:{l:"Counting how many books each student borrowed, including students who borrowed none.",
+ s:["LEFT JOIN keeps customers with no accounts; their account columns are blank.","COUNT(*) counts the row itself, so it gives 1 even when there's no account.","COUNT(a.account_id) skips blanks, so customers with no accounts get 0."],
+ a:"COUNT(a.account_id)."},
+x4:{l:"All of October: from the first moment of 1 October up to, but not including, 1 November.",
+ s:["Timestamps include time, like 31 October at 3:45 pm.","'<= 2026-10-31' only reaches midnight at the start of 31 October, so it misses most of that day.","Using '>= 1 October AND < 1 November' catches every moment in October."],
+ a:"txn_ts >= '2026-10-01' AND txn_ts < '2026-11-01'."},
+x5:{l:"Asking people in a line for a pen: take the first one who has one.",
+ s:["COALESCE returns the first value that isn't blank.","The list is NULL, NULL, 5, 7.","The first non-blank is 5."],
+ a:"5."},
+x6:{l:"Scrap paper for one sum: you throw it away when that sum is done.",
+ s:["A CTE is written with WITH at the top of one statement.","It isn't saved as a table.","It disappears when that one statement finishes."],
+ a:"It exists only for the single statement it belongs to."},
+x7:{l:"A family tree: parents, then their children, then grandchildren.",
+ s:["Some data is a tree: a parent company owns subsidiaries, which own others.","A recursive CTE starts at the top and keeps finding the next level down.","That's how you walk a legal-entity tree or a connected-client group."],
+ a:"Walking a hierarchy, such as a legal-entity or connected-client group tree."},
+x8:{l:"Searching a phone book by 'surname length' instead of by surname: the alphabetical order can't help.",
+ s:["Tables are often organised (indexed or partitioned) by the raw date.","YEAR(open_date) changes each value before comparing.","The database can't use its shortcut, so it reads every row.","Instead write: open_date >= DATE '2026-01-01' AND open_date < DATE '2027-01-01'."],
+ a:"Wrapping the column in a function stops index or partition elimination; use a date range instead."}
+});
+Object.assign(LEARN,{
+x9:{l:"Writing each student's class total next to their own mark, without merging rows.",
+ s:["A normal SUM with GROUP BY squashes rows into one per customer.","SUM(...) OVER (PARTITION BY customer_id) keeps every row.","Each row gets its customer's total written beside it."],
+ a:"One row per input row, each showing its customer's total."},
+x10:{l:"Asking 'what comes after the last page?' Nothing.",
+ s:["LEAD looks at the next row for the same account.","On the latest row there is no next row.","So it returns NULL, unless you give a default like LEAD(balance, 1, 0)."],
+ a:"NULL, unless a default is supplied."},
+x11:{l:"Splitting a class into four equal teams by height.",
+ s:["NTILE(4) sorts the rows (here by PD, highest first).","It cuts them into 4 groups of about the same size.","Group 1 is the riskiest quarter, group 4 the safest."],
+ a:"Split rows into four roughly equal buckets (quartiles)."},
+x12:{l:"Laying a photocopy of a page next to the original to compare lines.",
+ s:["A self-join joins a table to itself, using two nicknames.","One copy can be 'this month', the other 'last month'.","Then you compare the two values on the same row."],
+ a:"Compare rows within the same table, such as each month with the previous month."},
+x13:{l:"'Is there anyone in the room?' Yes as soon as you see one person.",
+ s:["EXISTS runs the small query inside.","If that query finds at least one row, the answer is TRUE.","It doesn't matter what columns it returns."],
+ a:"When the subquery returns at least one row."},
+x14:{l:"Stacking two piles of forms only works if the boxes line up.",
+ s:["UNION ALL stacks the rows of two queries.","Both must have the same number of columns.","The columns must be in the same order and of compatible types (number with number, date with date)."],
+ a:"Same number of columns, compatible types, same order."},
+x15:{l:"Tidying a drawer doesn't mean it stays tidy after someone else uses it.",
+ s:["A view can have ORDER BY inside it.","The report then selects from the view and may join, filter or process in parallel.","Only an ORDER BY in the final, outer query guarantees the order you see."],
+ a:"No; only an ORDER BY in the outermost query guarantees order."},
+x16:{l:"Asking for one total per student, but also 'their subject' when they have five subjects: which one?",
+ s:["GROUP BY customer_id makes one row per customer.","product_code can have many values per customer.","The database doesn't know which one to show, so standard SQL gives an error."],
+ a:"Error: product_code is neither aggregated nor in GROUP BY."},
+x17:{l:"A queue: you go through the first door that lets you in.",
+ s:["CASE checks conditions from top to bottom and stops at the first true one.","dpd = 95. Is 95 >= 30? Yes.","So it returns '30+' and never checks the '90+' line. Put the stricter test first."],
+ a:"'30+'."},
+x18:{l:"A book's index helps you find pages fast, but every new page means updating the index.",
+ s:["An index makes searching faster.","Every insert or update must also update the index.","It also takes extra storage space."],
+ a:"Faster reads, but slower inserts/updates and extra storage."},
+x19:{l:"Telling a delivery planner roughly how many parcels go to each area, so they plan the route well.",
+ s:["Before running a query, the optimiser guesses how many rows each step will produce.","Statistics give it real numbers about the data.","Good guesses mean better join plans and faster queries."],
+ a:"To help the optimiser estimate row counts and choose better join plans."},
+x20:{l:"A whiteboard wiped clean when you leave the room.",
+ s:["A volatile table is created for your session only.","Nobody else can see it.","When you log off, the table and its data disappear."],
+ a:"It exists only for the session; definition and data disappear at logoff."},
+x21:{l:"Averaging this month and the two before it.",
+ s:["A 3-month window = the current month plus 2 earlier months.","ROWS counts actual rows.","So: ROWS BETWEEN 2 PRECEDING AND CURRENT ROW."],
+ a:"ROWS BETWEEN 2 PRECEDING AND CURRENT ROW."},
+x22:{l:"Two students with the same score: who comes first if you don't say?",
+ s:["ROW_NUMBER must give one row the number 1.","Two rows share the same date, so there's a tie.","Without a tie-breaker, the database may pick a different one each run. Add another sort column, such as load_ts."],
+ a:"Which duplicate is kept can change between runs."},
+x23:{l:"Writing a name from whichever of two lists has it.",
+ s:["In a FULL OUTER JOIN, one side's key can be blank when there's no match.","COALESCE returns the first value that isn't blank.","COALESCE(s.id, t.id) gives the key from whichever side has it."],
+ a:"COALESCE(s.id, t.id)."},
+x24:{l:"Sorting dates written as words: '31/01/2026' comes after '01/12/2026' because 3 > 0.",
+ s:["Text is compared letter by letter, from the left.","'DD/MM/YYYY' puts the day first, so sorting follows days, not real dates.","MAX, ORDER BY and date ranges all give wrong answers. Store dates as DATE."],
+ a:"Comparison and sorting are by text, so MAX, ORDER BY and ranges go wrong."},
+x25:{l:"Publishing your school report so parents can judge the school.",
+ s:["Pillar 3 is information banks publish for everyone.","Investors and others can compare banks' capital and risks.","That outside pressure is called market discipline."],
+ a:"Public disclosure that supports market discipline."},
+x26:{l:"Three reports about the same house should give the same number of rooms.",
+ s:["COREP, FINREP and Pillar 3 describe the same bank.","Many numbers should match or reconcile.","A difference nobody can explain usually means an error, and supervisors will ask about it."],
+ a:"They describe the same balance sheet, so unexplained differences signal errors."},
+x27:{l:"An online form that won't submit until you fix a red error box.",
+ s:["Regulators run automatic validation rules on each return.","An error-level (blocking) rule failure means the data is wrong or inconsistent.","The return is rejected and must be fixed and sent again."],
+ a:"It is rejected and must be corrected and resubmitted."},
+x28:{l:"Pay the higher of the meter fare and the minimum fare.",
+ s:["Work out RWA with the bank's models.","Work out 72.5% of RWA under the standardised method.","Use whichever is higher."],
+ a:"The higher of modelled RWA and 72.5% of standardised RWA."},
+x29:{l:"Turning 'money you might lend' into 'money you'd probably have lent' by default time.",
+ s:["Off-balance-sheet items, like unused credit lines, aren't loans yet.","Customers may draw them before they default.","The CCF converts them into an equivalent loan amount."],
+ a:"Converts an off-balance-sheet commitment into an on-balance-sheet exposure equivalent."},
+x30:{l:"40% of an unused £1 million limit is expected to be drawn.",
+ s:["Undrawn commitment = £1,000,000.","CCF = 40% = 0.4.","1,000,000 × 0.4 = £400,000."],
+ a:"£400,000."},
+x31:{l:"Risk weight is a multiplier.",
+ s:["Exposure = £2,000,000.","Risk weight = 75% = 0.75.","2,000,000 × 0.75 = £1,500,000 = £1.5m."],
+ a:"£1.5m."},
+x32:{l:"Capital needed = 8% of risk-weighted assets.",
+ s:["Pillar 1 total own funds = 8% of RWEA.","RWEA = £1,500,000.","1,500,000 × 0.08 = £120,000."],
+ a:"£120,000."},
+x33:{l:"Small personal loans get a standard, middle-sized weight.",
+ s:["Qualifying regulatory retail = many small loans to individuals and small firms.","Spreading the risk across many borrowers makes it safer than one big corporate loan.","The CRR standardised weight is 75%."],
+ a:"75%."},
+x34:{l:"A home loan well covered by the house's value is safer.",
+ s:["The loan is secured on a home.","Up to 80% loan-to-value, the house value covers it well.","Under CRR (before Basel 3.1) that part gets 35%."],
+ a:"35%."},
+x35:{l:"If a friend can't repay £100 and you get £60 back, you lost 40%.",
+ s:["LGD looks at what happens after default.","It measures the share of the exposure you don't get back.","After recoveries like collateral and collections."],
+ a:"The share of the exposure lost if default happens, after recoveries."},
+x36:{l:"If you expect to lose more than you've saved for, the gap comes out of your best savings.",
+ s:["IRB banks compare expected loss (EL) with their provisions.","If EL is bigger, there's a shortfall.","The shortfall is deducted from CET1 capital."],
+ a:"It is deducted from CET1."},
+x37:{l:"A loan has 'gone bad' when it's very late or clearly won't be repaid.",
+ s:["Check days past due: more than 90 days on a material amount.","Or check whether the borrower is unlikely to pay, even if not yet late.","Either one makes it non-performing."],
+ a:"More than 90 days past due on a material amount, or the debtor is unlikely to pay."},
+x38:{l:"You don't need to wait for missed payments if the borrower has gone bankrupt.",
+ s:["'Unlikely to pay' means there's strong evidence they won't repay.","Bankruptcy or insolvency is the clearest sign.","It triggers default straight away."],
+ a:"The obligor has filed for bankruptcy or insolvency."},
+x39:{l:"Buying a damaged car at a discount: you only track how things change from the day you bought it.",
+ s:["POCI assets are already credit-impaired when bought or created.","The expected losses are built into the price paid.","So the allowance only shows changes in lifetime ECL since that first day."],
+ a:"Cumulative changes in lifetime ECL since initial recognition."},
+x40:{l:"Strict rules for the biggest schools, and others encouraged to follow.",
+ s:["BCBS 239 was written for global systemically important banks (G-SIBs).","Supervisors expect domestic systemically important banks (D-SIBs) to follow it too.","Many other banks adopt it as good practice."],
+ a:"G-SIBs, and supervisors expect D-SIBs to follow it."},
+x41:{l:"Companies that would fall together, like a parent and its children, count as one family.",
+ s:["Clients are 'connected' if one controls the other.","Or if they depend on each other financially, so one failing would hurt the other.","Their exposures are added up as one group."],
+ a:"Control relationships or economic dependency."}
+});
+
+/* "Step by step" box: everyday comparison → numbered steps → the answer */
+function learnBlock(id, fallback, opts={}){
+  const L=(id&&LEARN[id])||fallback; if(!L||!Array.isArray(L.s)||!L.s.length) return null;
+  const d=el("details",{class:"learnbx"+(opts.compact?" compact":"")}); if(opts.open!==false) d.open=true;
+  d.append(el("summary",{},el("span",{class:"learnic","aria-hidden":"true",text:"🪜"}),el("span",{text:opts.title||"Step by step, in simple words"})));
+  if(L.l) d.append(el("p",{class:"learnlike"},el("b",{text:"Think of it like this: "}),L.l));
+  const ol=el("ol",{class:"learnsteps"}); L.s.forEach(x=>ol.append(el("li",{text:x}))); d.append(ol);
+  if(L.a) d.append(el("p",{class:"learnans"},el("b",{text:"So the answer: "}),L.a));
+  return d;
+}
+
 /* =====================================================================
    ARS Learning Academy — BA Interview Preparation app logic
    Sections: SQL (50 per round) and UK credit-risk regulatory reporting (50 per round)
@@ -4235,6 +4695,7 @@ PLAIN ENGLISH RULES (strict): imagine explaining to a smart friend who has never
 - "covered": up to 4 points they got right, 2–5 words each. "missed": up to 4 points they missed, 2–5 words each (empty for Excellent if nothing missed).
 - "key_idea": the single most important correct idea, one sentence, max 22 words.
 - "hook": a memorable analogy, mnemonic or everyday comparison that makes it stick, max 15 words.
+- "steps": 3 to 5 steps that walk a complete beginner (a class 10 student) from the question to the right answer, in order. Each step one or two short sentences (max 25 words), everyday words, small numbers where it helps, and the last step reaches the answer.
 - "points": exactly 3 bullet points to SAY in the interview, max 12 words each.
 - "example": "code" = a tiny Teradata or Oracle SQL snippet (max 6 lines, starting with a comment line naming the dialect, e.g. -- Teradata) for SQL topics, else ""; "text" = a mini worked example with UK banking numbers or the result, max 30 words.
 - "quiz": one quick multiple-choice check on the key idea with 3 short options (max 8 words each), "answer" is the 0-based index of the correct option, "why" max 15 words.
@@ -4243,7 +4704,7 @@ PLAIN ENGLISH RULES (strict): imagine explaining to a smart friend who has never
 - "followup": one probing follow-up question, max 20 words.
 
 Reply with only JSON in exactly this shape:
-{"rating":"Good","score":7,"verdict":"…","covered":["…"],"missed":["…"],"key_idea":"…","hook":"…","points":["…","…","…"],"example":{"code":"","text":"…"},"flow":["…","…","…"],"quiz":{"q":"…","options":["…","…","…"],"answer":0,"why":"…"},"model_answer":"…","followup":"…"}`;
+{"rating":"Good","score":7,"verdict":"…","covered":["…"],"missed":["…"],"key_idea":"…","hook":"…","steps":["…","…","…"],"points":["…","…","…"],"example":{"code":"","text":"…"},"flow":["…","…","…"],"quiz":{"q":"…","options":["…","…","…"],"answer":0,"why":"…"},"model_answer":"…","followup":"…"}`;
 }
 async function gradeOpen(d,it,answer,outBubble,isFollow){
   if(!SAMPLE){   // no AI available: self-check against the key points, so practice still counts
@@ -4252,7 +4713,8 @@ async function gradeOpen(d,it,answer,outBubble,isFollow){
     const c=el("div",{class:"fb"});
     c.append(el("div",{class:"fbhead"},el("span",{class:"rpill sat",text:"Self-check"})));
     c.append(el("p",{text:"Compare your answer with what a strong answer covers, then rate yourself honestly."}));
-    if(keys.length){ const ul=el("ul",{class:"selfkeys"}); keys.slice(0,6).forEach(k=>{ const li=el("li"); if(d.gen) li.textContent=k; else li.innerHTML=k; ul.append(li); }); c.append(ul); }
+    { const lb=learnBlock(d.id); if(lb) c.append(lb); }
+    if(keys.length){ const ul=el("ul",{class:"selfkeys"}); keys.slice(0,6).forEach(k=>{ const li=el("li"); if(d.gen) li.textContent=k; else li.innerHTML=k; ul.append(li); }); c.append(el("p",{class:"muted small",text:"Key points to say in the interview:"}),ul); }
     bubbleIn(c,{wide:true,label:"What a strong answer covers"});
     mode="idle"; setComposer(false);
     const pick=(rating,score)=>{ if(!isFollow){ it.answer=answer; it.rating=rating; it.score=score; it.fb={rating,score,verdict:"Self-assessed against the key points.",selfCheck:true}; recordAnswer(curItem,it); } bubbleOut(rating); nextChips(); };
@@ -4314,6 +4776,7 @@ function feedbackBubble(fb,d,it,isFollow){
   const c=el("div",{class:"fb compact"});
   c.append(el("div",{class:"fbhead"}, el("span",{class:"rpill "+RATINGS[fb.rating],text:fb.rating}), el("span",{class:"score",text:`${fb.score}/10`}), el("span",{class:"muted",text:isFollow?"Follow-up":"Feedback"})));
   if(fb.verdict) c.append(el("p",{class:"verdict",text:fb.verdict}));
+  { const lb=typeof learnBlock==="function"?learnBlock(d&&d.id,Array.isArray(fb.steps)?{l:fb.hook,s:fb.steps.slice(0,6).map(String),a:fb.key_idea}:null):null; if(lb) c.append(lb); }
   c.append(...fbBody(fb,d,it));
   const keyPts=(!isFollow && d.type==="open") ? (d.gen ? (d.keys||[]) : (d.a||[])) : [];
   if(keyPts.length){ const det=el("details",{class:"model"},el("summary",{text:"Prep-bank key points"})); const ul=el("ul"); if(d.gen) keyPts.forEach(k=>ul.append(el("li",{text:k}))); else ul.innerHTML=keyPts.map(x=>`<li>${x}</li>`).join(""); det.append(ul); if(!d.gen&&d.sql) det.append(fbCode(d.sql)); c.append(det); }
@@ -4470,9 +4933,10 @@ function renderBank(body){
       cardEl.append(acts);
       if(open){
         const a=el("div",{class:"ans"});
-        if(x.type==="mcq"){ a.append(el("ol",{type:"A"},x.o.map((o,i)=>el("li",{class:i===x.a?"rightopt":""},o+(i===x.a?"  ✓":""))))); a.append(el("p",{text:x.e}), el("p",{class:"muted",text:"Example: "+x.x})); }
+        if(x.type==="mcq"){ a.append(el("ol",{type:"A"},x.o.map((o,i)=>el("li",{class:i===x.a?"rightopt":""},o+(i===x.a?"  ✓":""))))); const lb=learnBlock(x.id); if(lb) a.append(lb); a.append(el("p",{class:"muted",text:"The detail: "+x.e}), el("p",{class:"muted",text:"Example: "+x.x})); }
         else {
-          const ul=el("ul"); ul.innerHTML=x.a.map(b=>`<li>${b}</li>`).join(""); a.append(ul);
+          { const lb=learnBlock(x.id); if(lb) a.append(lb); }
+          const ul=el("ul"); ul.innerHTML=x.a.map(b=>`<li>${b}</li>`).join(""); a.append(el("p",{class:"muted",text:"Key points to say in the interview:"}),ul);
           if(x.sql){ const pre=el("pre",{class:"sql"}); const code=el("code"); code.innerHTML=hl(x.sql); pre.append(code); a.append(pre); }
           if(x.tip){ const t=el("div",{class:"tip"}); t.innerHTML=`<b>How to land it:</b> ${x.tip}`; a.append(t); }
           if(x.rep) a.append(el("p",{class:"muted small",text:`Theme source: ${x.rep} (Glassdoor interview reviews, 2026). Question wording is ours.`}));
@@ -7145,7 +7609,7 @@ Reply with only JSON: {"c":"sql" or "reg","q":"question","o":["4 options"],"a":0
     cur=q; st.idx=i; save(st);
     $("#qotdTag").textContent=(q.c==="sql"?"SQL":"UK credit risk")+(i?` · Q${(st.correct||0)+1}`:" · Today");
     $("#qotdQ").textContent=q.q.replace(/<[^>]+>/g,"");
-    box.innerHTML=""; why.hidden=true; next.hidden=true;
+    box.innerHTML=""; why.hidden=true; next.hidden=true; { const old=document.querySelector("#qotdPop .learnbx"); if(old) old.remove(); }
     const reason=q.s || SIMPLE[q.id] || (q.e||"").split(/(?<=\.)\s/)[0];
     q.o.forEach((o,k)=>{ const b=el("button",{class:"qopt",type:"button",text:`${String.fromCharCode(65+k)}. ${o}`}); b.addEventListener("click",()=>{
       box.querySelectorAll("button").forEach((x,j)=>{ x.disabled=true; x.classList.toggle("right",k===q.a&&j===q.a); x.classList.toggle("wrong",j===k&&k!==q.a); });
@@ -7153,6 +7617,7 @@ Reply with only JSON: {"c":"sql" or "reg","q":"question","o":["4 options"],"a":0
       if(ok){ st.correct=(st.correct||0)+1; save(st); }
       why.textContent=(ok?"Correct. ":"Not quite. ")+(ok?reason:"Have another go.");
       why.hidden=false; progress(); btn.classList.add("done");
+      { const old=document.querySelector("#qotdPop .learnbx"); if(old) old.remove(); const lb=ok?learnBlock(q.id,null,{open:false,compact:true,title:"See it step by step"}):null; if(lb) why.after(lb); }
       if(ok && st.correct>=QOTD_GOAL){ next.hidden=false; next.className="qnext"; next.textContent="Finish"; next.onclick=finished; return; }
       next.hidden=false;
       if(ok){ next.className="qnext"; next.textContent="Next question →"; next.onclick=()=>{ if(!busy) show(st.idx+1); }; }
@@ -7974,7 +8439,7 @@ function renderResult(res, queued){
         el("div",{class:"qmeta"},el("span",{class:"tag",text:`Q${i+1} · ${d.sec==="sql"?"SQL":"UK credit risk"}`}),el("span",{class:"rpill sm "+(d.ok?"ex":"ni"),text:d.ok?"Correct":d.choice===null?"Not answered":"Incorrect"})),
         el("h4",{text:q.q}),
         el("ol",{type:"A",class:"revopts"},q.o.map((o,k)=>el("li",{class:(k===q.a?"rightopt":"")+(k===d.choice&&!d.ok?" wrongopt":"")},o+(k===q.a?"  ✓ correct":"")+(k===d.choice&&!d.ok?"  ✗ your answer":"")))),
-        q.s?el("p",{class:"simple"},el("b",{text:"In simple words: "}),q.s):null,
+        learnBlock(q.id)||(q.s?el("p",{class:"simple"},el("b",{text:"In simple words: "}),q.s):null),
         el("p",{class:q.s?"muted":""},el("b",{text:q.s?"The detail: ":"Why: "}),q.e),
         q.x?el("p",{class:"muted"},el("b",{text:"Example: "}),q.x):null);
       list.append(item); });
