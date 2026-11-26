@@ -1936,6 +1936,171 @@ ul.selfkeys{margin:6px 0 0;padding-left:20px}
 .scrkeytip{flex-basis:100%;font-size:12.5px}
 .scrback{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:700;font-size:14px;border-radius:999px;padding:7px 14px;cursor:pointer;margin-bottom:12px}
 .scrback:hover{border-color:var(--accent)}
+
+/* ===================== SQL console (Teradata / Oracle look) ===================== */
+.l3grid.ide-host{grid-template-columns:minmax(0,1180px)!important}
+.ide{--i-bg:#fff;--i-ink:#1f2328;--i-mut:#5b6670;--i-line:#cfd6dd;--i-head:#eef1f4;--i-sel:#dbe9f7;--i-acc:#1f5f99;
+  border:1px solid #9aa6b2;border-radius:10px;overflow:hidden;background:var(--i-bg);color:var(--i-ink);font:13px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);margin-top:10px;min-width:0}
+.ide *{box-sizing:border-box}
+.ide-titlebar{display:flex;align-items:center;gap:10px;padding:7px 12px;font-weight:600;font-size:12.5px}
+.ide-dots{display:flex;gap:5px}.ide-dots i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.ide-dots i+i{background:#febc2e}.ide-dots i+i+i{background:#28c840}
+.ide-sp{flex:1}
+.ide-sess{font-weight:500;opacity:.75;font-size:12px}
+.ide-dial{display:inline-flex;border-radius:7px;padding:2px;gap:2px}
+.ide-dial button{border:0;background:none;font:inherit;font-weight:700;font-size:12px;border-radius:5px;padding:4px 12px;cursor:pointer;color:inherit;opacity:.75}
+.ide-dial button[aria-checked="true"]{opacity:1}
+.ide-toolbar{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:6px 8px;border-bottom:1px solid var(--i-line);background:var(--i-head)}
+.ide-tb{display:inline-flex;align-items:center;gap:6px;border:1px solid transparent;background:none;color:var(--i-ink);font:inherit;font-size:12.5px;border-radius:5px;padding:5px 9px;cursor:pointer}
+.ide-tb:hover{background:#fff;border-color:var(--i-line)}
+.ide-tb kbd{font:600 10.5px ui-monospace,Consolas,monospace;color:var(--i-mut);border:1px solid var(--i-line);border-radius:4px;padding:0 4px;background:#fff}
+.ide-tb.run{font-weight:700}
+.ide-tb:disabled{opacity:.55;cursor:progress}
+.ide-sep{width:1px;height:20px;background:var(--i-line);margin:0 4px}
+.ide-submit{background:#1a7f37!important;color:#fff!important;font-weight:700;border-color:#1a7f37!important}
+.ide-use{background:var(--i-acc);color:#fff;font-weight:700}
+.ide-tblbtn{display:none}
+.ide-body{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:420px}
+.ide-explorer{border-right:1px solid var(--i-line);background:#fbfcfd;overflow:auto;max-height:620px;padding-bottom:8px}
+.ide-panehead{padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid var(--i-line);background:var(--i-head);position:sticky;top:0;z-index:1}
+.ide-node{display:flex;align-items:center;gap:6px;padding:8px 10px 2px;font-size:12.5px;color:var(--i-acc)}
+.ide-conn{margin-left:auto;font-size:10.5px;font-weight:700;color:#1a7f37;background:#dcf5e3;border-radius:4px;padding:0 5px}
+.ide-xhint{margin:8px 10px 0;font-size:11.5px;color:var(--i-mut);line-height:1.4}
+.ide .stree{color:var(--i-ink);padding:0 6px}.ide .sgrp{color:var(--i-mut)}.ide .sdesc{color:var(--i-mut)}
+.ide .stab summary:hover,.ide .scol:hover{background:var(--i-sel)}.ide .scol{color:var(--i-ink);font-size:12px}.ide .scol span{color:var(--i-mut)}
+.ide .stc{background:var(--i-head);color:var(--i-mut)}.ide .spv{color:var(--i-acc);opacity:1}
+.ide .scols{border-color:var(--i-line)}.ide .sico{border-color:var(--i-mut);background:linear-gradient(var(--i-mut),var(--i-mut)) 0 3px/100% 1.5px no-repeat}
+.ide .stab[open] .sico{border-color:var(--i-acc);background:linear-gradient(var(--i-acc),var(--i-acc)) 0 3px/100% 1.5px no-repeat}
+.ide .stab.used{border-left:3px solid #1a7f37;background:#f1faf3;border-radius:3px}.ide .stab.used .stn{color:#1a7f37}
+.ide-main{display:flex;flex-direction:column;min-width:0}
+.ide-tabs{display:flex;gap:0;background:var(--i-head);border-bottom:1px solid var(--i-line);padding:0 6px;overflow-x:auto}
+.ide-edtab,.ide-rtab{border:1px solid transparent;border-bottom:0;background:none;color:var(--i-mut);font:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;margin-top:4px;border-radius:6px 6px 0 0;white-space:nowrap;cursor:pointer}
+.ide-edtab.on,.ide-rtab.on{background:var(--i-bg);color:var(--i-ink);border-color:var(--i-line);margin-bottom:-1px}
+.ide-edbody{display:flex;background:var(--i-bg);min-height:190px}
+.ide-gutter{flex:none;width:40px;padding:10px 6px 10px 0;text-align:right;font:13px/1.55 ui-monospace,Consolas,"Courier New",monospace;color:#9aa4ae;background:#f6f8fa;border-right:1px solid var(--i-line);white-space:pre;overflow:hidden;user-select:none}
+.ide-ta{flex:1;min-width:0;border:0;outline:none;resize:vertical;min-height:190px;padding:10px 12px;font:13.5px/1.55 ui-monospace,Consolas,"Courier New",monospace;color:#0b1f33;background:var(--i-bg);tab-size:2;white-space:pre;overflow:auto}
+.ide-hint{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center;padding:6px 12px;font-size:12px;color:var(--i-mut);border-top:1px solid var(--i-line);background:#fafbfc}
+.ide-hint kbd{font:600 11px ui-monospace,Consolas,monospace;color:var(--i-ink);background:#fff;border:1px solid var(--i-line);border-bottom-width:2px;border-radius:4px;padding:0 5px}
+.ide-hint2{margin-left:auto}
+.ide-notes:empty{display:none}.ide-note{margin:6px 10px 0;padding:6px 10px;border-left:3px solid #d4a72c;background:#fff8e5;font-size:12.5px;border-radius:4px}
+.ide-results{border-top:1px solid var(--i-line);display:flex;flex-direction:column;min-height:180px}
+.ide-reshead{padding:5px 12px;font-size:12px;color:var(--i-mut);border-bottom:1px solid var(--i-line);background:#fafbfc}
+.ide-fetch.muted{opacity:.8}
+.ide-grid,.ide-hist,.ide-msg{max-height:340px;overflow:auto;background:var(--i-bg)}
+.ide-gridwrap{overflow:auto}
+.ide-tbl{border-collapse:collapse;font:12.5px/1.35 ui-monospace,Consolas,"Courier New",monospace;min-width:100%}
+.ide-tbl th{position:sticky;top:0;background:var(--i-head);font-weight:700;text-align:left;padding:5px 10px;border:1px solid var(--i-line);white-space:nowrap;font-family:"Segoe UI",system-ui,sans-serif;font-size:12px}
+.ide-tbl td{padding:3px 10px;border:1px solid #e3e8ed;white-space:nowrap}
+.ide-tbl td.n{text-align:right}.ide-tbl td.nul{color:#9aa4ae;font-style:italic}
+.ide-tbl .rn{background:var(--i-head);color:var(--i-mut);text-align:right;width:36px;font-family:"Segoe UI",system-ui,sans-serif}
+.ide-tbl tr:hover td:not(.rn){background:var(--i-sel)}
+.ide-new td{animation:ideIn .35s ease-out}
+@keyframes ideIn{from{background:#fff3c4}to{background:transparent}}
+.ide-empty{margin:0;padding:22px 16px;text-align:center;color:var(--i-mut)}.ide-empty.ok{color:#1a7f37;font-weight:600}
+.ide-running{display:flex;align-items:center;justify-content:center;gap:10px;padding:26px;color:var(--i-mut);font-weight:600}
+.ide-spin{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--i-line);border-top-color:var(--i-acc);animation:spin .8s linear infinite}
+.ide-err{padding:12px 14px}.ide-err code{display:block;color:#b42318;font:600 12.5px ui-monospace,Consolas,monospace;margin-bottom:6px;white-space:pre-wrap}.ide-err p{margin:0;font-size:13px}
+.ide-mline{margin:0;padding:5px 12px;font:12.5px ui-monospace,Consolas,monospace;border-bottom:1px solid #eef1f4}.ide-mline.err{color:#b42318}
+.ide-hrow{cursor:pointer}.ide-tbl td.q{white-space:normal;min-width:260px}
+.ide-status{display:flex;align-items:center;gap:10px;padding:5px 12px;font-size:12px;border-top:1px solid var(--i-line)}
+.ide-status.ok .ide-stxt::before{content:"✓ ";color:#1a7f37;font-weight:800}.ide-status.err .ide-stxt{color:#b42318;font-weight:600}.ide-status.busy .ide-stxt{color:var(--i-acc)}
+.ide-pos{color:var(--i-mut)}
+/* --- Teradata mode: classic Windows query tool --- */
+.ide-td{--i-head:#ececec;--i-line:#c9c9c9;--i-sel:#cce4f7;--i-acc:#0b5394}
+.ide-td .ide-titlebar{background:linear-gradient(#f3f3f3,#dcdcdc);border-bottom:1px solid #bdbdbd;color:#222}
+.ide-td .ide-dial{background:#cfcfcf}.ide-td .ide-dial button[aria-checked="true"]{background:#fff;color:#0b5394;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.ide-td .ide-tb.run svg{color:#2e7d32}
+.ide-td .ide-tbl th{background:linear-gradient(#fafafa,#e6e6e6)}
+.ide-td .ide-tbl tbody tr:nth-child(even) td:not(.rn){background:#f7f9fc}
+.ide-td .ide-status{background:#e1e1e1}
+/* --- Oracle mode: worksheet style --- */
+.ide-ora{--i-head:#e8eef4;--i-line:#c3cfdb;--i-sel:#d6e6f5;--i-acc:#2b5a83}
+.ide-ora .ide-titlebar{background:#2f3e4c;color:#f1f4f7}
+.ide-ora .ide-dial{background:#1f2b36}.ide-ora .ide-dial button[aria-checked="true"]{background:#e8eef4;color:#2f3e4c}
+.ide-ora .ide-tb.run svg{color:#2e9d4b}
+.ide-ora .ide-tbl th{text-transform:uppercase;background:#dde6ef;color:#23384b}
+.ide-ora .ide-tbl .rn{background:#eef3f8}
+.ide-ora .ide-reshead{font-style:italic}
+.ide-ora .ide-status{background:#dde6ef}
+.ide-busy .ide-ta{opacity:.85}
+@media (max-width:860px){
+  .ide-body{grid-template-columns:minmax(0,1fr)}
+  .ide-explorer{display:none;border-right:0;border-bottom:1px solid var(--i-line);max-height:300px}
+  .ide-showx .ide-explorer{display:block}
+  .ide-tblbtn{display:inline-flex}.ide-tblbtn.on{background:#fff;border-color:var(--i-line)}
+  .ide-tb:not(.run):not(.ide-submit):not(.ide-tblbtn):not(.ide-use) span{display:none}
+  .ide-sess{display:none}.ide-hint2{margin-left:0}
+}
+
+/* ===================== Feedback ===================== */
+.fbfab{position:fixed;right:22px;bottom:22px;z-index:40;display:none;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 18px 12px 14px;font:inherit;font-weight:800;font-size:14.5px;color:#fff;cursor:pointer;background:linear-gradient(135deg,#00a884,#6c5ce7);box-shadow:0 10px 28px rgba(108,92,231,.45);transition:transform .15s}
+.fbfab:hover{transform:translateY(-2px)}.fbfab span:first-child{font-size:18px}
+body.v-home .fbfab{display:inline-flex}
+@media (max-width:600px){.fbfab{right:14px;bottom:14px;padding:12px}.fbfabl{display:none}}
+.fbav{font-size:20px;display:grid!important;place-items:center}
+.fbov{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:rgba(5,8,23,.62);backdrop-filter:blur(6px);opacity:0;transition:opacity .2s}
+.fbov.in{opacity:1}
+.fbcard{position:relative;width:min(560px,100%);max-height:calc(100dvh - 32px);overflow:auto;border-radius:22px;padding:18px 22px 18px;color:var(--ink);background:radial-gradient(120% 80% at 0% 0%,rgba(0,168,132,.18),transparent 55%),radial-gradient(120% 80% at 100% 0%,rgba(108,92,231,.2),transparent 55%),var(--panel);border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.5);transform:translateY(14px) scale(.98);transition:transform .22s}
+.fbov.in .fbcard{transform:none}
+.fbtop{display:flex;align-items:center;gap:10px;min-height:28px}.fbstep{font-size:12.5px;font-weight:700;color:var(--muted)}
+.fbx{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
+.fbprog{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:8px 0 6px}.fbprog i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#00a884,#6c5ce7);transition:width .35s}
+.fbstage{padding:6px 0 4px;min-height:250px}
+.fbslide{animation:fbin .28s ease-out}@keyframes fbin{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.fbhead{text-align:center;margin:10px 0 16px}.fbemoji{font-size:34px}.fbhead h3{margin:6px 0 4px;font-size:21px;line-height:1.3}.fbsub{margin:0;color:var(--muted);font-size:14px}
+.fbfaces{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.fbface{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 4px;border-radius:16px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:transform .15s,border-color .15s}
+.fbface:hover{transform:translateY(-3px)}.fbfe{font-size:34px;line-height:1;transition:transform .2s}
+.fbface[aria-pressed="true"]{border-color:#00a884;background:rgba(0,168,132,.14)}.fbface[aria-pressed="true"] .fbfe{transform:scale(1.2)}
+.fbchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.fbchip{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:14px;font-weight:600;border-radius:999px;padding:9px 15px;cursor:pointer}
+.fbchip[aria-pressed="true"]{background:#00a884;border-color:#00a884;color:#fff}
+.fbchip[aria-pressed="true"]::before{content:"✓ "}
+.fbvoice{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.fbmic{align-self:center;display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:11px 20px;font:inherit;font-weight:800;font-size:14.5px;color:#fff;background:linear-gradient(135deg,#6c5ce7,#00a884);cursor:pointer;box-shadow:0 8px 22px rgba(108,92,231,.35)}
+.fbmicdot{width:12px;height:12px;border-radius:50%;background:#fff}
+.fbmic.rec{background:#e5484d;box-shadow:0 0 0 0 rgba(229,72,77,.6);animation:fbpulse 1.4s infinite}
+.fbmic.rec .fbmicdot{animation:fbblink 1s infinite}
+@keyframes fbpulse{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}70%{box-shadow:0 0 0 14px rgba(229,72,77,0)}100%{box-shadow:0 0 0 0 rgba(229,72,77,0)}}
+@keyframes fbblink{50%{opacity:.3}}
+.fblive{margin:0;text-align:center;color:var(--muted);font-style:italic;font-size:14px}
+.fbta{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);font:inherit;font-size:15px;line-height:1.5;padding:12px 14px;resize:vertical}
+.fbta:focus{outline:none;border-color:#00a884;box-shadow:0 0 0 3px rgba(0,168,132,.2)}
+.fbsmall{margin:0;font-size:13px;color:var(--muted);text-align:center}
+.fbkinds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fbkind{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:12px 6px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.fbkind .fbfe{font-size:26px}.fbkind[aria-pressed="true"]{border-color:#6c5ce7;background:rgba(108,92,231,.16)}
+.fbwhere{margin-top:12px}.fbq2{margin:0 0 8px;text-align:center;font-weight:700;font-size:14px}
+.fbnps{display:grid;grid-template-columns:repeat(11,1fr);gap:5px}
+.fbn{aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:800;font-size:14px;cursor:pointer;padding:0}
+.fbn.lo[aria-pressed="true"]{background:#e5484d;border-color:#e5484d;color:#fff}.fbn.mid[aria-pressed="true"]{background:#d4a72c;border-color:#d4a72c;color:#fff}.fbn.hi[aria-pressed="true"]{background:#00a884;border-color:#00a884;color:#fff}
+.fbnpslbl{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
+.fbsum{border:1px solid var(--line);border-radius:14px;padding:6px 14px;background:rgba(255,255,255,.02)}
+.fbsrow{display:flex;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}.fbsrow:last-child{border-bottom:0}.fbsrow span{flex:none;width:130px;color:var(--muted)}.fbsrow b{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.fbcontact{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:14px;cursor:pointer}.fbcontact input{margin-top:3px}
+.fberr{color:#ff7a7f;font-weight:600;text-align:center}
+.fbfoot{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.fbsp{flex:1}
+.fbnav{border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;border-radius:999px;padding:9px 16px;cursor:pointer}
+.fbnext{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:999px;padding:10px 22px;font:inherit;font-weight:800;color:#fff;background:linear-gradient(135deg,#00a884,#6c5ce7);cursor:pointer;text-decoration:none}
+.fbnext.big{padding:14px 28px;font-size:16px;margin-top:8px}.fbnext.send{background:linear-gradient(135deg,#00a884,#00c896)}
+.fbnext:disabled{opacity:.6}
+.fbintro{text-align:center;padding:10px 4px}.fbintro h2{margin:12px 0 8px;font-size:24px}.fbintro>p{margin:0 auto 12px;max-width:420px;color:var(--muted);line-height:1.55}
+.fbhero{width:84px;height:84px;margin:6px auto 0;border-radius:26px;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,rgba(0,168,132,.25),rgba(108,92,231,.3));animation:fbfloat 3s ease-in-out infinite}
+.fbhero.ok{background:#00a884;color:#fff;font-size:44px;font-weight:900;border-radius:50%;animation:fbpop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes fbfloat{50%{transform:translateY(-6px)}}@keyframes fbpop{from{transform:scale(.3)}to{transform:scale(1)}}
+.fbperks{list-style:none;padding:0;margin:4px auto 14px;display:inline-flex;flex-direction:column;gap:6px;text-align:left;font-size:14.5px}
+.fbthx{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.fbconf{position:absolute;inset:0;pointer-events:none;overflow:hidden}.fbconf i{position:absolute;top:-10px;width:8px;height:12px;border-radius:2px;animation:fbfall 1.8s ease-in forwards}
+@keyframes fbfall{to{transform:translateY(520px) rotate(540deg);opacity:0}}
+@media (max-width:520px){.fbcard{padding:14px 14px}.fbfaces{gap:5px}.fbfe{font-size:28px}.fbface{font-size:11px;padding:10px 2px}.fbkinds{grid-template-columns:1fr}.fbkind{flex-direction:row;justify-content:flex-start;padding:10px 12px}.fbnps{gap:3px}.fbn{font-size:12px;border-radius:7px}.fbsrow span{width:100px}.fbhead h3{font-size:18px}}
+/* admin feedback list */
+.fbstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px}.fbstats>div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column}.fbstats b{font-size:22px}.fbstats span{font-size:12px;color:var(--muted)}
+.fblist{display:flex;flex-direction:column;gap:8px}.fbitem{border:1px solid var(--line);border-radius:12px;padding:10px 12px}.fbitem p{margin:6px 0 0;line-height:1.45}
+.fbitop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fbie{font-size:20px}
+
+.ide textarea.ide-ta{background:#fff!important;color:#0b1f33!important;caret-color:#0b5394;border:0!important;box-shadow:none!important}
+.ide-ora textarea.ide-ta{caret-color:#2b5a83}
+.ide-body{grid-template-columns:265px minmax(0,1fr)}
+.ide .stc{font-size:10px;padding:0 5px}
 </style>
 </head>
 <body class="booting">
@@ -3815,6 +3980,9 @@ function renderChatList(){
     list.append(el("button",{class:"chatitem"+(CUR_PANE===id?" active":""),"data-pane":id},
       el("span",{class:"av tool"},(()=>{ const sv=document.createElementNS("http://www.w3.org/2000/svg","svg"); sv.setAttribute("viewBox","0 0 24 24"); sv.setAttribute("width","24"); sv.setAttribute("height","24"); sv.innerHTML=ICONS[t.icon]; return sv; })()),
       el("span",{class:"ci-body"}, el("span",{class:"ci-top"}, el("span",{class:"ci-name",text:t.name}), id==="t:help"?el("span",{class:"helpbadge",hidden:true}):null), el("span",{class:"ci-sub",text:t.sub})))); });
+  const fbI=el("button",{class:"chatitem fbitem-list",type:"button"},el("span",{class:"av tool fbav","aria-hidden":"true",text:"💬"}),el("span",{class:"ci-body"},el("span",{class:"ci-top"},el("span",{class:"ci-name",text:"Share feedback"})),el("span",{class:"ci-sub",text:"1 minute · speak or type"})));
+  fbI.addEventListener("click",e=>{ e.stopPropagation(); if(typeof openFeedback==="function") openFeedback(CUR_PANE||"prep"); });
+  list.append(fbI);
   if(typeof helpStart==="function"){ helpStart(); setTimeout(()=>{ try{ helpBadge(); }catch(e){} },0); }
   list.append(el("div",{class:"listlabel",text:"Your rounds"}),
     el("div",{class:"roundcard"},
@@ -4373,6 +4541,7 @@ function renderAdmin(body){
   const cc=card("Certificates","Candidates who pass the exam appear here. Emails go from your Gmail with the certificate attached and the exam statistics in the body."); const certBox=el("div"); cc.append(certBox); body.append(cc);
   renderCertQueue(certBox);
   const ac=card("Audit register (Google Sheet)","Privacy: each person's rows stay in the sheet for 7 working days (Mon–Fri) from registration, then are removed at the next sync; the 'Removed from sheet on' column shows the date. Candidates, Exam attempts, Certificates and Practice sittings are written to your Google Sheet, with every sync recorded in its Sync log tab. It syncs automatically when you open the app (at most every 15 minutes) and after you email certificates."); body.append(ac); renderAudit(ac);
+  const fc=card("Candidate feedback","What people told us through the feedback form, newest first."); const fcBox=el("div"); fc.append(fcBox); body.append(fc); if(typeof renderFeedbackAdmin==="function") renderFeedbackAdmin(fcBox);
   const rc=card("Candidate interview reports","Questions candidates say they were asked, with company, role and month. These show on questions as 'Reported by candidates'. Delete anything that looks wrong."); const rcBox=el("div"); rc.append(rcBox); body.append(rc); if(typeof renderReportAdmin==="function") renderReportAdmin(rcBox);
   if(window.STANDALONE){
     const pc=card("Sign-in help: reset a PIN","If a candidate forgets their PIN, enter their mobile number with country code. The next PIN they type when signing in becomes their new PIN.");
@@ -4782,8 +4951,8 @@ function labTable(r){
 }
 function labFriendly(msg){
   let m;
-  if((m=msg.match(/no such column: ([\w.]+)/i))) return `There is no column called “${m[1]}”. Check the column list on the right.`;
-  if((m=msg.match(/no such table: ([\w.]+)/i))) return `There is no table called “${m[1]}”. The practice tables are listed on the right.`;
+  if((m=msg.match(/no such column: ([\w.]+)/i))) return `There is no column called “${m[1]}”. Check the column names in the tables list.`;
+  if((m=msg.match(/no such table: ([\w.]+)/i))) return `There is no table called “${m[1]}”. The practice tables are listed in the tables panel.`;
   if((m=msg.match(/near "([^"]+)": syntax error/i))) return `Something isn't quite right near “${m[1]}”. Check commas, brackets and quotes around that word.`;
   if(/incomplete input/i.test(msg)) return "The query looks unfinished: check for a missing bracket or quote.";
   if(/misuse of window function/i.test(msg)) return "Window functions (like ROW_NUMBER) can't go in WHERE. Use QUALIFY (Teradata) or an inline view (Oracle).";
@@ -4875,65 +5044,29 @@ async function renderLab(body){
   if(opts.qid){ LAB.mode="questions"; LAB.qid=opts.qid; }
   else if(opts.sql) LAB.mode="free";
   if(!LAB.mode||LAB.mode==="exercises") LAB.mode="free";
-  const outer=el("div",{class:"l3grid"}); body.append(outer);
-  const wrap=el("div",{class:"lab3"}); const schemaAside=el("aside",{class:"l3schema","aria-label":"Schema browser"}); outer.append(wrap,schemaAside);
+  const outer=el("div",{class:"l3grid ide-host"}); body.append(outer);
+  const wrap=el("div",{class:"lab3"}); outer.append(wrap);
 
   /* simple tabs */
   const tabs=el("nav",{class:"l3tabs",role:"tablist","aria-label":"SQL Lab"});
-  [["free","Practice SQL Queries"],["questions","Interview Questions"]].forEach(([id,label])=>{ const b=el("button",{type:"button",role:"tab","aria-selected":String(LAB.mode===id),text:label}); b.addEventListener("click",()=>{ if(LAB.mode!==id){ LAB.mode=id; renderLab(body); } }); tabs.append(b); });
+  [["free","Practice SQL Queries"],["questions","Interview Questions"]].forEach(([id,label])=>{ const b=el("button",{type:"button",role:"tab","aria-selected":String(LAB.mode===id),text:label}); b.addEventListener("click",()=>{ if(LAB.mode!==id){ LAB.sql[LAB.dialect]=ide.ta.value; LAB.mode=id; renderLab(body); } }); tabs.append(b); });
   wrap.append(tabs);
   const ctx=el("section",{class:"l3ctx"}); wrap.append(ctx);
 
-  /* editor */
-  const ta=el("textarea",{class:"labsql",spellcheck:"false","aria-label":"SQL editor",autocomplete:"off",autocapitalize:"off"});
-  const dial=el("div",{class:"l3dial",role:"radiogroup","aria-label":"SQL dialect"});
-  ["teradata","oracle"].forEach(d=>{ const b=el("button",{type:"button",role:"radio","aria-checked":String(LAB.dialect===d),text:d==="teradata"?"Teradata":"Oracle"}); b.addEventListener("click",()=>{ if(LAB.dialect===d) return; LAB.sql[LAB.dialect]=ta.value; LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} renderLab(body); }); dial.append(b); });
-  const tblB=el("button",{class:"l3link",type:"button","aria-expanded":"false",text:"Tables"});
-  const copyB=el("button",{class:"l3link",type:"button",text:"Copy"});
-  const runB=el("button",{class:"lrun",type:"button"},el("span",{text:"Run"}),el("b",{"aria-hidden":"true",text:" ❯"}));
-  const useB=el("button",{class:"luse",type:"button",text:"Use as my answer",hidden:!LAB.from});
-  const drawer=el("div",{class:"l3tables",hidden:true});
-  const ed=el("section",{class:"led3"},
-    el("div",{class:"l3edhead"},dial,el("span",{class:"ledsp"}),tblB,copyB),
-    drawer, ta,
-    el("div",{class:"l3edfoot"},runB,el("span",{class:"lkbd",text:/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent)?"⌘ Cmd + Enter to run":"Ctrl + Enter to run"}),el("span",{class:"ledsp"}),useB));
-  wrap.append(ed);
-  const noteBox=el("div",{class:"labnotes"}); wrap.append(noteBox);
-  const out=el("section",{class:"lres3"}); wrap.append(out);
+  /* the console: looks and behaves like Teradata or Oracle tools */
+  const useB=el("button",{class:"ide-tb ide-use",type:"button",hidden:!LAB.from},el("span",{text:"Use as my answer"}));
+  const resetB=el("button",{class:"ide-tb",type:"button",title:"Put the practice data back to how it started"},el("span",{text:"Reset data"}));
+  const ide=sqlIDE({dialect:LAB.dialect, sql:opts.sql||LAB.sql[LAB.dialect]||LAB_START[LAB.dialect], db:()=>labLoad(),
+    onSql:v=>{ LAB.sql[LAB.dialect]=v; },
+    onDialect:(d,v)=>{ LAB.sql[LAB.dialect]=v; LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} renderLab(body); },
+    extra:[resetB,useB]});
+  wrap.append(ide.root);
   const lookFor=el("p",{class:"l3look",hidden:true}); wrap.append(lookFor);
-  const empty=()=>{ out.innerHTML=""; out.append(el("p",{class:"l3empty",text:"Press Run to see the result here."})); };
-  empty();
-  ta.value = opts.sql || LAB.sql[LAB.dialect] || LAB_START[LAB.dialect];
-  const notes=()=>{ noteBox.innerHTML=""; labDialectNotes(ta.value,LAB.dialect).forEach(n=>noteBox.append(el("div",{class:"labnote"},el("b",{text:`Real ${LAB.dialect==="oracle"?"Oracle":"Teradata"} would reject this: `}),n))); };
-  ta.addEventListener("input",()=>{ LAB.sql[LAB.dialect]=ta.value; notes(); });
-  ta.addEventListener("keydown",e=>{ if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){ e.preventDefault(); run(); } else if(e.key==="Tab"&&!e.shiftKey){ e.preventDefault(); ta.setRangeText("  ",ta.selectionStart,ta.selectionEnd,"end"); } });
-  function show(res){
-    out.innerHTML="";
-    const last=res.results[res.results.length-1];
-    if(!last||!last.columns.length){ out.append(el("p",{class:"l3ok",text:`Done${last&&last.changes!=null?` · ${last.changes} row(s) changed`:""}`})); return; }
-    const v=labVisible(last);
-    out.append(el("div",{class:"l3meta"},el("b",{text:`${v.values.length} row${v.values.length===1?"":"s"}`}),el("span",{text:`${v.columns.length} column${v.columns.length===1?"":"s"}`}),v.values.length>500?el("span",{text:"first 500 shown"}):null));
-    out.append(el("div",{class:"tw labtw"},labTable(last)));
-  }
-  async function run(){
-    out.innerHTML=""; out.append(el("p",{class:"l3empty",text:LAB.db?"Running…":"Starting the SQL engine (first run only)…"}));
-    try{ await labLoad(); }catch(e){ out.innerHTML=""; out.append(el("p",{class:"l3err",text:"The SQL engine couldn't start in this browser. Reload the page, or try Chrome or Edge."})); return null; }
-    try{ const r=labRun(LAB.db,ta.value); show(r); refreshTables(); return r; }
-    catch(e){ out.innerHTML=""; out.append(el("p",{class:"l3err"},el("b",{text:"Error: "}),labFriendly(String(e.message||e)))); return null; }
-  }
-  runB.addEventListener("click",run);
-  copyB.addEventListener("click",()=>{ try{ navigator.clipboard.writeText(ta.value).then(()=>{ copyB.textContent="Copied"; setTimeout(()=>copyB.textContent="Copy",1500); }); }catch(e){} });
-  useB.addEventListener("click",()=>labBackToChat(ta.value.trim()));
-  tblB.addEventListener("click",()=>{ drawer.hidden=!drawer.hidden; tblB.setAttribute("aria-expanded",String(!drawer.hidden)); if(!drawer.hidden) refreshTables(); });
-  const setSql=(sql,go)=>{ ta.value=sql; LAB.sql[LAB.dialect]=sql; notes(); if(go) run(); };
-  async function refreshTables(){
-    const paint=db=>[drawer,schemaAside].forEach(host=>{ if(host===drawer&&drawer.hidden) return; host.innerHTML=""; host.append(schemaTree(db,{insert:insertText,preview:n=>setSql(LAB.dialect==="oracle"?`SELECT *\nFROM   ${LAB_SCHEMA}.${n}\nFETCH FIRST 20 ROWS ONLY;`:`SEL TOP 20 *\nFROM   ${LAB_SCHEMA}.${n};`,true)})); if(db) resetBtn(host); });
-    if(!LAB.db) paint(null);                          // show the tables straight away
-    let db; try{ db=await labLoad(); }catch(e){ return; }
-    paint(db);
-  }
-  function insertText(t){ const s=ta.selectionStart??ta.value.length, e=ta.selectionEnd??s; ta.setRangeText(t,s,e,"end"); ta.focus(); LAB.sql[LAB.dialect]=ta.value; notes(); }
-  function resetBtn(host){ const r=el("button",{class:"l3link",type:"button",text:"Reset practice data"}); r.addEventListener("click",async()=>{ await labLoad().catch(()=>{}); labResetDb(); refreshTables(); out.innerHTML=""; out.append(el("p",{class:"l3ok",text:"Practice data restored."})); }); host.append(r); }
+  const run=()=>ide.run();
+  const setSql=(sql,go)=>ide.setSql(sql,go);
+  const notes=()=>{}, refreshTables=()=>{};
+  useB.addEventListener("click",()=>labBackToChat(ide.ta.value.trim()));
+  resetB.addEventListener("click",async()=>{ try{ await labLoad(); labResetDb(); resetB.querySelector("span").textContent="Data reset ✓"; setTimeout(()=>resetB.querySelector("span").textContent="Reset data",1600); }catch(e){} });
 
   /* a compact picker: ‹ select › */
   function picker(items,cur,onPick){
@@ -4999,7 +5132,7 @@ async function renderLab(body){
     });
     ctx.append(el("div",{class:"l3acts"},cb,hb,sb),hint,res);
   }
-  function renderFree(){ ctx.innerHTML=""; ctx.append(el("p",{class:"l3plain muted",text:"Write any query against the practice data. The tables are listed in the CR_DWH schema browser (or under Tables in the editor on smaller screens)."})); }
+  function renderFree(){ ctx.innerHTML=""; ctx.append(el("p",{class:"l3plain muted",text:"Write any query against the practice data. The tables are in the console's table list (tap Tables on a phone): click a column to add it, or Preview to see sample rows. Switch between Teradata and Oracle at the top right."})); }
 
   if(LAB.mode==="questions") renderQuestions(); else renderFree();
   notes(); refreshTables();
@@ -5319,6 +5452,220 @@ async function renderReportAdmin(into){
 }
 
 /* =====================================================================
+   SQL CONSOLE: a desktop-style query tool that changes with the dialect.
+   Teradata mode follows the classic query-tool layout (Database Explorer,
+   query window, Answerset / History / Messages tabs, F5 to execute).
+   Oracle mode follows the worksheet layout (Connections, Worksheet,
+   Query Result / Script Output / History tabs, Ctrl+Enter to run).
+   Results arrive row by row with a live timer, like a real database.
+   ===================================================================== */
+const IDE_MAC=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
+const IDE_HIST_KEY="baIdeHistory";
+function ideHistory(){ try{ return JSON.parse(localStorage.getItem(IDE_HIST_KEY)||"[]"); }catch(e){ return []; } }
+function ideHistoryAdd(x){ const h=ideHistory(); h.unshift(x); try{ localStorage.setItem(IDE_HIST_KEY,JSON.stringify(h.slice(0,30))); }catch(e){} }
+const IDE_TXT={
+ teradata:{name:"Teradata",title:"Query window",conn:"Database Explorer",node:"CR_DWH",session:"PRACTICE · Teradata mode",
+   run:"Execute",runKey:"F5",runKey2:IDE_MAC?"⌘ Enter":"Ctrl + Enter",tabs:["Answerset 1","History","Messages"],
+   done:(n,s)=>`Query completed. ${n} row${n===1?"":"s"} returned. ${s} seconds.`,
+   changed:(n,s)=>`Query completed. ${n} row${n===1?"":"s"} processed. ${s} seconds.`,
+   exec:"Executing query…"},
+ oracle:{name:"Oracle",title:"SQL Worksheet",conn:"Connections",node:"CR_DWH@PRACTICE",session:"PRACTICE · Oracle mode",
+   run:"Run Statement",runKey:IDE_MAC?"⌘ Enter":"Ctrl + Enter",runKey2:"F5",tabs:["Query Result","History","Script Output"],
+   done:(n,s)=>`All Rows Fetched: ${n} in ${s} seconds`,
+   changed:(n,s)=>`${n} row${n===1?"":"s"} affected. Elapsed: ${s} seconds`,
+   exec:"Executing statement…"}
+};
+/* turn the engine's message into what the real database would say, plus a plain-English line */
+function ideError(msg,dialect){
+  let m, code, real;
+  const td=dialect!=="oracle";
+  if((m=msg.match(/no such table: ([\w.]+)/i))){ real=td?`Failure 3807 Object '${m[1]}' does not exist.`:`ORA-00942: table or view does not exist`; }
+  else if((m=msg.match(/no such column: ([\w.]+)/i))){ real=td?`Failure 5628 Column ${m[1]} not found.`:`ORA-00904: "${m[1].toUpperCase()}": invalid identifier`; }
+  else if((m=msg.match(/near "([^"]+)": syntax error/i))){ real=td?`Failure 3706 Syntax error: expected something between '${m[1]}' and the next word.`:`ORA-00933: SQL command not properly ended (near "${m[1]}")`; }
+  else if(/incomplete input/i.test(msg)){ real=td?"Failure 3706 Syntax error: unexpected end of request.":"ORA-00921: unexpected end of SQL command"; }
+  else if(/misuse of (window|aggregate)/i.test(msg)){ real=td?"Failure 3504 Selected non-aggregate values must be part of the associated group.":"ORA-00934: group function is not allowed here"; }
+  else if(/ambiguous column name: ([\w.]+)/i.test(msg)){ m=msg.match(/ambiguous column name: ([\w.]+)/i); real=td?`Failure 3809 Column '${m[1]}' is ambiguous.`:`ORA-00918: column ambiguously defined`; }
+  else real=(td?"Failure: ":"ORA-00900: ")+msg;
+  return {real, plain:labFriendly(msg)};
+}
+function ideIcon(path){ const s=document.createElementNS("http://www.w3.org/2000/svg","svg"); s.setAttribute("viewBox","0 0 24 24"); s.setAttribute("width","15"); s.setAttribute("height","15"); s.setAttribute("aria-hidden","true"); s.innerHTML=path; return s; }
+const IDE_I={
+ play:'<path d="M7 5l12 7-12 7z" fill="currentColor"/>',
+ script:'<path d="M5 4h10l4 4v12H5z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 12l3 2-3 2" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+ clear:'<path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+ fmt:'<path d="M4 6h16M4 10h10M4 14h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+ copy:'<rect x="8" y="8" width="11" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 16V5h11" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+ db:'<ellipse cx="12" cy="6" rx="7" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6" fill="none" stroke="currentColor" stroke-width="1.8"/>'
+};
+/* light-touch formatter: puts the main clauses on new lines */
+function ideFormat(sql){
+  return sql.replace(/\s+/g," ").trim()
+   .replace(/\s*\b(FROM|WHERE|GROUP BY|HAVING|ORDER BY|QUALIFY|UNION ALL|UNION|LEFT JOIN|RIGHT JOIN|FULL OUTER JOIN|INNER JOIN|JOIN|FETCH FIRST)\b/gi,(m,k)=>"\n"+k.toUpperCase())
+   .replace(/\s*\b(AND|OR)\b\s*/gi,(m,k)=>"\n   "+k.toUpperCase()+" ")
+   .replace(/^\s*(SELECT|SEL)\b/i,m=>m.toUpperCase());
+}
+
+/* opts: dialect, sql, used (Set of table names), db() → Promise<db>, onSql(text), onDialect(d), extra (nodes for the toolbar end), compact */
+function sqlIDE(opts){
+  let dialect=opts.dialect==="oracle"?"oracle":"teradata";
+  const T=()=>IDE_TXT[dialect];
+  const root=el("section",{class:"ide","aria-label":"SQL console"});
+  /* title bar */
+  const title=el("span",{class:"ide-title"}), sess=el("span",{class:"ide-sess"});
+  const dial=el("div",{class:"ide-dial",role:"radiogroup","aria-label":"Database"});
+  ["teradata","oracle"].forEach(d=>{ const b=el("button",{type:"button",role:"radio","data-d":d,text:d==="teradata"?"Teradata":"Oracle"}); b.addEventListener("click",()=>{ if(d===dialect) return; if(opts.onDialect) opts.onDialect(d,ta.value); else setDialect(d); }); dial.append(b); });
+  const titlebar=el("div",{class:"ide-titlebar"},el("span",{class:"ide-dots","aria-hidden":"true"},el("i"),el("i"),el("i")),title,el("span",{class:"ide-sp"}),sess,dial);
+  /* toolbar */
+  const tb=(icon,label,key)=>el("button",{type:"button",class:"ide-tb",title:key?`${label} (${key})`:label},ideIcon(IDE_I[icon]),el("span",{text:label}),key?el("kbd",{text:key}):null);
+  const runB=tb("play","Execute","F5"); runB.classList.add("run");
+  const fmtB=tb("fmt","Format"), clrB=tb("clear","Clear"), cpyB=tb("copy","Copy");
+  const tblB=tb("db","Tables"); tblB.classList.add("ide-tblbtn");
+  const toolbar=el("div",{class:"ide-toolbar"},runB,el("span",{class:"ide-sep"}),fmtB,cpyB,clrB,tblB,el("span",{class:"ide-sp"}),...(opts.extra||[]));
+  /* explorer */
+  const explorerHead=el("div",{class:"ide-panehead"});
+  const explorer=el("aside",{class:"ide-explorer"},explorerHead);
+  /* editor with line numbers */
+  const gutter=el("div",{class:"ide-gutter","aria-hidden":"true"});
+  const ta=el("textarea",{class:"ide-ta",spellcheck:"false",autocomplete:"off",autocapitalize:"off","aria-label":"SQL editor"});
+  ta.value=opts.sql||"";
+  const edTab=el("span",{class:"ide-edtab on"});
+  const editor=el("div",{class:"ide-editor"},el("div",{class:"ide-tabs ed"},edTab),el("div",{class:"ide-edbody"},gutter,ta));
+  const hint=el("div",{class:"ide-hint"});
+  const notes=el("div",{class:"ide-notes"});
+  /* results */
+  const rtabs=el("div",{class:"ide-tabs res",role:"tablist"}); const rTabBtns=[];
+  const grid=el("div",{class:"ide-grid"}), histBox=el("div",{class:"ide-hist",hidden:true}), msgBox=el("div",{class:"ide-msg",hidden:true});
+  const resHead=el("div",{class:"ide-reshead"});
+  const results=el("div",{class:"ide-results"},rtabs,resHead,grid,histBox,msgBox);
+  const status=el("div",{class:"ide-status"},el("span",{class:"ide-stxt"}),el("span",{class:"ide-sp"}),el("span",{class:"ide-pos"}));
+  const main=el("div",{class:"ide-main"},editor,hint,notes,results);
+  const body=el("div",{class:"ide-body"},explorer,main);
+  root.append(titlebar,toolbar,body,status);
+  let curTab=0;
+  function showTab(i){ curTab=i; rTabBtns.forEach((b,k)=>{ b.classList.toggle("on",k===i); b.setAttribute("aria-selected",String(k===i)); }); grid.hidden=i!==0; resHead.hidden=i!==0||!resHead.childNodes.length; histBox.hidden=i!==1; msgBox.hidden=i!==2; if(i===1) paintHistory(); }
+  function setStatus(t,cls){ const s=status.querySelector(".ide-stxt"); s.textContent=t; status.className="ide-status"+(cls?" "+cls:""); }
+  function lines(){ const n=ta.value.split("\n").length; gutter.textContent=Array.from({length:Math.max(n,8)},(_,i)=>i+1).join("\n"); gutter.scrollTop=ta.scrollTop; }
+  function pos(){ const v=ta.value.slice(0,ta.selectionStart); const ln=v.split("\n").length, col=v.length-v.lastIndexOf("\n"); status.querySelector(".ide-pos").textContent=`Ln ${ln}, Col ${col}`; }
+  function paintNotes(){ notes.innerHTML=""; labDialectNotes(ta.value,dialect).forEach(n=>notes.append(el("div",{class:"ide-note"},el("b",{text:`Real ${T().name} would reject this: `}),n))); }
+  function paintHistory(){
+    histBox.innerHTML="";
+    const h=ideHistory();
+    if(!h.length){ histBox.append(el("p",{class:"ide-empty",text:"Queries you run appear here. Click one to load it back."})); return; }
+    const t=el("table",{class:"ide-tbl"}); t.append(el("tr",{},...["#","Started","Rows","Seconds","Query"].map(x=>el("th",{text:x}))));
+    h.forEach((x,i)=>{ const tr=el("tr",{class:"ide-hrow",title:"Load this query"},el("td",{class:"rn",text:String(i+1)}),el("td",{text:new Date(x.at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"})}),el("td",{class:"n",text:x.err?"error":String(x.rows)}),el("td",{class:"n",text:x.secs}),el("td",{class:"q",text:x.sql.replace(/\s+/g," ").slice(0,140)})); tr.addEventListener("click",()=>{ setSql(x.sql); showTab(0); }); t.append(tr); });
+    histBox.append(el("div",{class:"ide-gridwrap"},t));
+  }
+  function paintExplorer(){
+    explorerHead.innerHTML="";
+    explorerHead.append(el("span",{text:T().conn}));
+    const tree=schemaTree(null,{insert:insertText,preview});
+    const node=el("div",{class:"ide-node"},ideIcon(IDE_I.db),el("b",{text:T().node}),el("span",{class:"ide-conn",text:"connected"}));
+    explorer.querySelectorAll(".ide-node,.stree,.ide-xhint").forEach(x=>x.remove());
+    tree.querySelectorAll(".shead,.shint").forEach(x=>x.remove());
+    if(opts.used) tree.querySelectorAll("details.stab").forEach(d=>{ const n=d.querySelector(".stn").textContent.toLowerCase(); if(opts.used.has(n)){ d.open=true; d.classList.add("used"); } });
+    explorer.append(node,tree,el("p",{class:"ide-xhint",text:"Click a column to add it to your query. Preview shows sample rows."}));
+  }
+  function setDialect(d){
+    dialect=d; root.classList.toggle("ide-td",d!=="oracle"); root.classList.toggle("ide-ora",d==="oracle");
+    title.textContent=`${T().name} · ${T().title}`; sess.textContent=T().session; edTab.textContent=d==="oracle"?"Worksheet":"Query 1";
+    dial.querySelectorAll("button").forEach(b=>b.setAttribute("aria-checked",String(b.dataset.d===d)));
+    runB.querySelector("span").textContent=T().run; runB.querySelector("kbd").textContent=T().runKey; runB.title=`${T().run} (${T().runKey} or ${T().runKey2})`;
+    hint.innerHTML=""; hint.append(el("span",{},el("kbd",{text:T().runKey}),el("span",{text:" or "}),el("kbd",{text:T().runKey2}),el("span",{text:" runs the query"})),el("span",{},el("kbd",{text:"Tab"}),el("span",{text:" indents"})),el("span",{class:"ide-hint2",text:"Write your query above, then run it. Results appear below."}));
+    rtabs.innerHTML=""; rTabBtns.length=0;
+    T().tabs.forEach((t,i)=>{ const b=el("button",{type:"button",role:"tab",class:"ide-rtab",text:t}); b.addEventListener("click",()=>showTab(i)); rTabBtns.push(b); rtabs.append(b); });
+    paintExplorer(); paintNotes(); showTab(curTab);
+    if(!grid.childNodes.length) emptyGrid();
+    setStatus(status.querySelector(".ide-stxt").textContent||"Ready");
+  }
+  function emptyGrid(){ grid.innerHTML=""; grid.append(el("p",{class:"ide-empty",text:`Press ${T().run} (${T().runKey}) to run your query. The result set appears here.`})); resHead.innerHTML=""; }
+  function insertText(t){ const s=ta.selectionStart??ta.value.length, e=ta.selectionEnd??s; ta.setRangeText(t,s,e,"end"); ta.focus(); changed(); }
+  function changed(){ lines(); paintNotes(); if(opts.onSql) opts.onSql(ta.value); }
+  function setSql(sql,go){ ta.value=sql; changed(); if(go) return run(); }
+  async function preview(n){
+    const sql=dialect==="oracle"?`SELECT *\nFROM   ${n}\nFETCH FIRST 20 ROWS ONLY;`:`SEL TOP 20 *\nFROM   ${n};`;
+    await exec(sql,{preview:n});
+  }
+  /* table with a row-number column, filled in batches so it "streams" */
+  function paintRows(r,startT){
+    const v=labVisible(r);
+    const t=el("table",{class:"ide-tbl"}); const hr=el("tr",{},el("th",{class:"rn",text:""}),...v.columns.map(c=>el("th",{text:dialect==="oracle"?c.toUpperCase():c})));
+    t.append(el("thead",{},hr)); const tb=el("tbody"); t.append(tb);
+    grid.innerHTML=""; grid.append(el("div",{class:"ide-gridwrap"},t));
+    const rows=v.values.slice(0,1000); let i=0;
+    const fmt=x=>{ if(x===null) return dialect==="oracle"?"(null)":"?"; if(typeof x==="number") return Number.isInteger(x)?String(x):x.toFixed(2); return String(x).replace(/ 00:00:00$/,""); };
+    return new Promise(res=>{
+      const step=()=>{
+        const n=Math.min(rows.length, i+Math.max(3,Math.ceil(rows.length/8)));
+        for(;i<n;i++){ const tr=el("tr",{class:"ide-new"},el("td",{class:"rn",text:String(i+1)})); rows[i].forEach(x=>tr.append(el("td",{class:(typeof x==="number"?"n":"")+(x===null?" nul":""),text:fmt(x)}))); tb.append(tr); }
+        setStatus(`Fetching… ${i} of ${rows.length} rows`,"busy");
+        if(i<rows.length) setTimeout(step,45); else res();
+      };
+      step();
+    });
+  }
+  let busy=false;
+  async function exec(sql,o={}){
+    if(busy) return null; busy=true;
+    const t0=performance.now();
+    runB.disabled=true; root.classList.add("ide-busy");
+    showTab(0); resHead.innerHTML=""; grid.innerHTML=""; grid.append(el("div",{class:"ide-running"},el("span",{class:"ide-spin"}),el("span",{text:T().exec})));
+    let tick=setInterval(()=>setStatus(`${T().exec} ${((performance.now()-t0)/1000).toFixed(1)}s`,"busy"),100);
+    setStatus(T().exec,"busy");
+    let out=null;
+    try{
+      const db=await opts.db();
+      await new Promise(r=>setTimeout(r,260));   // a short, realistic round trip
+      const tq=performance.now(); const r=labRun(db,sql); const qs=((performance.now()-tq)/1000+0.2+Math.random()*0.15).toFixed(3);
+      clearInterval(tick);
+      const last=r.results[r.results.length-1];
+      msgBox.innerHTML="";
+      r.results.forEach((x,k)=>msgBox.append(el("p",{class:"ide-mline",text:x.columns&&x.columns.length?`Statement ${k+1}: ${labVisible(x).values.length} row(s) returned.`:`Statement ${k+1}: ${x.changes!=null?x.changes+" row(s) affected.":"completed."}`})));
+      if(last&&last.columns&&last.columns.length){
+        await paintRows(last,t0);
+        const n=Math.min(labVisible(last).values.length,1000);
+        if(dialect==="oracle") resHead.append(el("span",{class:"ide-fetch",text:T().done(n,qs)}));
+        else resHead.append(el("span",{class:"ide-fetch",text:o.preview?`Preview of ${o.preview} (first 20 rows) · your query is unchanged`:`${n} row${n===1?"":"s"}`}));
+        if(o.preview&&dialect==="oracle") resHead.append(el("span",{class:"ide-fetch muted",text:` · preview of ${o.preview}, your query is unchanged`}));
+        resHead.hidden=false;
+        setStatus(T().done(n,qs),"ok");
+        if(!o.preview) ideHistoryAdd({sql,rows:n,secs:qs,at:Date.now()});
+      } else {
+        grid.innerHTML=""; grid.append(el("p",{class:"ide-empty ok",text:last&&last.changes!=null?T().changed(last.changes,qs):"Statement completed."}));
+        setStatus(last&&last.changes!=null?T().changed(last.changes,qs):"Statement completed.","ok");
+        if(!o.preview) ideHistoryAdd({sql,rows:last&&last.changes||0,secs:qs,at:Date.now()});
+      }
+      out=r;
+    }catch(e){
+      clearInterval(tick);
+      const er=ideError(String(e&&e.message||e),dialect), secs=((performance.now()-t0)/1000).toFixed(3);
+      grid.innerHTML=""; grid.append(el("div",{class:"ide-err"},el("code",{text:er.real}),el("p",{},el("b",{text:"In plain words: "}),er.plain)));
+      msgBox.innerHTML=""; msgBox.append(el("p",{class:"ide-mline err",text:er.real}));
+      setStatus(dialect==="oracle"?`Error starting at line 1 · ${er.real.split(":")[0]}`:`Query failed. ${er.real.split(" ").slice(0,2).join(" ")}. ${secs} seconds.`,"err");
+      if(!o.preview) ideHistoryAdd({sql,err:true,rows:0,secs,at:Date.now()});
+      out=null;
+    }
+    clearInterval(tick); busy=false; runB.disabled=false; root.classList.remove("ide-busy");
+    return out;
+  }
+  function run(){ return exec(ta.value); }
+  /* events */
+  ta.addEventListener("input",changed);
+  ta.addEventListener("scroll",()=>{ gutter.scrollTop=ta.scrollTop; });
+  ["keyup","click"].forEach(ev=>ta.addEventListener(ev,pos));
+  ta.addEventListener("keydown",e=>{
+    if(((e.ctrlKey||e.metaKey)&&e.key==="Enter")||e.key==="F5"){ e.preventDefault(); run(); }
+    else if(e.key==="Tab"&&!e.shiftKey){ e.preventDefault(); ta.setRangeText("  ",ta.selectionStart,ta.selectionEnd,"end"); changed(); }
+  });
+  runB.addEventListener("click",run);
+  fmtB.addEventListener("click",()=>{ setSql(ideFormat(ta.value)); });
+  clrB.addEventListener("click",()=>{ setSql(""); ta.focus(); emptyGrid(); setStatus("Ready"); });
+  cpyB.addEventListener("click",()=>{ try{ navigator.clipboard.writeText(ta.value).then(()=>{ cpyB.querySelector("span").textContent="Copied"; setTimeout(()=>cpyB.querySelector("span").textContent="Copy",1400); }); }catch(e){} });
+  tblB.addEventListener("click",()=>{ root.classList.toggle("ide-showx"); tblB.classList.toggle("on",root.classList.contains("ide-showx")); });
+  setDialect(dialect); lines(); pos(); setStatus("Ready"); emptyGrid();
+  return {root, ta, run, setSql, setDialect, get dialect(){ return dialect; }, focus:()=>ta.focus()};
+}
+
+/* =====================================================================
    SCREEN-SHARE ROUND: live technical tasks you solve while "sharing your
    screen" and talking the interviewer through it (SQL, Python, Power BI,
    RWA calculations). Built from a BFSI regulatory-reporting job description:
@@ -5531,46 +5878,18 @@ function scrDb(sync){
   return labLoad().then(()=>mk());
 }
 function scrSql(t,work,finish){
-  const ta=el("textarea",{class:"labsql scrsql",spellcheck:"false","aria-label":"SQL editor",autocomplete:"off",autocapitalize:"off"});
   const firstTbl=((t.td.match(/\bFROM\s+(\w+)/i)||[])[1])||"rwa_exposures";
-  ta.value=SCR.sql[t.id]||(LAB.dialect==="oracle"?`-- Oracle\nSELECT \nFROM   ${firstTbl}\n`:`-- Teradata\nSELECT \nFROM   ${firstTbl}\n`);
-  const dial=el("div",{class:"l3dial",role:"radiogroup","aria-label":"SQL dialect"});
-  ["teradata","oracle"].forEach(d=>{ const b=el("button",{type:"button",role:"radio","aria-checked":String(LAB.dialect===d),text:d==="teradata"?"Teradata":"Oracle"}); b.addEventListener("click",()=>{ LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} dial.querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked",String(x===b))); }); dial.append(b); });
-  const runB=el("button",{class:"lrun",type:"button"},el("span",{text:"Run"}),el("b",{"aria-hidden":"true",text:" ❯"}));
-  const subB=el("button",{class:"btn",type:"button",text:"Submit answer"});
-  const MAC=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
-  const KEY=MAC?"⌘ Cmd + Enter":"Ctrl + Enter";
-  const out=el("div",{class:"lres3 scrres"},el("p",{class:"l3empty",text:`Your result appears here. Click Run or press ${KEY}.`}));
-  const tblB=el("button",{class:"l3link scrtblbtn",type:"button","aria-expanded":"false",text:"Show tables"});
-  const keys=el("div",{class:"scrkeys"},
-    el("span",{},el("kbd",{text:KEY}),el("span",{text:" run the query"})),
-    el("span",{},el("kbd",{text:"Tab"}),el("span",{text:" indent"})),
-    el("span",{class:"scrkeytip",text:"Tip: click a column in the tables list to add it to your query."}));
-  const editor=el("section",{class:"led3"},el("div",{class:"l3edhead"},dial,el("span",{class:"ledsp"}),tblB),ta,el("div",{class:"l3edfoot"},runB,el("span",{class:"ledsp"}),subB));
-  // tables palette: on the right on wide screens, a drawer under the editor on small ones
+  const start=d=>d==="oracle"?`-- Oracle\nSELECT \nFROM   ${firstTbl}\n`:`-- Teradata\nSELECT \nFROM   ${firstTbl}\n`;
   const used=new Set((t.td.match(/\b(FROM|JOIN)\s+(\w+)/gi)||[]).map(x=>x.split(/\s+/).pop().toLowerCase()));
-  const insert=txt=>{ const st=ta.selectionStart??ta.value.length, en=ta.selectionEnd??st; ta.setRangeText(txt,st,en,"end"); ta.focus(); SCR.sql[t.id]=ta.value; };
-  const preview=async n=>{ try{ await scrDb(); const r=labRun(scrDb(true),`SELECT * FROM ${n} LIMIT 20`).results.pop(); out.innerHTML=""; out.append(el("div",{class:"l3meta"},el("b",{text:`Preview: ${n}`}),el("span",{text:"first 20 rows · your query is unchanged"})),el("div",{class:"tw labtw"},labTable(r))); }catch(e){} };
-  const mkTree=()=>{ const box=el("div",{class:"scrtree"},el("p",{class:"scrtreehead",text:"Tables for this task are open and marked green. Click Preview to peek at the data."}),schemaTree(null,{insert,preview}));
-    box.querySelectorAll("details.stab").forEach(d=>{ const n=d.querySelector(".stn").textContent; if(used.has(n.toLowerCase())){ d.open=true; d.classList.add("used"); } }); return box; };
-  const aside=el("aside",{class:"scrschema","aria-label":"Tables"},mkTree());
-  const drawer=el("div",{class:"scrdrawer",hidden:true});
-  tblB.addEventListener("click",()=>{ drawer.hidden=!drawer.hidden; if(!drawer.hidden&&!drawer.childNodes.length) drawer.append(mkTree()); tblB.textContent=drawer.hidden?"Show tables":"Hide tables"; tblB.setAttribute("aria-expanded",String(!drawer.hidden)); });
-  work.append(el("div",{class:"scrsqlgrid"},el("div",{class:"scrsqlmain"},editor,keys,drawer,out),aside));
-  ta.addEventListener("input",()=>{ SCR.sql[t.id]=ta.value; });
-  const exec=async()=>{
-    out.innerHTML=""; out.append(el("p",{class:"l3empty",text:LAB.db?"Running…":"Starting the SQL engine (first run only)…"}));
-    try{ await scrDb(); }catch(e){ out.innerHTML=""; out.append(el("p",{class:"l3err",text:"The SQL engine couldn't start in this browser. Reload the page, or try Chrome or Edge."})); return null; }
-    try{ const db=scrDb(true); const r=labRun(db,ta.value); const last=r.results[r.results.length-1]; out.innerHTML="";
-      if(!last||!last.columns.length){ out.append(el("p",{class:"l3ok",text:"Done. Your last statement returned no rows to show."})); return null; }
-      const v=labVisible(last); out.append(el("div",{class:"l3meta"},el("b",{text:`${v.values.length} row${v.values.length===1?"":"s"}`}),el("span",{text:`${v.columns.length} column${v.columns.length===1?"":"s"}`})),el("div",{class:"tw labtw"},labTable(last)));
-      return last;
-    }catch(e){ out.innerHTML=""; out.append(el("p",{class:"l3err"},el("b",{text:"Error: "}),labFriendly(String(e.message||e)))); return null; }
-  };
-  runB.addEventListener("click",exec);
-  ta.addEventListener("keydown",e=>{ if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){ e.preventDefault(); exec(); } else if(e.key==="Tab"&&!e.shiftKey){ e.preventDefault(); ta.setRangeText("  ",ta.selectionStart,ta.selectionEnd,"end"); } });
+  const subB=el("button",{class:"ide-tb ide-submit",type:"button"},el("span",{text:"Submit answer"}));
+  const ide=sqlIDE({dialect:LAB.dialect, sql:SCR.sql[t.id]||start(LAB.dialect), used, db:()=>scrDb().then(()=>scrDb(true)),
+    onSql:v=>{ SCR.sql[t.id]=v; },
+    onDialect:(d,v)=>{ LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} ide.setDialect(d); },
+    extra:[subB]});
+  work.append(ide.root);
   subB.addEventListener("click",async()=>{
-    const mine=await exec(); if(!mine){ finish(false,el("div",{},el("b",{text:"Not yet. "}),"Your query needs to run and return rows first. Fix it and submit again.")); return; }
+    const r=await ide.run(); const mine=r&&r.results[r.results.length-1];
+    if(!mine||!mine.columns||!mine.columns.length){ finish(false,el("div",{},el("b",{text:"Not yet. "}),"Your query needs to run and return rows first. Fix it and submit again.")); return; }
     const model=labRun(scrDb(true),t.td).results.pop();
     const a=labVisible(mine), b=labVisible(model);
     if(labSame(mine,model,!!t.ordered)) return finish(true,el("div",{},el("b",{text:"Correct. "}),`Your result matches the expected answer (${b.values.length} row${b.values.length===1?"":"s"}). Now talk through how you checked it.`));
@@ -6344,6 +6663,183 @@ function scrAfter(t,after){
     nav.append(again,bk);
   }
   after.append(fu,m,nav);
+}
+
+/* =====================================================================
+   FEEDBACK: a one-minute, step-by-step form people can speak or type.
+   Saved to feedback/<uid> (each person sees only their own; the admin sees all).
+   ===================================================================== */
+const FB_FACES=[["😞","Poor"],["😐","Okay"],["🙂","Good"],["😃","Great"],["🤩","Loved it"]];
+const FB_USED=["Interview practice","Interview Exam","Screen-share round","Teacher lessons","SQL Lab","Question of the day","AI Generated Certificate","Ask a colleague"];
+const FB_LIKED=["Simple explanations","Real bank questions","SQL console","Step-by-step teacher","Certificate","Look and feel"];
+const FB_KINDS=[["idea","💡","An idea to improve"],["bug","🛠️","Something went wrong"],["missing","➕","Something is missing"]];
+const FB_WHERE=["Sign in / register","Practice chat","Exam","SQL console","Screen-share round","Certificate","Somewhere else"];
+const FB={open:false};
+
+function fbSR(){ return window.SpeechRecognition||window.webkitSpeechRecognition||null; }
+/* a text box with a big "speak" button and live words while you talk */
+function fbVoiceBox(placeholder,value,onChange){
+  const ta=el("textarea",{class:"fbta",rows:"4",placeholder,maxlength:"2000"}); ta.value=value||"";
+  ta.addEventListener("input",()=>onChange(ta.value));
+  const live=el("p",{class:"fblive",hidden:true});
+  const wrap=el("div",{class:"fbvoice"});
+  const SR=fbSR();
+  if(SR){
+    let rec=null;
+    const mic=el("button",{class:"fbmic",type:"button","aria-pressed":"false"},el("span",{class:"fbmicdot","aria-hidden":"true"}),el("span",{class:"fbmiclbl",text:"Tap to speak"}));
+    const stop=()=>{ try{ rec&&rec.stop(); }catch(e){} };
+    mic.addEventListener("click",()=>{
+      if(rec){ stop(); return; }
+      try{
+        rec=new SR(); rec.lang="en-IN"; rec.continuous=true; rec.interimResults=true;
+        rec.onresult=e=>{ let interim=""; for(let i=e.resultIndex;i<e.results.length;i++){ const r=e.results[i]; if(r.isFinal){ ta.value=(ta.value?ta.value.replace(/\s*$/," "):"")+r[0].transcript.trim(); onChange(ta.value); } else interim+=r[0].transcript; } live.textContent=interim; live.hidden=!interim; };
+        rec.onend=()=>{ rec=null; mic.classList.remove("rec"); mic.setAttribute("aria-pressed","false"); mic.querySelector(".fbmiclbl").textContent="Tap to speak"; live.hidden=true; };
+        rec.onerror=e=>{ if(e.error==="not-allowed"){ mic.querySelector(".fbmiclbl").textContent="Microphone blocked: please type"; } };
+        rec.start(); mic.classList.add("rec"); mic.setAttribute("aria-pressed","true"); mic.querySelector(".fbmiclbl").textContent="Listening… tap to stop";
+      }catch(e){ rec=null; }
+    });
+    wrap.append(mic,live,ta);
+    wrap.stop=stop;
+  } else { wrap.append(ta,el("p",{class:"fbsmall",text:"Voice typing isn't available in this browser, so please type. (It works in Chrome and Edge.)"})); wrap.stop=()=>{}; }
+  return wrap;
+}
+
+function openFeedback(from){
+  if(FB.open) return; FB.open=true;
+  const me=(STATE&&STATE.profile)||{};
+  const ans={rating:0,used:[],liked:[],likedText:"",kind:"",where:"",text:"",nps:-1,contact:true};
+  const steps=["rate","used","liked","improve","nps","send"];
+  let i=-1, voice=null;
+  const bar=el("i"); const prog=el("div",{class:"fbprog"},bar);
+  const stepTxt=el("span",{class:"fbstep"});
+  const close=el("button",{class:"fbx",type:"button","aria-label":"Close"},"×");
+  const stage=el("div",{class:"fbstage"});
+  const backB=el("button",{class:"fbnav",type:"button",text:"‹ Back"}), skipB=el("button",{class:"fbnav",type:"button",text:"Skip"}), nextB=el("button",{class:"fbnext",type:"button",text:"Next ›"});
+  const foot=el("div",{class:"fbfoot"},backB,el("span",{class:"fbsp"}),skipB,nextB);
+  const card=el("div",{class:"fbcard",role:"dialog","aria-modal":"true","aria-label":"Share your feedback"},el("div",{class:"fbtop"},stepTxt,close),prog,stage,foot);
+  const ov=el("div",{class:"fbov"},card);
+  document.body.append(ov); requestAnimationFrame(()=>ov.classList.add("in"));
+  const done=()=>{ try{ voice&&voice.stop(); }catch(e){} ov.classList.remove("in"); setTimeout(()=>{ ov.remove(); FB.open=false; },220); };
+  close.addEventListener("click",done); ov.addEventListener("click",e=>{ if(e.target===ov) done(); });
+  document.addEventListener("keydown",function esc(e){ if(e.key==="Escape"&&FB.open){ done(); document.removeEventListener("keydown",esc); } });
+  const chips=(list,sel,multi,onPick)=>{ const box=el("div",{class:"fbchips"}); list.forEach(x=>{ const b=el("button",{type:"button",class:"fbchip","aria-pressed":String(multi?sel.includes(x):sel===x),text:x}); b.addEventListener("click",()=>{ if(multi){ const k=sel.indexOf(x); if(k>=0) sel.splice(k,1); else sel.push(x); b.setAttribute("aria-pressed",String(k<0)); } else { box.querySelectorAll(".fbchip").forEach(c=>c.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); } onPick&&onPick(x); }); box.append(b); }); return box; };
+  const head=(emoji,q,sub)=>el("div",{class:"fbhead"},el("span",{class:"fbemoji","aria-hidden":"true",text:emoji}),el("h3",{text:q}),sub?el("p",{class:"fbsub",text:sub}):null);
+
+  function intro(){
+    stage.innerHTML=""; prog.hidden=true; foot.hidden=true; stepTxt.textContent="";
+    const start=el("button",{class:"fbnext big",type:"button",text:"Start · about 1 minute"}); start.addEventListener("click",()=>go(0));
+    stage.append(el("div",{class:"fbintro"},el("div",{class:"fbhero","aria-hidden":"true"},el("span",{text:"💬"})),
+      el("h2",{text:me.name?`${String(me.name).split(" ")[0]}, how are we doing?`:"How are we doing?"}),
+      el("p",{text:"ARS Learning Academy is free and built for BAs like you. Tell us what works and what doesn't, and we'll make it better."}),
+      el("ul",{class:"fbperks"},el("li",{text:"🕐 About 1 minute, 5 quick questions"}),el("li",{text:fbSR()?"🎙️ Speak your answers or type them":"⌨️ Type your answers"}),el("li",{text:"🔒 Only the app's owner reads it"})),
+      start));
+  }
+  function go(n){
+    try{ voice&&voice.stop(); }catch(e){} voice=null;
+    i=n; const k=steps[i];
+    prog.hidden=false; foot.hidden=false;
+    bar.style.width=`${Math.round(100*(i+1)/steps.length)}%`;
+    const left=Math.max(5,(steps.length-1-i)*12);
+    stepTxt.textContent=i<steps.length-1?`Question ${i+1} of ${steps.length-1} · about ${left} seconds left`:"Last step";
+    backB.style.visibility=i===0?"hidden":"visible";
+    skipB.hidden=k==="rate"||k==="send";
+    nextB.textContent=k==="send"?"Send feedback":"Next ›";
+    nextB.classList.toggle("send",k==="send");
+    stage.innerHTML=""; stage.classList.remove("fbslide"); void stage.offsetWidth; stage.classList.add("fbslide");
+    if(k==="rate"){
+      stage.append(head("⭐","How was your experience today?","Tap a face."));
+      const row=el("div",{class:"fbfaces"});
+      FB_FACES.forEach(([e,l],j)=>{ const b=el("button",{type:"button",class:"fbface","aria-pressed":String(ans.rating===j+1)},el("span",{class:"fbfe",text:e}),el("span",{text:l})); b.addEventListener("click",()=>{ ans.rating=j+1; row.querySelectorAll(".fbface").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); setTimeout(()=>go(i+1),350); }); row.append(b); });
+      stage.append(row);
+    } else if(k==="used"){
+      stage.append(head("🧭","What did you try?","Pick all that apply."),chips(FB_USED,ans.used,true));
+    } else if(k==="liked"){
+      stage.append(head("💚","What did you like most?","Pick any, then add a few words if you like."),chips(FB_LIKED,ans.liked,true));
+      voice=fbVoiceBox("For example: the teacher explained window functions really simply…",ans.likedText,v=>ans.likedText=v); stage.append(voice);
+    } else if(k==="improve"){
+      stage.append(head("🔧","What should we improve, or did something go wrong?","Choose one, then tell us in your own words."));
+      const kinds=el("div",{class:"fbkinds"});
+      const whereBox=el("div",{class:"fbwhere",hidden:ans.kind!=="bug"},el("p",{class:"fbq2",text:"Where did it happen?"}),chips(FB_WHERE,ans.where,false,x=>ans.where=x));
+      FB_KINDS.forEach(([id,e,l])=>{ const b=el("button",{type:"button",class:"fbkind","aria-pressed":String(ans.kind===id)},el("span",{class:"fbfe",text:e}),el("span",{text:l})); b.addEventListener("click",()=>{ ans.kind=id; kinds.querySelectorAll(".fbkind").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); whereBox.hidden=id!=="bug"; }); kinds.append(b); });
+      voice=fbVoiceBox("Tell us what to change, or what happened and what you expected…",ans.text,v=>ans.text=v);
+      stage.append(kinds,whereBox,voice);
+    } else if(k==="nps"){
+      stage.append(head("🤝","Would you recommend ARS to a fellow BA?","0 = not at all, 10 = definitely."));
+      const row=el("div",{class:"fbnps"});
+      for(let n=0;n<=10;n++){ const b=el("button",{type:"button",class:"fbn"+(n<=6?" lo":n<=8?" mid":" hi"),"aria-pressed":String(ans.nps===n),text:String(n)}); b.addEventListener("click",()=>{ ans.nps=n; row.querySelectorAll(".fbn").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); setTimeout(()=>go(i+1),350); }); row.append(b); }
+      stage.append(row,el("div",{class:"fbnpslbl"},el("span",{text:"Not likely"}),el("span",{text:"Very likely"})));
+    } else if(k==="send"){
+      stage.append(head("📨","Ready to send?","Here's what you told us."));
+      const s=el("div",{class:"fbsum"});
+      const row=(l,v)=>v?s.append(el("div",{class:"fbsrow"},el("span",{text:l}),el("b",{text:v}))):null;
+      row("Experience",ans.rating?FB_FACES[ans.rating-1].join(" "):"");
+      row("Tried",ans.used.join(", "));
+      row("Liked",[ans.liked.join(", "),ans.likedText].filter(Boolean).join(" · "));
+      row(ans.kind?FB_KINDS.find(x=>x[0]===ans.kind)[2]:"Comments",[ans.where,ans.text].filter(Boolean).join(" · "));
+      row("Would recommend",ans.nps>=0?`${ans.nps} / 10`:"");
+      if(!s.childNodes.length) s.append(el("p",{class:"fbsmall",text:"You haven't added anything yet. Go back and pick at least a face."}));
+      stage.append(s);
+      if(me.email){ const c=el("input",{type:"checkbox"}); c.checked=ans.contact; c.addEventListener("change",()=>ans.contact=c.checked); stage.append(el("label",{class:"fbcontact"},c,el("span",{text:`It's OK to contact me about this at ${me.email}`}))); }
+      stage.append(el("p",{class:"fberr",hidden:true}));
+    }
+  }
+  async function send(){
+    const err=stage.querySelector(".fberr");
+    if(!ans.rating&&!ans.text&&!ans.likedText){ err.hidden=false; err.textContent="Please pick a face or write a few words first."; return; }
+    nextB.disabled=true; nextB.textContent="Sending…";
+    const item={at:Date.now(),rating:ans.rating,used:ans.used.slice(0,10),liked:ans.liked.slice(0,10),likedText:ans.likedText.slice(0,2000),kind:ans.kind,where:ans.where,text:ans.text.slice(0,2000),nps:ans.nps,from:from||CUR_PANE||"",name:me.name||"",email:ans.contact?(me.email||""):"",contact:!!(ans.contact&&me.email)};
+    try{
+      const ref=DB.doc("feedback/"+UID); const g=await ref.get(); const items=((g.exists&&g.data())||{}).items||[];
+      items.push(item); await ref.set({items:items.slice(-20)});
+      thanks();
+    }catch(e){ nextB.disabled=false; nextB.textContent="Send feedback"; err.hidden=false; err.textContent="We couldn't send that just now. Check your connection and try again."; }
+  }
+  function thanks(){
+    prog.hidden=true; foot.hidden=true; stepTxt.textContent="";
+    stage.innerHTML="";
+    const share=el("a",{class:"fbnext",href:`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(APP_URL)}`,target:"_blank",rel:"noopener",text:"Share ARS on LinkedIn"});
+    const ok=el("button",{class:"fbnav",type:"button",text:"Close"}); ok.addEventListener("click",done);
+    const conf=el("div",{class:"fbconf","aria-hidden":"true"}); for(let k=0;k<26;k++) conf.append(el("i",{style:`left:${Math.random()*100}%;animation-delay:${Math.random()*.4}s;background:hsl(${Math.round(Math.random()*360)} 85% 60%)`}));
+    stage.append(conf,el("div",{class:"fbintro"},el("div",{class:"fbhero ok","aria-hidden":"true"},el("span",{text:"✓"})),
+      el("h2",{text:`Thank you${me.name?", "+String(me.name).split(" ")[0]:""}!`}),
+      el("p",{text:"Your feedback goes straight to the person who builds ARS. Every message is read."}),
+      ans.nps>=9?el("p",{class:"fbsmall",text:"Glad you'd recommend us. Sharing it with your network helps other BAs find it."}):null,
+      el("div",{class:"fbthx"},ans.nps>=7?share:null,ok)));
+  }
+  backB.addEventListener("click",()=>{ if(i>0) go(i-1); });
+  skipB.addEventListener("click",()=>go(i+1));
+  nextB.addEventListener("click",()=>{ if(steps[i]==="send") send(); else go(i+1); });
+  intro();
+}
+
+/* entry points: a floating button on the home and practice pages */
+(function(){
+  const b=el("button",{class:"fbfab",type:"button","aria-label":"Share feedback"},el("span",{"aria-hidden":"true",text:"💬"}),el("span",{class:"fbfabl",text:"Feedback"}));
+  b.addEventListener("click",()=>openFeedback(document.body.className.match(/v-\w+/)?.[0]||""));
+  document.body.append(b);
+})();
+
+/* admin: read everyone's feedback */
+async function renderFeedbackAdmin(into){
+  into.innerHTML="";
+  let rows=[];
+  try{ const snap=await DB.collection("feedback").get(); snap.docs.forEach(d=>((d.data()||{}).items||[]).forEach(it=>rows.push({...it,uid:d.id}))); }catch(e){ into.append(el("p",{class:"muted",text:"Couldn't load feedback."})); return; }
+  rows.sort((a,b)=>(b.at||0)-(a.at||0));
+  if(!rows.length){ into.append(el("p",{class:"muted",text:"No feedback yet."})); return; }
+  const rated=rows.filter(r=>r.rating), avg=rated.length?(rated.reduce((a,r)=>a+r.rating,0)/rated.length).toFixed(1):"–";
+  const np=rows.filter(r=>r.nps>=0), nps=np.length?Math.round(100*(np.filter(r=>r.nps>=9).length-np.filter(r=>r.nps<=6).length)/np.length):"–";
+  into.append(el("div",{class:"fbstats"},el("div",{},el("b",{text:String(rows.length)}),el("span",{text:"responses"})),el("div",{},el("b",{text:avg}),el("span",{text:"average out of 5"})),el("div",{},el("b",{text:String(nps)}),el("span",{text:"recommend score (−100 to 100)"})),el("div",{},el("b",{text:String(rows.filter(r=>r.kind==="bug").length)}),el("span",{text:"problems reported"}))));
+  const list=el("div",{class:"fblist"});
+  rows.forEach(r=>{
+    const del=el("button",{class:"btn small",type:"button",text:"Delete"});
+    del.addEventListener("click",async()=>{ del.disabled=true; try{ const ref=DB.doc("feedback/"+r.uid); const g=await ref.get(); const items=((g.exists&&g.data())||{}).items||[]; await ref.set({items:items.filter(x=>x.at!==r.at)}); renderFeedbackAdmin(into); }catch(e){ del.disabled=false; } });
+    list.append(el("div",{class:"fbitem"},
+      el("div",{class:"fbitop"},el("span",{class:"fbie",text:r.rating?FB_FACES[r.rating-1][0]:"·"}),el("b",{text:r.name||"Anonymous"}),r.contact&&r.email?el("a",{href:`mailto:${r.email}`,text:r.email}):null,el("span",{class:"muted small",text:new Date(r.at).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}),el("span",{class:"fbsp"}),del),
+      r.kind?el("p",{},el("b",{text:FB_KINDS.find(x=>x[0]===r.kind)[2]+(r.where?` · ${r.where}`:"")+": "}),r.text||""):(r.text?el("p",{text:r.text}):null),
+      (r.liked&&r.liked.length)||r.likedText?el("p",{class:"muted"},el("b",{text:"Liked: "}),[ (r.liked||[]).join(", "), r.likedText].filter(Boolean).join(" · ")):null,
+      el("p",{class:"muted small",text:[r.used&&r.used.length?"Tried: "+r.used.join(", "):"", r.nps>=0?`Recommend: ${r.nps}/10`:""].filter(Boolean).join(" · ")})));
+  });
+  into.append(list);
 }
 
 </script>
@@ -7669,6 +8165,8 @@ async function wipeUser(uid, self){
     try{ const snap=await DB.collection(`attempts/${uid}/${sub}`).get(); for(const d of snap.docs) await del(`attempts/${uid}/${sub}/${d.id}`); }catch(e){}
   }
   for(const p of [`attempts/${uid}`,`certs/${uid}`,`help/${uid}`,`phones/${uid}`,`likes/${uid}`,`requests/${uid}`]) await del(p);
+  // feedback is kept to improve the app, but the name and email are removed after 10 days
+  try{ const f=DB.doc("feedback/"+uid); const g=await f.get(); if(g.exists){ const items=((g.data()||{}).items||[]).map(x=>({...x,name:"",email:"",contact:false})); await f.set({items}); } }catch(e){}
   if(self){
     try{ await DB.collection("data/users/"+uid).doc("contacts").delete(); }catch(e){}
     try{ const keep=new Set(["baTheme","baMusic","baNarrator","baLabDialect"]); Object.keys(localStorage).filter(k=>k.startsWith("ba")&&!keep.has(k)).forEach(k=>localStorage.removeItem(k)); }catch(e){}
