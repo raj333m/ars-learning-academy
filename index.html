@@ -6985,7 +6985,7 @@ function renderScreen(body){
   BANKS.forEach(([k,label])=>{ const n=SCR_TASKS.filter(t=>scrBanksOf(t).includes(k)).length; if(n) bankRow.append(chip(k,label,n)); });
   body.append(el("h4",{class:"scrlabel",text:"1. Pick a bank"}),bankRow);
   if(SCR.bank!=="all") body.append(el("p",{class:"muted small scrbanknote",text:SCR.bank==="db"
-    ? "✓ Reported = a candidate described this question at Deutsche Bank. The rest are likely topics from Deutsche Bank's own Business Functional Analyst (VP) job adverts."
+    ? "Deutsche Bank candidates report being given questions on screen to solve. ✓ Reported = a candidate described this question or topic at Deutsche Bank. The rest are likely topics from Deutsche Bank's Business Functional Analyst (VP) job adverts: SQL, Python, data quality, functional specs and regulatory requirements."
     : `✓ Reported = a candidate described this question or topic at ${BANK_NAME[SCR.bank]} on a public interview site. Open a task to see the role, place and source.`}));
 
   // 2. task
@@ -7128,6 +7128,231 @@ function scrAfter(t,after){
   }
   after.append(fu,m,nav);
 }
+
+/* =====================================================================
+   MORE DEUTSCHE BANK (VP Business Functional Analyst) SCREEN-SHARE TASKS
+   Chosen from: Deutsche Bank BFA job adverts, and public candidate reports
+   (shared-screen SQL, window functions, CTEs, pandas, duplicates, functional
+   analysis questions). Each task says which source it rests on.
+   ===================================================================== */
+const DB_ONSCREEN={kind:"topic",co:"Deutsche Bank",role:"Lead Data Engineer",where:"Pune",when:"Aug 2024",asked:"Interviewers will give you question on screen and ask to solve.",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/Deutsche-Bank-Interview-E3150-RVW94694481.htm"};
+const DB_IQ_DA={kind:"topic",co:"Deutsche Bank",role:"Data Analyst",asked:"SQL joins, window functions, CTEs and query optimization, then Pandas",site:"Interview Query",url:"https://www.interviewquery.com/guides/deutsche-bank-data-analyst"};
+const DB_IQ_DE={kind:"topic",co:"Deutsche Bank",role:"Data Engineer",asked:"a duplicate-finding function, SQL joins",site:"Interview Query",url:"https://www.interviewquery.com/guides/deutsche-bank-data-engineer"};
+const DB_IQ_JSON={kind:"topic",co:"Deutsche Bank",role:"Senior big data role",asked:"nested JSON handling on a shared screen",site:"Interview Query",url:"https://www.interviewquery.com/guides/deutsche-bank-data-engineer"};
+const addSrc=(id,s)=>{ (BANK_SRC[id]=BANK_SRC[id]||[]).push(Object.assign({b:"db"},s)); };
+addSrc("d1",{co:"Deutsche Bank",role:"Data Analyst",asked:"Write an SQL query to find the second highest salary",site:"AmbitionBox",url:"https://www.ambitionbox.com/interviews/deutsche-bank-interview-questions/data-analyst/top-questions"});
+addSrc("d2",DB_IQ_DA); addSrc("d4",DB_IQ_DA); addSrc("l1",DB_IQ_DE); addSrc("d6",DB_IQ_JSON); addSrc("p1",DB_IQ_DA); addSrc("p2",DB_IQ_DA);
+["l1","p1","p2"].forEach(id=>{ const t=SCR_TASKS.find(x=>x.id===id); if(t&&!t.track.includes("db")) t.track.push("db"); });
+
+SCR_TASKS.push(
+ {id:"d13",type:"sql",track:["db"],min:8,title:"Accounts above their product's average",
+  ask:"For 30 Sep 2026, list every account whose balance is higher than the average balance of its own product. Largest balance first within each product.",
+  out:"account_id, product_code, balance · ordered by product_code, then balance (largest first)",
+  hint:"Either a correlated subquery (AVG for the same product) or AVG(balance) OVER (PARTITION BY product_code) in an inner query.",
+  td:"SELECT account_id, product_code, balance\nFROM  (SELECT account_id, product_code, balance,\n              AVG(balance) OVER (PARTITION BY product_code) AS product_avg\n       FROM   account_snapshot\n       WHERE  snapshot_date = DATE '2026-09-30') t\nWHERE  balance > product_avg\nORDER  BY product_code, balance DESC;",
+  ordered:true,
+  keys:["Compares each account with the average of its own product, not the overall average","Uses a correlated subquery or a window AVG","Can explain why the window version is usually faster on big tables"],
+  probes:[["Correlated subquery or window function: which and why?","The window function reads the table once. A correlated subquery may recalculate the average for every row, which is slow on big tables."],
+          ["Why not compare with the overall average?","Mortgages are much bigger than credit cards, so every mortgage would look 'high'. Compare like with like."]]},
+ {id:"d14",type:"sql",track:["db"],min:10,title:"IFRS 9 stage migration matrix",
+  ask:"Regulatory reporting wants to see how accounts moved between IFRS 9 stages from 31 Aug to 30 Sep 2026. Count accounts for each 'from stage' and 'to stage' pair.",
+  out:"stage_aug, stage_sep, accounts · ordered by stage_aug, then stage_sep",
+  hint:"Join account_snapshot to itself (August and September), then GROUP BY both stages.",
+  td:"SELECT a.ifrs9_stage AS stage_aug,\n       s.ifrs9_stage AS stage_sep,\n       COUNT(*) AS accounts\nFROM   account_snapshot a\nJOIN   account_snapshot s\n  ON   s.account_id = a.account_id\n AND   s.snapshot_date = DATE '2026-09-30'\nWHERE  a.snapshot_date = DATE '2026-08-31'\nGROUP  BY a.ifrs9_stage, s.ifrs9_stage\nORDER  BY 1, 2;",
+  ordered:true,
+  keys:["Puts the same account's two months side by side","Groups by both the old and the new stage","Reads the result: which moves increase the loss allowance (1→2, 2→3)"],
+  probes:[["Which movements worry the business most?","Moves into Stage 2 or 3: the allowance switches from 12-month to lifetime losses, so provisions rise."],
+          ["An account is in August but not September. What happened?","It may have closed, been written off or sold, or the feed is incomplete. Check before reporting."]]},
+ {id:"d15",type:"sql",track:["db"],min:12,title:"Large exposures check against Tier 1",
+  ask:"Using exposures, client_group_map and capital for 30 Sep 2026: add up exposure for each connected-client group (customers with no group count on their own). Show every client or group at 10% of Tier 1 capital or more, the percentage, and 'Breach' if it is above 25%, otherwise 'Report'.",
+  out:"client_or_group, total_exposure, pct_of_tier1, status · largest first",
+  hint:"LEFT JOIN the group map, group by COALESCE(group_id, customer_id), compare SUM with capital.tier1_capital in HAVING.",
+  td:"SELECT COALESCE(g.group_id, CAST(e.customer_id AS VARCHAR(10))) AS client_or_group,\n       SUM(e.exposure_after_crm) AS total_exposure,\n       ROUND(SUM(e.exposure_after_crm) * 100.0 / c.tier1_capital, 1) AS pct_of_tier1,\n       CASE WHEN SUM(e.exposure_after_crm) > 0.25 * c.tier1_capital\n            THEN 'Breach' ELSE 'Report' END AS status\nFROM   exposures e\nLEFT   JOIN client_group_map g ON g.customer_id = e.customer_id\nJOIN   capital c ON c.reporting_date = e.reporting_date\nWHERE  e.reporting_date = DATE '2026-09-30'\nGROUP  BY COALESCE(g.group_id, CAST(e.customer_id AS VARCHAR(10))), c.tier1_capital\nHAVING SUM(e.exposure_after_crm) >= 0.10 * c.tier1_capital\nORDER  BY total_exposure DESC;",
+  ordered:true,
+  keys:["Aggregates connected clients into one group before testing","Keeps ungrouped customers on their own (LEFT JOIN + COALESCE)","Uses 10% to report and 25% as the limit","Uses exposure after credit risk mitigation, as the rule requires"],
+  probes:[["What makes clients 'connected'?","Control (one owns or controls the other) or economic dependency (if one fails, the other is likely to struggle)."],
+          ["A group breaches 25%. What happens?","It must be reported to the regulator straight away, with a plan to bring it back within the limit."]]},
+ {id:"d16",type:"sql",track:["db"],min:10,title:"Non-performing exposures by product (FINREP style)",
+  ask:"For 30 Sep 2026, show for each product the total balance, the non-performing balance (more than 90 days past due, or default_flag = 'Y'), and the non-performing ratio in percent to one decimal place. Highest ratio first.",
+  out:"product_code, total_balance, npe_balance, npe_ratio_pct",
+  hint:"SUM(CASE WHEN days_past_due > 90 OR default_flag = 'Y' THEN balance ELSE 0 END), then divide by SUM(balance).",
+  td:"SELECT product_code,\n       SUM(balance) AS total_balance,\n       SUM(CASE WHEN days_past_due > 90 OR default_flag = 'Y' THEN balance ELSE 0 END) AS npe_balance,\n       ROUND(SUM(CASE WHEN days_past_due > 90 OR default_flag = 'Y' THEN balance ELSE 0 END) * 100.0\n             / SUM(balance), 1) AS npe_ratio_pct\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY product_code\nORDER  BY npe_ratio_pct DESC;",
+  ordered:true,
+  keys:["Uses both tests: 90+ days past due OR flagged as default (unlikely to pay)","Conditional SUM in one pass","Explains where this lands: FINREP F 18"],
+  probes:[["Why include default_flag and not just days past due?","A borrower can be non-performing because they are unlikely to pay, for example bankrupt, even before they are 90 days late."],
+          ["How would you check this matches the FINREP return?","Reconcile the totals by product to F 18 for the same date and explain any difference, such as scope or write-offs."]]},
+ {id:"d17",type:"python",track:["db"],min:15,title:"Month-on-month variance check in pandas",
+  ask:"Before a regulatory return is submitted, the team compares each line with last month. You have a DataFrame df with columns line_item, prior_month and current_month. Flag lines where the change is more than 10% AND more than £1 million, and produce a short variance list for commentary.",
+  starter:"import pandas as pd\n\n# df has: line_item, prior_month, current_month\n# your code here\n",
+  model:"import pandas as pd\n\ndf[\"change\"] = df[\"current_month\"] - df[\"prior_month\"]\ndf[\"change_pct\"] = df[\"change\"] / df[\"prior_month\"].replace(0, pd.NA) * 100\n\n# a line needs commentary only if the move is big in BOTH percent and pounds\nflag = (df[\"change_pct\"].abs() > 10) & (df[\"change\"].abs() > 1_000_000)\nvariances = (df[flag]\n             .sort_values(\"change\", key=abs, ascending=False)\n             [[\"line_item\", \"prior_month\", \"current_month\", \"change\", \"change_pct\"]])\n\nvariances[\"commentary\"] = \"\"   # to be filled with the reason for each move\nprint(variances.round(1).to_string(index=False))",
+  keys:["Calculates both the change in pounds and in percent","Uses both thresholds together, so tiny lines don't flood the list","Handles a zero prior month without crashing","Sorts by size and leaves space for the reason (commentary)"],
+  probes:[["Why use both a percent and a pounds threshold?","A 50% move on £10 doesn't matter; a 2% move on £1 billion might. Both together catch what's material."],
+          ["What goes in the commentary?","The business reason, with evidence: new lending, a large repayment, a rating change, or a data fix."]]},
+ {id:"d18",type:"talk",track:["db"],min:6,title:"A change request arrives mid-sprint",
+  ask:"Halfway through a sprint, the business asks for a change to a requirement that is already being built. Talk me through what you do.",
+  keys:["Understand the change and why it's needed now (regulatory deadline or nice-to-have?)","Assess impact on scope, effort, testing and the sprint goal with the team","Let the product owner decide: swap it in, add to the backlog, or plan for next sprint","Update the requirement, acceptance criteria and traceability, and tell stakeholders"],
+  probes:[["The change is for a regulatory deadline. Does that change your answer?","Yes, priority is higher, but you still assess impact openly and agree with the product owner what drops out to make room."],
+          ["Who decides?","The product owner owns the backlog and priorities. The BA brings the analysis so the decision is informed."]]},
+ {id:"d19",type:"talk",track:["db"],min:5,title:"Product owner versus business analyst",
+  ask:"What's the difference between a product owner and a business analyst? How do you work together?",
+  keys:["Product owner: owns the 'what' and 'why', the backlog and priorities, and accepts the work","Business analyst: digs into the detail: requirements, data, rules, acceptance criteria","BA supports the PO with analysis, stories and impact assessments","Together: refine stories, agree acceptance criteria, answer the team's questions"],
+  probes:[["Can one person do both?","Sometimes, in small teams, but on complex regulatory work it's usually split because the analysis is heavy."],
+          ["What happens if they disagree?","The BA presents evidence and impacts; the PO makes the priority call."]]},
+ {id:"d20",type:"talk",track:["db"],min:10,title:"Write UAT test cases for a regulatory rule",
+  ask:"The rule is: 'An exposure is non-performing if it is more than 90 days past due on a material amount, or the borrower is unlikely to pay.' Share your screen and write the UAT test cases you'd use to prove the system flags this correctly.",
+  keys:["A test at exactly 90 days (not flagged) and at 91 days (flagged)","A test where the amount is below the materiality threshold","A test where the borrower is unlikely to pay but not late (flagged)","Tests for blanks and bad data (missing days past due, missing flag)","Each with an expected result and the data needed, traced to the requirement"],
+  probes:[["Why test exactly 90 and 91?","Boundary values are where rules most often break: '>' versus '>=' errors."],
+          ["How do you prove coverage?","A traceability matrix linking each requirement to its test cases and results."]]},
+ {id:"d21",type:"talk",track:["db"],min:8,title:"Trace the data lineage of a regulatory number",
+  ask:"A regulator questions one number on a COREP return. Share your screen and show how you would trace it back to the source and prove it's right.",
+  keys:["Start at the cell and its definition","Follow it back: report → warehouse table → transformations → source system","At each step, reconcile totals and check the rules applied","Show the controls and evidence (logs, sign-offs, reconciliations)","Link it to BCBS 239: accuracy, completeness and traceability"],
+  probes:[["What if there is no documented lineage?","Rebuild it by reading the code and data flows, document it, and agree an owner so it stays current."],
+          ["What evidence would a regulator expect?","Data definitions, lineage diagrams, reconciliations at each hop, control results and sign-offs."]]}
+);
+SCR_TASKS.forEach(t=>{ t.track=t.track||["rwa"]; });
+BANK_SRC.d13=[{b:"db",kind:"topic",co:"Deutsche Bank",role:"Graduate Technical Analyst",asked:"employee names whose salary is greater than the average salary from his department",site:"GeeksforGeeks",url:"https://www.geeksforgeeks.org/?p=687611"}];
+BANK_SRC.d18=[{b:"db",co:"Deutsche Bank",role:"Business Analyst",when:"May 2024",asked:"How do you handle a change request in the middle of a sprint?",site:"AmbitionBox",url:"https://ambitionbox.com/interviews/deutsche-bank-interview-questions?page=5"}];
+BANK_SRC.d19=[{b:"db",co:"Deutsche Bank",role:"Business Analyst",asked:"Was ist der Unterschied zwischen einem Product Owner (PO) und einem Business Analyst?",site:"Glassdoor",url:"https://www.glassdoor.ca/Interview/Deutsche-Bank-Interview-E3150-RVW487040.htm"}];
+
+Object.assign(LESSON,{
+ d13:{idea:"We compare each account with the average of accounts like it, the same product. Above that average, it goes on the list.",
+  like:"Like asking which students scored above their own class's average, not the whole school's.",
+  ex:"Card balances: 5,000, 6,000, 10,000. Average = 7,000. Only 10,000 is above it.",
+  steps:[["Work out each product's average next to every row, using AVG … OVER (PARTITION BY product_code).","SELECT account_id, product_code, balance,\n       AVG(balance) OVER (PARTITION BY product_code) AS product_avg\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30';"],
+         ["Wrap it as an inner query and keep rows above their average.","SELECT account_id, product_code, balance\nFROM  (SELECT account_id, product_code, balance,\n              AVG(balance) OVER (PARTITION BY product_code) AS product_avg\n       FROM   account_snapshot\n       WHERE  snapshot_date = DATE '2026-09-30') t\nWHERE  balance > product_avg\nORDER  BY product_code, balance DESC;"]],
+  traps:["Comparing with the overall average across all products.","Putting the window function straight into WHERE: it isn't allowed there."],
+  check:TQ("Class marks 40, 60, 80. Who is above the class average?",["40","60","80","Nobody"],2,"The average is 60, so only 80 is above it.")},
+ d14:{idea:"A migration matrix counts how many accounts moved from each stage last month to each stage this month.",
+  like:"Like a table showing how many pupils moved from Set 1 to Set 2, Set 2 to Set 3, and so on.",
+  ex:"13 accounts stayed in Stage 1. 3 moved from Stage 1 to Stage 2. 1 moved from 2 to 3.",
+  steps:[["Put each account's August row next to its September row.","SELECT a.account_id, a.ifrs9_stage AS stage_aug, s.ifrs9_stage AS stage_sep\nFROM   account_snapshot a\nJOIN   account_snapshot s\n  ON   s.account_id = a.account_id\n AND   s.snapshot_date = DATE '2026-09-30'\nWHERE  a.snapshot_date = DATE '2026-08-31';"],
+         ["Count accounts for each 'from → to' pair.","SELECT a.ifrs9_stage AS stage_aug,\n       s.ifrs9_stage AS stage_sep,\n       COUNT(*) AS accounts\nFROM   account_snapshot a\nJOIN   account_snapshot s\n  ON   s.account_id = a.account_id\n AND   s.snapshot_date = DATE '2026-09-30'\nWHERE  a.snapshot_date = DATE '2026-08-31'\nGROUP  BY a.ifrs9_stage, s.ifrs9_stage\nORDER  BY 1, 2;"]],
+  traps:["Forgetting the date on the September side of the join, which multiplies rows.","Grouping by only one stage."],
+  check:TQ("Which move makes provisions jump the most?",["Stage 1 → 1","Stage 2 → 1","Stage 1 → 2","Stage 3 → 3"],2,"Stage 2 switches from 12-month to lifetime losses.")},
+ d15:{idea:"Don't lend too much to one family of companies. Add up each connected group, then compare it with the bank's Tier 1 capital: 10% must be reported, above 25% is a breach.",
+  like:"Like not lending more than a quarter of your savings to one family, however many members ask separately.",
+  ex:"Tier 1 = £5m. A group owes £620k: 620 ÷ 5,000 = 12.4%, so report it. Not above 25%, so no breach.",
+  steps:[["Attach each customer's group. Customers without one keep their own ID (COALESCE).","SELECT e.customer_id, g.group_id, COALESCE(g.group_id, CAST(e.customer_id AS VARCHAR(10))) AS client_or_group, e.exposure_after_crm\nFROM   exposures e\nLEFT   JOIN client_group_map g ON g.customer_id = e.customer_id\nWHERE  e.reporting_date = DATE '2026-09-30';"],
+         ["Add up per client or group and compare with Tier 1. Keep 10% or more, and label breaches above 25%.","SELECT COALESCE(g.group_id, CAST(e.customer_id AS VARCHAR(10))) AS client_or_group,\n       SUM(e.exposure_after_crm) AS total_exposure,\n       ROUND(SUM(e.exposure_after_crm) * 100.0 / c.tier1_capital, 1) AS pct_of_tier1,\n       CASE WHEN SUM(e.exposure_after_crm) > 0.25 * c.tier1_capital\n            THEN 'Breach' ELSE 'Report' END AS status\nFROM   exposures e\nLEFT   JOIN client_group_map g ON g.customer_id = e.customer_id\nJOIN   capital c ON c.reporting_date = e.reporting_date\nWHERE  e.reporting_date = DATE '2026-09-30'\nGROUP  BY COALESCE(g.group_id, CAST(e.customer_id AS VARCHAR(10))), c.tier1_capital\nHAVING SUM(e.exposure_after_crm) >= 0.10 * c.tier1_capital\nORDER  BY total_exposure DESC;"]],
+  traps:["Testing each customer separately instead of the whole group.","An INNER JOIN to the group map, which drops customers with no group."],
+  check:TQ("Tier 1 is £10m. A group owes £2m. What is it?",["Below reporting","Report (10–25%)","Breach (>25%)","Exactly the limit"],1,"2 ÷ 10 = 20%: at least 10%, not above 25%.")},
+ d16:{idea:"A loan is non-performing if it's more than 90 days late or the borrower is unlikely to pay. We add up those balances per product and divide by the total.",
+  like:"Like the share of homework handed in very late, out of all homework, for each subject.",
+  ex:"Overdrafts: total £172,669, non-performing £49,108 → 49,108 ÷ 172,669 = 28.4%.",
+  steps:[["Mark each balance as non-performing or not with CASE, and add both kinds per product.","SELECT product_code,\n       SUM(balance) AS total_balance,\n       SUM(CASE WHEN days_past_due > 90 OR default_flag = 'Y' THEN balance ELSE 0 END) AS npe_balance\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY product_code;"],
+         ["Divide to get the ratio in percent, and sort.","SELECT product_code,\n       SUM(balance) AS total_balance,\n       SUM(CASE WHEN days_past_due > 90 OR default_flag = 'Y' THEN balance ELSE 0 END) AS npe_balance,\n       ROUND(SUM(CASE WHEN days_past_due > 90 OR default_flag = 'Y' THEN balance ELSE 0 END) * 100.0\n             / SUM(balance), 1) AS npe_ratio_pct\nFROM   account_snapshot\nWHERE  snapshot_date = DATE '2026-09-30'\nGROUP  BY product_code\nORDER  BY npe_ratio_pct DESC;"]],
+  traps:["Using only days past due and missing 'unlikely to pay'.","Writing >= 90 when the rule says more than 90."],
+  check:TQ("Total £200, non-performing £50. Ratio?",["50%","25%","4%","150%"],1,"50 ÷ 200 = 25%.")},
+ d17:{idea:"Before sending a return, compare each line with last month. Only explain moves that are big in both percent and pounds.",
+  like:"Like checking your monthly spending: a £5 jump in coffee doesn't matter; a £500 jump in rent does.",
+  ex:"Loans: £100m → £115m. Change £15m, 15%. Both over the limits, so it needs a comment.",
+  steps:[["Work out the change in pounds and percent for every line.","df[\"change\"] = df[\"current_month\"] - df[\"prior_month\"]\ndf[\"change_pct\"] = df[\"change\"] / df[\"prior_month\"].replace(0, pd.NA) * 100"],
+         ["Flag lines over both thresholds.","flag = (df[\"change_pct\"].abs() > 10) & (df[\"change\"].abs() > 1_000_000)"],
+         ["Keep the flagged lines, biggest first, with room for the reason.","variances = df[flag].sort_values(\"change\", key=abs, ascending=False)\nvariances[\"commentary\"] = \"\""]],
+  traps:["Using only percent, so tiny lines flood the list.","Dividing by a zero prior month."],
+  check:TQ("Which needs commentary (limits: >10% and >£1m)?",["£5m → £5.4m","£50m → £56m","£2m → £1.5m","£300m → £305m"],1,"£6m and 12%: over both limits.")},
+ d18:{idea:"A change mid-sprint isn't a yes or no for the BA. You work out the impact, and the product owner decides.",
+  like:"Like a guest asking to change the menu while dinner is cooking: check what's possible, then let the host decide.",
+  ex:"A new field is needed for a regulatory deadline: swap out a lower-priority story of the same size.",
+  steps:[["Understand the change and why it's urgent.",""],["Assess impact with the team: effort, testing, risk to the sprint goal.",""],["Bring options to the product owner: swap in now, add to the backlog, or next sprint.",""],["Update the story, acceptance criteria and traceability, and tell stakeholders.",""]],
+  traps:["Saying yes on the spot without impact analysis.","Refusing outright without understanding the reason."],
+  check:TQ("Who decides whether the change goes into this sprint?",["The BA","The developer","The product owner","The tester"],2,"The product owner owns priorities; the BA informs the decision.")},
+ d19:{idea:"The product owner decides what gets built and in what order. The business analyst works out the detail of exactly what each piece must do.",
+  like:"Like a film director (what story, which scenes first) and a script writer (the exact lines in each scene).",
+  ex:"PO: 'We need the large exposures report first.' BA: 'Here are the data fields, rules and acceptance criteria.'",
+  steps:[["Product owner: vision, backlog, priorities, accepts the work.",""],["Business analyst: requirements, data, business rules, acceptance criteria.",""],["They work together in refinement so stories are ready to build.",""]],
+  traps:["Saying they're the same job.","Making the BA sound like a note-taker."],
+  check:TQ("Who owns the backlog order?",["Business analyst","Product owner","Scrum master","Developer"],1,"The product owner sets priorities.")},
+ d20:{idea:"UAT test cases prove a rule works in the real system, especially at the edges where mistakes hide.",
+  like:"Like testing a lift: does it stop exactly at each floor, and what happens if someone presses two buttons?",
+  ex:"Test 1: 90 days late → not flagged. Test 2: 91 days late → flagged. Test 3: not late but bankrupt → flagged.",
+  steps:[["Find the boundaries: 90 versus 91 days, below versus above materiality.",""],["Add the other route: unlikely to pay without being late.",""],["Add bad data: missing days past due, missing flags.",""],["For each, write the data, the steps and the expected result, linked to the requirement.",""]],
+  traps:["Only testing the happy path.","No expected result written down."],
+  check:TQ("Rule: 'more than 90 days'. Which test is the most important boundary?",["10 days","90 and 91 days","180 days","0 days"],1,"The boundary is where '>' versus '>=' errors show up.")},
+ d21:{idea:"Lineage is the trail from a number on a report back to where it came from, with checks at every step.",
+  like:"Like tracing a parcel: from your door back through each depot to the sender, with a scan at each stop.",
+  ex:"COREP cell → warehouse total → mapping rules → loan system balances. Each hop reconciles.",
+  steps:[["Start at the cell: what does it mean, which rule fills it?",""],["Follow it back step by step to the source system.",""],["At each step, show the totals match and the rules applied.",""],["Show the controls and evidence: reconciliations, logs, sign-offs.",""]],
+  traps:["Jumping straight to the source with no steps in between.","No evidence, just 'trust me'."],
+  check:TQ("Which BCBS 239 idea is lineage mainly about?",["Speed","Traceability and accuracy","Cost","Branding"],1,"Lineage proves where data came from and that it's right.")}
+});
+
+/* ---------- more questions reported at other banks ---------- */
+SCR_TASKS.push(
+ {id:"o1",type:"sql",min:6,title:"Set operators: what's in source but not in the warehouse?",
+  ask:"Using set operators only (no joins), list the account_ids that are in src_core_banking for 30 Sep 2026 but not in account_snapshot for the same date.",
+  out:"account_id",
+  hint:"SELECT … FROM src_core_banking … MINUS (or EXCEPT) SELECT … FROM account_snapshot …",
+  td:"SELECT account_id FROM src_core_banking WHERE as_of_date = DATE '2026-09-30'\nMINUS\nSELECT account_id FROM account_snapshot WHERE snapshot_date = DATE '2026-09-30';",
+  keys:["Uses MINUS (Teradata and Oracle) or EXCEPT (standard SQL)","Both SELECTs return the same columns in the same order","Knows UNION removes duplicates and UNION ALL keeps them"],
+  probes:[["UNION versus UNION ALL?","UNION removes duplicate rows, which costs a sort. UNION ALL keeps everything and is faster."],
+          ["Set operator or LEFT JOIN … IS NULL: which would you use?","Both work. MINUS is short and clear for key lists; a join is better when you also need other columns."]]},
+ {id:"o2",type:"calc",min:5,title:"Probability-weighted expected credit loss",
+  ask:"IFRS 9 needs several economic scenarios. Expected credit loss is £10m in the base case (60% weight), £6m in the upside (10%) and £20m in the downside (30%). What is the probability-weighted ECL, in £m?",
+  data:[["Base · weight 60%","£10m"],["Upside · weight 10%","£6m"],["Downside · weight 30%","£20m"]],
+  answer:12.6, unit:"£m",
+  work:["Base: 10 × 60% = 6.0","Upside: 6 × 10% = 0.6","Downside: 20 × 30% = 6.0","Total = 6.0 + 0.6 + 6.0 = £12.6m"],
+  keys:["Multiplies each scenario by its weight, then adds","Checks the weights add up to 100%","Explains why the result is above the base case (the downside is heavy)"],
+  probes:[["Why isn't the answer just the base case?","Losses aren't symmetrical: a bad economy hurts far more than a good one helps, so weighting pulls the number up."],
+          ["Who sets the scenario weights?","Economics and risk teams propose them; a senior committee approves them, with evidence."]]},
+ {id:"o3",type:"talk",min:8,title:"A regulatory query is too slow: how do you speed it up?",
+  ask:"A month-end query that feeds a return now takes hours. Share your screen and explain how you'd find out why, and how indexes and the EXPLAIN plan help.",
+  keys:["Run EXPLAIN to see the plan: which steps read the most rows","Check statistics are up to date (COLLECT STATISTICS in Teradata)","Filter early on the partition or date column; avoid functions on columns in WHERE","Check joins on the right keys and that no join multiplies rows","Indexes speed up lookups but slow down loads, so add them carefully"],
+  probes:[["How does an index make retrieval faster?","Like a book's index: the database jumps straight to matching rows instead of reading the whole table."],
+          ["What does EXPLAIN show you?","The steps the database will take, how many rows it expects at each step, and the join methods, so you can spot the expensive part."]]},
+ {id:"o4",type:"talk",min:8,title:"Checks for a nightly ETL load",
+  ask:"A nightly ETL job loads loan data from the core banking system into the warehouse for regulatory reporting. What checks would you design so bad data never reaches the return?",
+  keys:["Before load: file arrived on time, record count and control total match the trailer","During load: rejects for bad formats, missing mandatory fields, unknown reference codes","After load: reconcile counts and totals source to target; no duplicate keys","Trend checks: big day-on-day moves flagged for review","Alerts and a run log, with an owner for each failure"],
+  probes:[["What is a control total?","A number sent with the file, such as the total balance, so you can prove nothing was lost or changed in transit."],
+          ["A load fails at 2 am. What happens next?","The job stops before publishing, support is alerted, and the reporting team is told the expected fix time."]]},
+ {id:"o5",type:"talk",min:8,title:"Analyse a spreadsheet extract live",
+  ask:"You're sent an Excel extract with one row per loan: product, region, balance, days past due. Share your screen and talk through how you'd analyse it in 10 minutes to tell the business where the arrears are.",
+  keys:["Check the data first: row count, blanks, duplicates, totals","Add a helper column for the arrears bucket (for example with IF or a lookup)","Use a pivot table: balance by product and region, split by arrears bucket","Calculate arrears rates (arrears ÷ total), not just amounts","Highlight the top two or three findings and their size in pounds"],
+  probes:[["Why rates and not just amounts?","A big region will always have big amounts. The rate shows where lending is actually riskier."],
+          ["How would you check your pivot is right?","Make sure the pivot's grand total equals the sum of the raw data, and spot-check a few rows."]]}
+);
+SCR_TASKS.forEach(t=>{ t.track=t.track||["rwa"]; });
+BANK_SRC.o1=[{b:"lloyds",co:"Lloyds Banking Group",role:"Data Engineer",asked:"Explain all the types of joins (including UNION/MINUS)",site:"Glassdoor",url:"https://static.glassdoor.es/Interview/Lloyds-Banking-Group-Interview-E316191-RVW90875917.htm"},
+             {b:"jpm",co:"JPMorganChase",role:"Financial Crimes Analytics Senior Associate",asked:"What is a Union in SQL?",site:"Glassdoor",url:"https://www.glassdoor.ie/Interview/JPMorganChase-Interview-E5224839-RVW78195304.htm"}];
+BANK_SRC.o2=[{b:"jpm",kind:"topic",co:"JPMorganChase",role:"Data Analyst",asked:"math calculations based on a potential scenario weighting criteria",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/JPMorganChase-Interview-E5224839-RVW85413460.htm"}];
+BANK_SRC.o3=[{b:"barclays",kind:"topic",co:"Barclays",role:"Graduate / analyst technical round",asked:"How database indexes improve retrieval speed",site:"Glassdoor",url:"https://www.glassdoor.com/Interview/Barclays-Interview-E3456-RVW104163039.htm"},
+             {b:"lloyds",co:"Lloyds Banking Group",role:"Data Engineer",asked:"Explain the 'Explain' function and how it works",site:"Glassdoor",url:"https://static.glassdoor.es/Interview/Lloyds-Banking-Group-Interview-E316191-RVW90875917.htm"}];
+BANK_SRC.o4=[{b:"barclays",kind:"topic",co:"Barclays",role:"Business Analyst",asked:"SQL Questions and ETL questions",site:"Glassdoor",url:"https://www.glassdoor.co.uk/Interview/Barclays-Interview-E3456-RVW41243568.htm"}];
+BANK_SRC.o5=[{b:"barclays",kind:"topic",co:"Barclays",role:"Analyst",where:"Frankfurt",when:"Jun 2026",asked:"a asseesment round where excel data had to be analysed",site:"Glassdoor",url:"https://www.glassdoor.com.au/Interview/Barclays-Interview-E3456-RVW43226033.htm"}];
+
+Object.assign(LESSON,{
+ o1:{idea:"Set operators combine whole lists. MINUS (or EXCEPT) takes the second list away from the first, leaving what's only in the first.",
+  like:"Like the class register minus the students who handed in homework: what's left is who didn't.",
+  ex:"Source: 1, 2, 3. Warehouse: 1, 2. Source MINUS warehouse = 3.",
+  steps:[["List the source accounts for the date.","SELECT account_id FROM src_core_banking WHERE as_of_date = DATE '2026-09-30';"],
+         ["Take away the warehouse accounts with MINUS.","SELECT account_id FROM src_core_banking WHERE as_of_date = DATE '2026-09-30'\nMINUS\nSELECT account_id FROM account_snapshot WHERE snapshot_date = DATE '2026-09-30';"]],
+  traps:["Different columns in the two SELECTs.","Swapping the order: warehouse MINUS source answers a different question."],
+  check:TQ("A = {1,2,3}, B = {2,3,4}. A MINUS B?",["{1}","{4}","{2,3}","{1,4}"],0,"Only 1 is in A but not in B.")},
+ o2:{idea:"Banks don't use one forecast. They take a few possible futures, multiply each loss by how likely it is, and add them up.",
+  like:"Like planning a picnic budget: 60% chance it's normal, 30% chance of rain (extra cost), 10% chance of perfect weather.",
+  ex:"Two scenarios: 50% chance of £10, 50% chance of £20 → 5 + 10 = £15.",
+  steps:[["Base: 10 × 0.60 = 6.0.",""],["Upside: 6 × 0.10 = 0.6.",""],["Downside: 20 × 0.30 = 6.0.",""],["Add them: 6.0 + 0.6 + 6.0 = £12.6m.",""]],
+  traps:["Taking a simple average of the three (12) and ignoring weights.","Weights that don't add up to 100%."],
+  check:TQ("70% chance of £10m, 30% chance of £30m. Weighted ECL?",["£20m","£16m","£13m","£10m"],1,"7 + 9 = £16m.")},
+ o3:{idea:"A slow query is usually reading far more data than it needs. EXPLAIN shows its plan, so you can find the expensive step.",
+  like:"Like finding why a journey takes longer: look at the route map before blaming the car.",
+  ex:"EXPLAIN shows a full-table scan of 3 years of data, when you only need 1 month. Filter on the month column.",
+  steps:[["Run EXPLAIN and find the step with the most rows or time.",""],["Check statistics are fresh, so the database guesses row counts well.",""],["Filter early on the date or partition column, without wrapping it in functions.",""],["Check the joins, then consider an index if the same lookup runs often.",""]],
+  traps:["Adding indexes everywhere: loads get slower.","Guessing without reading the plan."],
+  check:TQ("Why can an index make a lookup faster?",["It deletes old data","It lets the database jump straight to matching rows","It compresses the table","It runs the query twice"],1,"Like a book index pointing to the right page.")},
+ o4:{idea:"ETL moves data from one system to another every night. Checks before, during and after the load stop bad data reaching the report.",
+  like:"Like a delivery check: count the boxes when they arrive, open any damaged ones, and sign only when it all matches.",
+  ex:"The file says 1,000 rows, total £5m. The warehouse loaded 998 rows, £4.9m → stop and investigate.",
+  steps:[["Before: did the file arrive on time, and do the count and total match the trailer?",""],["During: reject rows with bad formats, blank mandatory fields or unknown codes.",""],["After: reconcile source to target and check for duplicates.",""],["Alert an owner whenever a check fails, and log every run.",""]],
+  traps:["Only checking that the job finished, not that the data is right.","No owner for failures."],
+  check:TQ("The source sent 1,000 rows; 990 loaded. What should happen?",["Publish anyway","Stop and investigate the 10","Delete the source file","Round it to 1,000"],1,"Missing rows mean the report could be wrong.")},
+ o5:{idea:"Start by checking the data is sound, then summarise it with a pivot table, then turn amounts into rates so you can compare fairly.",
+  like:"Like counting late homework per class: a big class will have more late pieces, so compare the percentage late.",
+  ex:"North: £2m in arrears out of £20m = 10%. South: £1m out of £5m = 20%. South is riskier, despite the smaller amount.",
+  steps:[["Check: row count, blanks, duplicates, total balance.",""],["Add an arrears bucket column (for example 0, 1–30, 31–90, 90+).",""],["Pivot: balance by region and product, split by bucket.",""],["Work out arrears rates and highlight the top findings in pounds and percent.",""]],
+  traps:["Reporting only amounts, not rates.","Skipping the data check and presenting duplicates."],
+  check:TQ("Region A: £4m arrears of £40m. Region B: £2m of £10m. Which is riskier?",["A","B","Same","Can't tell"],1,"A is 10%, B is 20%.")}
+});
 
 /* =====================================================================
    FEEDBACK: a one-minute, step-by-step form people can speak or type.
