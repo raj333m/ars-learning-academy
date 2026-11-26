@@ -2116,6 +2116,99 @@ body.v-home .fbfab{display:inline-flex}
 .learnans{margin:12px 0 0;padding:9px 12px;border-radius:10px;background:rgba(0,168,132,.14);border-left:3px solid #00a884;line-height:1.5}
 .learnbx.compact{padding:2px 10px 8px}.learnbx.compact .learnsteps li{font-size:14px}
 :root:not([data-theme="dark"]) .learnbx>summary{color:#5b47e0}
+
+/* ===================== Screen-share: full-screen focus workspace ===================== */
+body.scr-focus .app{grid-template-columns:minmax(0,1fr)!important;max-width:none!important;margin:0!important;height:100vh!important;height:100dvh!important;box-shadow:none!important}
+body.scr-focus .side{display:none!important}
+body.scr-focus #toolPane>.chathead{display:none!important}
+body.scr-focus #toolPane{display:flex;flex-direction:column;height:100%;min-height:0}
+body.scr-focus .toolbody{padding:0!important;gap:0!important;overflow:hidden!important;display:flex;flex-direction:column;flex:1;min-height:0}
+body.scr-focus .fbfab{display:none!important}
+.wsbar{flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--line);background:var(--panel);min-height:58px}
+.wsback{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:14px;border-radius:999px;padding:7px 14px;cursor:pointer;flex:none}
+.wsback:hover{border-color:var(--accent)}.wsback span:first-child{font-size:18px;line-height:1}
+.wsghost{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline}
+.wstitle{display:flex;flex-direction:column;gap:3px;min-width:0}.wstitle>b{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wstitle>span{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
+.wslobby{flex:1;overflow-y:auto;padding:18px max(18px,calc((100% - 1100px)/2)) 40px}
+.wshow{display:flex;flex-wrap:wrap;gap:8px 18px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:13.5px;font-weight:600}
+.wshow span{display:inline-flex;align-items:center;gap:7px}.wshow i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--accent);color:#fff}
+.wslobby .scrday{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+/* workspace */
+.ws{flex:1;min-height:0;display:grid;grid-template-columns:minmax(330px,31%) minmax(0,1fr);gap:0}
+.wsleft{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--panel)}
+.wstabs{flex:none;display:flex;gap:2px;padding:8px 8px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.wstab{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;font-weight:700;padding:8px 11px;border-radius:8px 8px 0 0;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent}
+.wstab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);background:rgba(0,168,132,.08)}
+.wspane{flex:1;min-height:0;overflow-y:auto;padding:16px 18px 24px}
+.wsask{font-size:15.5px;line-height:1.65;margin:0 0 14px}
+.wsout{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:10px;background:rgba(0,168,132,.1);border-left:3px solid var(--accent);margin-bottom:12px;font-size:14px}
+.wsout b{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.wsout span{font-family:var(--mono);font-size:13px}
+.wsrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0}
+.wstalk{margin-top:14px}.wstalk summary{cursor:pointer;font-weight:700;font-size:13.5px;color:var(--muted)}.wstalk ul{margin:8px 0 0;padding-left:20px;line-height:1.6;font-size:14px}
+.wsright{min-width:0;min-height:0;display:flex;flex-direction:column;padding:12px;background:var(--bg)}
+.wsright .ide{flex:1;margin:0}
+.wsempty{text-align:center;padding:28px 10px;color:var(--muted)}.wsempty b{color:var(--ink);font-size:15px}.wsempty p{margin:6px 0 12px;line-height:1.5}
+.wsres .scrresult{margin:0 0 12px}
+.wschecks{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+.wschecks li{display:grid;grid-template-columns:22px 110px minmax(0,1fr);align-items:baseline;gap:6px;padding:7px 10px;border-radius:8px;border:1px solid var(--line);font-size:13.5px}
+.wschecks li b{font-size:14px}.wschecks li.y b{color:var(--accent)}.wschecks li.n b{color:#ff6b6b}.wschecks li.n{border-color:rgba(229,72,77,.45);background:rgba(229,72,77,.06)}
+.wschecks small{color:var(--muted);font-size:12.5px}
+.wslegend{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 8px;font-size:12px;color:var(--muted)}
+.lg::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lg.ok::before{background:rgba(0,168,132,.5)}.lg.extra::before{background:rgba(255,170,0,.6)}.lg.missing::before{background:rgba(229,72,77,.6)}
+.wscompare{display:flex;flex-direction:column;gap:10px}
+.wscol{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.wscolh{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;background:var(--hover);font-size:12.5px}.wscolh span{color:var(--muted)}
+.wscol.exp .wscolh b{color:var(--accent)}
+.wsgridwrap{overflow:auto;max-height:260px}
+.wsgrid{border-collapse:collapse;font:12px/1.35 var(--mono);min-width:100%}
+.wsgrid th{position:sticky;top:0;background:var(--panel);text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);font-family:inherit;white-space:nowrap}
+.wsgrid td{padding:4px 8px;border-bottom:1px solid var(--line);white-space:nowrap}.wsgrid td.n{text-align:right}
+.wsgrid .rn{color:var(--muted);width:28px}
+.wsgrid tr.m-ok td{background:rgba(0,168,132,.08)}.wsgrid tr.m-extra td{background:rgba(255,170,0,.16)}.wsgrid tr.m-missing td{background:rgba(229,72,77,.16)}
+.wsnav{margin-top:14px}
+.wspre{white-space:pre;overflow:auto;max-height:none}
+.wsdial{background:var(--hover)!important}.wsdial button{color:var(--ink)}.wsdial button[aria-checked="true"]{background:var(--accent)!important;color:#fff!important}
+.wsh{margin:16px 0 6px;font-size:14px}.wsul{margin:0;padding-left:20px;line-height:1.6;font-size:14px}
+.wspane .tch{margin:0;border:0;padding:0;background:none}
+.wswork{flex:1;min-height:0;overflow-y:auto;padding:4px}
+.wswork .scrcode{min-height:52vh}.wswork .wsta{min-height:48vh}
+/* console filling the right side */
+.ide-fill{display:flex;flex-direction:column;height:100%;min-height:0}
+.ide-fill .ide-body{flex:1;min-height:0}
+.ide-fill .ide-explorer{max-height:none}
+.ide-fill .ide-main{min-height:0}
+.ide-fill .ide-edbody{height:38vh;min-height:90px}
+.ide-fill .ide-ta{min-height:0;resize:none}
+.ide-fill .ide-results{flex:1;min-height:0}
+.ide-fill .ide-grid,.ide-fill .ide-hist,.ide-fill .ide-msg{max-height:none;flex:1;min-height:0}
+.ide-fill .ide-tblbtn{display:inline-flex}
+.ide-hidex .ide-body{grid-template-columns:minmax(0,1fr)}.ide-hidex .ide-explorer{display:none!important}
+.ide-split{flex:none;height:8px;cursor:row-resize;display:grid;place-items:center;background:var(--i-head);border-top:1px solid var(--i-line)}
+.ide-split i{width:44px;height:3px;border-radius:3px;background:#9aa6b2}
+.ide-split:hover i{background:var(--i-acc)}
+@media (max-width:900px){
+  body.scr-focus .toolbody{overflow:auto!important}
+  .ws{display:flex;flex-direction:column;min-height:auto}
+  .wsleft{border-right:0;border-bottom:1px solid var(--line);max-height:none}
+  .wspane{max-height:46vh}
+  .wsright{min-height:78vh;padding:8px}
+  .wsbar{padding:8px 10px;gap:8px;flex-wrap:wrap}
+  .wstitle>b{font-size:14.5px}
+  .ide-fill .ide-edbody{height:30vh}
+  .ide-fill.ide-showx .ide-explorer,.ide-fill:not(.ide-hidex) .ide-explorer{display:block}
+}
+
+.ws{grid-template-columns:var(--wsl,31%) 6px minmax(0,1fr)!important}
+.ws.wide{--wsl:58%}
+.wsdiv{cursor:col-resize;background:var(--line);position:relative}.wsdiv::after{content:"";position:absolute;top:50%;left:1px;width:4px;height:40px;margin-top:-20px;border-radius:3px;background:#5b6b75}
+.wsdiv:hover::after{background:var(--accent)}
+.wsgrid tr.m-diff td{background:rgba(120,120,255,.08)}.wsgrid td.cdiff{background:rgba(255,170,0,.35)!important;font-weight:700;outline:1px solid rgba(255,170,0,.7)}
+.lg.diff::before{background:rgba(255,170,0,.35);outline:1px solid rgba(255,170,0,.7)}
+.wslegrow{justify-content:space-between;margin:4px 0 8px}.wslegrow .wslegend{margin:0}
+@media (max-width:900px){.wsdiv{display:none}}
 </style>
 </head>
 <body class="booting">
@@ -4462,6 +4555,7 @@ function openPane(id){
   if(TTS && CUR_PANE && CUR_PANE!==id) TTS.stop();
   CUR_PANE=id;
   document.body.classList.toggle("in-pane", !!id);
+  document.body.classList.toggle("scr-focus", id==="t:screen");
   ["#chatPane","#toolPane","#emptyPane"].forEach(s=>$(s).hidden=true);
   if(!id){ $("#emptyPane").hidden=false; renderChatList(); return; }
   if(id.startsWith("p:")){ $("#chatPane").hidden=false; openChat(personaById(id.slice(2))); }
@@ -6002,7 +6096,8 @@ function sqlIDE(opts){
   const resHead=el("div",{class:"ide-reshead"});
   const results=el("div",{class:"ide-results"},rtabs,resHead,grid,histBox,msgBox);
   const status=el("div",{class:"ide-status"},el("span",{class:"ide-stxt"}),el("span",{class:"ide-sp"}),el("span",{class:"ide-pos"}));
-  const main=el("div",{class:"ide-main"},editor,hint,notes,results);
+  const split=el("div",{class:"ide-split",title:"Drag to resize","aria-hidden":"true"},el("i"));
+  const main=el("div",{class:"ide-main"},editor,hint,notes,split,results);
   const body=el("div",{class:"ide-body"},explorer,main);
   root.append(titlebar,toolbar,body,status);
   let curTab=0;
@@ -6125,8 +6220,15 @@ function sqlIDE(opts){
   clrB.addEventListener("click",()=>{ setSql(""); ta.focus(); emptyGrid(); setStatus("Ready"); });
   cpyB.addEventListener("click",()=>{ try{ navigator.clipboard.writeText(ta.value).then(()=>{ cpyB.querySelector("span").textContent="Copied"; setTimeout(()=>cpyB.querySelector("span").textContent="Copy",1400); }); }catch(e){} });
   tblB.addEventListener("click",()=>{ root.classList.toggle("ide-showx"); tblB.classList.toggle("on",root.classList.contains("ide-showx")); });
+  if(opts.fill){ root.classList.add("ide-fill"); if(opts.hideExplorer) root.classList.add("ide-hidex"); tblB.classList.toggle("on",!opts.hideExplorer);
+    tblB.onclick=null; tblB.addEventListener("click",e=>{ e.stopImmediatePropagation(); root.classList.toggle("ide-hidex"); tblB.classList.toggle("on",!root.classList.contains("ide-hidex")); },true); }
+  /* drag the bar between editor and results to give either more room */
+  split.addEventListener("pointerdown",e=>{ e.preventDefault(); const eb=editor.querySelector(".ide-edbody"); const y0=e.clientY, h0=eb.getBoundingClientRect().height;
+    const mv=ev=>{ const h=Math.max(90,Math.min(h0+(ev.clientY-y0),window.innerHeight-260)); eb.style.height=h+"px"; ta.style.minHeight="0"; };
+    const up=()=>{ window.removeEventListener("pointermove",mv); window.removeEventListener("pointerup",up); };
+    window.addEventListener("pointermove",mv); window.addEventListener("pointerup",up); });
   setDialect(dialect); lines(); pos(); setStatus("Ready"); emptyGrid();
-  return {root, ta, run, setSql, setDialect, get dialect(){ return dialect; }, focus:()=>ta.focus()};
+  return {root, ta, run, setSql, setDialect, setStatus, showTab, get dialect(){ return dialect; }, focus:()=>ta.focus()};
 }
 
 /* =====================================================================
@@ -6341,30 +6443,6 @@ function scrDb(sync){
   if(sync) return mk();
   return labLoad().then(()=>mk());
 }
-function scrSql(t,work,finish){
-  const firstTbl=((t.td.match(/\bFROM\s+(\w+)/i)||[])[1])||"rwa_exposures";
-  const start=d=>d==="oracle"?`-- Oracle\nSELECT \nFROM   ${firstTbl}\n`:`-- Teradata\nSELECT \nFROM   ${firstTbl}\n`;
-  const used=new Set((t.td.match(/\b(FROM|JOIN)\s+(\w+)/gi)||[]).map(x=>x.split(/\s+/).pop().toLowerCase()));
-  const subB=el("button",{class:"ide-tb ide-submit",type:"button"},el("span",{text:"Submit answer"}));
-  const ide=sqlIDE({dialect:LAB.dialect, sql:SCR.sql[t.id]||start(LAB.dialect), used, db:()=>scrDb().then(()=>scrDb(true)),
-    onSql:v=>{ SCR.sql[t.id]=v; },
-    onDialect:(d,v)=>{ LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} ide.setDialect(d); },
-    extra:[subB]});
-  work.append(ide.root);
-  subB.addEventListener("click",async()=>{
-    const r=await ide.run(); const mine=r&&r.results[r.results.length-1];
-    if(!mine||!mine.columns||!mine.columns.length){ finish(false,el("div",{},el("b",{text:"Not yet. "}),"Your query needs to run and return rows first. Fix it and submit again.")); return; }
-    const model=labRun(scrDb(true),t.td).results.pop();
-    const a=labVisible(mine), b=labVisible(model);
-    if(labSame(mine,model,!!t.ordered)) return finish(true,el("div",{},el("b",{text:"Correct. "}),`Your result matches the expected answer (${b.values.length} row${b.values.length===1?"":"s"}). Now talk through how you checked it.`));
-    let why="The values don't match the expected answer yet.";
-    if(a.columns.length!==b.columns.length) why=`You returned ${a.columns.length} column${a.columns.length===1?"":"s"}; the task asks for ${b.columns.length}: ${b.columns.join(", ")}.`;
-    else if(a.values.length!==b.values.length) why=`You returned ${a.values.length} row${a.values.length===1?"":"s"}; the expected answer has ${b.values.length}. Check your filters and joins.`;
-    else if(t.ordered && labSame(mine,model,false)) why="Right rows, wrong order. Check your ORDER BY.";
-    finish(false,el("div",{},el("b",{text:"Not quite. "}),why," You can keep working and submit again."));
-  });
-}
-
 function scrCalc(t,work,finish){
   const scratch=el("textarea",{class:"scrscratch",rows:"4",placeholder:"Show your working, as you would on a shared spreadsheet or notepad."});
   const inp=el("input",{class:"scrnum",type:"text",inputmode:"decimal",placeholder:"Your answer","aria-label":"Your answer"});
@@ -6954,41 +7032,37 @@ function scrReported(t,b){ return (BANK_SRC[t.id]||[]).some(x=>x.b===b); }
 const SCR_LEVEL={sql:1,calc:2,python:3,dax:3,talk:4};
 SCR.bank=SCR.bank||"all"; SCR.skill=SCR.skill||"all"; SCR.stage="learn";
 
+/* =====================================================================
+   FOCUS WORKSPACE: the whole screen is for practice.
+   Left: the question, with tabs (Question · Learn · Result · Answer · Follow-ups).
+   Right: the workspace (SQL console for SQL tasks), filling the height.
+   ===================================================================== */
+function scrFocus(on){ document.body.classList.toggle("scr-focus",!!on); }
+function scrBar(...kids){ return el("header",{class:"wsbar"},...kids); }
+
 /* ---------- lobby ---------- */
 function renderScreen(body){
   clearInterval(SCR.timer);
+  scrFocus(true);
   if(SCR.view==="task" && SCR.id) return renderScrTask(body);
   body.innerHTML="";
   const done=scrDone();
-  const home=el("button",{class:"scrback",type:"button"},el("span",{"aria-hidden":"true",text:"‹"}),el("span",{text:"Back to home"}));
-  home.addEventListener("click",()=>{ showView("home"); });
-  body.append(home);
-  const intro=el("section",{class:"card scrintro"},
-    el("h3",{text:"Practise the screen-share round"}),
-    el("p",{class:"muted",text:"In this round you share your screen and solve a task while you explain your thinking. Practise it in three steps:"}),
-    el("ol",{class:"scrsteps3"},
-      el("li",{},el("b",{text:"Pick a bank"}),el("span",{text:" to see questions reported at that bank, or keep All banks."})),
-      el("li",{},el("b",{text:"Open a task."}),el("span",{text:" Learn it with the teacher if it's new, then solve it yourself."})),
-      el("li",{},el("b",{text:"Answer the follow-ups"}),el("span",{text:" and compare with the model answer."}))));
-  const chk=el("details",{class:"scrday"},el("summary",{text:"Interview-day checklist"}),
-    el("ul",{class:"scrticks"},["Join on a laptop with a reliable internet connection.","Close personal tabs, email and chat pop-ups before you share.","Share one window, not your whole screen, if you can.","Talk as you type: say what you're about to do, then do it.","Check your result out loud: row counts, totals, anything odd."].map(x=>el("li",{text:x}))));
-  const shareHost=el("div"); const paintShare=()=>{ shareHost.innerHTML=""; shareHost.append(scrSharePill(paintShare)); }; paintShare(); chk.append(shareHost);
-  intro.append(chk);
-  if(scrIsPhone()) intro.append(el("p",{class:"scrphone"},el("b",{text:"Best on a laptop. "}),"You can practise here, but the real round needs a laptop."));
-  body.append(intro);
-
-  // 1. bank
+  const home=el("button",{class:"wsback",type:"button"},el("span",{"aria-hidden":"true",text:"‹"}),el("span",{text:"Home"}));
+  home.addEventListener("click",()=>{ scrFocus(false); showView("home"); });
+  const tools=el("button",{class:"wsghost",type:"button",text:"Other practice tools"}); tools.addEventListener("click",()=>{ scrFocus(false); openPane(null); });
+  body.append(scrBar(home,el("div",{class:"wstitle"},el("b",{text:"Screen-share practice"}),el("span",{text:"Questions asked at banks · write it, check it, learn from it"})),el("span",{class:"ledsp"}),tools));
+  const page=el("div",{class:"wslobby"}); body.append(page);
+  page.append(el("div",{class:"wshow"},
+    ...[["1","Pick a bank"],["2","Open a task"],["3","Write your answer"],["4","Check it against the expected result"],["5","Read the explanation"]].map(([n,t])=>el("span",{},el("i",{text:n}),t))));
   const inBank=t=>SCR.bank==="all"||scrBanksOf(t).includes(SCR.bank);
   const bankRow=el("div",{class:"scrchips",role:"tablist","aria-label":"Bank"});
   const chip=(k,label,n)=>{ const b=el("button",{type:"button",role:"tab",class:"scrchip","aria-selected":String(SCR.bank===k),"data-bank":k},el("span",{text:label}),el("em",{text:String(n)})); b.addEventListener("click",()=>{ SCR.bank=k; SCR.skill="all"; renderScreen(body); }); return b; };
   bankRow.append(chip("all","All banks",SCR_TASKS.length));
   BANKS.forEach(([k,label])=>{ const n=SCR_TASKS.filter(t=>scrBanksOf(t).includes(k)).length; if(n) bankRow.append(chip(k,label,n)); });
-  body.append(el("h4",{class:"scrlabel",text:"1. Pick a bank"}),bankRow);
-  if(SCR.bank!=="all") body.append(el("p",{class:"muted small scrbanknote",text:SCR.bank==="db"
-    ? "Deutsche Bank candidates report being given questions on screen to solve. ✓ Reported = a candidate described this question or topic at Deutsche Bank. The rest are likely topics from Deutsche Bank's Business Functional Analyst (VP) job adverts: SQL, Python, data quality, functional specs and regulatory requirements."
-    : `✓ Reported = a candidate described this question or topic at ${BANK_NAME[SCR.bank]} on a public interview site. Open a task to see the role, place and source.`}));
-
-  // 2. task
+  page.append(el("h4",{class:"scrlabel",text:"Bank"}),bankRow);
+  if(SCR.bank!=="all") page.append(el("p",{class:"muted small scrbanknote",text:SCR.bank==="db"
+    ? "Deutsche Bank candidates report being given questions on screen to solve. ✓ Reported = a candidate described this question or topic at Deutsche Bank. The rest are likely topics from Deutsche Bank's Business Functional Analyst (VP) job adverts."
+    : `✓ Reported = a candidate described this question or topic at ${BANK_NAME[SCR.bank]} on a public interview site. Open a task to see the source.`}));
   const pool=SCR_TASKS.filter(inBank);
   const skills=[["all","All"],["sql","SQL"],["calc","Calculations"],["python","Python"],["dax","Power BI"],["talk","Functional"]].filter(([k])=>k==="all"||pool.some(t=>t.type===k));
   if(!skills.some(([k])=>k===SCR.skill)) SCR.skill="all";
@@ -6996,14 +7070,13 @@ function renderScreen(body){
   const skillRow=el("div",{class:"scrchips small"});
   if(skills.length>2) skills.forEach(([k,label])=>{ const b=el("button",{type:"button",class:"scrchip","aria-pressed":String(SCR.skill===k),"data-skill":k,text:label}); b.addEventListener("click",()=>{ SCR.skill=k; renderScreen(body); }); skillRow.append(b); });
   const solvedN=list.filter(t=>done[t.id]&&done[t.id].ok).length;
-  body.append(el("div",{class:"scrlabelrow"},el("h4",{class:"scrlabel",text:"2. Pick a task"}),el("span",{class:"muted small",text:`${solvedN} of ${list.length} solved`})),skillRow);
-
+  page.append(el("div",{class:"scrlabelrow"},el("h4",{class:"scrlabel",text:"Task"}),el("span",{class:"muted small",text:`${solvedN} of ${list.length} solved`})),skillRow);
   const next=list.find(t=>!(done[t.id]&&done[t.id].ok))||list[0];
   if(next){
     const start=el("button",{class:"btn primary",type:"button",text:"Start ›"}); start.addEventListener("click",()=>{ SCR.round=null; scrOpen(next.id,body); });
     const round=pool.filter(t=>!(done[t.id]&&done[t.id].ok)).slice(0,4); const rr=round.length>=2?round:pool.slice(0,4);
     const mock=el("button",{class:"btn",type:"button",text:`Mock interview · ${rr.length} tasks`}); mock.addEventListener("click",()=>{ SCR.round=rr.map(t=>t.id); SCR.ri=0; scrOpen(SCR.round[0],body); });
-    body.append(el("section",{class:"scrnext"},el("div",{},el("span",{class:"muted small",text:solvedN?"Up next":"Start here"}),el("b",{text:next.title}),el("span",{class:"muted small",text:`${SCR_SKILLS[next.type]} · ${next.min} min`})),el("div",{class:"scrnextbtns"},start,pool.length>1?mock:null)));
+    page.append(el("section",{class:"scrnext"},el("div",{},el("span",{class:"muted small",text:solvedN?"Up next":"Start here"}),el("b",{text:next.title}),el("span",{class:"muted small",text:`${SCR_SKILLS[next.type]} · ${next.min} min`})),el("div",{class:"scrnextbtns"},start,pool.length>1?mock:null)));
   }
   const ul=el("div",{class:"scrlist"});
   list.forEach((t,i)=>{
@@ -7016,117 +7089,192 @@ function renderScreen(body){
     row.addEventListener("click",()=>{ SCR.round=null; scrOpen(t.id,body); });
     ul.append(row);
   });
-  body.append(ul);
+  page.append(ul);
+  const chk=el("details",{class:"scrday"},el("summary",{text:"Interview-day checklist"}),
+    el("ul",{class:"scrticks"},["Join on a laptop with a reliable internet connection.","Close personal tabs, email and chat pop-ups before you share.","Share one window, not your whole screen, if you can.","Talk as you type: say what you're about to do, then do it.","Check your result out loud: row counts, totals, anything odd."].map(x=>el("li",{text:x}))));
+  const shareHost=el("div"); const paintShare=()=>{ shareHost.innerHTML=""; shareHost.append(scrSharePill(paintShare)); }; paintShare(); chk.append(shareHost);
+  page.append(chk);
 }
-function scrOpen(id,body){ const wasTask=SCR.view==="task"; SCR.view="task"; SCR.id=id; SCR.stage="learn"; SCR.start=Date.now(); try{ if(!wasTask) history.pushState({scr:"task"},""); }catch(e){} renderScreen(body); scrTop(body); }
-function scrBackToList(body){ clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; try{ if(history.state&&history.state.scr==="task") { SCR.__popping=true; history.back(); } }catch(e){} renderScreen(body); scrTop(body); }
-/* the browser's and phone's own Back button also returns to the task list */
-window.addEventListener("popstate",()=>{ if(SCR.__popping){ SCR.__popping=false; return; } if(SCR.view==="task"){ const b=document.getElementById("toolBody"); clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; if(b&&CUR_PANE==="t:screen"){ renderScreen(b); scrTop(b); } } });
+function scrOpen(id,body){ const wasTask=SCR.view==="task"; SCR.view="task"; SCR.id=id; SCR.tab=null; SCR.start=Date.now(); try{ if(!wasTask) history.pushState({scr:"task"},""); }catch(e){} renderScreen(body); scrTop(body); }
+function scrBackToList(body){ clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; try{ if(history.state&&history.state.scr==="task"){ SCR.__popping=true; history.back(); } }catch(e){} renderScreen(body); scrTop(body); }
 function scrTop(body){ const sc=body.closest(".toolscroll,.pane,#toolBody")||body; try{ sc.scrollTop=0; }catch(e){} try{ window.scrollTo(0,0); }catch(e){} }
+window.addEventListener("popstate",()=>{ if(SCR.__popping){ SCR.__popping=false; return; } if(SCR.view==="task"){ const b=document.getElementById("toolBody"); clearInterval(SCR.timer); SCR.view="lobby"; SCR.round=null; if(b&&CUR_PANE==="t:screen"){ renderScreen(b); scrTop(b); } } });
 
-/* ---------- a task: Learn → Solve → Review ---------- */
+/* ---------- compare a result with the expected one ---------- */
+function scrCompare(mine,model,ordered){
+  const a=labVisible(mine), b=labVisible(model);
+  const key=r=>r.map(labNorm).join("|");
+  const colsOk=a.columns.length===b.columns.length;
+  const namesOk=colsOk&&a.columns.every((c,i)=>c.toLowerCase()===b.columns[i].toLowerCase());
+  const countOk=a.values.length===b.values.length;
+  const pool={}; b.values.forEach(r=>{ const k=key(r); pool[k]=(pool[k]||0)+1; });
+  const mineMark=a.values.map(r=>{ const k=key(r); if(colsOk&&pool[k]>0){ pool[k]--; return "ok"; } return "extra"; });
+  const pool2={}; a.values.forEach(r=>{ const k=key(r); pool2[k]=(pool2[k]||0)+1; });
+  const expMark=b.values.map(r=>{ const k=key(r); if(colsOk&&pool2[k]>0){ pool2[k]--; return "ok"; } return "missing"; });
+  const valuesOk=colsOk&&countOk&&mineMark.every(x=>x==="ok");
+  /* for rows that don't match, pair them by the first column and mark the cells that differ */
+  const mineCells=a.values.map(()=>null), expCells=b.values.map(()=>null);
+  if(colsOk){ const used=new Set();
+    a.values.forEach((r,i)=>{ if(mineMark[i]!=="extra") return; const j=b.values.findIndex((x,k)=>expMark[k]==="missing"&&!used.has(k)&&labNorm(x[0])===labNorm(r[0])); if(j<0) return; used.add(j);
+      const diff=r.map((v,c)=>labNorm(v)!==labNorm(b.values[j][c])); mineMark[i]="diff"; expMark[j]="diff"; mineCells[i]=diff; expCells[j]=diff; }); }
+  const orderOk=!ordered||(valuesOk&&a.values.every((r,i)=>key(r)===key(b.values[i])));
+  return {a,b,colsOk,namesOk,countOk,valuesOk,orderOk,ok:valuesOk&&orderOk,mineMark,expMark,mineCells,expCells,
+    extra:mineMark.filter(x=>x==="extra").length, missing:expMark.filter(x=>x==="missing").length, diff:mineMark.filter(x=>x==="diff").length};
+}
+function scrMiniGrid(v,marks,title,cls,cells){
+  const t=el("table",{class:"wsgrid"});
+  t.append(el("thead",{},el("tr",{},el("th",{class:"rn",text:"#"}),...v.columns.map(c=>el("th",{text:c})))));
+  const tb=el("tbody");
+  v.values.slice(0,200).forEach((r,i)=>tb.append(el("tr",{class:"m-"+(marks[i]||"ok")},el("td",{class:"rn",text:String(i+1)}),...r.map((x,c)=>el("td",{class:(typeof x==="number"?"n":"")+(cells&&cells[i]&&cells[i][c]?" cdiff":""),text:x===null?"NULL":typeof x==="number"&&!Number.isInteger(x)?x.toFixed(2):String(x).replace(/ 00:00:00$/,"")})))));
+  t.append(tb);
+  return el("div",{class:"wscol "+(cls||"")},el("div",{class:"wscolh"},el("b",{text:title}),el("span",{text:`${v.values.length} row${v.values.length===1?"":"s"} · ${v.columns.length} column${v.columns.length===1?"":"s"}`})),el("div",{class:"wsgridwrap"},t));
+}
+
+/* ---------- the task workspace ---------- */
 function renderScrTask(body){
   const t=scrTask(SCR.id); body.innerHTML="";
   const inRound=!!SCR.round;
-  const back=el("button",{class:"btn small",type:"button",title:"Back to the task list"},el("span",{"aria-hidden":"true",text:"‹ "}),el("span",{text:"Back"}));
+  /* top bar */
+  const back=el("button",{class:"wsback",type:"button",title:"Back to the task list"},el("span",{"aria-hidden":"true",text:"‹"}),el("span",{text:"Tasks"}));
   back.addEventListener("click",()=>scrBackToList(body));
-  const stepBtns={}; const stepper=el("nav",{class:"scrstepper","aria-label":"Steps"});
-  [["learn","1","Learn"],["solve","2","Solve"],["review","3","Review"]].forEach(([k,n,label])=>{ const b=el("button",{type:"button",class:"scrstepbtn","data-stage":k},el("i",{text:n}),el("span",{text:label})); b.addEventListener("click",()=>{ if(!b.disabled) go(k); }); stepBtns[k]=b; stepper.append(b); });
-  const timeEl=el("b",{class:"scrtime"}); const clock=el("span",{class:"scrclock",hidden:true},timeEl);
-  body.append(el("div",{class:"scrcall"},back,stepper,el("span",{class:"ledsp"}),inRound?el("span",{class:"scrstep",text:`Task ${SCR.ri+1}/${SCR.round.length}`}):null,clock));
-
-  // the question (Learn and Solve)
-  const q=el("section",{class:"scrask"},
-    el("div",{class:"scrwho"},el("span",{class:"scrav",text:"IV"}),el("div",{},el("b",{text:"Interviewer"}),el("span",{class:"muted small",text:`${SCR_SKILLS[t.type]} · about ${t.min} minutes`}))),
-    el("h3",{text:t.title}), el("p",{text:t.ask}));
-  if(t.type==="sql") q.append(el("p",{class:"scrout"},el("b",{text:"Return: "}),t.out));
+  const banks=scrBanksOf(t).map(b=>el("span",{class:"scrbank"+(scrReported(t,b)?" rep":"")},(scrReported(t,b)?"✓ ":"")+BANK_NAME[b]));
+  const timeEl=el("b",{class:"scrtime",text:scrFmt(t.min*60)});
+  const nextB=inRound&&SCR.ri<SCR.round.length-1?el("button",{class:"btn small",type:"button",text:"Next task ›"}):null;
+  if(nextB) nextB.addEventListener("click",()=>{ SCR.ri++; scrOpen(SCR.round[SCR.ri],body); });
+  body.append(scrBar(back,el("div",{class:"wstitle"},el("b",{text:t.title}),el("span",{},el("span",{class:"scrskill "+t.type,text:SCR_SKILLS[t.type]}),...banks)),el("span",{class:"ledsp"}),
+    inRound?el("span",{class:"scrstep",text:`Task ${SCR.ri+1}/${SCR.round.length}`}):null,
+    el("span",{class:"scrclock",title:"Suggested time"},el("span",{class:"muted small",text:"Time "}),timeEl),nextB));
+  /* layout */
+  const left=el("aside",{class:"wsleft"}), right=el("section",{class:"wsright"});
+  const divider=el("div",{class:"wsdiv",title:"Drag to resize","aria-hidden":"true"});
+  const ws=el("div",{class:"ws"},left,divider,right); body.append(ws);
+  divider.addEventListener("pointerdown",e=>{ e.preventDefault(); const r=ws.getBoundingClientRect();
+    const mv=ev=>{ const pct=Math.max(24,Math.min(70,(ev.clientX-r.left)/r.width*100)); ws.style.setProperty("--wsl",pct+"%"); ws.classList.remove("wide"); };
+    const up=()=>{ window.removeEventListener("pointermove",mv); window.removeEventListener("pointerup",up); };
+    window.addEventListener("pointermove",mv); window.addEventListener("pointerup",up); });
+  const TABS=[["q","Question"],["learn","Learn it"],["result","Your result"],["answer","Answer"],["follow","Follow-ups"]];
+  const tabBar=el("nav",{class:"wstabs",role:"tablist"}); const panes={}; const tabBtn={};
+  TABS.forEach(([k,label])=>{ const b=el("button",{type:"button",role:"tab","data-tab":k,class:"wstab",text:label}); b.addEventListener("click",()=>show(k)); tabBtn[k]=b; tabBar.append(b); panes[k]=el("div",{class:"wspane",hidden:true}); });
+  left.append(tabBar,...Object.values(panes));
+  function show(k){ SCR.tab=k; Object.entries(panes).forEach(([kk,p])=>p.hidden=kk!==k); Object.entries(tabBtn).forEach(([kk,b])=>b.setAttribute("aria-selected",String(kk===k))); panes[k].scrollTop=0; }
+  /* Question tab */
+  const q=panes.q;
+  q.append(el("p",{class:"wsask",text:t.ask}));
+  if(t.type==="sql") q.append(el("div",{class:"wsout"},el("b",{text:"Your result must have"}),el("span",{text:t.out})));
   if(t.type==="python"&&/rwa_exposures/.test(t.ask)) q.append(el("p",{class:"muted small",text:"Columns: "+RWA_COLS.replace(/^rwa_exposures/,"")}));
   if(t.data){ const tb=el("table",{class:"t scrdata"}); t.data.forEach(([k,v])=>tb.append(el("tr",{},el("th",{text:k}),el("td",{text:v})))); q.append(tb); }
+  const hintB=el("button",{class:"l3link",type:"button",text:"Need a hint?"}); const hintP=el("p",{class:"scrhint",hidden:true,text:t.hint||("Start with: "+t.keys[0])});
+  hintB.addEventListener("click",()=>{ hintP.hidden=!hintP.hidden; });
+  const learnB=el("button",{class:"l3link",type:"button",text:"New to this? Learn it step by step ›"}); learnB.addEventListener("click",()=>show("learn"));
+  q.append(el("div",{class:"wsrow"},hintB,learnB),hintP);
   const srcs=BANK_SRC[t.id]||[];
   if(srcs.length){ const d=el("details",{class:"scrsrcs"},el("summary",{text:`✓ Reported at ${[...new Set(srcs.map(s=>BANK_NAME[s.b]))].join(", ")} · see source`})); srcs.forEach(s=>d.append(srcBadge(s))); q.append(d); }
   else if((t.track||[]).includes("db")) q.append(el("p",{class:"muted small scrlikely",text:"Likely Deutsche Bank topic, from its Business Functional Analyst (VP) job adverts. Not a reported question."}));
   else q.append(el("p",{class:"muted small scrlikely",text:"Practice question built from a regulatory-reporting job description. Not tied to one bank."}));
-  body.append(q);
-
-  // LEARN
-  const learn=el("section",{class:"scrstage","data-s":"learn"});
+  q.append(el("details",{class:"wstalk"},el("summary",{text:"How to talk through it in the interview"}),el("ul",{},t.keys.map(k=>el("li",{text:k})))));
+  /* Learn tab */
   const lesson=teachPanel(t);
-  const choose=el("div",{class:"scrchoose"});
-  const teachB=el("button",{class:"scropt teach",type:"button"},el("span",{class:"tchav"},"T"),el("span",{},el("b",{text:"Teach me first"}),el("small",{text:"New to this? The teacher explains it from zero and solves it with you, step by step."})));
-  const skipB=el("button",{class:"scropt",type:"button"},el("span",{class:"scropti",text:"›"}),el("span",{},el("b",{text:"I'm ready to solve it"}),el("small",{text:"Skip the lesson and start the timer."})));
-  teachB.addEventListener("click",()=>{ choose.hidden=true; if(lesson){ lesson.hidden=false; lesson.scrollIntoView({behavior:"smooth",block:"start"}); } });
-  skipB.addEventListener("click",()=>go("solve"));
-  choose.append(lesson?teachB:null,skipB); learn.append(choose); if(lesson) learn.append(lesson);
-  body.append(learn);
+  if(lesson){ lesson.hidden=false; panes.learn.append(lesson); } else panes.learn.append(el("p",{class:"muted",text:"No lesson for this one yet."}));
+  /* Result tab */
+  const resBox=el("div",{class:"wsres"},el("div",{class:"wsempty"},el("b",{text:"Nothing checked yet."}),el("p",{text:t.type==="sql"?"Write your query on the right, then press ✓ Check answer. You'll see your result next to the expected one, with what matches and what's missing.":"Finish your answer on the right and submit it. Your feedback appears here."})));
+  panes.result.append(resBox);
+  /* Answer tab (hidden until a first attempt) */
+  let attempted=!!(scrDone()[t.id]);
+  const answerBox=el("div");
+  function paintAnswer(){
+    answerBox.innerHTML="";
+    if(!attempted){ const go=el("button",{class:"btn small",type:"button",text:"Show the answer anyway"}); go.addEventListener("click",()=>{ attempted=true; paintAnswer(); });
+      answerBox.append(el("div",{class:"wsempty"},el("b",{text:"Try it first."}),el("p",{text:"You'll learn more if you attempt it before looking. The answer unlocks after your first check."}),go)); return; }
+    if(t.type==="sql"){
+      const dsel=el("div",{class:"ide-dial wsdial"}); let cur=LAB.dialect==="oracle"&&t.ora?"oracle":"teradata";
+      const pre=el("pre",{class:"sql wspre"}); const code=el("code"); pre.append(code);
+      const load=el("button",{class:"btn small",type:"button",text:"Load into editor"});
+      const paint=()=>{ const sql=cur==="oracle"?(t.ora||t.td):t.td; code.innerHTML=hl(sql); dsel.querySelectorAll("button").forEach(b=>b.setAttribute("aria-checked",String(b.dataset.d===cur))); };
+      [["teradata","Teradata"],["oracle","Oracle"]].forEach(([d,l])=>{ const b=el("button",{type:"button","data-d":d,text:l}); b.addEventListener("click",()=>{ cur=d; paint(); }); dsel.append(b); });
+      load.addEventListener("click",()=>{ if(SCR.ide){ SCR.ide.setSql(cur==="oracle"?(t.ora||t.td):t.td); SCR.ide.focus(); } });
+      paint(); answerBox.append(el("div",{class:"wsrow"},dsel,load),pre);
+      if(!t.ora) answerBox.append(el("p",{class:"muted small",text:/QUALIFY|TOP\s+\d/i.test(t.td)?"Oracle: replace TOP with FETCH FIRST n ROWS ONLY, and QUALIFY with an inline view.":"The same query runs in Oracle."}));
+    } else if(t.model) answerBox.append(el("pre",{class:"sql wspre"},el("code",{text:t.model})));
+    else if(t.work){ const ol=el("ol",{class:"scrworkans"}); t.work.forEach(w=>ol.append(el("li",{text:w}))); answerBox.append(ol); }
+    answerBox.append(el("h4",{class:"wsh",text:"What a good answer includes"}),el("ul",{class:"wsul"},t.keys.map(k=>el("li",{text:k}))));
+  }
+  paintAnswer(); panes.answer.append(answerBox);
+  /* Follow-ups tab */
+  panes.follow.append(el("p",{class:"muted small",text:"The interviewer usually asks these next. Say your answer out loud, then reveal a strong one."}));
+  t.probes.forEach(([qq,a],i)=>{ const d=el("details",{class:"scrprobe"}); d.append(el("summary",{},el("span",{class:"scrq",text:`${i+1}. ${qq}`}),el("span",{class:"scrreveal",text:"Show a strong answer"})),el("p",{text:a})); panes.follow.append(d); });
 
-  // SOLVE
-  const solve=el("section",{class:"scrstage","data-s":"solve",hidden:true});
-  const hintB=el("button",{class:"l3link",type:"button",text:"Need a hint?"});
-  const hintP=el("p",{class:"scrhint",hidden:true,text:t.hint||("Start with: "+t.keys[0])});
-  hintB.addEventListener("click",()=>{ hintP.hidden=!hintP.hidden; });
-  const relearn=lesson?el("button",{class:"l3link",type:"button",text:"Back to the lesson"}):null; if(relearn) relearn.addEventListener("click",()=>{ go("learn"); choose.hidden=true; lesson.hidden=false; });
-  const think=scrThink(t.type==="talk"?"Type your answer here, the way you'd say it. Step 1: … Step 2: …":"Say your plan before you type. For example: first I'll filter to the reporting date, then…");
-  const work=el("div",{class:"scrwork"});
-  solve.append(el("div",{class:"scrhintrow"},hintB,relearn),hintP);
-  if(t.type==="talk"){ think.ta.rows=8; work.append(think.wrap); }
-  else { const d=el("details",{class:"scrtalk"},el("summary",{text:"Explain your approach (optional — in the real round you say it out loud)"}),think.wrap); solve.append(d); }
-  solve.append(work); body.append(solve);
-
-  // REVIEW
-  const review=el("section",{class:"scrstage","data-s":"review",hidden:true});
-  const result=el("div",{class:"scrresult"}); const after=el("div",{class:"scrafter"});
-  review.append(result,after); body.append(review);
-
-  const finish=(ok,msg)=>{
-    scrMark(t.id,ok);
-    result.innerHTML=""; result.className="scrresult "+(ok===true?"ok":ok===false?"bad":"neutral"); result.append(msg);
-    if(ok===false){ const again=el("button",{class:"btn small",type:"button",text:"Keep working on it"}); again.addEventListener("click",()=>go("solve")); result.append(el("div",{class:"row"},again)); }
-    scrAfter(t,after,body); go("review");
-  };
-  if(t.type==="sql") scrSql(t,work,finish);
-  else if(t.type==="calc") scrCalc(t,work,finish);
-  else if(t.type==="python"||t.type==="dax") scrCode(t,work,finish,think.ta);
-  else { const sub=el("button",{class:"lrun",type:"button",text:"I've finished explaining"}); sub.addEventListener("click",async()=>{ sub.disabled=true; await scrReview(t,think.ta.value,"",finish); sub.disabled=false; }); work.append(el("div",{class:"scrfoot"},sub)); }
-
+  /* timer starts when they begin working */
   const limit=t.min*60; let started=false;
   const tick=()=>{ if(!timeEl.isConnected){ clearInterval(SCR.timer); return; } const left=limit-Math.round((Date.now()-SCR.start)/1000); timeEl.textContent=scrFmt(left); timeEl.classList.toggle("over",left<0); timeEl.classList.toggle("low",left>=0&&left<60); };
-  function go(stage){
-    SCR.stage=stage;
-    [learn,solve,review].forEach(s=>s.hidden=s.dataset.s!==stage);
-    q.hidden=stage==="review";
-    Object.entries(stepBtns).forEach(([k,b])=>{ b.classList.toggle("on",k===stage); b.disabled=(k==="review"&&!result.childNodes.length); });
-    if(stage==="solve"){ if(!started){ started=true; SCR.start=Date.now(); tick(); clearInterval(SCR.timer); SCR.timer=setInterval(tick,1000); } clock.hidden=false; const f=work.querySelector("textarea,input"); if(f) setTimeout(()=>{ try{ f.focus({preventScroll:true}); }catch(e){} },50); }
-    else clock.hidden=stage!=="review"?true:clock.hidden;
-    scrTop(body);
-  }
-  window.scrGo=go;
-  go(SCR.stage||"learn");
-}
+  right.addEventListener("focusin",()=>{ if(started) return; started=true; SCR.start=Date.now(); tick(); clearInterval(SCR.timer); SCR.timer=setInterval(tick,1000); });
 
-/* follow-up questions, model answer, next step */
-function scrAfter(t,after){
-  const body=after.closest("#toolBody")||document.getElementById("toolBody");
-  after.innerHTML="";
-  const fu=el("div",{class:"card scrprobes"},el("h3",{text:"The interviewer follows up"}),el("p",{class:"muted small",text:"Answer each one out loud first, then reveal a strong answer."}));
-  t.probes.forEach(([qq,a],i)=>{ const d=el("details",{class:"scrprobe"}); d.append(el("summary",{},el("span",{class:"scrq",text:`${i+1}. ${qq}`}),el("span",{class:"scrreveal",text:"Show a strong answer"})),el("p",{text:a})); fu.append(d); });
-  const m=el("details",{class:"card scrmodel"},el("summary",{},el("h3",{text:"Model answer"}),el("span",{class:"scrreveal",text:"Show"})));
+  /* result handling shared by every task type */
+  const finish=(ok,msg,extra)=>{
+    scrMark(t.id,ok); attempted=true; paintAnswer();
+    resBox.innerHTML="";
+    resBox.append(el("div",{class:"scrresult "+(ok===true?"ok":ok===false?"bad":"neutral")},msg));
+    if(extra) resBox.append(extra);
+    const nav=el("div",{class:"wsrow wsnav"});
+    const ans=el("button",{class:"btn small",type:"button",text:"See the answer"}); ans.addEventListener("click",()=>show("answer"));
+    const fu=el("button",{class:"btn small",type:"button",text:"Follow-up questions"}); fu.addEventListener("click",()=>show("follow"));
+    const lr=el("button",{class:"btn small",type:"button",text:"Learn it step by step"}); lr.addEventListener("click",()=>show("learn"));
+    nav.append(ans,lr,fu);
+    if(SCR.round&&SCR.ri<SCR.round.length-1){ const nx=el("button",{class:"btn small primary",type:"button",text:"Next task ›"}); nx.addEventListener("click",()=>{ SCR.ri++; scrOpen(SCR.round[SCR.ri],body); }); nav.append(nx); }
+    else if(ok){ const bk=el("button",{class:"btn small primary",type:"button",text:"Back to tasks"}); bk.addEventListener("click",()=>scrBackToList(body)); nav.append(bk); }
+    resBox.append(nav);
+    show("result");
+  };
+
+  /* WORKSPACE */
   if(t.type==="sql"){
-    const code=(LAB.dialect==="oracle"&&t.ora)?t.ora:t.td;
-    const pre=el("pre",{class:"sql"}); const c=el("code"); c.innerHTML=hl(code); pre.append(c);
-    const open=el("button",{class:"btn small",type:"button",text:"Open in SQL Lab"}); open.addEventListener("click",()=>openLab({sql:code}));
-    m.append(el("p",{class:"muted small",text:(LAB.dialect==="oracle"&&t.ora)?"Oracle version":"Teradata version (works in Oracle too unless it uses TOP or QUALIFY)"}),pre,el("div",{class:"row"},open));
-  } else if(t.model){ m.append(el("pre",{class:"sql scrpre"},el("code",{text:t.model}))); }
-  if(t.keys) m.append(el("p",{class:"scrsub",text:"What the interviewer listens for:"}),el("ul",{},t.keys.map(k=>el("li",{text:k}))));
-  const nav=el("div",{class:"scrnav"});
-  if(SCR.round && SCR.ri<SCR.round.length-1){
-    const nx=el("button",{class:"btn primary",type:"button",text:"Next task ›"}); nx.addEventListener("click",()=>{ SCR.ri++; scrOpen(SCR.round[SCR.ri],body); }); nav.append(nx);
+    const firstTbl=((t.td.match(/\bFROM\s+(\w+)/i)||[])[1])||"rwa_exposures";
+    const start=d=>d==="oracle"?`-- Oracle\nSELECT \nFROM   ${firstTbl}\n`:`-- Teradata\nSELECT \nFROM   ${firstTbl}\n`;
+    const used=new Set((t.td.match(/\b(FROM|JOIN)\s+(\w+)/gi)||[]).map(x=>x.split(/\s+/).pop().toLowerCase()));
+    const chk=el("button",{class:"ide-tb ide-submit",type:"button"},el("span",{text:"✓ Check answer"}));
+    const ide=sqlIDE({dialect:LAB.dialect, sql:SCR.sql[t.id]||start(LAB.dialect), used, fill:true, hideExplorer:window.innerWidth<1500,
+      db:()=>scrDb().then(()=>scrDb(true)), onSql:v=>{ SCR.sql[t.id]=v; },
+      onDialect:(d)=>{ LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} ide.setDialect(d); }, extra:[chk]});
+    SCR.ide=ide; right.append(ide.root);
+    chk.addEventListener("click",async()=>{
+      const r=await ide.run(); const mine=r&&r.results[r.results.length-1];
+      if(!mine||!mine.columns||!mine.columns.length){ finish(false,el("div",{},el("b",{text:"Not yet. "}),"Your query needs to run and return rows first. The error is shown under your query.")); return; }
+      const model=labRun(scrDb(true),t.td).results.pop();
+      const c=scrCompare(mine,model,!!t.ordered);
+      const tick=(okv,label,detail)=>el("li",{class:okv?"y":"n"},el("b",{text:okv?"✓":"✗"}),el("span",{text:label}),detail?el("small",{text:detail}):null);
+      const list=el("ul",{class:"wschecks"},
+        tick(c.colsOk&&c.namesOk,"Columns",c.colsOk?(c.namesOk?`${c.b.columns.length} columns, names match`:`Right number, but expected names: ${c.b.columns.join(", ")}`):`You have ${c.a.columns.length}; expected ${c.b.columns.length}: ${c.b.columns.join(", ")}`),
+        tick(c.countOk,"Number of rows",`You have ${c.a.values.length}; expected ${c.b.values.length}`),
+        tick(c.valuesOk,"Values",c.colsOk?(c.valuesOk?"Every row matches":[c.diff?`${c.diff} row${c.diff===1?"":"s"} with different values (highlighted cells)`:"",c.missing?`${c.missing} expected row${c.missing===1?"":"s"} missing`:"",c.extra?`${c.extra} extra row${c.extra===1?"":"s"} in yours`:""].filter(Boolean).join(" · ")):"Can't compare until the columns match"),
+        t.ordered?tick(c.orderOk,"Order",c.orderOk?"Sorted as asked":"Check your ORDER BY"):null);
+      let why;
+      if(c.ok) why="Your result matches the expected answer. Now practise saying how you checked it.";
+      else if(!c.colsOk) why="Fix the columns first: return exactly the columns listed in the question, in that order.";
+      else if(c.valuesOk&&!c.orderOk) why="Right rows, wrong order. Check your ORDER BY.";
+      else if(!c.countOk&&c.a.values.length>c.b.values.length) why="You have extra rows. A filter may be missing, or a join is repeating rows.";
+      else if(!c.countOk) why="Some rows are missing. A filter may be too strict, or a join is dropping rows.";
+      else why="Same number of rows but some values differ. Check your calculation or rounding.";
+      const grids=el("div",{class:"wscompare"},
+        scrMiniGrid(c.a,c.mineMark,"Your result","mine",c.mineCells),
+        scrMiniGrid(c.b,c.expMark,"Expected result","exp",c.expCells));
+      const legend=el("p",{class:"wslegend"},el("span",{class:"lg ok",text:"matches"}),el("span",{class:"lg diff",text:"different value"}),el("span",{class:"lg extra",text:"extra in yours"}),el("span",{class:"lg missing",text:"missing from yours"}));
+      const wide=el("button",{class:"l3link",type:"button",text:"⤢ Widen this panel"}); wide.addEventListener("click",()=>{ const w=body.querySelector(".ws"); const on=w.classList.toggle("wide"); wide.textContent=on?"⤡ Back to normal width":"⤢ Widen this panel"; });
+      if(!ws.style.getPropertyValue("--wsl")&&window.innerWidth>900) ws.style.setProperty("--wsl","42%");
+      if(c.diff&&!c.ok&&c.countOk) why="Same rows, but some values differ. The cells that differ are highlighted: check that calculation or condition.";
+      finish(c.ok,el("div",{},el("b",{text:c.ok?"Correct. ":"Not quite. "}),why),el("div",{},list,el("div",{class:"wsrow wslegrow"},legend,wide),grids));
+    });
   } else {
-    if(SCR.round){ const d=scrDone(); nav.append(el("p",{class:"scrsum",text:`Mock interview complete: ${SCR.round.filter(id=>d[id]&&d[id].ok).length} of ${SCR.round.length} solved.`})); }
-    const again=el("button",{class:"btn",type:"button",text:"Try again"}); again.addEventListener("click",()=>scrOpen(t.id,body));
-    const bk=el("button",{class:"btn primary",type:"button",text:"Back to all tasks"}); bk.addEventListener("click",()=>scrBackToList(body));
-    nav.append(again,bk);
+    const work=el("div",{class:"scrwork wswork"});
+    if(t.type==="talk"){
+      const think=scrThink("Type your answer the way you'd say it. Step 1: … Step 2: …"); think.ta.rows=14; think.ta.classList.add("wsta");
+      work.append(think.wrap);
+      const sub=el("button",{class:"lrun",type:"button",text:"I've finished explaining"}); sub.addEventListener("click",async()=>{ sub.disabled=true; await scrReview(t,think.ta.value,"",finish); sub.disabled=false; });
+      work.append(el("div",{class:"scrfoot"},sub));
+    } else if(t.type==="calc") scrCalc(t,work,finish);
+    else { const think=scrThink("Optional: your approach in words"); scrCode(t,work,finish,think.ta); const d=el("details",{class:"scrtalk"},el("summary",{text:"Explain your approach (optional)"}),think.wrap); work.append(d); }
+    right.append(work);
   }
-  after.append(fu,m,nav);
+  window.scrGo=()=>{ show("q"); if(SCR.ide&&t.type==="sql") SCR.ide.focus(); else { const f=right.querySelector("textarea,input"); if(f) f.focus(); } };
+  show(SCR.tab||"q");
 }
 
 /* =====================================================================
@@ -7574,6 +7722,7 @@ function showView(v){
   if(v!=="register" && typeof pauseVideo==="function" && landingReady){ try{ pauseVideo(); }catch(e){} }
   try{ stopPersona(); }catch(e){}
   document.body.classList.remove("booting","locked","v-register","v-home","v-exam","v-prep","v-loggedout");
+  if(v!=="prep") document.body.classList.remove("scr-focus");
   document.body.classList.add("v-"+v);
   window.scrollTo(0,0);
   if(v==="home") renderHome();
