@@ -2209,6 +2209,59 @@ body.scr-focus .fbfab{display:none!important}
 .lg.diff::before{background:rgba(255,170,0,.35);outline:1px solid rgba(255,170,0,.7)}
 .wslegrow{justify-content:space-between;margin:4px 0 8px}.wslegrow .wslegend{margin:0}
 @media (max-width:900px){.wsdiv{display:none}}
+
+/* ===== SQL console v3: clean desktop-tool layouts ===== */
+.ide{border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.22);font:13px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif}
+.ide-titlebar{padding:6px 10px 6px 14px;gap:10px}
+.ide-prod{font-size:13px}.ide-prod b{font-weight:800}.ide-prod span{opacity:.75}
+.ide-tblbtn{display:inline-flex!important}
+.ide-tb.run span{font-weight:700}
+.ide-edtab{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.ide-x{border:0;background:none;color:inherit;opacity:.55;font-size:15px;line-height:1;padding:0 2px;cursor:pointer;border-radius:3px}.ide-x:hover{opacity:1;background:rgba(0,0,0,.08)}
+.ide-plus{border:0;background:none;color:var(--i-mut);font-size:18px;line-height:1;padding:4px 10px;cursor:pointer;border-radius:5px;margin-top:3px}.ide-plus:hover{background:rgba(0,0,0,.06);color:var(--i-ink)}
+.ide-filter{display:block;width:calc(100% - 16px);margin:8px;box-sizing:border-box;border:1px solid var(--i-line);border-radius:5px;padding:5px 8px;font:inherit;font-size:12.5px;background:#fff!important;color:var(--i-ink)!important}
+.ide-node>summary,.ide-folder>summary{list-style:none;display:flex;align-items:center;gap:6px;cursor:pointer;padding:4px 10px;font-size:12.5px}
+.ide-node>summary::-webkit-details-marker,.ide-folder>summary::-webkit-details-marker{display:none}
+.ide-node>summary::before,.ide-folder>summary::before{content:"▸";font-size:10px;color:var(--i-mut);width:10px}
+.ide-node[open]>summary::before,.ide-folder[open]>summary::before{content:"▾"}
+.ide-node>summary b{color:var(--i-acc)}
+.ide-folder{margin-left:12px}.ide-folder>summary{font-weight:600;color:var(--i-mut)}
+.ide-fico{width:13px;height:10px;border-radius:2px;background:#d4a72c;display:inline-block}
+.ide-tree .stree{padding:0 4px 0 14px}
+.ide-status .ide-keys{color:var(--i-mut);font-size:11.5px;margin-right:12px}
+.ide-hint{display:none!important}
+@media (max-width:860px){.ide:not(.ide-hidex) .ide-explorer{display:block}.ide-status .ide-keys{display:none}}
+/* Teradata: clean, modern query editor */
+.ide-td{--i-head:#f6f7f9;--i-line:#dde1e6;--i-sel:#e5eefb;--i-acc:#1f5fa8;--i-mut:#5f6b78}
+.ide-td .ide-titlebar{background:#fff;border-bottom:1px solid #e6e9ed;color:#1b2430}
+.ide-td .ide-dial{background:#eef1f5}.ide-td .ide-dial button{color:#3d4a59}.ide-td .ide-dial button[aria-checked="true"]{background:#1f5fa8;color:#fff;opacity:1;box-shadow:none}
+.ide-td .ide-toolbar{background:#fff;border-bottom:1px solid #e6e9ed}
+.ide-td .ide-tb.run{background:#1f5fa8;color:#fff;border-color:#1f5fa8;padding:6px 14px}.ide-td .ide-tb.run svg{color:#fff}.ide-td .ide-tb.run:hover{background:#174c87}
+.ide-td .ide-explorer{background:#f9fafb}
+.ide-td .ide-tabs{background:#fff}
+.ide-td .ide-edtab,.ide-td .ide-rtab{border:0;border-bottom:2px solid transparent;border-radius:0;margin:0;padding:9px 14px}
+.ide-td .ide-edtab.on,.ide-td .ide-rtab.on{border-bottom-color:#1f5fa8;color:#1b2430;background:none}
+.ide-td .ide-gutter{background:#fafbfc}
+.ide-td .ide-tbl th{background:#f3f5f8;font-weight:600}
+.ide-td .ide-tbl tbody tr:nth-child(even) td:not(.rn){background:#fafbfd}
+.ide-td .ide-reshead{background:#fff;font-weight:600;color:#3d4a59}
+.ide-td .ide-status{background:#f6f7f9}
+/* Oracle: worksheet layout */
+.ide-ora{--i-head:#e9edf1;--i-line:#c5ced8;--i-sel:#d7e6f6;--i-acc:#2a5d8c;--i-mut:#5a6673}
+.ide-ora .ide-titlebar{background:linear-gradient(#f4f6f8,#e3e8ed);border-bottom:1px solid #c5ced8;color:#1f2a35}
+.ide-ora .ide-dial{background:#d7dee6}.ide-ora .ide-dial button{color:#2f3c49}.ide-ora .ide-dial button[aria-checked="true"]{background:#fff;color:#1f2a35;opacity:1;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.ide-ora .ide-toolbar{background:linear-gradient(#fafbfc,#eef1f4)}
+.ide-ora .ide-tb.run svg{color:#2e9d4b}.ide-ora .ide-tb.run{border-color:#c5ced8;background:#fff}
+.ide-ora .ide-edtab,.ide-ora .ide-rtab{border:1px solid #c5ced8;border-bottom:0;border-radius:4px 4px 0 0;background:#e3e8ed;margin:4px 2px 0 0;padding:5px 12px}
+.ide-ora .ide-edtab.on,.ide-ora .ide-rtab.on{background:#fff;margin-bottom:-1px}
+.ide-ora .ide-tree .stn{text-transform:uppercase}
+.ide-ora .ide-tbl th{text-transform:uppercase;background:#e4ebf2;color:#23384b}
+.ide-ora .ide-tbl .rn{background:#eef3f8}
+.ide-ora .ide-reshead{font-style:italic;background:#f7f9fb}
+.ide-ora .ide-status{background:#e3e8ed}
+
+.ide-node{display:block!important;padding:4px 0 0!important;color:inherit!important}
+.ide-node>summary{color:var(--i-acc)}
 </style>
 </head>
 <body class="booting">
@@ -5614,11 +5667,14 @@ async function renderLab(body){
   /* the console: looks and behaves like Teradata or Oracle tools */
   const useB=el("button",{class:"ide-tb ide-use",type:"button",hidden:!LAB.from},el("span",{text:"Use as my answer"}));
   const resetB=el("button",{class:"ide-tb",type:"button",title:"Put the practice data back to how it started"},el("span",{text:"Reset data"}));
+  LAB.tabs=LAB.tabs||[];
   const ide=sqlIDE({dialect:LAB.dialect, sql:opts.sql||LAB.sql[LAB.dialect]||LAB_START[LAB.dialect], db:()=>labLoad(),
+    tabs:LAB.tabs, curTab:LAB.curTab||0, onTabs:(t,c)=>{ LAB.curTab=c; },
     onSql:v=>{ LAB.sql[LAB.dialect]=v; },
     onDialect:(d,v)=>{ LAB.sql[LAB.dialect]=v; LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} renderLab(body); },
     extra:[resetB,useB]});
   wrap.append(ide.root);
+  if(opts.sql && LAB.tabs.length && ide.ta.value!==opts.sql) ide.setSql(opts.sql);
   const lookFor=el("p",{class:"l3look",hidden:true}); wrap.append(lookFor);
   const run=()=>ide.run();
   const setSql=(sql,go)=>ide.setSql(sql,go);
@@ -6022,15 +6078,17 @@ const IDE_HIST_KEY="baIdeHistory";
 function ideHistory(){ try{ return JSON.parse(localStorage.getItem(IDE_HIST_KEY)||"[]"); }catch(e){ return []; } }
 function ideHistoryAdd(x){ const h=ideHistory(); h.unshift(x); try{ localStorage.setItem(IDE_HIST_KEY,JSON.stringify(h.slice(0,30))); }catch(e){} }
 const IDE_TXT={
- teradata:{name:"Teradata",title:"Query window",conn:"Database Explorer",node:"CR_DWH",session:"PRACTICE · Teradata mode",
-   run:"Execute",runKey:"F5",runKey2:IDE_MAC?"⌘ Enter":"Ctrl + Enter",tabs:["Answerset 1","History","Messages"],
-   done:(n,s)=>`Query completed. ${n} row${n===1?"":"s"} returned. ${s} seconds.`,
-   changed:(n,s)=>`Query completed. ${n} row${n===1?"":"s"} processed. ${s} seconds.`,
-   exec:"Executing query…"},
- oracle:{name:"Oracle",title:"SQL Worksheet",conn:"Connections",node:"CR_DWH@PRACTICE",session:"PRACTICE · Oracle mode",
+ teradata:{name:"Teradata",conn:"Navigator",node:"CR_DWH",tabName:n=>`Query ${n}`,
+   run:"Run",runKey:IDE_MAC?"⌘ Enter":"Ctrl + Enter",runKey2:"F5",tabs:["Result","History","Messages"],
+   done:(n,s)=>`${n} row${n===1?"":"s"} · ${s} s`,
+   status:(n,s)=>`Query completed. ${n} row${n===1?"":"s"} returned in ${s} seconds.`,
+   changed:(n,s)=>`Query completed. ${n} row${n===1?"":"s"} processed in ${s} seconds.`,
+   exec:"Running query…"},
+ oracle:{name:"Oracle",conn:"Connections",node:"CR_DWH@PRACTICE",tabName:n=>n===1?"CR_DWH@PRACTICE":`CR_DWH@PRACTICE~${n-1}`,
    run:"Run Statement",runKey:IDE_MAC?"⌘ Enter":"Ctrl + Enter",runKey2:"F5",tabs:["Query Result","History","Script Output"],
    done:(n,s)=>`All Rows Fetched: ${n} in ${s} seconds`,
-   changed:(n,s)=>`${n} row${n===1?"":"s"} affected. Elapsed: ${s} seconds`,
+   status:(n,s)=>`All Rows Fetched: ${n} in ${s} seconds`,
+   changed:(n,s)=>`${n} row${n===1?"":"s"} affected.`,
    exec:"Executing statement…"}
 };
 /* turn the engine's message into what the real database would say, plus a plain-English line */
@@ -6063,172 +6121,184 @@ function ideFormat(sql){
    .replace(/^\s*(SELECT|SEL)\b/i,m=>m.toUpperCase());
 }
 
-/* opts: dialect, sql, used (Set of table names), db() → Promise<db>, onSql(text), onDialect(d), extra (nodes for the toolbar end), compact */
+/* opts: dialect, sql, used (Set of table names), db() → Promise<db>, onSql(text), onDialect(d,text), extra (toolbar nodes), fill, hideExplorer, tabs (array kept by the caller across re-renders) */
 function sqlIDE(opts){
   let dialect=opts.dialect==="oracle"?"oracle":"teradata";
   const T=()=>IDE_TXT[dialect];
   const root=el("section",{class:"ide","aria-label":"SQL console"});
-  /* title bar */
-  const title=el("span",{class:"ide-title"}), sess=el("span",{class:"ide-sess"});
+  /* query tabs: each one is its own console with its own query and result */
+  const tabs=opts.tabs||[]; if(!tabs.length) tabs.push({n:1,sql:opts.sql||"",res:null,msg:null,stat:""});
+  let cur=Math.min(opts.curTab||0,tabs.length-1);
+  /* header: which database + switch */
+  const prod=el("span",{class:"ide-prod"});
   const dial=el("div",{class:"ide-dial",role:"radiogroup","aria-label":"Database"});
-  ["teradata","oracle"].forEach(d=>{ const b=el("button",{type:"button",role:"radio","data-d":d,text:d==="teradata"?"Teradata":"Oracle"}); b.addEventListener("click",()=>{ if(d===dialect) return; if(opts.onDialect) opts.onDialect(d,ta.value); else setDialect(d); }); dial.append(b); });
-  const titlebar=el("div",{class:"ide-titlebar"},el("span",{class:"ide-dots","aria-hidden":"true"},el("i"),el("i"),el("i")),title,el("span",{class:"ide-sp"}),sess,dial);
+  ["teradata","oracle"].forEach(d=>{ const b=el("button",{type:"button",role:"radio","data-d":d,text:d==="teradata"?"Teradata":"Oracle"}); b.addEventListener("click",()=>{ if(d===dialect) return; save(); if(opts.onDialect) opts.onDialect(d,ta.value); else setDialect(d); }); dial.append(b); });
+  const header=el("div",{class:"ide-titlebar"},prod,el("span",{class:"ide-sp"}),dial);
   /* toolbar */
-  const tb=(icon,label,key)=>el("button",{type:"button",class:"ide-tb",title:key?`${label} (${key})`:label},ideIcon(IDE_I[icon]),el("span",{text:label}),key?el("kbd",{text:key}):null);
-  const runB=tb("play","Execute","F5"); runB.classList.add("run");
-  const fmtB=tb("fmt","Format"), clrB=tb("clear","Clear"), cpyB=tb("copy","Copy");
-  const tblB=tb("db","Tables"); tblB.classList.add("ide-tblbtn");
-  const toolbar=el("div",{class:"ide-toolbar"},runB,el("span",{class:"ide-sep"}),fmtB,cpyB,clrB,tblB,el("span",{class:"ide-sp"}),...(opts.extra||[]));
-  /* explorer */
+  const tb=(icon,label,title)=>el("button",{type:"button",class:"ide-tb",title:title||label},ideIcon(IDE_I[icon]),el("span",{text:label}));
+  const runB=tb("play","Run"); runB.classList.add("run");
+  const fmtB=tb("fmt","Format"), clrB=tb("clear","Clear"), newB=tb("script","New query","New query tab (Alt + N)");
+  const tblB=tb("db","Tables","Show or hide the tables panel"); tblB.classList.add("ide-tblbtn");
+  const toolbar=el("div",{class:"ide-toolbar"},runB,el("span",{class:"ide-sep"}),newB,fmtB,clrB,tblB,el("span",{class:"ide-sp"}),...(opts.extra||[]));
+  /* explorer with a filter box */
   const explorerHead=el("div",{class:"ide-panehead"});
-  const explorer=el("aside",{class:"ide-explorer"},explorerHead);
-  /* editor with line numbers */
+  const filter=el("input",{class:"ide-filter",type:"search",placeholder:"Filter tables","aria-label":"Filter tables"});
+  const treeHost=el("div",{class:"ide-tree"});
+  const explorer=el("aside",{class:"ide-explorer"},explorerHead,filter,treeHost);
+  /* editor */
+  const qtabs=el("div",{class:"ide-tabs ed",role:"tablist"});
   const gutter=el("div",{class:"ide-gutter","aria-hidden":"true"});
   const ta=el("textarea",{class:"ide-ta",spellcheck:"false",autocomplete:"off",autocapitalize:"off","aria-label":"SQL editor"});
-  ta.value=opts.sql||"";
-  const edTab=el("span",{class:"ide-edtab on"});
-  const editor=el("div",{class:"ide-editor"},el("div",{class:"ide-tabs ed"},edTab),el("div",{class:"ide-edbody"},gutter,ta));
-  const hint=el("div",{class:"ide-hint"});
+  const editor=el("div",{class:"ide-editor"},qtabs,el("div",{class:"ide-edbody"},gutter,ta));
   const notes=el("div",{class:"ide-notes"});
+  const split=el("div",{class:"ide-split",title:"Drag to resize","aria-hidden":"true"},el("i"));
   /* results */
   const rtabs=el("div",{class:"ide-tabs res",role:"tablist"}); const rTabBtns=[];
-  const grid=el("div",{class:"ide-grid"}), histBox=el("div",{class:"ide-hist",hidden:true}), msgBox=el("div",{class:"ide-msg",hidden:true});
   const resHead=el("div",{class:"ide-reshead"});
+  const grid=el("div",{class:"ide-grid"}), histBox=el("div",{class:"ide-hist",hidden:true}), msgBox=el("div",{class:"ide-msg",hidden:true});
   const results=el("div",{class:"ide-results"},rtabs,resHead,grid,histBox,msgBox);
-  const status=el("div",{class:"ide-status"},el("span",{class:"ide-stxt"}),el("span",{class:"ide-sp"}),el("span",{class:"ide-pos"}));
-  const split=el("div",{class:"ide-split",title:"Drag to resize","aria-hidden":"true"},el("i"));
-  const main=el("div",{class:"ide-main"},editor,hint,notes,split,results);
-  const body=el("div",{class:"ide-body"},explorer,main);
-  root.append(titlebar,toolbar,body,status);
-  let curTab=0;
-  function showTab(i){ curTab=i; rTabBtns.forEach((b,k)=>{ b.classList.toggle("on",k===i); b.setAttribute("aria-selected",String(k===i)); }); grid.hidden=i!==0; resHead.hidden=i!==0||!resHead.childNodes.length; histBox.hidden=i!==1; msgBox.hidden=i!==2; if(i===1) paintHistory(); }
-  function setStatus(t,cls){ const s=status.querySelector(".ide-stxt"); s.textContent=t; status.className="ide-status"+(cls?" "+cls:""); }
-  function lines(){ const n=ta.value.split("\n").length; gutter.textContent=Array.from({length:Math.max(n,8)},(_,i)=>i+1).join("\n"); gutter.scrollTop=ta.scrollTop; }
+  const status=el("div",{class:"ide-status"},el("span",{class:"ide-stxt"}),el("span",{class:"ide-sp"}),el("span",{class:"ide-keys"}),el("span",{class:"ide-pos"}));
+  const main=el("div",{class:"ide-main"},editor,notes,split,results);
+  root.append(header,toolbar,el("div",{class:"ide-body"},explorer,main),status);
+  let curRes=0;
+  function showTab(i){ curRes=i; rTabBtns.forEach((b,k)=>{ b.classList.toggle("on",k===i); b.setAttribute("aria-selected",String(k===i)); }); grid.hidden=i!==0; resHead.hidden=i!==0||!resHead.childNodes.length; histBox.hidden=i!==1; msgBox.hidden=i!==2; if(i===1) paintHistory(); }
+  function setStatus(t,cls){ status.querySelector(".ide-stxt").textContent=t; status.className="ide-status"+(cls?" "+cls:""); tabs[cur].stat=t; tabs[cur].statCls=cls||""; }
+  function lines(){ const n=ta.value.split("\n").length; gutter.textContent=Array.from({length:Math.max(n,12)},(_,i)=>i+1).join("\n"); gutter.scrollTop=ta.scrollTop; }
   function pos(){ const v=ta.value.slice(0,ta.selectionStart); const ln=v.split("\n").length, col=v.length-v.lastIndexOf("\n"); status.querySelector(".ide-pos").textContent=`Ln ${ln}, Col ${col}`; }
   function paintNotes(){ notes.innerHTML=""; labDialectNotes(ta.value,dialect).forEach(n=>notes.append(el("div",{class:"ide-note"},el("b",{text:`Real ${T().name} would reject this: `}),n))); }
   function paintHistory(){
     histBox.innerHTML="";
     const h=ideHistory();
     if(!h.length){ histBox.append(el("p",{class:"ide-empty",text:"Queries you run appear here. Click one to load it back."})); return; }
-    const t=el("table",{class:"ide-tbl"}); t.append(el("tr",{},...["#","Started","Rows","Seconds","Query"].map(x=>el("th",{text:x}))));
-    h.forEach((x,i)=>{ const tr=el("tr",{class:"ide-hrow",title:"Load this query"},el("td",{class:"rn",text:String(i+1)}),el("td",{text:new Date(x.at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"})}),el("td",{class:"n",text:x.err?"error":String(x.rows)}),el("td",{class:"n",text:x.secs}),el("td",{class:"q",text:x.sql.replace(/\s+/g," ").slice(0,140)})); tr.addEventListener("click",()=>{ setSql(x.sql); showTab(0); }); t.append(tr); });
+    const t=el("table",{class:"ide-tbl"}); t.append(el("thead",{},el("tr",{},...["#","Time","Rows","Seconds","Query"].map(x=>el("th",{text:x})))));
+    const tb2=el("tbody"); t.append(tb2);
+    h.forEach((x,i)=>{ const tr=el("tr",{class:"ide-hrow",title:"Load this query"},el("td",{class:"rn",text:String(i+1)}),el("td",{text:new Date(x.at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"})}),el("td",{class:"n",text:x.err?"error":String(x.rows)}),el("td",{class:"n",text:x.secs}),el("td",{class:"q",text:x.sql.replace(/\s+/g," ").slice(0,140)})); tr.addEventListener("click",()=>{ setSql(x.sql); showTab(0); }); tb2.append(tr); });
     histBox.append(el("div",{class:"ide-gridwrap"},t));
   }
   function paintExplorer(){
-    explorerHead.innerHTML="";
-    explorerHead.append(el("span",{text:T().conn}));
+    explorerHead.innerHTML=""; explorerHead.append(el("span",{text:T().conn}));
+    treeHost.innerHTML="";
     const tree=schemaTree(null,{insert:insertText,preview});
-    const node=el("div",{class:"ide-node"},ideIcon(IDE_I.db),el("b",{text:T().node}),el("span",{class:"ide-conn",text:"connected"}));
-    explorer.querySelectorAll(".ide-node,.stree,.ide-xhint").forEach(x=>x.remove());
     tree.querySelectorAll(".shead,.shint").forEach(x=>x.remove());
     if(opts.used) tree.querySelectorAll("details.stab").forEach(d=>{ const n=d.querySelector(".stn").textContent.toLowerCase(); if(opts.used.has(n)){ d.open=true; d.classList.add("used"); } });
-    explorer.append(node,tree,el("p",{class:"ide-xhint",text:"Click a column to add it to your query. Preview shows sample rows."}));
+    const node=el("details",{class:"ide-node",open:true},el("summary",{},ideIcon(IDE_I.db),el("b",{text:T().node}),el("span",{class:"ide-conn",text:"connected"})));
+    const folder=el("details",{class:"ide-folder",open:true},el("summary",{},el("span",{class:"ide-fico","aria-hidden":"true"}),el("span",{text:`Tables (${tree.querySelectorAll("details.stab").length})`})),tree);
+    node.append(folder); treeHost.append(node);
+    applyFilter();
   }
+  function applyFilter(){ const f=filter.value.trim().toLowerCase(); treeHost.querySelectorAll("details.stab").forEach(d=>{ d.hidden=!!f&&!d.querySelector(".stn").textContent.toLowerCase().includes(f); }); treeHost.querySelectorAll(".sgrp").forEach(g=>{ let n=g.nextElementSibling, any=false; while(n&&!n.classList.contains("sgrp")){ if(n.matches("details.stab")&&!n.hidden) any=true; n=n.nextElementSibling; } g.hidden=!any; }); }
+  function paintQtabs(){
+    qtabs.innerHTML="";
+    tabs.forEach((t,i)=>{ const b=el("div",{class:"ide-edtab"+(i===cur?" on":""),role:"tab","aria-selected":String(i===cur)},el("span",{class:"ide-tabname",text:T().tabName(t.n)}));
+      if(tabs.length>1){ const x=el("button",{type:"button",class:"ide-x",title:"Close this query tab","aria-label":"Close tab",text:"×"}); x.addEventListener("click",e=>{ e.stopPropagation(); closeTab(i); }); b.append(x); }
+      b.addEventListener("click",()=>{ if(i!==cur){ save(); cur=i; load(); } }); qtabs.append(b); });
+    const plus=el("button",{type:"button",class:"ide-plus",title:"New query tab (Alt + N)","aria-label":"New query tab",text:"+"}); plus.addEventListener("click",newTab); qtabs.append(plus);
+  }
+  function save(){ tabs[cur].sql=ta.value; }
+  function load(){
+    ta.value=tabs[cur].sql||""; lines(); pos(); paintNotes(); paintQtabs();
+    const t=tabs[cur];
+    if(t.res) renderResult(t.res,false); else { emptyGrid(); msgBox.innerHTML=""; }
+    setStatus(t.stat||"Ready",t.statCls); if(opts.onSql) opts.onSql(ta.value); if(opts.onTabs) opts.onTabs(tabs,cur);
+  }
+  function newTab(){ save(); const n=Math.max(...tabs.map(t=>t.n))+1; tabs.push({n,sql:`-- ${T().name} · ${T().tabName(n)}\n`,res:null,stat:""}); cur=tabs.length-1; load(); ta.focus(); ta.setSelectionRange(ta.value.length,ta.value.length); }
+  function closeTab(i){ if(tabs.length<2) return; save(); tabs.splice(i,1); if(cur>=tabs.length) cur=tabs.length-1; else if(i<cur) cur--; load(); }
   function setDialect(d){
     dialect=d; root.classList.toggle("ide-td",d!=="oracle"); root.classList.toggle("ide-ora",d==="oracle");
-    title.textContent=`${T().name} · ${T().title}`; sess.textContent=T().session; edTab.textContent=d==="oracle"?"Worksheet":"Query 1";
+    prod.innerHTML=""; prod.append(el("b",{text:T().name}),el("span",{text:d==="oracle"?" · SQL Worksheet":" · Query Editor"}));
     dial.querySelectorAll("button").forEach(b=>b.setAttribute("aria-checked",String(b.dataset.d===d)));
-    runB.querySelector("span").textContent=T().run; runB.querySelector("kbd").textContent=T().runKey; runB.title=`${T().run} (${T().runKey} or ${T().runKey2})`;
-    hint.innerHTML=""; hint.append(el("span",{},el("kbd",{text:T().runKey}),el("span",{text:" or "}),el("kbd",{text:T().runKey2}),el("span",{text:" runs the query"})),el("span",{},el("kbd",{text:"Tab"}),el("span",{text:" indents"})),el("span",{class:"ide-hint2",text:"Write your query above, then run it. Results appear below."}));
+    runB.querySelector("span").textContent=T().run; runB.title=`${T().run} (${T().runKey} or ${T().runKey2})`;
+    status.querySelector(".ide-keys").textContent=`${T().runKey} or ${T().runKey2} runs · Alt + N new query`;
     rtabs.innerHTML=""; rTabBtns.length=0;
     T().tabs.forEach((t,i)=>{ const b=el("button",{type:"button",role:"tab",class:"ide-rtab",text:t}); b.addEventListener("click",()=>showTab(i)); rTabBtns.push(b); rtabs.append(b); });
-    paintExplorer(); paintNotes(); showTab(curTab);
-    if(!grid.childNodes.length) emptyGrid();
-    setStatus(status.querySelector(".ide-stxt").textContent||"Ready");
+    paintExplorer(); paintQtabs(); paintNotes(); showTab(curRes);
+    if(tabs[cur].res) renderResult(tabs[cur].res,false); else emptyGrid();
   }
-  function emptyGrid(){ grid.innerHTML=""; grid.append(el("p",{class:"ide-empty",text:`Press ${T().run} (${T().runKey}) to run your query. The result set appears here.`})); resHead.innerHTML=""; }
+  function emptyGrid(){ grid.innerHTML=""; grid.append(el("p",{class:"ide-empty",text:`Write a query above, then press ${T().run} (${T().runKey}). The result appears here.`})); resHead.innerHTML=""; resHead.hidden=true; }
   function insertText(t){ const s=ta.selectionStart??ta.value.length, e=ta.selectionEnd??s; ta.setRangeText(t,s,e,"end"); ta.focus(); changed(); }
-  function changed(){ lines(); paintNotes(); if(opts.onSql) opts.onSql(ta.value); }
+  function changed(){ lines(); paintNotes(); save(); if(opts.onSql) opts.onSql(ta.value); }
   function setSql(sql,go){ ta.value=sql; changed(); if(go) return run(); }
-  async function preview(n){
-    const sql=dialect==="oracle"?`SELECT *\nFROM   ${n}\nFETCH FIRST 20 ROWS ONLY;`:`SEL TOP 20 *\nFROM   ${n};`;
-    await exec(sql,{preview:n});
-  }
-  /* table with a row-number column, filled in batches so it "streams" */
-  function paintRows(r,startT){
-    const v=labVisible(r);
-    const t=el("table",{class:"ide-tbl"}); const hr=el("tr",{},el("th",{class:"rn",text:""}),...v.columns.map(c=>el("th",{text:dialect==="oracle"?c.toUpperCase():c})));
-    t.append(el("thead",{},hr)); const tb=el("tbody"); t.append(tb);
-    grid.innerHTML=""; grid.append(el("div",{class:"ide-gridwrap"},t));
-    const rows=v.values.slice(0,1000); let i=0;
-    const fmt=x=>{ if(x===null) return dialect==="oracle"?"(null)":"?"; if(typeof x==="number") return Number.isInteger(x)?String(x):x.toFixed(2); return String(x).replace(/ 00:00:00$/,""); };
-    return new Promise(res=>{
-      const step=()=>{
-        const n=Math.min(rows.length, i+Math.max(3,Math.ceil(rows.length/8)));
-        for(;i<n;i++){ const tr=el("tr",{class:"ide-new"},el("td",{class:"rn",text:String(i+1)})); rows[i].forEach(x=>tr.append(el("td",{class:(typeof x==="number"?"n":"")+(x===null?" nul":""),text:fmt(x)}))); tb.append(tr); }
-        setStatus(`Fetching… ${i} of ${rows.length} rows`,"busy");
-        if(i<rows.length) setTimeout(step,45); else res();
-      };
-      step();
-    });
+  async function preview(n){ const sql=dialect==="oracle"?`SELECT *\nFROM   ${n}\nFETCH FIRST 20 ROWS ONLY;`:`SEL TOP 20 *\nFROM   ${n};`; await exec(sql,{preview:n}); }
+  const fmtCell=x=>{ if(x===null) return dialect==="oracle"?"(null)":"?"; if(typeof x==="number") return Number.isInteger(x)?String(x):x.toFixed(2); return String(x).replace(/ 00:00:00$/,""); };
+  function tableFor(v,rows){ const t=el("table",{class:"ide-tbl"}); t.append(el("thead",{},el("tr",{},el("th",{class:"rn",text:""}),...v.columns.map(c=>el("th",{text:dialect==="oracle"?c.toUpperCase():c}))))); const tb2=el("tbody"); t.append(tb2); return [t,tb2]; }
+  function rowEl(r,i,anim){ const tr=el("tr",{class:anim?"ide-new":""},el("td",{class:"rn",text:String(i+1)})); r.forEach(x=>tr.append(el("td",{class:(typeof x==="number"?"n":"")+(x===null?" nul":""),text:fmtCell(x)}))); return tr; }
+  /* show a stored result instantly (switching tabs) or stream it (fresh run) */
+  async function renderResult(res,stream){
+    resHead.innerHTML=""; grid.innerHTML="";
+    if(res.err){ grid.append(el("div",{class:"ide-err"},el("code",{text:res.err.real}),el("p",{},el("b",{text:"In plain words: "}),res.err.plain))); resHead.hidden=true; msgBox.innerHTML=""; msgBox.append(el("p",{class:"ide-mline err",text:res.err.real})); return; }
+    msgBox.innerHTML=""; (res.msgs||[]).forEach(m=>msgBox.append(el("p",{class:"ide-mline",text:m})));
+    if(!res.v){ grid.append(el("p",{class:"ide-empty ok",text:res.note||"Statement completed."})); resHead.hidden=true; return; }
+    const v=res.v, rows=v.values.slice(0,1000);
+    const [t,tb2]=tableFor(v); grid.append(el("div",{class:"ide-gridwrap"},t));
+    resHead.append(el("span",{class:"ide-fetch",text:res.preview?`Preview of ${res.preview} (first 20 rows) · your query is unchanged`:T().done(rows.length,res.secs)}));
+    resHead.hidden=curRes!==0;
+    if(!stream){ rows.forEach((r,i)=>tb2.append(rowEl(r,i,false))); return; }
+    let i=0; await new Promise(done=>{ const step=()=>{ const n=Math.min(rows.length,i+Math.max(3,Math.ceil(rows.length/8))); for(;i<n;i++) tb2.append(rowEl(rows[i],i,true)); status.querySelector(".ide-stxt").textContent=`Fetching… ${i} of ${rows.length} rows`; if(i<rows.length) setTimeout(step,45); else done(); }; step(); });
   }
   let busy=false;
   async function exec(sql,o={}){
     if(busy) return null; busy=true;
-    const t0=performance.now();
+    const t0=performance.now(); const tab=tabs[cur];
     runB.disabled=true; root.classList.add("ide-busy");
-    showTab(0); resHead.innerHTML=""; grid.innerHTML=""; grid.append(el("div",{class:"ide-running"},el("span",{class:"ide-spin"}),el("span",{text:T().exec})));
-    let tick=setInterval(()=>setStatus(`${T().exec} ${((performance.now()-t0)/1000).toFixed(1)}s`,"busy"),100);
-    setStatus(T().exec,"busy");
+    showTab(0); resHead.innerHTML=""; resHead.hidden=true; grid.innerHTML=""; grid.append(el("div",{class:"ide-running"},el("span",{class:"ide-spin"}),el("span",{text:T().exec})));
+    const tick=setInterval(()=>status.querySelector(".ide-stxt").textContent=`${T().exec} ${((performance.now()-t0)/1000).toFixed(1)}s`,100);
+    status.className="ide-status busy";
     let out=null;
     try{
       const db=await opts.db();
-      await new Promise(r=>setTimeout(r,260));   // a short, realistic round trip
+      await new Promise(r=>setTimeout(r,260));
       const tq=performance.now(); const r=labRun(db,sql); const qs=((performance.now()-tq)/1000+0.2+Math.random()*0.15).toFixed(3);
       clearInterval(tick);
       const last=r.results[r.results.length-1];
-      msgBox.innerHTML="";
-      r.results.forEach((x,k)=>msgBox.append(el("p",{class:"ide-mline",text:x.columns&&x.columns.length?`Statement ${k+1}: ${labVisible(x).values.length} row(s) returned.`:`Statement ${k+1}: ${x.changes!=null?x.changes+" row(s) affected.":"completed."}`})));
-      if(last&&last.columns&&last.columns.length){
-        await paintRows(last,t0);
-        const n=Math.min(labVisible(last).values.length,1000);
-        if(dialect==="oracle") resHead.append(el("span",{class:"ide-fetch",text:T().done(n,qs)}));
-        else resHead.append(el("span",{class:"ide-fetch",text:o.preview?`Preview of ${o.preview} (first 20 rows) · your query is unchanged`:`${n} row${n===1?"":"s"}`}));
-        if(o.preview&&dialect==="oracle") resHead.append(el("span",{class:"ide-fetch muted",text:` · preview of ${o.preview}, your query is unchanged`}));
-        resHead.hidden=false;
-        setStatus(T().done(n,qs),"ok");
-        if(!o.preview) ideHistoryAdd({sql,rows:n,secs:qs,at:Date.now()});
-      } else {
-        grid.innerHTML=""; grid.append(el("p",{class:"ide-empty ok",text:last&&last.changes!=null?T().changed(last.changes,qs):"Statement completed."}));
-        setStatus(last&&last.changes!=null?T().changed(last.changes,qs):"Statement completed.","ok");
-        if(!o.preview) ideHistoryAdd({sql,rows:last&&last.changes||0,secs:qs,at:Date.now()});
-      }
+      const msgs=r.results.map((x,k)=>x.columns&&x.columns.length?`Statement ${k+1}: ${labVisible(x).values.length} row(s) returned.`:`Statement ${k+1}: ${x.changes!=null?x.changes+" row(s) affected.":"completed."}`);
+      let res;
+      if(last&&last.columns&&last.columns.length){ const v=labVisible(last); res={v,secs:qs,msgs,preview:o.preview}; }
+      else res={note:last&&last.changes!=null?T().changed(last.changes,qs):"Statement completed.",msgs};
+      if(!o.preview) tab.res=res;
+      await renderResult(res,true);
+      const n=res.v?Math.min(res.v.values.length,1000):(last&&last.changes)||0;
+      setStatus(res.v?T().status(n,qs):res.note,"ok");
+      if(!o.preview) ideHistoryAdd({sql,rows:n,secs:qs,at:Date.now()});
       out=r;
     }catch(e){
       clearInterval(tick);
       const er=ideError(String(e&&e.message||e),dialect), secs=((performance.now()-t0)/1000).toFixed(3);
-      grid.innerHTML=""; grid.append(el("div",{class:"ide-err"},el("code",{text:er.real}),el("p",{},el("b",{text:"In plain words: "}),er.plain)));
-      msgBox.innerHTML=""; msgBox.append(el("p",{class:"ide-mline err",text:er.real}));
-      setStatus(dialect==="oracle"?`Error starting at line 1 · ${er.real.split(":")[0]}`:`Query failed. ${er.real.split(" ").slice(0,2).join(" ")}. ${secs} seconds.`,"err");
+      const res={err:er}; if(!o.preview) tab.res=res;
+      await renderResult(res,false);
+      setStatus(dialect==="oracle"?`Error starting at line 1 · ${er.real.split(":")[0]}`:`Query failed. ${er.real.split(" ").slice(0,2).join(" ")}.`,"err");
       if(!o.preview) ideHistoryAdd({sql,err:true,rows:0,secs,at:Date.now()});
       out=null;
     }
-    clearInterval(tick); busy=false; runB.disabled=false; root.classList.remove("ide-busy");
+    busy=false; runB.disabled=false; root.classList.remove("ide-busy");
     return out;
   }
-  function run(){ return exec(ta.value); }
-  /* events */
+  function run(){ save(); return exec(ta.value); }
+  /* keys: Ctrl/⌘+Enter or F5 to run; Alt+N (or Ctrl+N where the browser allows) for a new query tab */
   ta.addEventListener("input",changed);
   ta.addEventListener("scroll",()=>{ gutter.scrollTop=ta.scrollTop; });
   ["keyup","click"].forEach(ev=>ta.addEventListener(ev,pos));
-  ta.addEventListener("keydown",e=>{
+  root.addEventListener("keydown",e=>{
+    const k=e.key.toLowerCase();
     if(((e.ctrlKey||e.metaKey)&&e.key==="Enter")||e.key==="F5"){ e.preventDefault(); run(); }
-    else if(e.key==="Tab"&&!e.shiftKey){ e.preventDefault(); ta.setRangeText("  ",ta.selectionStart,ta.selectionEnd,"end"); changed(); }
+    else if((e.altKey&&k==="n")||((e.ctrlKey||e.metaKey)&&!e.shiftKey&&k==="n")){ e.preventDefault(); newTab(); }
+    else if(e.altKey&&k==="w"){ e.preventDefault(); closeTab(cur); }
+    else if(e.target===ta&&e.key==="Tab"&&!e.shiftKey){ e.preventDefault(); ta.setRangeText("  ",ta.selectionStart,ta.selectionEnd,"end"); changed(); }
   });
+  filter.addEventListener("input",applyFilter);
   runB.addEventListener("click",run);
+  newB.addEventListener("click",newTab);
   fmtB.addEventListener("click",()=>{ setSql(ideFormat(ta.value)); });
-  clrB.addEventListener("click",()=>{ setSql(""); ta.focus(); emptyGrid(); setStatus("Ready"); });
-  cpyB.addEventListener("click",()=>{ try{ navigator.clipboard.writeText(ta.value).then(()=>{ cpyB.querySelector("span").textContent="Copied"; setTimeout(()=>cpyB.querySelector("span").textContent="Copy",1400); }); }catch(e){} });
-  tblB.addEventListener("click",()=>{ root.classList.toggle("ide-showx"); tblB.classList.toggle("on",root.classList.contains("ide-showx")); });
-  if(opts.fill){ root.classList.add("ide-fill"); if(opts.hideExplorer) root.classList.add("ide-hidex"); tblB.classList.toggle("on",!opts.hideExplorer);
-    tblB.onclick=null; tblB.addEventListener("click",e=>{ e.stopImmediatePropagation(); root.classList.toggle("ide-hidex"); tblB.classList.toggle("on",!root.classList.contains("ide-hidex")); },true); }
-  /* drag the bar between editor and results to give either more room */
+  clrB.addEventListener("click",()=>{ setSql(""); ta.focus(); tabs[cur].res=null; emptyGrid(); setStatus("Ready"); });
+  tblB.addEventListener("click",()=>{ root.classList.toggle("ide-hidex"); tblB.classList.toggle("on",!root.classList.contains("ide-hidex")); });
+  if(opts.fill) root.classList.add("ide-fill");
+  if(opts.hideExplorer||window.innerWidth<860) root.classList.add("ide-hidex");
+  tblB.classList.toggle("on",!root.classList.contains("ide-hidex"));
   split.addEventListener("pointerdown",e=>{ e.preventDefault(); const eb=editor.querySelector(".ide-edbody"); const y0=e.clientY, h0=eb.getBoundingClientRect().height;
-    const mv=ev=>{ const h=Math.max(90,Math.min(h0+(ev.clientY-y0),window.innerHeight-260)); eb.style.height=h+"px"; ta.style.minHeight="0"; };
+    const mv=ev=>{ eb.style.height=Math.max(90,Math.min(h0+(ev.clientY-y0),window.innerHeight-240))+"px"; };
     const up=()=>{ window.removeEventListener("pointermove",mv); window.removeEventListener("pointerup",up); };
     window.addEventListener("pointermove",mv); window.addEventListener("pointerup",up); });
-  setDialect(dialect); lines(); pos(); setStatus("Ready"); emptyGrid();
-  return {root, ta, run, setSql, setDialect, setStatus, showTab, get dialect(){ return dialect; }, focus:()=>ta.focus()};
+  setDialect(dialect); load();
+  return {root, ta, run, setSql, setDialect, setStatus, showTab, newTab, get tabs(){ return tabs; }, get dialect(){ return dialect; }, focus:()=>ta.focus()};
 }
 
 /* =====================================================================
@@ -7231,7 +7301,8 @@ function renderScrTask(body){
     const start=d=>d==="oracle"?`-- Oracle\nSELECT \nFROM   ${firstTbl}\n`:`-- Teradata\nSELECT \nFROM   ${firstTbl}\n`;
     const used=new Set((t.td.match(/\b(FROM|JOIN)\s+(\w+)/gi)||[]).map(x=>x.split(/\s+/).pop().toLowerCase()));
     const chk=el("button",{class:"ide-tb ide-submit",type:"button"},el("span",{text:"✓ Check answer"}));
-    const ide=sqlIDE({dialect:LAB.dialect, sql:SCR.sql[t.id]||start(LAB.dialect), used, fill:true, hideExplorer:window.innerWidth<1500,
+    SCR.tabs=SCR.tabs||{};
+    const ide=sqlIDE({dialect:LAB.dialect, sql:SCR.sql[t.id]||start(LAB.dialect), used, fill:true, hideExplorer:window.innerWidth<1500, tabs:(SCR.tabs[t.id]=SCR.tabs[t.id]||[]),
       db:()=>scrDb().then(()=>scrDb(true)), onSql:v=>{ SCR.sql[t.id]=v; },
       onDialect:(d)=>{ LAB.dialect=d; try{ localStorage.setItem("baLabDialect",d); }catch(e){} ide.setDialect(d); }, extra:[chk]});
     SCR.ide=ide; right.append(ide.root);
