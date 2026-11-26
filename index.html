@@ -2209,6 +2209,46 @@ body.scr-focus .fbfab{display:none!important}
 
 .ws{grid-template-columns:var(--wsl,31%) 6px minmax(0,1fr)!important}
 .ws.wide{--wsl:58%}
+.ide-codewrap{position:relative;flex:1;min-width:0;display:flex}
+.ide .ide-codewrap textarea.ide-ta{position:relative;z-index:1;background:transparent!important;color:transparent!important;caret-color:#0b1f33;-webkit-text-fill-color:transparent}
+.ide-codewrap .ide-ta::selection{background:rgba(31,111,235,.25);-webkit-text-fill-color:transparent}
+.ide-codewrap .ide-ta::placeholder{-webkit-text-fill-color:#9aa4ae}
+.ide-hl{position:absolute;inset:0;margin:0;padding:10px 12px;font:13.5px/1.55 ui-monospace,Consolas,"Courier New",monospace;tab-size:2;white-space:pre;overflow:hidden;color:#0b1f33;background:#fff;pointer-events:none;border:0}
+.ide-hl .sx-k{color:#0b54c4;font-weight:700}.ide-hl .sx-f{color:#8a3fb8}.ide-hl .sx-s{color:#b3261e}.ide-hl .sx-n{color:#0a7d55}.ide-hl .sx-c{color:#6b7785;font-style:italic}.ide-hl .sx-t{color:#0f6d78;background:#e7f6f7;border-radius:3px}
+.ide-ora .ide-hl .sx-k{color:#1a49a8}.ide-ora .ide-hl .sx-s{color:#9a3412}
+.ide-panehead{display:flex;align-items:center;gap:4px}.ide-phn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ide-phb{border:1px solid var(--i-line);background:#fff;border-radius:5px;min-width:24px;height:22px;padding:0 5px;font:600 13px/1 system-ui,sans-serif;color:#3d4a59;cursor:pointer}
+.ide-phb:hover{border-color:var(--i-acc,#1f6feb);color:var(--i-acc,#1f6feb)}
+.ide-folder.vt{margin-top:6px}.ide-vthint{margin:4px 0 6px 26px;font-size:11.5px;color:#7a8794}
+.ide-reshead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ide-rhint{font-size:11px;color:#8794a1;margin-right:4px}
+.ide-rb{border:1px solid var(--i-line);background:#fff;border-radius:5px;padding:3px 9px;font:600 12px system-ui,sans-serif;color:#23384b;cursor:pointer}
+.ide-rb:hover{border-color:var(--i-acc,#1f6feb);color:var(--i-acc,#1f6feb)}.ide-rb.sc{padding:3px 7px}.ide-rb.xl{background:#1d6f42;border-color:#1d6f42;color:#fff}.ide-rb.xl:hover{background:#155a35;color:#fff}
+.ide-grid:focus{outline:none}.ide-grid:focus-visible{box-shadow:inset 0 0 0 2px var(--i-acc,#1f6feb)}
+.ide-grid .ide-gridwrap{overflow:auto;max-width:100%}
+.ide-fill .ide-grid{display:flex;flex-direction:column}.ide-fill .ide-grid .ide-gridwrap{flex:1;min-height:0}
+.ide-tbl th.ide-sortable{cursor:pointer;user-select:none}.ide-tbl th.ide-sortable:hover{color:var(--i-acc,#1f6feb)}
+.ide-arrow{display:inline-block;width:12px;margin-left:4px;font-style:normal;color:#9aa4ae}
+.ide-tbl th.ide-sortable:hover .ide-arrow::after{content:"↕"}
+.ide-tbl th.asc .ide-arrow::after{content:"▲";color:var(--i-acc,#1f6feb)}.ide-tbl th.desc .ide-arrow::after{content:"▼";color:var(--i-acc,#1f6feb)}
+.ide-tbl tbody td{user-select:none;cursor:cell}.ide-tbl tbody td.rn{cursor:pointer}.ide-tbl th.rn{cursor:pointer}
+.ide-tbl td.sel,.ide-tbl tr:hover td.sel{background:#cfe2ff!important;box-shadow:inset 0 0 0 1px #8fb5f5}
+.ide-modal{position:fixed;inset:0;z-index:120;background:rgba(11,20,26,.45);display:grid;place-items:center;padding:16px}
+.ide-mbox{background:#fff;color:#0b1f33;width:min(720px,100%);max-height:calc(100dvh - 32px);overflow:auto;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.35);padding:16px 18px;display:flex;flex-direction:column;gap:10px;font:14px/1.45 system-ui,sans-serif}
+.ide-mhead{display:flex;align-items:center;justify-content:space-between;font-size:16px}
+.ide-mx{border:0;background:none;font-size:22px;line-height:1;cursor:pointer;color:#55616d}
+.ide-lhelp{background:#f5f8fb;border:1px solid #dde5ee;border-radius:8px;padding:8px 12px}.ide-lhelp summary{font-weight:700;cursor:pointer}
+.ide-lhelp ol{margin:6px 0;padding-left:20px;display:flex;flex-direction:column;gap:5px}.ide-lhelp code{font:12px ui-monospace,Consolas,monospace;background:#fff;border:1px solid #dde5ee;border-radius:4px;padding:1px 4px;word-break:break-word}
+.ide-ltip{margin:4px 0;font-size:13px;color:#3d4a59}
+.ide-lrow{display:flex;align-items:center;gap:10px}.ide-lrow label,.ide-llbl{font-weight:600;font-size:13px}
+.ide-modal input.ide-lname,.ide-modal textarea.ide-larea{background:#fff!important;color:#0b1f33!important;-webkit-text-fill-color:#0b1f33}
+.ide-lname{border:1px solid #c9d3dd;border-radius:6px;padding:6px 9px;font:13px ui-monospace,Consolas,monospace;width:200px}
+.ide-larea{border:1px solid #c9d3dd;border-radius:6px;padding:8px 10px;font:12.5px/1.45 ui-monospace,Consolas,monospace;resize:vertical;min-height:120px;white-space:pre;overflow:auto}
+.ide-ldrop{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border:1.5px dashed #b9c6d3;border-radius:8px;padding:8px 10px;font-size:13px;color:#55616d;background:#fbfcfd}.ide-ldrop.on{border-color:var(--i-acc,#1f6feb);background:#eef4ff}
+.ide-linfo{margin:0;font-size:12.5px;color:#55616d}.ide-linfo.ok{color:#0a7d55}.ide-linfo.err{color:#b3261e}
+.ide-lact{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ide-lbtn{border:0;background:var(--i-acc,#1f6feb);color:#fff;border-radius:7px;padding:8px 14px;font:600 13px system-ui,sans-serif;cursor:pointer}.ide-lbtn.ghost{background:#fff;color:#23384b;border:1px solid #c9d3dd}
+@media (max-width:640px){.ide-rhint{display:none}.ide-lrow{flex-wrap:wrap}.ide-lname{width:100%}}
 .ide-ac{position:absolute;z-index:30;min-width:220px;max-width:320px;max-height:232px;overflow:auto;background:#fff;border:1px solid #c9d3dd;border-radius:6px;box-shadow:0 8px 22px rgba(11,31,51,.18);font:13px/1.3 ui-monospace,Consolas,monospace;padding:3px 0}
 .ide-aci{display:flex;justify-content:space-between;gap:12px;padding:5px 10px;cursor:pointer;color:#0b1f33}
 .ide-aci b{font-weight:600}.ide-aci small{color:#7a8794;font:11px system-ui,sans-serif;white-space:nowrap}
@@ -5302,8 +5342,9 @@ function labTranslate(stmt){
   s=s.replace(/([\w.]+|\([^()]*\))\s+MOD\s+([\w.]+|\([^()]*\))/gi,"($1 % $2)");
   s=s.replace(/([\w.]+|\u0001\d+\u0002)\s*([+-])\s*INTERVAL\s*(\u0001\d+\u0002)\s*(DAY|MONTH|YEAR)S?\b/gi,(_,a,sign,lit,unit)=>`date(${a}, '${sign}' || ${lit} || ' ${unit.toLowerCase()}s')`);
   s=s.replace(/\bEXTRACT\s*\(\s*(YEAR|MONTH|DAY)\s+FROM\s+/gi,"LAB_EXTRACT('$1', ");
+  s=s.replace(/(\bINSERT\s+INTO\s+[\w.]+(?:\s*\([^()]*\))?\s+)SEL\b/gi,"$1SELECT").replace(/\(\s*SEL\b/gi,"(SELECT");
   // string functions with Teradata / standard syntax
-  s=s.replace(/\bINDEX\s*\(/gi,"INSTR(");
+  s=s.replace(/(?<!PRIMARY\s+|UNIQUE\s+|SECONDARY\s+)\bINDEX\s*\(/gi,"INSTR(");
   s=s.replace(/\bPOSITION\s*\(\s*([^()]+?)\s+IN\s+([^()]+?)\)/gi,"INSTR($2, $1)");
   s=s.replace(/\bSUBSTRING\s*\(\s*([^()]+?)\s+FROM\s+([^()]+?)\s+FOR\s+([^()]+?)\)/gi,"SUBSTR($1, $2, $3)").replace(/\bSUBSTRING\s*\(\s*([^()]+?)\s+FROM\s+([^()]+?)\)/gi,"SUBSTR($1, $2)");
   s=s.replace(/CAST\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\s+AS\s+FORMAT\s*(\u0001\d+\u0002)\s*\)/gi,"TO_CHAR($1, $2)");
@@ -5323,7 +5364,12 @@ function labTranslate(stmt){
   s=s.replace(/\bCREATE\s+(?:MULTISET\s+|SET\s+)?(?:VOLATILE|GLOBAL\s+TEMPORARY)\s+(?:MULTISET\s+|SET\s+)?TABLE\b/gi,"CREATE TEMP TABLE")
      .replace(/\bCREATE\s+(?:MULTISET|SET)\s+TABLE\b/gi,"CREATE TABLE")
      .replace(/\b(?:UNIQUE\s+)?PRIMARY\s+INDEX\s*\w*\s*\([^()]*\)/gi,"").replace(/\bNO\s+PRIMARY\s+INDEX\b/gi,"")
-     .replace(/\bON\s+COMMIT\s+(?:PRESERVE|DELETE)\s+ROWS\b/gi,"");
+     .replace(/\bON\s+COMMIT\s+(?:PRESERVE|DELETE)\s+ROWS\b/gi,"")
+     .replace(/(\bTABLE\s+[\w.]+)\s*((?:,\s*(?:NO\s+)?(?:LOG|FALLBACK|BEFORE\s+JOURNAL|AFTER\s+JOURNAL|JOURNAL|CHECKSUM\s*=\s*\w+)\s*)+)/gi,"$1 ");
+  // Oracle INSERT ALL INTO t VALUES (...) INTO t VALUES (...) SELECT * FROM dual  →  one multi-row INSERT per table
+  { const m=s.match(/^\s*INSERT\s+ALL\s+([\s\S]*?)\s+SELECT\s+\*(?:\s+FROM\s+DUAL)?\s*$/i);
+    if(m){ const parts=[...m[1].matchAll(/INTO\s+([\w.]+)\s*(\([^()]*\))?\s*VALUES\s*(\((?:[^()]|\([^()]*\))*\))/gi)];
+      if(parts.length&&parts.every(p=>p[1].toLowerCase()===parts[0][1].toLowerCase()&&(p[2]||"")===(parts[0][2]||""))) s=`INSERT INTO ${parts[0][1]} ${parts[0][2]||""} VALUES ${parts.map(p=>p[3]).join(", ")}`; } }
   s=s.replace(/\bAS\s*\(\s*(SELECT[\s\S]*)\)\s*WITH\s+(?:NO\s+)?DATA\b/i,"AS $1").replace(/\bWITH\s+(?:NO\s+)?DATA\b/gi,"");
   // row limiting
   let limit="";
@@ -6190,17 +6236,21 @@ function sqlIDE(opts){
   const runB=tb("play","Run"); runB.classList.add("run");
   const fmtB=tb("fmt","Format"), clrB=tb("clear","Clear"), newB=tb("script","New query","New query tab (Alt + N)");
   const tblB=tb("db","Tables","Show or hide the tables panel"); tblB.classList.add("ide-tblbtn");
-  const toolbar=el("div",{class:"ide-toolbar"},runB,el("span",{class:"ide-sep"}),newB,fmtB,clrB,tblB,el("span",{class:"ide-sp"}),...(opts.extra||[]));
+  const loadB=tb("script","Load data","Create your own volatile table and load rows into it"); loadB.classList.add("ide-loadbtn");
+  const toolbar=el("div",{class:"ide-toolbar"},runB,el("span",{class:"ide-sep"}),newB,fmtB,clrB,tblB,loadB,el("span",{class:"ide-sp"}),...(opts.extra||[]));
   /* explorer with a filter box */
   const explorerHead=el("div",{class:"ide-panehead"});
   const filter=el("input",{class:"ide-filter",type:"search",placeholder:"Filter tables","aria-label":"Filter tables"});
   const treeHost=el("div",{class:"ide-tree"});
+  let lastDb=null;
   const explorer=el("aside",{class:"ide-explorer"},explorerHead,filter,treeHost);
   /* editor */
   const qtabs=el("div",{class:"ide-tabs ed",role:"tablist"});
   const gutter=el("div",{class:"ide-gutter","aria-hidden":"true"});
   const ta=el("textarea",{class:"ide-ta",spellcheck:"false",autocomplete:"off",autocapitalize:"off","aria-label":"SQL editor"});
-  const editor=el("div",{class:"ide-editor"},qtabs,el("div",{class:"ide-edbody"},gutter,ta));
+  const hl=el("pre",{class:"ide-hl","aria-hidden":"true"});
+  const editor=el("div",{class:"ide-editor"},qtabs,el("div",{class:"ide-edbody"},gutter,el("div",{class:"ide-codewrap"},hl,ta)));
+  const paintHl=()=>{ hl.innerHTML=ideHighlight(ta.value,dialect)+"\n"; hl.scrollTop=ta.scrollTop; hl.scrollLeft=ta.scrollLeft; };
   const notes=el("div",{class:"ide-notes"});
   const split=el("div",{class:"ide-split",title:"Drag to resize","aria-hidden":"true"},el("i"));
   /* results */
@@ -6214,7 +6264,7 @@ function sqlIDE(opts){
   let curRes=0;
   function showTab(i){ curRes=i; rTabBtns.forEach((b,k)=>{ b.classList.toggle("on",k===i); b.setAttribute("aria-selected",String(k===i)); }); grid.hidden=i!==0; resHead.hidden=i!==0||!resHead.childNodes.length; histBox.hidden=i!==1; msgBox.hidden=i!==2; if(i===1) paintHistory(); }
   function setStatus(t,cls){ status.querySelector(".ide-stxt").textContent=t; status.className="ide-status"+(cls?" "+cls:""); tabs[cur].stat=t; tabs[cur].statCls=cls||""; }
-  function lines(){ const n=ta.value.split("\n").length; gutter.textContent=Array.from({length:Math.max(n,12)},(_,i)=>i+1).join("\n"); gutter.scrollTop=ta.scrollTop; }
+  function lines(){ paintHl(); const n=ta.value.split("\n").length; gutter.textContent=Array.from({length:Math.max(n,12)},(_,i)=>i+1).join("\n"); gutter.scrollTop=ta.scrollTop; }
   function pos(){ const v=ta.value.slice(0,ta.selectionStart); const ln=v.split("\n").length, col=v.length-v.lastIndexOf("\n"); status.querySelector(".ide-pos").textContent=`Ln ${ln}, Col ${col}`; }
   function paintNotes(){ notes.innerHTML=""; labDialectNotes(ta.value,dialect).forEach(n=>notes.append(el("div",{class:"ide-note"},el("b",{text:`Real ${T().name} would reject this: `}),n))); }
   function paintHistory(){
@@ -6227,14 +6277,28 @@ function sqlIDE(opts){
     histBox.append(el("div",{class:"ide-gridwrap"},t));
   }
   function paintExplorer(){
-    explorerHead.innerHTML=""; explorerHead.append(el("span",{text:T().conn}));
+    explorerHead.innerHTML="";
+    const hb=(txt,title,fn)=>{ const b=el("button",{type:"button",class:"ide-phb",title,"aria-label":title,text:txt}); b.addEventListener("click",fn); return b; };
+    explorerHead.append(el("span",{class:"ide-phn",text:T().conn}),
+      hb("⊞","Expand all tables",()=>treeHost.querySelectorAll("details").forEach(d=>{ if(!d.hidden) d.open=true; })),
+      hb("⊟","Collapse all tables",()=>treeHost.querySelectorAll("details.stab").forEach(d=>d.open=false)),
+      hb("«","Hide the tables panel",()=>{ root.classList.add("ide-hidex"); tblB.classList.remove("on"); }));
+    const keepOpen=new Set([...treeHost.querySelectorAll("details.stab[open] .stn")].map(x=>x.textContent));
     treeHost.innerHTML="";
-    const tree=schemaTree(null,{insert:insertText,preview});
+    let tree; try{ tree=schemaTree(lastDb,{insert:insertText,preview}); }catch(e){ tree=schemaTree(null,{insert:insertText,preview}); }
+    /* volatile / temporary tables get their own folder */
+    const tmpHead=[...tree.querySelectorAll(".sgrp")].find(g=>/temporary/i.test(g.textContent)); const tmpNodes=[];
+    if(tmpHead){ let n=tmpHead.nextElementSibling; while(n&&n.matches("details.stab")){ const nx=n.nextElementSibling; tmpNodes.push(n); n=nx; } tmpHead.remove(); }
+    tree.querySelectorAll("details.stab").forEach(d=>{ if(keepOpen.has(d.querySelector(".stn").textContent)) d.open=true; });
     tree.querySelectorAll(".shead,.shint").forEach(x=>x.remove());
     if(opts.used) tree.querySelectorAll("details.stab").forEach(d=>{ const n=d.querySelector(".stn").textContent.toLowerCase(); if(opts.used.has(n)){ d.open=true; d.classList.add("used"); } });
     const node=el("details",{class:"ide-node",open:true},el("summary",{},ideIcon(IDE_I.db),el("b",{text:T().node}),el("span",{class:"ide-conn",text:"connected"})));
     const folder=el("details",{class:"ide-folder",open:true},el("summary",{},el("span",{class:"ide-fico","aria-hidden":"true"}),el("span",{text:`Tables (${tree.querySelectorAll("details.stab").length})`})),tree);
-    node.append(folder); treeHost.append(node);
+    node.append(folder);
+    const vt=el("div",{class:"stree"}); tmpNodes.forEach(n=>{ if(keepOpen.has(n.querySelector(".stn").textContent)) n.open=true; vt.append(n); });
+    if(!tmpNodes.length) vt.append(el("p",{class:"ide-vthint",text:dialect==="oracle"?"None yet. Use Load data to make one.":"None yet. Use Load data to make one."}));
+    node.append(el("details",{class:"ide-folder vt",open:true},el("summary",{},el("span",{class:"ide-fico","aria-hidden":"true"}),el("span",{text:`${dialect==="oracle"?"Temporary tables":"Volatile tables"} (${tmpNodes.length})`})),vt));
+    treeHost.append(node);
     applyFilter();
   }
   function applyFilter(){ const f=filter.value.trim().toLowerCase(); treeHost.querySelectorAll("details.stab").forEach(d=>{ d.hidden=!!f&&!d.querySelector(".stn").textContent.toLowerCase().includes(f); }); treeHost.querySelectorAll(".sgrp").forEach(g=>{ let n=g.nextElementSibling, any=false; while(n&&!n.classList.contains("sgrp")){ if(n.matches("details.stab")&&!n.hidden) any=true; n=n.nextElementSibling; } g.hidden=!any; }); }
@@ -6271,17 +6335,54 @@ function sqlIDE(opts){
   function setSql(sql,go){ ta.value=sql; changed(); if(go) return run(); }
   async function preview(n){ const sql=dialect==="oracle"?`SELECT *\nFROM   ${n}\nFETCH FIRST 20 ROWS ONLY;`:`SEL TOP 20 *\nFROM   ${n};`; await exec(sql,{preview:n}); }
   const fmtCell=x=>{ if(x===null) return dialect==="oracle"?"(null)":"?"; if(typeof x==="number") return Number.isInteger(x)?String(x):x.toFixed(2); return String(x).replace(/ 00:00:00$/,""); };
-  function tableFor(v,rows){ const t=el("table",{class:"ide-tbl"}); t.append(el("thead",{},el("tr",{},el("th",{class:"rn",text:""}),...v.columns.map(c=>el("th",{text:dialect==="oracle"?c.toUpperCase():c}))))); const tb2=el("tbody"); t.append(tb2); return [t,tb2]; }
-  function rowEl(r,i,anim){ const tr=el("tr",{class:anim?"ide-new":""},el("td",{class:"rn",text:String(i+1)})); r.forEach(x=>tr.append(el("td",{class:(typeof x==="number"?"n":"")+(x===null?" nul":""),text:fmtCell(x)}))); return tr; }
+  /* result grid state: the rows on screen (in their sorted order), sort, and the selected block of cells */
+  const G={cols:[],rows:[],sort:null,sel:null,tb:null,table:null};
+  function tableFor(v){
+    const t=el("table",{class:"ide-tbl"}); const hr=el("tr",{},el("th",{class:"rn",title:"Select all (Ctrl + A)",text:""}));
+    v.columns.forEach((c,i)=>{ const th=el("th",{class:"ide-sortable",title:"Click to sort A→Z, click again for Z→A","data-c":String(i)},el("span",{text:dialect==="oracle"?c.toUpperCase():c}),el("i",{class:"ide-arrow","aria-hidden":"true"}));
+      th.addEventListener("click",()=>sortBy(i)); hr.append(th); });
+    hr.firstChild.addEventListener("click",()=>selectAll());
+    t.append(el("thead",{},hr)); const tb2=el("tbody"); t.append(tb2); G.tb=tb2; G.table=t; return [t,tb2]; }
+  function sortBy(i){
+    const dir=G.sort&&G.sort.c===i&&G.sort.dir==="asc"?"desc":"asc"; G.sort={c:i,dir};
+    const m=dir==="asc"?1:-1;
+    G.rows.sort((a,b)=>{ const x=a[i], y=b[i]; if(x===y) return 0; if(x===null) return 1; if(y===null) return -1; if(typeof x==="number"&&typeof y==="number") return (x-y)*m; return String(x).localeCompare(String(y),undefined,{numeric:true})*m; });
+    G.tb.innerHTML=""; G.rows.forEach((r,k)=>G.tb.append(rowEl(r,k,false))); G.sel=null;
+    G.table.querySelectorAll("th[data-c]").forEach(th=>{ const on=+th.dataset.c===i; th.classList.toggle("asc",on&&dir==="asc"); th.classList.toggle("desc",on&&dir==="desc"); th.setAttribute("aria-sort",on?(dir==="asc"?"ascending":"descending"):"none"); });
+    setStatus(`Sorted by ${G.cols[i]} ${dir==="asc"?"ascending":"descending"}`,"ok");
+  }
+  function paintSel(){ if(!G.tb) return; const s=G.sel; [...G.tb.rows].forEach((tr,r)=>[...tr.cells].forEach((td,k)=>{ const c=k-1; td.classList.toggle("sel",!!s&&c>=0&&r>=Math.min(s.r0,s.r1)&&r<=Math.max(s.r0,s.r1)&&c>=Math.min(s.c0,s.c1)&&c<=Math.max(s.c0,s.c1)); })); }
+  function selectAll(){ if(!G.rows.length) return; G.sel={r0:0,c0:0,r1:G.rows.length-1,c1:G.cols.length-1}; paintSel(); grid.focus({preventScroll:true}); setStatus(`Selected all ${G.rows.length} rows. Press Ctrl + C to copy (with headers).`,"ok"); }
+  function selBlock(){ const s=G.sel||{r0:0,c0:0,r1:G.rows.length-1,c1:G.cols.length-1}; const r0=Math.min(s.r0,s.r1), r1=Math.max(s.r0,s.r1), c0=Math.min(s.c0,s.c1), c1=Math.max(s.c0,s.c1);
+    return {head:G.cols.slice(c0,c1+1), rows:G.rows.slice(r0,r1+1).map(r=>r.slice(c0,c1+1))}; }
+  function copySel(){
+    if(!G.rows.length) return; const b=selBlock(); const txt=ideTsv(b.head,b.rows), html=ideHtmlTable(b.head,b.rows);
+    const on=e=>{ e.preventDefault(); e.clipboardData.setData("text/plain",txt); e.clipboardData.setData("text/html",html); };
+    document.addEventListener("copy",on,{once:true}); let ok=false; try{ ok=document.execCommand("copy"); }catch(e){}
+    document.removeEventListener("copy",on);
+    if(!ok&&navigator.clipboard) navigator.clipboard.writeText(txt).catch(()=>{});
+    setStatus(`Copied ${b.rows.length} row(s) × ${b.head.length} column(s) with headers. Paste into Excel with Ctrl + V.`,"ok");
+  }
+  function rowEl(r,i,anim){ const tr=el("tr",{class:anim?"ide-new":""},el("td",{class:"rn",title:"Select this row",text:String(i+1)})); r.forEach(x=>tr.append(el("td",{class:(typeof x==="number"?"n":"")+(x===null?" nul":""),text:fmtCell(x)}))); return tr; }
   /* show a stored result instantly (switching tabs) or stream it (fresh run) */
   async function renderResult(res,stream){
     resHead.innerHTML=""; grid.innerHTML="";
     if(res.err){ grid.append(el("div",{class:"ide-err"},el("code",{text:res.err.real}),el("p",{},el("b",{text:"In plain words: "}),res.err.plain))); resHead.hidden=true; msgBox.innerHTML=""; msgBox.append(el("p",{class:"ide-mline err",text:res.err.real})); return; }
     msgBox.innerHTML=""; (res.msgs||[]).forEach(m=>msgBox.append(el("p",{class:"ide-mline",text:m})));
     if(!res.v){ grid.append(el("p",{class:"ide-empty ok",text:res.note||"Statement completed."})); resHead.hidden=true; return; }
-    const v=res.v, rows=v.values.slice(0,1000);
-    const [t,tb2]=tableFor(v); grid.append(el("div",{class:"ide-gridwrap"},t));
-    resHead.append(el("span",{class:"ide-fetch",text:res.preview?`Preview of ${res.preview} (first 20 rows) · your query is unchanged`:T().done(rows.length,res.secs)}));
+    const v=res.v, rows=v.values.slice(0,1000).map(r=>r.slice());
+    G.cols=v.columns.map(c=>dialect==="oracle"?c.toUpperCase():c); G.rows=rows; G.sort=null; G.sel=null;
+    const [t,tb2]=tableFor(v); const gw=el("div",{class:"ide-gridwrap"},t); grid.append(gw);
+    const rb=(txt,title,fn,cls)=>{ const b=el("button",{type:"button",class:"ide-rb"+(cls?" "+cls:""),title,text:txt}); b.addEventListener("click",fn); return b; };
+    const stamp=()=>{ const d=new Date(), z=n=>String(n).padStart(2,"0"); return `${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}`; };
+    resHead.append(el("span",{class:"ide-fetch",text:res.preview?`Preview of ${res.preview} (first 20 rows) · your query is unchanged`:T().done(rows.length,res.secs)}),
+      el("span",{class:"ide-sp"}),
+      el("span",{class:"ide-rhint",text:"Click a column name to sort"}),
+      rb("◀","Scroll the result left",()=>gw.scrollBy({left:-320,behavior:"smooth"}),"sc"),
+      rb("▶","Scroll the result right",()=>gw.scrollBy({left:320,behavior:"smooth"}),"sc"),
+      rb("Copy","Copy the selected cells (or everything) with headers. Same as Ctrl + C",()=>copySel()),
+      rb("CSV","Download as a CSV file",()=>ideDownload(`${dialect}_result_${stamp()}.csv`,new Blob(["\ufeff"+ideCsv(G.cols,G.rows)],{type:"text/csv;charset=utf-8"}))),
+      rb("Excel","Download as an Excel (.xlsx) file",()=>ideDownload(`${dialect}_result_${stamp()}.xlsx`,ideXlsx(G.cols,G.rows)),"xl"));
     resHead.hidden=curRes!==0;
     if(!stream){ rows.forEach((r,i)=>tb2.append(rowEl(r,i,false))); return; }
     let i=0; await new Promise(done=>{ const step=()=>{ const n=Math.min(rows.length,i+Math.max(3,Math.ceil(rows.length/8))); for(;i<n;i++) tb2.append(rowEl(rows[i],i,true)); status.querySelector(".ide-stxt").textContent=`Fetching… ${i} of ${rows.length} rows`; if(i<rows.length) setTimeout(step,45); else done(); }; step(); });
@@ -6298,7 +6399,7 @@ function sqlIDE(opts){
     try{
       const db=await opts.db();
       await new Promise(r=>setTimeout(r,260));
-      const tq=performance.now(); const r=labRun(db,sql); const qs=((performance.now()-tq)/1000+0.2+Math.random()*0.15).toFixed(3);
+      lastDb=db; const tq=performance.now(); let r; try{ r=labRun(db,sql); } finally { if(/\b(CREATE|DROP|ALTER|INSERT|DELETE|UPDATE)\b/i.test(sql)) setTimeout(paintExplorer,0); } const qs=((performance.now()-tq)/1000+0.2+Math.random()*0.15).toFixed(3);
       clearInterval(tick);
       const last=r.results[r.results.length-1];
       const msgs=r.results.map((x,k)=>x.columns&&x.columns.length?`Statement ${k+1}: ${labVisible(x).values.length} row(s) returned.`:`Statement ${k+1}: ${x.changes!=null?x.changes+" row(s) affected.":"completed."}`);
@@ -6324,10 +6425,10 @@ function sqlIDE(opts){
     return out;
   }
   function run(){ save(); return exec(ta.value); }
-  const ac=ideAutocomplete(ta,()=>dialect,changed);
+  const ac=ideAutocomplete(ta,()=>dialect,changed,()=>{ try{ return lastDb?(lastDb.exec("SELECT name FROM sqlite_temp_master WHERE type='table'")[0]||{values:[]}).values.map(v=>v[0]):[]; }catch(e){ return []; } },n=>{ try{ return (lastDb.exec(`PRAGMA table_info(${n})`)[0]||{values:[]}).values.map(v=>v[1]); }catch(e){ return []; } });
   /* keys: Ctrl/⌘+Enter or F5 to run; Alt+N (or Ctrl+N where the browser allows) for a new query tab */
   ta.addEventListener("input",changed);
-  ta.addEventListener("scroll",()=>{ gutter.scrollTop=ta.scrollTop; });
+  ta.addEventListener("scroll",()=>{ gutter.scrollTop=ta.scrollTop; hl.scrollTop=ta.scrollTop; hl.scrollLeft=ta.scrollLeft; });
   ["keyup","click"].forEach(ev=>ta.addEventListener(ev,pos));
   root.addEventListener("keydown",e=>{
     const k=e.key.toLowerCase();
@@ -6338,6 +6439,27 @@ function sqlIDE(opts){
     else if(e.target===ta&&e.key==="Tab"&&!e.shiftKey){ e.preventDefault(); ta.setRangeText("  ",ta.selectionStart,ta.selectionEnd,"end"); changed(); }
   });
   filter.addEventListener("input",applyFilter);
+  grid.tabIndex=0; grid.setAttribute("aria-label","Result grid. Ctrl + A selects all, Ctrl + C copies with headers.");
+  let drag=null;
+  grid.addEventListener("mousedown",e=>{ const td=e.target.closest("td"); if(!td||!G.tb||!G.tb.contains(td)) return;
+    const r=td.parentNode.sectionRowIndex, c=td.cellIndex-1;
+    if(c<0){ G.sel={r0:r,c0:0,r1:r,c1:G.cols.length-1}; if(e.shiftKey&&drag) G.sel.r0=drag.r; drag={r,c:0}; paintSel(); return; }
+    if(e.shiftKey&&G.sel){ G.sel.r1=r; G.sel.c1=c; } else { G.sel={r0:r,c0:c,r1:r,c1:c}; drag={r,c}; }
+    paintSel(); grid.focus({preventScroll:true}); e.preventDefault(); });
+  grid.addEventListener("mouseover",e=>{ if(!(e.buttons&1)||!drag||!G.sel) return; const td=e.target.closest("td"); if(!td||!G.tb.contains(td)) return; G.sel.r1=td.parentNode.sectionRowIndex; G.sel.c1=Math.max(0,td.cellIndex-1); paintSel(); });
+  grid.addEventListener("keydown",e=>{ const k=e.key.toLowerCase();
+    if((e.ctrlKey||e.metaKey)&&k==="a"){ e.preventDefault(); selectAll(); }
+    else if((e.ctrlKey||e.metaKey)&&k==="c"){ e.preventDefault(); copySel(); }
+    else if(e.key==="ArrowRight"&&!G.sel){ grid.querySelector(".ide-gridwrap")?.scrollBy({left:120}); }
+    else if(e.key==="ArrowLeft"&&!G.sel){ grid.querySelector(".ide-gridwrap")?.scrollBy({left:-120}); }
+    else if(e.key==="Escape"){ G.sel=null; paintSel(); } });
+  loadB.addEventListener("click",()=>ideLoadDialog({dialect:()=>dialect, root, exists:n=>{ try{ return !!lastDb&&(lastDb.exec(`SELECT 1 FROM sqlite_temp_master WHERE type='table' AND lower(name)=lower('${n}')`)[0]); }catch(e){ return false; } },
+    put:(sql,go)=>{ newTab(); setSql(sql); if(go) run(); },
+    bulk:async(p,name,replace,src)=>{ const db=await opts.db(); lastDb=db; const t0=performance.now(); ideBulkLoad(db,p,name,dialect,replace);
+      const secs=((performance.now()-t0)/1000).toFixed(1);
+      const create=ideLoadSql(p,name,dialect,"createOnly").split("\n").map(l=>"-- "+l).join("\n");
+      newTab(); setSql(`-- ${p.body.length.toLocaleString()} rows from ${src||"your pasted data"} were loaded into ${name} in ${secs}s.\n-- (Too many to write as INSERT lines, so they went straight in.)\n-- The table was made with:\n${create}\n\nSELECT COUNT(*) AS rows_loaded FROM ${name};\n\nSELECT * FROM ${name};`);
+      paintExplorer(); await run(); }}));
   runB.addEventListener("click",run);
   newB.addEventListener("click",newTab);
   fmtB.addEventListener("click",()=>{ setSql(ideFormat(ta.value)); });
@@ -6358,11 +6480,11 @@ function sqlIDE(opts){
 const IDE_KW=["SELECT","FROM","WHERE","GROUP BY","ORDER BY","HAVING","JOIN","LEFT JOIN","INNER JOIN","RIGHT JOIN","FULL OUTER JOIN","ON","AND","OR","NOT","IN","EXISTS","BETWEEN","LIKE","IS NULL","IS NOT NULL","AS","DISTINCT","CASE","WHEN","THEN","ELSE","END","UNION","UNION ALL","INTERSECT","WITH","OVER","PARTITION BY","ROWS BETWEEN","DESC","ASC","INSERT INTO","VALUES","UPDATE","SET","DELETE FROM","CREATE","NULL","COALESCE","COUNT","SUM","AVG","MIN","MAX","ROUND","CAST","TRIM","UPPER","LOWER","SUBSTR","LENGTH","ROW_NUMBER","RANK","DENSE_RANK","LAG","LEAD","NULLIF","CURRENT_DATE","EXTRACT","ADD_MONTHS","DATE"];
 const IDE_KW_TD=["SEL","QUALIFY","SAMPLE","TOP","ZEROIFNULL","NULLIFZERO","HELP TABLE","SHOW TABLE","CHARACTER_LENGTH","INDEX","OREPLACE","VOLATILE","MINUS","TO_CHAR"];
 const IDE_KW_ORA=["NVL","NVL2","DECODE","SYSDATE","DUAL","ROWNUM","FETCH FIRST","TO_CHAR","TO_DATE","TRUNC","MINUS","LISTAGG","MONTHS_BETWEEN","LAST_DAY","DESCRIBE"];
-function ideAutocomplete(ta,dial,changed){
+function ideAutocomplete(ta,dial,changed,temps,tcols){
   const box=el("div",{class:"ide-ac",role:"listbox"}); box.hidden=true;
   let items=[], sel=0, start=0;
-  const tables=()=>typeof LAB_COLS!=="undefined"?Object.keys(LAB_COLS):[];
-  const colsOf=t=>((typeof LAB_COLS!=="undefined"&&LAB_COLS[t.toLowerCase()])||[]).map(c=>c.split(/\s+/)[0]);
+  const tables=()=>(typeof LAB_COLS!=="undefined"?Object.keys(LAB_COLS):[]).concat(temps?temps().map(x=>x.toLowerCase()):[]);
+  const colsOf=t=>{ const base=((typeof LAB_COLS!=="undefined"&&LAB_COLS[t.toLowerCase()])||[]).map(c=>c.split(/\s+/)[0]); return base.length?base:(tcols?tcols(t):[]); };
   function aliases(text){ const m={}; const re=/\b(?:FROM|JOIN)\s+(?:CR_DWH\.)?(\w+)(?:\s+(?:AS\s+)?(\w+))?/gi; let r;
     while((r=re.exec(text))){ const t=r[1].toLowerCase(); m[t]=t; if(r[2]&&!/^(WHERE|ON|JOIN|LEFT|RIGHT|INNER|FULL|GROUP|ORDER|SAMPLE|QUALIFY|UNION|MINUS|HAVING)$/i.test(r[2])) m[r[2].toLowerCase()]=t; } return m; }
   function caretXY(){ const cs=getComputedStyle(ta), d=document.createElement("div");
@@ -6408,6 +6530,237 @@ function ideAutocomplete(ta,dial,changed){
     if(e.key==="Tab"||(e.key==="Enter"&&!e.ctrlKey&&!e.metaKey)){ e.preventDefault(); accept(); return true; }
     if(e.key==="Escape"){ e.preventDefault(); close(); return true; }
     return false; }, close };
+}
+
+/* ---- syntax colours for the editor ---- */
+const IDE_HL_KW=new Set(("SELECT SEL FROM WHERE GROUP BY ORDER HAVING JOIN LEFT RIGHT INNER FULL OUTER CROSS ON AND OR NOT IN EXISTS BETWEEN LIKE IS NULL AS DISTINCT CASE WHEN THEN ELSE END UNION ALL INTERSECT MINUS EXCEPT WITH OVER PARTITION ROWS RANGE UNBOUNDED PRECEDING FOLLOWING CURRENT ROW DESC ASC INSERT INTO VALUES UPDATE SET DELETE CREATE TABLE VOLATILE MULTISET GLOBAL TEMPORARY PRIMARY INDEX COMMIT PRESERVE DROP ALTER QUALIFY SAMPLE TOP TIES FETCH FIRST NEXT ONLY LIMIT OFFSET DATE TIMESTAMP INTEGER INT VARCHAR VARCHAR2 CHAR DECIMAL NUMBER NUMERIC FLOAT HELP SHOW DESCRIBE DATABASE DUAL FORMAT NO LOG DATA TRUE FALSE").split(" "));
+function ideHighlight(src,dialect){
+  const esc=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const tables=new Set(typeof LAB_COLS!=="undefined"?Object.keys(LAB_COLS):[]);
+  const re=/(--[^\n]*|\/\*[\s\S]*?(?:\*\/|$))|('(?:[^']|'')*'?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_][\w$#]*)(\s*\()?|([^\w'\-\/]+|[\-\/])/g;
+  let out="", m;
+  while((m=re.exec(src))){
+    if(m[1]) out+=`<span class="sx-c">${esc(m[1])}</span>`;
+    else if(m[2]) out+=`<span class="sx-s">${esc(m[2])}</span>`;
+    else if(m[3]) out+=`<span class="sx-n">${m[3]}</span>`;
+    else if(m[4]){ const w=m[4], U=w.toUpperCase();
+      if(m[5]) out+=`<span class="${IDE_HL_KW.has(U)&&!/^(DATE|TIMESTAMP|IN|EXISTS|INDEX)$/.test(U)?"sx-k":"sx-f"}">${w}</span>${m[5]}`;
+      else if(IDE_HL_KW.has(U)) out+=`<span class="sx-k">${w}</span>`;
+      else if(tables.has(w.toLowerCase())) out+=`<span class="sx-t">${w}</span>`;
+      else out+=esc(w); }
+    else out+=esc(m[6]||m[0]);
+    if(m[0]==="") re.lastIndex++;
+  }
+  return out;
+}
+/* ---- copy / export helpers ---- */
+const ideCell=x=>x===null||x===undefined?"":String(x);
+function ideTsv(h,rows){ const q=x=>{ const s=ideCell(x); return /[\t\n"]/.test(s)?`"${s.replace(/"/g,'""')}"`:s; }; return [h,...rows].map(r=>r.map(q).join("\t")).join("\r\n"); }
+function ideCsv(h,rows){ const q=x=>{ const s=ideCell(x); return /[",\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s; }; return [h,...rows].map(r=>r.map(q).join(",")).join("\r\n"); }
+function ideHtmlTable(h,rows){ const e=x=>ideCell(x).replace(/&/g,"&amp;").replace(/</g,"&lt;"); return `<table><thead><tr>${h.map(x=>`<th>${e(x)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${e(x)}</td>`).join("")}</tr>`).join("")}</tbody></table>`; }
+function ideDownload(name,blob){ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); }
+/* a small, standard .xlsx writer (one sheet, bold header row, numbers stay numbers) */
+function ideXlsx(h,rows){
+  const x=s=>ideCell(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,"");
+  const col=i=>{ let s=""; i++; while(i){ const m=(i-1)%26; s=String.fromCharCode(65+m)+s; i=Math.floor((i-1)/26); } return s; };
+  const cell=(v,r,c,st)=>{ const ref=col(c)+(r+1); if(v===null||v===undefined||v==="") return `<c r="${ref}"${st?' s="1"':""}/>`; if(typeof v==="number"&&isFinite(v)) return `<c r="${ref}"><v>${v}</v></c>`; return `<c r="${ref}" t="inlineStr"${st?' s="1"':""}><is><t xml:space="preserve">${x(v)}</t></is></c>`; };
+  const widths=h.map((n,i)=>Math.min(50,Math.max(String(n).length,...rows.slice(0,200).map(r=>ideCell(r[i]).length))+2));
+  const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>${widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")}</cols><sheetData>`+
+    [h,...rows].map((r,ri)=>`<row r="${ri+1}">${r.map((v,ci)=>cell(v,ri,ci,ri===0)).join("")}</row>`).join("")+`</sheetData></worksheet>`;
+  const files={
+    "[Content_Types].xml":`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`,
+    "_rels/.rels":`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`,
+    "xl/workbook.xml":`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Result" sheetId="1" r:id="rId1"/></sheets></workbook>`,
+    "xl/_rels/workbook.xml.rels":`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`,
+    "xl/styles.xml":`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs></styleSheet>`,
+    "xl/worksheets/sheet1.xml":sheet };
+  return new Blob([ideZip(files)],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+function ideZip(files){
+  const enc=new TextEncoder(), crcT=ideZip.t||(ideZip.t=Array.from({length:256},(_,n)=>{ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; return c>>>0; }));
+  const crc=b=>{ let c=0xFFFFFFFF; for(let i=0;i<b.length;i++) c=crcT[(c^b[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; };
+  const parts=[], central=[]; let off=0;
+  const u16=n=>[n&255,(n>>>8)&255], u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
+  for(const [name,text] of Object.entries(files)){
+    const nb=enc.encode(name), data=enc.encode(text), c=crc(data);
+    const head=[...u32(0x04034b50),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0)];
+    parts.push(new Uint8Array(head),nb,data);
+    central.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0x21),...u32(c),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nb);
+    off+=head.length+nb.length+data.length;
+  }
+  const csize=central.reduce((a,b)=>a+b.length,0), n=Object.keys(files).length;
+  return new Blob([...parts,...central,new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(n),...u16(n),...u32(csize),...u32(off),...u16(0)])]);
+}
+/* ---- Load data: make a volatile (Teradata) or global temporary (Oracle) table and fill it ---- */
+const IDE_DUMMY="loan_id\tcustomer_name\tproduct\tbalance\topen_date\tdays_past_due\n1\tAsha Mehta\tMTG\t250000\t2021-04-15\t0\n2\tRavi Kumar\tCC\t1200.50\t2023-09-01\t35\n3\tJohn Smith\tPL\t8000\t2022-11-20\t95\n4\tPriya Nair\tOD\t450.75\t2024-02-10\t0\n5\tSara Khan\tMTG\t310000\t2019-07-05\t120";
+function ideTextRows(text){
+  const lines=String(text).replace(/^\ufeff/,"").replace(/\r/g,"").split("\n").filter(l=>l.trim()!=="");
+  if(!lines.length) return null;
+  const sep=lines[0].includes("\t")?"\t":lines[0].includes(";")&&!lines[0].includes(",")?";":",";
+  const split=l=>{ if(sep==="\t") return l.split("\t"); const out=[]; let cur="", q=false; for(let i=0;i<l.length;i++){ const ch=l[i]; if(q){ if(ch==='"'&&l[i+1]==='"'){ cur+='"'; i++; } else if(ch==='"') q=false; else cur+=ch; } else if(ch==='"') q=true; else if(ch===sep){ out.push(cur); cur=""; } else cur+=ch; } out.push(cur); return out; };
+  return lines.map(split).map(r=>r.map(x=>x.trim()));
+}
+function ideParseRows(text){ const rows=ideTextRows(text); return rows?ideShape(rows):null; }
+/* first row = column names; works out each column's type from every row */
+function ideShape(rows){
+  rows=rows.filter(r=>r.some(v=>String(v??"").trim()!=="")).map(r=>r.map(v=>v===null||v===undefined?"":String(v).trim()));
+  if(!rows.length) return null;
+  const used=new Set();
+  const head=rows[0].map((h,i)=>{ let n=h.toLowerCase().replace(/[^a-z0-9_]+/g,"_").replace(/^_+|_+$/g,"")||`col_${i+1}`; if(/^\d/.test(n)) n="c_"+n; while(used.has(n)) n+="_2"; used.add(n); return n; });
+  const body=rows.slice(1).map(r=>head.map((_,i)=>r[i]??""));
+  const isoDate=v=>{ let m; if((m=v.match(/^(\d{4})-(\d{2})-(\d{2})$/))) return v; if((m=v.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/))) return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`; return null; };
+  const types=head.map((_,i)=>{ const vals=[]; for(const r of body){ const v=r[i]; if(v!==""&&!/^null$/i.test(v)) vals.push(v); }
+    if(vals.length&&vals.every(v=>/^-?\d+$/.test(v.replace(/,/g,"")))) return {t:"int"};
+    if(vals.length&&vals.every(v=>/^-?\d+(\.\d+)?$/.test(v.replace(/,/g,"")))) return {t:"dec"};
+    if(vals.length&&vals.every(v=>isoDate(v))) return {t:"date"};
+    let mx=0; for(const v of vals) if(v.length>mx) mx=v.length;
+    return {t:"str",len:Math.max(10,Math.ceil(mx/10)*10)}; });
+  return {head,body,types,isoDate};
+}
+function ideLoadSql(p,name,dialect,replace){
+  const ora=dialect==="oracle";
+  const ty=t=>t.t==="int"?(ora?"NUMBER(12)":"INTEGER"):t.t==="dec"?(ora?"NUMBER(18,2)":"DECIMAL(18,2)"):t.t==="date"?"DATE":(ora?`VARCHAR2(${t.len})`:`VARCHAR(${t.len})`);
+  const lit=(v,t)=>{ if(v===""||/^null$/i.test(v)) return "NULL"; if(t.t==="int"||t.t==="dec") return v.replace(/,/g,""); if(t.t==="date") return `DATE '${p.isoDate(v)}'`; return `'${v.replace(/'/g,"''")}'`; };
+  const w=p.head.reduce((a,h)=>Math.max(a,h.length),0);
+  const cols=p.head.map((h,i)=>`  ${h.padEnd(w)}  ${ty(p.types[i])}`).join(",\n");
+  const create=ora?`CREATE GLOBAL TEMPORARY TABLE ${name} (\n${cols}\n) ON COMMIT PRESERVE ROWS;`:`CREATE VOLATILE TABLE ${name} (\n${cols}\n) PRIMARY INDEX (${p.head[0]})\nON COMMIT PRESERVE ROWS;`;
+  if(replace==="createOnly") return create;
+  const out=[];
+  out.push(ora?"-- Step 1: create your own scratch table (it keeps its rows until you log off)":"-- Step 1: create your own scratch table (it disappears when you log off)");
+  if(replace) out.push(`DROP TABLE ${name};`);
+  out.push(ora?`CREATE GLOBAL TEMPORARY TABLE ${name} (\n${cols}\n) ON COMMIT PRESERVE ROWS;`:`CREATE VOLATILE TABLE ${name} (\n${cols}\n) PRIMARY INDEX (${p.head[0]})\nON COMMIT PRESERVE ROWS;`);
+  out.push("","-- Step 2: put the rows in, one INSERT per row");
+  p.body.forEach(r=>out.push(`INSERT INTO ${name} VALUES (${r.map((v,i)=>lit(v,p.types[i])).join(", ")});`));
+  out.push("","-- Step 3: look at what you loaded",`SELECT * FROM ${name};`);
+  return out.join("\n");
+}
+function ideLoadDialog(o){
+  const d=o.dialect(), ora=d==="oracle", kind=ora?"global temporary table":"volatile table";
+  const ov=el("div",{class:"ide-modal",role:"dialog","aria-modal":"true","aria-label":"Load data into your own table"});
+  const close=()=>{ ov.remove(); document.removeEventListener("keydown",esc); };
+  const esc=e=>{ if(e.key==="Escape") close(); };
+  const name=el("input",{class:"ide-lname",type:"text",value:"my_loans","aria-label":"Table name",spellcheck:"false"});
+  const area=el("textarea",{class:"ide-larea",rows:"7",spellcheck:"false",placeholder:"Paste rows here (Ctrl + V). First line = column names.\nExample:\nloan_id, product, balance\n1, MTG, 250000\n2, CC, 1200.50"});
+  const info=el("p",{class:"ide-linfo"});
+  const fileIn=el("input",{type:"file",accept:".csv,.txt,.tsv,.xlsx,.xlsm",hidden:true});
+  const pick=el("button",{type:"button",class:"ide-lbtn ghost",text:"Choose Excel or CSV file"});
+  const drop=el("div",{class:"ide-ldrop"},pick,el("span",{text:" or drag a file here (.xlsx or .csv, any number of rows)"}),fileIn);
+  let fileRows=null, fileName="";
+  const dummy=el("button",{type:"button",class:"ide-lbtn ghost",text:"Fill with dummy loan data"});
+  const go=el("button",{type:"button",class:"ide-lbtn",text:"Create table and load rows"});
+  const showSql=el("button",{type:"button",class:"ide-lbtn ghost",text:"Only write the SQL for me"});
+  const x=el("button",{type:"button",class:"ide-mx","aria-label":"Close",text:"×"});
+  const help=el("details",{class:"ide-lhelp",open:true},el("summary",{text:`What is a ${kind}? (simple words)`}),
+    el("p",{text:ora?"Think of it as your own rough-work sheet inside the database. You make it, put rows in it, and use it in queries like any other table. Other people cannot see it, and Oracle empties it when you log off.":"Think of it as your own rough-work sheet inside the database. You make it, put rows in it, and use it in queries like any other table. Other people cannot see it, and Teradata deletes it when you log off."}),
+    el("ol",{},
+      el("li",{},el("b",{text:"Create it: "}),el("code",{text:ora?"CREATE GLOBAL TEMPORARY TABLE my_loans (loan_id NUMBER(12), product VARCHAR2(10), balance NUMBER(18,2)) ON COMMIT PRESERVE ROWS;":"CREATE VOLATILE TABLE my_loans (loan_id INTEGER, product VARCHAR(10), balance DECIMAL(18,2)) ON COMMIT PRESERVE ROWS;"})),
+      el("li",{},el("b",{text:"Put rows in: "}),el("code",{text:"INSERT INTO my_loans VALUES (1, 'MTG', 250000);"}),el("span",{text:" One line per row. Text goes inside single quotes, numbers do not."})),
+      el("li",{},el("b",{text:"Use it: "}),el("code",{text:"SELECT * FROM my_loans;"}),el("span",{text:" or join it to the real tables."})),
+      el("li",{},el("b",{text:"Copy rows from another table: "}),el("code",{text:"INSERT INTO my_loans SELECT account_id, product_code, balance FROM account_snapshot;"}))),
+    el("p",{class:"ide-ltip",text:ora?"Why \"ON COMMIT PRESERVE ROWS\"? Without it, Oracle empties the table after every COMMIT.":"Why \"ON COMMIT PRESERVE ROWS\"? Without it, Teradata empties the table as soon as each statement finishes, so your rows would vanish."}),
+    el("p",{class:"ide-ltip",text:"The easy way: paste rows from Excel below (keep the header row), and this tool writes all of that SQL for you."}));
+  const box=el("div",{class:"ide-mbox"},
+    el("div",{class:"ide-mhead"},el("b",{text:`Load data into your own ${kind}`}),x),
+    help,
+    el("div",{class:"ide-lrow"},el("label",{text:"Table name"}),name),
+    el("label",{class:"ide-llbl",text:"Your rows: copy cells from Excel (with the header row) and paste, or type comma-separated values"}),
+    drop,area,info,
+    el("div",{class:"ide-lact"},dummy,el("span",{class:"ide-sp"}),showSql,go));
+  ov.append(box); o.root.append(ov);
+  const check=()=>{ const n=name.value.trim(); const okName=/^[A-Za-z_][A-Za-z0-9_]{0,29}$/.test(n);
+    const p=fileRows?ideShape(fileRows):ideParseRows(area.value);
+    if(!okName){ info.textContent="Table name: start with a letter, then letters, numbers or _ (no spaces)."; info.className="ide-linfo err"; return null; }
+    if(!p||!p.body.length){ info.textContent="Paste at least two lines: the column names, then one or more rows."; info.className="ide-linfo"; return null; }
+    info.textContent=(fileRows?`From ${fileName}. `:"")+`Ready: ${p.body.length.toLocaleString()} row(s), ${p.head.length} column(s): `+p.head.map((h,i)=>`${h} (${({int:"whole number",dec:"number",date:"date",str:"text"})[p.types[i].t]})`).join(", ");
+    info.className="ide-linfo ok"; return {n,p}; };
+  area.addEventListener("input",()=>{ fileRows=null; check(); }); name.addEventListener("input",check);
+  dummy.addEventListener("click",()=>{ fileRows=null; area.value=IDE_DUMMY; check(); });
+  async function readFile(f){
+    if(!f) return; info.className="ide-linfo"; info.textContent=`Reading ${f.name}…`;
+    try{
+      if(/\.xls$/i.test(f.name)) throw new Error("Old .xls files cannot be read here. In Excel use File > Save As > .xlsx or CSV, then load that.");
+      const rows=/\.xls[xm]$/i.test(f.name)?await ideReadXlsx(await f.arrayBuffer()):ideTextRows(await f.text());
+      if(!rows||rows.length<2) throw new Error("The file needs a header row and at least one row of data.");
+      fileRows=rows; fileName=f.name;
+      if(name.value==="my_loans"||!name.value.trim()){ let b=f.name.replace(/\.[^.]+$/,"").toLowerCase().replace(/[^a-z0-9_]+/g,"_").replace(/^_+|_+$/g,"").slice(0,26); if(!/^[a-z_]/.test(b)) b="t_"+b; name.value=b||"my_data"; }
+      area.value=rows.slice(0,6).map(r=>r.join("\t")).join("\n")+(rows.length>6?`\n… ${(rows.length-6).toLocaleString()} more row(s) from the file`:"");
+      check();
+    }catch(e){ fileRows=null; info.className="ide-linfo err"; info.textContent=String(e.message||e); }
+  }
+  pick.addEventListener("click",()=>fileIn.click());
+  fileIn.addEventListener("change",()=>readFile(fileIn.files[0]));
+  drop.addEventListener("dragover",e=>{ e.preventDefault(); drop.classList.add("on"); });
+  drop.addEventListener("dragleave",()=>drop.classList.remove("on"));
+  drop.addEventListener("drop",e=>{ e.preventDefault(); drop.classList.remove("on"); readFile(e.dataTransfer.files[0]); });
+  const BULK=200;
+  const make=async run=>{ const c=check(); if(!c){ area.focus(); return; }
+    const replace=o.exists(c.n);
+    if(c.p.body.length<=BULK||!o.bulk){ const sql=ideLoadSql(c.p,c.n,d,replace); close(); o.put(sql,run); return; }
+    go.disabled=showSql.disabled=true; info.className="ide-linfo"; info.textContent=`Loading ${c.p.body.length.toLocaleString()} rows…`;
+    await new Promise(r=>setTimeout(r,30));
+    try{ await o.bulk(c.p,c.n,replace,fileName); close(); }
+    catch(e){ go.disabled=showSql.disabled=false; info.className="ide-linfo err"; info.textContent="Could not load: "+String(e.message||e); } };
+  go.addEventListener("click",()=>make(true)); showSql.addEventListener("click",()=>make(false));
+  x.addEventListener("click",close); ov.addEventListener("mousedown",e=>{ if(e.target===ov) close(); });
+  document.addEventListener("keydown",esc); setTimeout(()=>area.focus(),30);
+}
+
+/* ---- read .xlsx files in the browser (first sheet), with dates turned into YYYY-MM-DD ---- */
+async function ideReadZip(buf){
+  const u8=new Uint8Array(buf), dv=new DataView(buf); let e=u8.length-22;
+  while(e>=0&&dv.getUint32(e,true)!==0x06054b50) e--;
+  if(e<0) throw new Error("This file is not a valid .xlsx file.");
+  const n=dv.getUint16(e+10,true); let p=dv.getUint32(e+16,true); const out={}; const dec=new TextDecoder();
+  for(let i=0;i<n;i++){
+    const method=dv.getUint16(p+10,true), csize=dv.getUint32(p+20,true), nl=dv.getUint16(p+28,true), xl=dv.getUint16(p+30,true), cl=dv.getUint16(p+32,true), lo=dv.getUint32(p+42,true);
+    const name=dec.decode(u8.subarray(p+46,p+46+nl)); p+=46+nl+xl+cl;
+    out[name]=async()=>{ const ln=dv.getUint16(lo+26,true), lx=dv.getUint16(lo+28,true); const data=u8.subarray(lo+30+ln+lx,lo+30+ln+lx+csize);
+      if(method===0) return dec.decode(data);
+      if(typeof DecompressionStream==="undefined") throw new Error("This browser cannot open .xlsx files. Save the sheet as CSV and load that instead.");
+      const st=new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw")); return await new Response(st).text(); };
+  }
+  return out;
+}
+async function ideReadXlsx(buf){
+  const z=await ideReadZip(buf), P=new DOMParser(), X=t=>P.parseFromString(t,"application/xml");
+  const get=async n=>z[n]?await z[n]():null;
+  const shared=[]; { const t=await get("xl/sharedStrings.xml"); if(t) X(t).querySelectorAll("si").forEach(si=>shared.push([...si.getElementsByTagName("t")].map(x=>x.textContent).join(""))); }
+  let sheetPath="xl/worksheets/sheet1.xml";
+  try{ const wb=X(await get("xl/workbook.xml")), rels=X(await get("xl/_rels/workbook.xml.rels")); const first=wb.getElementsByTagName("sheet")[0];
+    const rid=first.getAttribute("r:id")||first.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships","id");
+    const rel=[...rels.getElementsByTagName("Relationship")].find(r=>r.getAttribute("Id")===rid); if(rel){ const tg=rel.getAttribute("Target"); sheetPath=tg.startsWith("/")?tg.slice(1):"xl/"+tg.replace(/^\.\//,""); } }catch(e){}
+  const dateStyles=new Set();
+  try{ const stx=X(await get("xl/styles.xml")); const custom={}; stx.querySelectorAll("numFmts numFmt").forEach(f=>custom[f.getAttribute("numFmtId")]=f.getAttribute("formatCode"));
+    stx.querySelectorAll("cellXfs xf").forEach((xf,i)=>{ const id=+xf.getAttribute("numFmtId"); const code=custom[id]||""; if((id>=14&&id<=22)||(id>=45&&id<=47)||(/[dy]/i.test(code.replace(/\[[^\]]*\]|"[^"]*"/g,""))&&!/^[#0.,%\s]*$/.test(code))) dateStyles.add(String(i)); }); }catch(e){}
+  const txt=await get(sheetPath); if(!txt) throw new Error("Could not find a sheet in this file.");
+  const doc=X(txt), rows=[];
+  const colIdx=ref=>{ let n=0; for(const ch of ref.replace(/\d+$/,"")) n=n*26+ch.charCodeAt(0)-64; return n-1; };
+  const toDate=v=>{ const d=new Date(Math.round((+v-25569)*864e5)); return isNaN(d)?String(v):d.toISOString().slice(0,10); };
+  for(const r of doc.getElementsByTagName("row")){
+    const row=[]; let k=0;
+    for(const c of r.getElementsByTagName("c")){
+      const ref=c.getAttribute("r"); const i=ref?colIdx(ref):k; k=i+1;
+      const t=c.getAttribute("t"), vEl=c.getElementsByTagName("v")[0]; let v="";
+      if(t==="s") v=shared[+(vEl&&vEl.textContent)]??"";
+      else if(t==="inlineStr") v=[...c.getElementsByTagName("t")].map(x=>x.textContent).join("");
+      else if(t==="b") v=vEl&&vEl.textContent==="1"?"TRUE":"FALSE";
+      else if(vEl){ v=vEl.textContent; if(t!=="str"&&t!=="e"&&dateStyles.has(c.getAttribute("s")||"")&&/^\d+(\.\d+)?$/.test(v)) v=toDate(v); }
+      while(row.length<i) row.push(""); row[i]=v;
+    }
+    rows.push(row);
+  }
+  return rows;
+}
+/* load many rows straight into the table (fast), instead of writing one INSERT per row */
+function ideBulkLoad(db,p,name,dialect,replace){
+  if(replace) labRun(db,`DROP TABLE ${name};`);
+  labRun(db,ideLoadSql(p,name,dialect,"createOnly"));
+  const conv=(v,t)=>{ if(v===""||/^null$/i.test(v)) return null; if(t.t==="int"||t.t==="dec") return Number(v.replace(/,/g,"")); if(t.t==="date") return p.isoDate(v); return v; };
+  db.run("BEGIN");
+  try{ const st=db.prepare(`INSERT INTO ${name} VALUES (${p.head.map(()=>"?").join(",")})`);
+    for(const r of p.body) st.run(r.map((v,i)=>conv(v,p.types[i])));
+    st.free(); db.run("COMMIT"); }
+  catch(e){ try{ db.run("ROLLBACK"); }catch(x){} throw e; }
 }
 
 /* =====================================================================
@@ -6618,7 +6971,14 @@ function scrThink(placeholder){
 
 /* a fresh copy of the practice data for every run, separate from the SQL Lab's own copy */
 function scrDb(sync){
-  const mk=()=>{ try{ SCR.db&&SCR.db.close(); }catch(e){} const db=new LAB.SQL.Database(); labRegister(db); labRun(db,LAB_SEED); SCR.db=db; return db; };
+  /* every run gets clean practice data, but the user's own volatile tables carry over, as they would in a real session */
+  const mk=()=>{
+    const keep=[];
+    try{ if(SCR.db){ const t=SCR.db.exec("SELECT name, sql FROM sqlite_temp_master WHERE type='table'")[0]; (t?t.values:[]).forEach(([n,sql])=>{ const d=SCR.db.exec(`SELECT * FROM "${n}"`)[0]; keep.push({sql,rows:d?d.values:[]}); }); } }catch(e){}
+    try{ SCR.db&&SCR.db.close(); }catch(e){}
+    const db=new LAB.SQL.Database(); labRegister(db); labRun(db,LAB_SEED);
+    keep.forEach(k=>{ try{ db.run(String(k.sql).replace(/^CREATE\s+(?:TEMP(?:ORARY)?\s+)?TABLE\s+(?:"?temp"?\.)?/i,"CREATE TEMP TABLE ")); if(k.rows.length){ db.run("BEGIN"); const st=db.prepare(`INSERT INTO ${String(k.sql).match(/TABLE\s+(?:"?temp"?\.)?("?[\w]+"?)/i)[1]} VALUES (${k.rows[0].map(()=>"?").join(",")})`); k.rows.forEach(r=>st.run(r)); st.free(); db.run("COMMIT"); } }catch(e){} });
+    SCR.db=db; return db; };
   if(sync) return mk();
   return labLoad().then(()=>mk());
 }
