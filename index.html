@@ -1791,6 +1791,7 @@ ul.selfkeys{margin:6px 0 0;padding-left:20px}
 /* ===== Screen-share technical round ===== */
 .scrhome{display:flex;align-items:center;gap:18px;margin:20px 0 4px;padding:20px 22px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(120deg,rgba(0,168,132,.14),rgba(120,90,255,.12) 60%,rgba(0,0,0,0)),var(--panel);box-shadow:0 8px 24px rgba(11,20,26,.06)}
 .scrhico{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:rgba(0,168,132,.16);color:var(--accent)}
+.jobshome .btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 .scrhtxt{flex:1;min-width:0}.scrhtxt h2{margin:2px 0 4px;font-size:19px}.scrhtxt p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
 .scrnew{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1a1a1a;background:#ffd166;border-radius:999px;padding:2px 8px}
 @media (max-width:760px){.scrhome{flex-direction:column;align-items:stretch;text-align:left}.scrhome .btn{width:100%}}
@@ -2323,7 +2324,7 @@ body.scr-focus .fbfab{display:none!important}
     <header class="sidehead">
       <button class="sbtn exam goexam" title="Start the 60-minute exam"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>60-min exam</span></button>
       <button class="thmbtn" type="button" aria-label="Switch to light mode" title="Switch to light mode"><svg class="isun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><svg class="imoon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.6A8.3 8.3 0 0 1 9.4 4a8.3 8.3 0 1 0 10.6 10.6z" fill="currentColor"/></svg></button>
-      <a class="sbtn kairo" href="https://claude.ai/artifact/4mmht3XEChGPrg4FDYt39p" target="_blank" rel="noopener" title="Find matching jobs on Kairo"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Jobs</span></a>
+      <a class="sbtn kairo" href="/kairo" title="Find matching jobs on Kairo"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Jobs</span></a>
       <button class="sbtn out logoutany" title="Log out"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 8l4 4-4 4M19 12H9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Log out</span></button>
     </header>
     <div id="chatList" class="chatlist"></div>
@@ -2385,7 +2386,7 @@ body.scr-focus .fbfab{display:none!important}
         <span class="trk reg"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.1 8.4-7.5 9.8-4.4-1.4-7.5-5.2-7.5-9.8V5.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 12l2.4 2.4 4.4-4.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>UK Credit Risk Regulatory Reporting</span>
       </div>
       <p class="lede">Rehearse the questions being asked right now across the BFSI domain.</p>
-      <div class="ctarow2"><button class="cta1" type="button" data-auth-go="reg">Register Free<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="cta2" type="button" data-auth-go="in">Sign in</button><a class="cta2 kairo" href="https://claude.ai/artifact/4mmht3XEChGPrg4FDYt39p" target="_blank" rel="noopener" title="Open Kairo, the job-matching agent"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Find matching jobs</span></a></div>
+      <div class="ctarow2"><button class="cta1" type="button" data-auth-go="reg">Register Free<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="cta2" type="button" data-auth-go="in">Sign in</button><a class="cta2 kairo" href="/kairo" title="Kairo — find jobs that match your resume"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Find matching jobs</span></a></div>
 
       <div class="likebar" id="likeBar">
         <button class="likebtn" id="likeBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="hfill" d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.9 3.8 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.7 1.2-1.6 2.8-2.7 4.8-2.7 3.4 0 5.6 3.4 4.4 6.7-1.7 4.7-9.2 9.3-9.2 9.3z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg><span id="likeLbl">Like</span></button>
@@ -2600,6 +2601,12 @@ body.scr-focus .fbfab{display:none!important}
         <button class="btn" id="resumeExam" hidden>Resume exam in progress</button>
       </article>
     </div>
+
+    <section class="scrhome jobshome" id="jobsHome">
+      <div class="scrhico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="scrhtxt"><h2>Jobs that fit you</h2><p id="jobsHomeTxt">Upload your resume and Kairo, your job agent, finds open roles that fit you 80%+, with your interview readiness for each.</p></div>
+      <a class="btn primary big" href="/kairo" id="jobsHomeGo">Find matching jobs</a>
+    </section>
 
     <section class="scrhome">
       <div class="scrhico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="2.5" y="4" width="19" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 9.5l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -4509,9 +4516,12 @@ async function unlock(){
   const goAdmin=()=>{ if(IS_ADMIN && location.hash==="#admin" && STATE.profile && !isLoggedOut()){ showView("prep"); openPane("t:admin"); } };
   goAdmin(); window.addEventListener("hashchange",goAdmin);
   // Links from Kairo (job matching): #practice-sql, #practice-credit-risk, #practice-ifrs9, #practice
-  const goPractice=()=>{ const pane={"#practice-sql":"p:sophie","#practice-credit-risk":"p:claire","#practice-ifrs9":"p:anjali","#practice":"p:meera"}[location.hash]; if(pane && STATE.profile && !isLoggedOut()){ showView("prep"); openPane(pane); } };
+  const goPractice=()=>{ if(location.hash==="#exam" && STATE.profile && !isLoggedOut()){ const b=document.querySelector(".goexam"); if(b){ history.replaceState(null,"",location.pathname); b.click(); } return; } const pane={"#practice-sql":"p:sophie","#practice-credit-risk":"p:claire","#practice-ifrs9":"p:anjali","#practice":"p:meera"}[location.hash]; if(pane && STATE.profile && !isLoggedOut()){ showView("prep"); openPane(pane); } };
   goPractice(); window.addEventListener("hashchange",goPractice);
+  arsGoNext();
 }
+/* Kairo sends members here to sign in; once signed in, take them back */
+function arsGoNext(){ try{ const n=localStorage.getItem("arsNext"); if(n && /^\/[a-z-]*$/.test(n) && STATE && STATE.profile && !isLoggedOut()){ localStorage.removeItem("arsNext"); location.href=n; } }catch(e){} }
 
 /* =====================================================================
    ROUNDS: round 1 is curated; later rounds are generated fresh (50 per section)
@@ -9026,7 +9036,7 @@ $("#regForm").addEventListener("submit",async e=>{
     btn.disabled=false; btn.textContent=label;
     vfStop(null); $("#vAssist").hidden=true;
     try{ localStorage.removeItem(loKey()); }catch(e){}
-    showView("home");
+    showView("home"); arsGoNext();
   }catch(x){
     btn.disabled=false; btn.textContent=label;
     err.textContent="Your details couldn't be saved. Ask the person who shared this page to give you Contributor access, then try again.";
@@ -9034,8 +9044,20 @@ $("#regForm").addEventListener("submit",async e=>{
 });
 
 /* ---------- Home ---------- */
+/* Kairo (job matching) summary on the home page: reads the member's own saved matches */
+async function renderJobsHome(){
+  const t=$("#jobsHomeTxt"), go=$("#jobsHomeGo"); if(!t||!window.STANDALONE||!DB||!UID) return;
+  try{
+    const s=await DB.collection("data/users/"+UID+"/profile/matches").get();
+    const ms=s.docs.map(d=>d.data()).filter(m=>m&&m.status!=="Not interested");
+    if(!ms.length) return;
+    const good=ms.filter(m=>(m.match||0)>=80), applied=ms.filter(m=>m.status==="Applied"||m.status==="Interview"||m.status==="Offer").length;
+    t.textContent=`${good.length} role${good.length===1?"":"s"} fit you 80%+${applied?` · ${applied} applied`:""}. Practise for them here, then apply.`;
+    go.textContent="Open my matches";
+  }catch(e){}
+}
 function renderHome(){
-  buildPeople(); loadVoices();
+  buildPeople(); loadVoices(); renderJobsHome();
   const p=STATE.profile||{};
   $("#homeMeta").textContent=`${p.totalExp??"–"} yrs total · ${p.baExp??"–"} yrs BA · ${p.sqlExp??"–"} yrs SQL / Data Analysis · ${p.ukRegExp??"–"} yrs UK Regulatory Reporting`;
   { const ex=appExpireOn(p); $("#homeExp").textContent= ex ? `Your registration and progress are kept until ${new Date(ex).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}, then deleted. You can register again any time.` : ""; }

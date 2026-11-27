@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kairo · ARS Learning Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+/* VOICE: a personal headhunter in your pocket — few words, confident, visual.
+   IDEA: one guided conversation: upload → resume check → fill the gaps → matches, each step a living card.
+   PICTURE: the agent's red orb, a resume scorecard (score ring, bars, skill chips, gap checklist), swipeable match cards.
+   COLOUR and TYPE: dark-first ink with one warm red; fit shown in green/amber; Plus Jakarta Sans.
+   LAYOUT: one 720px column, slim step rail under the header, thumb-reach answer dock, sheets for the rest. */
+:root{color-scheme:dark;--bg:#050817;--panel:#0c1129;--ink:#e8ecf7;--mute:#98a4c6;--line:#232a55;--soft:#141b40;--acc:#00b38c;--acc2:#2ee6b0;--accsoft:#0f3a2c;--onacc:#03241c;--good:#3fe08f;--goodsoft:#0f3a2c;--warn:#f5c542;--warnsoft:#3a2d0c;--bad:#ff7a66;--shadow:0 12px 32px rgba(0,0,0,.42);--glow:rgba(46,230,176,.34);--orb:radial-gradient(circle at 32% 28%,#e9fff6 0,#2ee6b0 24%,#00a884 50%,#0a4f6e 80%,#071033 100%);--bgfx:radial-gradient(900px 520px at 12% -160px,rgba(0,179,140,.20),transparent 70%),radial-gradient(900px 560px at 100% -120px,rgba(123,97,255,.20),transparent 70%)}
+:root[data-theme=light]{color-scheme:light;--bg:#f0f2f5;--panel:#ffffff;--ink:#111b21;--mute:#667781;--line:#e3e7ea;--soft:#f5f6f6;--acc:#00a884;--acc2:#008069;--accsoft:#d9fdd3;--onacc:#fff;--good:#1f8b4c;--goodsoft:#dff5e7;--warn:#a86b00;--warnsoft:#fdf0d5;--bad:#c4321d;--shadow:0 10px 26px rgba(17,27,33,.08);--glow:rgba(0,168,132,.32);--orb:radial-gradient(circle at 32% 28%,#ffffff 0,#7ff0cf 24%,#00a884 52%,#00695a 82%,#033d35 100%);--bgfx:radial-gradient(900px 480px at 50% -200px,rgba(0,168,132,.14),transparent 70%)}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bgfx) no-repeat,var(--bg);background-attachment:fixed;color:var(--ink);font:16px/1.5 "Segoe UI","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--acc2);outline-offset:3px}
+a{color:var(--acc2)}
+.col{width:min(720px,100%);margin:0 auto;padding:0 20px}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* header + steps */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.top .row{display:flex;align-items:center;gap:10px;height:60px;flex-wrap:nowrap}
+.brand{display:flex;align-items:center;flex:none}.arslogo{width:34px;height:34px;display:block}
+.mods{display:flex;gap:4px;margin-left:10px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px}
+.mods a{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;font-size:14px;font-weight:700;color:var(--mute);text-decoration:none;white-space:nowrap}
+.mods a:hover{color:var(--ink)}
+.mods a[aria-current=page]{background:var(--acc);color:var(--onacc)}
+.mods a[aria-current=page] .orb{box-shadow:none}
+.sp{flex:1}
+.hbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.hbtn:hover{background:var(--soft)}
+.hbtn[aria-pressed=true]{color:var(--acc2)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 0 12px}
+.steps div{font-size:12px;font-weight:600;color:var(--mute);display:grid;gap:6px}
+.steps div::before{content:"";height:4px;border-radius:4px;background:var(--line)}
+.steps .done::before{background:var(--good)}.steps .now::before{background:var(--acc)}.steps .now{color:var(--ink)}
+/* orb */
+.orb{--s:32px;width:var(--s);height:var(--s);border-radius:50%;flex:none;position:relative;background:var(--orb);box-shadow:0 6px 24px var(--glow)}
+.orb::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--glow);opacity:0}
+.orb.busy{animation:breathe 1.6s ease-in-out infinite}.orb.busy::after{animation:ring 1.6s ease-out infinite}
+.orb.listen{animation:breathe .7s ease-in-out infinite}.orb.listen::after{animation:ring .9s ease-out infinite}
+@keyframes breathe{50%{transform:scale(1.08)}}@keyframes ring{0%{opacity:.8;transform:scale(.9)}100%{opacity:0;transform:scale(1.35)}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+/* hero */
+.hero{min-height:calc(100svh - 140px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px 0 40px}
+
+.hero h1{font-size:clamp(32px,7vw,50px);line-height:1.06;letter-spacing:-.035em;margin:0 0 12px;font-weight:800;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--acc2)}
+.hero p{font-size:17px;color:var(--mute);margin:0 0 30px;max-width:30ch}
+.up{display:inline-flex;align-items:center;gap:10px;min-height:60px;padding:16px 30px;border-radius:999px;background:var(--acc);color:var(--onacc);font-weight:700;font-size:17px;box-shadow:0 14px 34px var(--glow)}
+.up:hover{transform:translateY(-2px)}
+.hero small{display:block;margin-top:14px;color:var(--mute);font-size:13px}
+/* stream */
+#stream{padding:22px 0 6px}
+.m{margin:0 0 18px;animation:rise .35s ease both}
+.m.ai{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start}
+.m.ai .tx{white-space:pre-wrap;overflow-wrap:anywhere;padding-top:3px}
+.m.ai.q .tx{font-size:clamp(20px,4.6vw,24px);line-height:1.3;font-weight:700;letter-spacing:-.015em}
+.m.me{display:flex;justify-content:flex-end}
+.m.me .tx{background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:20px 20px 6px 20px;max-width:85%;font-weight:500}
+.filepill{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);padding:10px 16px;border-radius:16px;font-weight:600;box-shadow:var(--shadow)}
+.filepill .ic{color:var(--acc2)}
+.m.st{display:flex;gap:8px;align-items:center;color:var(--mute);font-size:14px;padding-left:44px}
+.m.st .ic{width:16px;height:16px;color:var(--good)}
+.scanning{display:grid;gap:8px;padding-top:6px}
+.scanning span{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--mute);opacity:.35;transition:opacity .3s}
+.scanning span.on{opacity:1;color:var(--ink)}
+.scanning span.ok .ic{color:var(--good)}
+.thinking{display:inline-flex;gap:5px;padding-top:12px}.thinking i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:dot 1.2s infinite}.thinking i:nth-child(2){animation-delay:.15s}.thinking i:nth-child(3){animation-delay:.3s}
+@keyframes dot{40%{transform:translateY(-5px);opacity:.5}}
+.stline{display:block;font-size:13px;color:var(--mute);margin-top:6px;font-weight:600}
+/* card base */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow);margin:0 0 18px;animation:rise .45s ease both}
+.ring{--p:0;--c:var(--mute);width:64px;height:64px;flex:none;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;position:relative}
+.ring::before{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--panel)}
+.ring b{position:relative;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.ring b small{font-size:11px}
+.ring.g{--c:var(--good)}.ring.a{--c:var(--warn)}.ring.r{--c:var(--bad)}
+.ring.g b{color:var(--good)}.ring.a b{color:var(--warn)}
+.ring.big{width:112px;height:112px}.ring.big::before{inset:9px}.ring.big b{font-size:34px}
+.chip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--soft);color:var(--mute)}
+.chip.g{background:var(--goodsoft);color:var(--good)}.chip.a{background:var(--warnsoft);color:var(--warn)}.chip.ink{background:var(--soft);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.lbl{font-size:12px;font-weight:700;color:var(--mute);text-transform:none;margin:18px 0 8px;letter-spacing:.01em}
+/* scan card */
+.scan .sh{display:flex;gap:18px;align-items:center}
+.scan h3{margin:0;font-size:20px;letter-spacing:-.02em;line-height:1.2}
+.scan .who{color:var(--mute);font-size:14px;margin-top:4px}
+.delta{display:inline-flex;margin-top:6px;font-size:12px;font-weight:700;color:var(--good);background:var(--goodsoft);padding:3px 8px;border-radius:999px}
+.bars{display:grid;gap:10px;margin-top:18px}
+.bar{display:grid;grid-template-columns:110px 1fr 34px;gap:10px;align-items:center;font-size:13px;font-weight:600}
+.bar span{color:var(--mute)}
+.track{height:8px;border-radius:8px;background:var(--soft);overflow:hidden}
+.track i{display:block;height:100%;border-radius:8px;background:var(--c,var(--good));width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar em{font-style:normal;text-align:right}
+.strong{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}
+.strong li{display:flex;gap:8px;align-items:flex-start}.strong .ic{width:16px;height:16px;color:var(--good);margin-top:2px}
+.gaps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.gaps li{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--soft);font-size:14px}
+.gaps li b{font-weight:700}.gaps li small{display:block;color:var(--mute);font-size:12px;font-weight:500}
+.gaps .dot{width:12px;height:12px;border-radius:50%;background:var(--warn);justify-self:center}
+.gaps li.ok .dot{background:var(--good)}
+.gaps li.ok b{text-decoration:line-through;text-decoration-color:var(--mute)}
+.gaps .val{font-size:12px;color:var(--good);font-weight:700;max-width:140px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{min-height:46px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn.p{background:var(--acc);color:var(--onacc)}
+.btn.o{border:1.5px solid var(--line);color:var(--ink)}
+.btn.o:hover{border-color:var(--ink)}
+.btn.i{width:46px;padding:0;border:1.5px solid var(--line);color:var(--ink)}
+.btn.i[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:disabled{opacity:.45}
+/* match deck */
+.deck{margin:0 -20px 12px;padding:4px 20px 14px;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.deck::-webkit-scrollbar{display:none}
+.jc{flex:0 0 min(310px,82vw);scroll-snap-align:start;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;animation:card .45s cubic-bezier(.2,.8,.2,1) both}
+.jc:nth-child(2){animation-delay:.08s}.jc:nth-child(3){animation-delay:.16s}.jc:nth-child(n+4){animation-delay:.24s}
+@keyframes card{from{opacity:0;transform:translateX(24px) scale(.97)}}
+.jc.near{border-style:dashed}
+.jh{display:flex;gap:14px;align-items:flex-start}
+.co{font-size:13px;color:var(--mute);font-weight:600}
+.jc h4{margin:2px 0 0;font-size:18px;line-height:1.25;letter-spacing:-.01em}
+.why{margin:0;font-size:14px}
+.gap{margin:0;font-size:13px;color:var(--mute)}
+.practise{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--acc2);text-decoration:none;padding:8px 12px;border-radius:12px;background:var(--accsoft);align-self:flex-start}
+.practise .ic{width:16px;height:16px}.practise{width:100%;text-align:left}.practise span{flex:1}.practise b{font-weight:800}
+.practise.ok{background:var(--goodsoft);color:var(--good)}.practise.mid{background:var(--warnsoft);color:var(--warn)}.practise.low{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.jc .row{margin-top:auto;flex-wrap:nowrap}
+.jc .btn.p{flex:1}
+.more{flex:0 0 150px;scroll-snap-align:start;border:1.5px dashed var(--line);border-radius:24px;display:grid;place-items:center;text-align:center;padding:16px;color:var(--mute);font-weight:700}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.tool{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);font-weight:700;font-size:14px;background:var(--panel)}
+.tool:hover{border-color:var(--ink)}
+.tool .ic{width:18px;height:18px}
+.lc{padding:16px 20px}
+.lc a{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--ink);font-weight:600;font-size:15px}
+.lc a:first-of-type{border-top:0}
+.lc a span{color:var(--mute);font-weight:500;white-space:nowrap}
+/* dock */
+.dock{position:sticky;bottom:0;z-index:15;background:linear-gradient(to top,var(--bg) 80%,transparent);padding:16px 0 calc(14px + env(safe-area-inset-bottom))}
+.qmeta{font-size:12px;font-weight:700;color:var(--mute);margin:0 0 8px}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.opt{min-height:48px;padding:12px 18px;border-radius:16px;background:var(--panel);border:1.5px solid var(--line);font-weight:600;font-size:15px;text-align:left;box-shadow:var(--shadow);animation:rise .3s ease both;transition:transform .12s,border-color .12s}
+.opt:nth-child(2){animation-delay:.04s}.opt:nth-child(3){animation-delay:.08s}.opt:nth-child(4){animation-delay:.12s}.opt:nth-child(n+5){animation-delay:.16s}
+.opt:hover{border-color:var(--ink);transform:translateY(-2px)}
+.opt:active{transform:scale(.98)}
+.opt[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.opt.done{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.opt.done:disabled{opacity:.4}
+.bar2{display:flex;align-items:center;gap:10px}
+.side{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--panel);flex:none}
+.mic{width:60px;height:60px;border-radius:50%;background:var(--acc);color:var(--onacc);display:grid;place-items:center;box-shadow:0 10px 26px var(--glow);flex:none;position:relative}
+.mic .ic{width:24px;height:24px}
+.mic.live::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--acc);animation:ring 1.2s ease-out infinite}
+.mid{flex:1;text-align:center;color:var(--mute);font-size:13px;font-weight:500}
+.typer{flex:1;display:flex;gap:8px}
+.typer textarea{flex:1;min-height:48px;max-height:140px;resize:none;border:1.5px solid var(--line);border-radius:24px;padding:12px 18px;background:var(--panel);font-size:16px}
+.send{width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;flex:none}
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-height:92svh;overflow-y:auto;background:var(--bg);border-radius:26px 26px 0 0;transform:translateY(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding:10px 0 calc(28px + env(safe-area-inset-bottom))}
+.sheet.on{transform:none}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 16px}
+.sheet h2{font-size:26px;letter-spacing:-.03em;margin:0 0 4px;line-height:1.15}
+.sheet .sub{color:var(--mute);font-size:14px;margin:0}
+.menu{display:grid;gap:10px;margin-top:18px}
+.mi{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--panel);text-align:left;width:100%}
+.mi .ico{width:42px;height:42px;border-radius:14px;background:var(--soft);display:grid;place-items:center;flex:none}
+.mi b{display:block;font-size:15px}.mi small{color:var(--mute);font-size:13px}
+.mi>div{flex:1}
+.mi .ring{width:42px;height:42px}.mi .ring::before{inset:5px}.mi .ring b{font-size:12px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg .opt{box-shadow:none;min-height:44px;padding:10px 16px}
+.field{width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--panel);font-size:16px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:14px;margin-top:16px}
+.check input{width:20px;height:20px;accent-color:var(--acc);margin-top:1px;flex:none}
+.flds{list-style:none;margin:0;padding:0}
+.flds li{padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;overflow-wrap:anywhere}
+.flds li b{display:block;font-size:12px;color:var(--mute);font-weight:700;margin-bottom:2px}
+.togs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px 12px}
+.togs label{display:flex;gap:10px;align-items:center;min-height:40px;font-size:14px}
+.togs input{width:18px;height:18px;accent-color:var(--acc)}
+.stars{display:flex;gap:10px}
+.star{width:52px;height:52px;border-radius:16px;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--mute);background:var(--panel)}
+.star .ic{width:26px;height:26px}
+.star.on{color:#f4b350;border-color:#f4b350}.star.on .ic{fill:#f4b350}
+.note{font-size:13px;color:var(--mute)}
+.gate{min-height:70svh;display:grid;place-items:center;text-align:center}
+.hero{position:relative;overflow:hidden;margin-inline:calc(50% - 50vw);padding-inline:max(20px,calc(50vw - 340px));min-height:calc(100svh - 62px)}
+.hero>*:not(.float):not(.dropzone){position:relative;z-index:1}
+.float{position:absolute;inset:0;z-index:0;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 52% 44% at 50% 50%,transparent 55%,#000 92%);mask-image:radial-gradient(ellipse 52% 44% at 50% 50%,transparent 55%,#000 92%)}
+.float span{position:absolute;bottom:-60px;white-space:nowrap;font-size:13px;font-weight:700;padding:8px 14px;border-radius:999px;background:var(--panel);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;animation:drift var(--d,14s) linear infinite;animation-delay:var(--dl,0s)}
+.float span b{color:var(--good);margin-left:6px}
+@keyframes drift{0%{transform:translateY(0) scale(.92);opacity:0}12%{opacity:.9}70%{opacity:.7}100%{transform:translateY(calc(-100svh - 120px)) scale(1);opacity:0}}
+.orbbtn{position:relative;width:200px;height:200px;display:grid;place-items:center;margin-bottom:26px;transition:transform .25s ease-out}
+.orbbtn .orb{--s:132px;animation:breathe 3.2s ease-in-out infinite}
+.orbbtn.talking .orb{animation:breathe .8s ease-in-out infinite}
+.orbbtn .orb::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.55) 45%,transparent 60%);background-size:250% 100%;animation:sheen 3.6s ease-in-out infinite;mix-blend-mode:soft-light}
+@keyframes sheen{0%{background-position:150% 0}60%,100%{background-position:-60% 0}}
+.halo{position:absolute;inset:10px;border-radius:50%;background:radial-gradient(circle,var(--glow) 0,transparent 68%);animation:halo 3.2s ease-in-out infinite}
+@keyframes halo{50%{transform:scale(1.18);opacity:.6}}
+.orbit{position:absolute;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--acc) 40%,transparent);animation:spin 18s linear infinite}
+.orbit.o1{inset:0}.orbit.o2{inset:22px;animation-duration:11s;animation-direction:reverse;border-style:solid;border-color:color-mix(in srgb,var(--acc) 22%,transparent)}
+.orbit i{position:absolute;top:-6px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--acc);box-shadow:0 0 14px var(--glow)}
+.orbit.o2 i{width:8px;height:8px;top:-4px;margin-left:-4px;background:var(--good)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero h1{font-size:clamp(40px,10vw,64px)!important;margin-bottom:30px!important}
+.hero h1 #hiName{display:block;font-size:.42em;color:var(--mute);font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.hero h1 em{display:inline;min-height:1.05em}
+.caret{display:inline-block;width:4px;height:.9em;margin-left:4px;vertical-align:-.08em;background:var(--acc);border-radius:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.up{position:relative;overflow:hidden;animation:nudge 3.2s ease-in-out infinite}
+.up::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);background-size:250% 100%;animation:sheen 2.8s ease-in-out infinite}
+@keyframes nudge{0%,80%,100%{transform:none}86%{transform:translateY(-4px)}92%{transform:translateY(0)}96%{transform:translateY(-2px)}}
+.hero .tap{margin-top:16px;font-size:13px;font-weight:600;color:var(--mute)}
+.dropzone{position:absolute;inset:10px;z-index:3;border:3px dashed var(--acc);border-radius:28px;background:color-mix(in srgb,var(--bg) 80%,transparent);display:none;place-items:center;font-size:24px;font-weight:800;color:var(--acc2)}
+.hero.drag .dropzone{display:grid}
+.mic.invite{animation:breathe 1.2s ease-in-out infinite}
+.speaking{display:inline-flex;gap:3px;align-items:flex-end;height:14px;margin-left:6px}.speaking i{width:3px;background:var(--acc);border-radius:2px;animation:eq .8s ease-in-out infinite}.speaking i:nth-child(2){animation-delay:.15s}.speaking i:nth-child(3){animation-delay:.3s}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+.skins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.skin{border:2px solid var(--line);border-radius:18px;padding:10px;display:grid;gap:8px;justify-items:center;font-weight:700;font-size:13px;background:var(--panel);color:var(--ink)}
+.skin[aria-pressed=true]{border-color:var(--acc)}
+.skin .sw{width:100%;height:54px;border-radius:12px;display:grid;place-items:center}
+.skin .sw i{width:26px;height:26px;border-radius:50%}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.kpi b{display:block;font-size:26px;letter-spacing:-.02em;line-height:1.1}.kpi small{color:var(--mute);font-size:12px;font-weight:600}
+.funnel{display:grid;gap:8px}
+.funnel .bar{grid-template-columns:120px 1fr 44px}
+.ulist{list-style:none;margin:0;padding:0}
+.ulist li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ulist small{color:var(--mute);grid-column:1/-1}
+#toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;max-width:90vw;text-align:center}
+#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media(max-width:520px){.hero h1{font-size:clamp(34px,9.5vw,44px)!important}.mods{margin-left:6px}.mods a{padding:7px 11px;font-size:13px}.hbtn{width:38px;height:38px}.float span{font-size:11px;padding:6px 10px}.float span:nth-child(n+9){display:none}.float{-webkit-mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%);mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%)}.orbbtn{width:176px;height:176px}.orbbtn .orb{--s:116px}.col{padding:0 16px}.deck{margin:0 -16px 12px;padding-inline:16px}.m.st{padding-left:0}.bar{grid-template-columns:92px 1fr 30px}.scan .sh{gap:14px}.ring.big{width:96px;height:96px}.ring.big b{font-size:28px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="col">
+  <div class="row">
+    <a class="brand" href="/" title="ARS Learning Academy"><svg class="arslogo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#00a884"/><path d="M9 13.5L20 8l11 5.5L20 19z" fill="#d9fdd3"/><path d="M13 16v4.5c2 1.8 4.4 2.6 7 2.6s5-.8 7-2.6V16" fill="none" stroke="#d9fdd3" stroke-width="1.6"/><text x="20" y="34" text-anchor="middle" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-weight="800" font-size="10.5" letter-spacing=".6" fill="#fff">ARS</text></svg></a>
+    <nav class="mods" aria-label="ARS modules"><a href="/">Practise</a><a href="/#exam">Exam</a><a href="/kairo" aria-current="page"><span class="orb" id="hOrb" style="--s:14px"></span>Jobs</a></nav>
+    <span class="sp"></span>
+    <button class="hbtn" id="ttsBtn" aria-label="Voice guide" title="Voice guide" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
+    <button class="hbtn" id="menuBtn" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+  </div>
+  <div class="steps" id="steps" hidden><div>Resume</div><div>Check</div><div>Gaps</div><div>Matches</div></div>
+</div></header>
+
+<main class="col" id="main">
+  <section class="hero" id="hero">
+    <div class="float" id="float" aria-hidden="true"></div>
+    <button class="orbbtn" id="startBtn" aria-label="Tap to hear Kairo">
+      <span class="halo"></span><span class="orbit o1"><i></i></span><span class="orbit o2"><i></i></span>
+      <span class="orb" id="bigOrb"></span>
+    </button>
+    <h1 id="heroH"><span id="hiName"></span>Your next<br><em id="roleWord">role</em><span class="caret"></span></h1>
+    <button class="up" id="heroUp"><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>Upload resume</button>
+    <span class="tap" id="tapLbl">or tap the orb to talk to Kairo, your job agent</span>
+    <div class="dropzone" id="dropzone" aria-hidden="true"><span>Drop it anywhere</span></div>
+  </section>
+  <section id="stream" aria-live="polite"></section>
+</main>
+
+<div class="dock" id="dock" hidden><div class="col">
+  <p class="qmeta" id="qmeta" hidden></p>
+  <div class="opts" id="opts"></div>
+  <div class="bar2">
+    <button class="side" id="attBtn" aria-label="Upload resume"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.3 3.3 0 0 1 4.7 4.7L10.2 18.7a1.7 1.7 0 0 1-2.4-2.4L15.5 8.6"/></svg></button>
+    <div class="mid" id="mid">Tap an answer</div>
+    <form class="typer" id="typer" hidden><textarea id="box" rows="1" placeholder="Type here…" aria-label="Message"></textarea><button class="send" type="submit" aria-label="Send"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
+    <button class="mic" id="micBtn" aria-label="Speak" hidden><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+    <button class="side" id="kbBtn" aria-label="Type instead"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/></svg></button>
+    <button class="side" id="stopBtn" aria-label="Stop" hidden><svg class="ic" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/></svg></button>
+  </div>
+</div></div>
+
+<input type="file" id="file" accept=".pdf,.docx,.txt,.md" hidden>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div class="col" id="sheetBody"></div></div>
+<div id="toast" role="status"></div>
+
+<script>
+/* Kairo on ARS Learning Academy: the same claude.use(...) services Kairo uses inside Claude,
+   backed by this site's own server and the member's ARS sign-in (shared session = single sign-on). */
+(function () {
+  window.STANDALONE = true;
+  const TK = "arsTok";
+  const tok = () => { try { return localStorage.getItem(TK); } catch (e) { return null; } };
+  async function api(path, body) {
+    const r = await fetch("/api/" + path, { method: body !== undefined ? "POST" : "GET", headers: Object.assign({ "content-type": "application/json" }, tok() ? { authorization: "Bearer " + tok() } : {}), body: body !== undefined ? JSON.stringify(body) : undefined });
+    let j = {}; try { j = await r.json(); } catch (e) {}
+    if (!r.ok) { const e = new Error(j.error || ("Request failed (" + r.status + ")")); e.code = j.code || ("http_" + r.status); e.status = r.status; throw e; }
+    return j;
+  }
+  window.__arsApi = api;
+  let session = null;
+  async function ensure() {
+    if (session) return session;
+    if (tok()) { try { session = await api("auth?a=me"); } catch (e) { session = { uid: null, reg: false }; } }
+    else session = { uid: null, reg: false };
+    window.__arsSession = session; return session;
+  }
+  /* database (same API as ARS) */
+  const clone = v => (v == null ? undefined : JSON.parse(JSON.stringify(v)));
+  const snap = (id, data) => ({ id, exists: data != null, data: () => clone(data), metadata: { fromCache: false } });
+  const watchers = new Set();
+  const bump = path => { watchers.forEach(w => { if (path.startsWith(w.path)) w.run(); }); };
+  function poll(path, fetcher, next, onErr, every) {
+    let alive = true, timer = null, busy = false;
+    const run = async () => { if (!alive || busy) return; busy = true; try { next(await fetcher()); } catch (e) { onErr && onErr(e); } busy = false; };
+    const w = { path, run }; watchers.add(w);
+    const loop = () => { if (!alive) return; timer = setTimeout(() => { if (!document.hidden) run(); loop(); }, every || 30000); };
+    run(); loop();
+    return () => { alive = false; clearTimeout(timer); watchers.delete(w); };
+  }
+  function docRef(path) {
+    const id = path.split("/").pop();
+    const ref = { id, path,
+      get: async () => snap(id, (await api("db?op=get&path=" + encodeURIComponent(path))).data),
+      set: async d => { await api("db", { op: "set", path, data: clone(d) }); bump(path); },
+      update: async d => { await api("db", { op: "update", path, data: clone(d) }); bump(path); },
+      delete: async () => { await api("db", { op: "delete", path }); bump(path); },
+      onSnapshot: (next, err) => poll(path, () => ref.get(), next, err, 30000),
+      collection: c => colRef(path + "/" + c) };
+    return ref;
+  }
+  function colRef(cpath) {
+    const q = { path: cpath,
+      doc: id => docRef(cpath + "/" + (id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)))),
+      add: async d => { const r = q.doc(); await r.set(d); return r; },
+      where() { return q; }, orderBy() { return q; }, limit() { return q; },
+      get: async () => { const docs = ((await api("db?op=list&path=" + encodeURIComponent(cpath))).docs || []).map(d => snap(d.id, d.data)); return { docs, size: docs.length, empty: !docs.length }; },
+      onSnapshot(next, err) { return poll(cpath + "/", () => q.get(), next, err, 30000); } };
+    return q;
+  }
+  const db = { doc: docRef, collection: colRef };
+  window.__kairoBump = bump;
+  /* identity: the ARS member, with name and email from their ARS registration */
+  async function arsProfile(uid) { try { const d = (await api("db?op=get&path=" + encodeURIComponent("attempts/" + uid))).data; return (d && d.profile) || {}; } catch (e) { return {}; } }
+  const user = {
+    id: async () => (await ensure()).uid,
+    isOwner: async () => !!(await ensure()).admin, canEdit: async () => !!(await ensure()).admin, can: async () => true,
+    me: async () => { const s = await ensure(); const p = s.uid ? await arsProfile(s.uid) : {}; return { id: s.uid, name: p.name || "", email: p.email || "", isOwner: !!s.admin }; },
+    profiles: async ids => { const s = await ensure(); const out = {}; if (!s.admin) return out; await Promise.all((ids || []).map(async id => { const p = await arsProfile(id); out[id] = { id, name: p.name || "", email: p.email || "" }; })); return out; }
+  };
+  /* AI: Claude through this site's server, with the page's tools run here in the browser */
+  const JSONSYS = "Reply with only one valid JSON value and nothing else: no markdown, no code fences, no commentary.";
+  function loose(text) { const t = String(text || "").trim(); try { return JSON.parse(t); } catch (e) {} const f = t.match(/```(?:json)?\s*([\s\S]*?)```/); if (f) { try { return JSON.parse(f[1]); } catch (e) {} } const a = [t.indexOf("{"), t.indexOf("[")].filter(x => x >= 0), i = a.length ? Math.min(...a) : -1, j = Math.max(t.lastIndexOf("}"), t.lastIndexOf("]")); if (i >= 0 && j > i) { try { return JSON.parse(t.slice(i, j + 1)); } catch (e) {} } return undefined; }
+  async function sample(input, opts) {
+    opts = opts || {};
+    const messages = [];
+    for (const t of (typeof input === "string" ? [{ role: "user", content: input }] : input)) { const last = messages[messages.length - 1]; if (last && last.role === t.role) last.content += "\n\n" + t.content; else messages.push({ role: t.role, content: String(t.content) }); }
+    const tools = (opts.tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
+    let text = "";
+    for (let round = 0; round < 8; round++) {
+      if (opts.signal && opts.signal.aborted) throw { code: "cancelled", text };
+      let r;
+      try { r = await api("kairo?a=chat", { messages, tools, tier: opts.modelTier, system: opts.__json ? JSONSYS : undefined }); }
+      catch (e) { throw { code: e.code === "rate_limited" ? "rate_limited" : e.status === 401 ? "not_granted" : "upstream_error", message: e.message, text }; }
+      if (opts.signal && opts.signal.aborted) throw { code: "cancelled", text };
+      const content = r.content || [], t = content.filter(c => c.type === "text").map(c => c.text).join("");
+      if (t) { text += (text ? "\n\n" : "") + t; try { opts.onText && opts.onText({ text, delta: t }); } catch (e) {} }
+      const uses = content.filter(c => c.type === "tool_use");
+      if (r.stop_reason !== "tool_use" || !uses.length) break;
+      messages.push({ role: "assistant", content });
+      const results = [];
+      for (const u of uses) {
+        const tool = (opts.tools || []).find(x => x.name === u.name); let out, bad = false;
+        try { out = tool ? await tool.execute(u.input || {}, { signal: opts.signal }) : "Unknown tool"; } catch (e) { out = "Error: " + ((e && e.message) || e); bad = true; }
+        results.push({ type: "tool_result", tool_use_id: u.id, content: (typeof out === "string" ? out : JSON.stringify(out)).slice(0, 32000), is_error: bad });
+      }
+      messages.push({ role: "user", content: results });
+    }
+    if (!text.trim()) throw { code: "empty_completion", text: "" };
+    return { text, truncated: false, modelTierApplied: opts.modelTier || "default" };
+  }
+  sample.json = async (input, opts) => { const { text } = await sample(input, Object.assign({}, opts || {}, { tools: undefined, __json: true })); const v = loose(text); if (v === undefined) throw { code: "invalid_json", text }; return v; };
+  sample.limits = async () => ({ maxPromptBytes: 262144, tools: { maxCount: 16 } });
+  /* email: only to the member's own registered address */
+  const mcp = { callTool: async (srv, tool, input) => { if (srv === "Gmail" && tool === "send_message") return { payload: await api("email", input) }; const e = new Error("Not available"); e.code = "server_not_connected"; throw e; } };
+  /* voice input: the browser's speech recognition, Indian English */
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const dictation = SR ? (() => {
+    const cb = {}; let rec = null, wanted = false, live = false;
+    const emit = (k, v) => { try { cb[k] && cb[k](v); } catch (e) {} };
+    return {
+      start: () => new Promise((resolve, reject) => { try {
+        rec = new SR(); rec.lang = "en-IN"; rec.continuous = true; rec.interimResults = true; wanted = true;
+        rec.onstart = () => { live = true; emit("state", { state: "listening" }); resolve(); };
+        rec.onresult = e => { let interim = ""; for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i]; if (r.isFinal) emit("final", { text: " " + r[0].transcript.trim() }); else interim += r[0].transcript; } emit("partial", { text: interim }); };
+        rec.onerror = e => { if (e.error === "not-allowed" || e.error === "service-not-allowed") { wanted = false; const x = new Error("Microphone not allowed"); x.code = "not_granted"; reject(x); } };
+        rec.onend = () => { if (wanted) { try { rec.start(); return; } catch (e) {} } live = false; emit("state", { state: "idle", reason: "stopped" }); };
+        rec.start(); } catch (e) { reject(e); } }),
+      stop: async () => { wanted = false; try { rec && rec.stop(); } catch (e) {} },
+      active: () => live,
+      onPartial: f => { cb.partial = f; }, onFinal: f => { cb.final = f; }, onState: f => { cb.state = f; }
+    };
+  })() : null;
+  /* spoken replies: the browser's voices, preferring a female Indian English voice */
+  const tts = ("speechSynthesis" in window) ? (() => {
+    let cb = null, speaking = false;
+    const FEM = /female|neerja|veena|heera|swara|raveena|aditi|kajal|priya|isha|ananya|lekha|google.*india/i;
+    const pick = () => { const vs = speechSynthesis.getVoices(), inV = vs.filter(v => /en[-_]IN/i.test(v.lang)); return inV.find(v => FEM.test(v.name)) || inV[0] || vs.find(v => /^en/i.test(v.lang) && FEM.test(v.name)) || vs.find(v => /^en/i.test(v.lang)) || null; };
+    try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); } catch (e) {}
+    return {
+      speak: (text, o) => new Promise((res, rej) => {
+        try { speechSynthesis.cancel(); } catch (e) {}
+        const u = new SpeechSynthesisUtterance(String(text)), v = pick();
+        if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "en-IN";
+        u.rate = (o && o.rate) || 1; u.pitch = 1.05;
+        u.onstart = () => { speaking = true; cb && cb({ state: "speaking" }); };
+        u.onend = () => { speaking = false; cb && cb({ state: "idle", reason: "completed" }); res({ playedMs: 0 }); };
+        u.onerror = () => { speaking = false; cb && cb({ state: "idle", reason: "stopped" }); rej({ code: "stopped" }); };
+        speechSynthesis.speak(u);
+      }),
+      stop: async () => { try { speechSynthesis.cancel(); } catch (e) {} speaking = false; },
+      active: () => speaking,
+      onState: f => { cb = f; return () => { cb = null; }; }
+    };
+  })() : null;
+  /* downloads */
+  const downloads = { save: async ({ filename, data }) => { const blob = data instanceof Blob ? data : new Blob([data]); const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = filename || "download"; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 8000); return { status: "saved" }; } };
+  const ready = name => api(name).then(r => !!r.ready).catch(() => false);
+  const aiReady = ready("kairo"), mailReady = ready("email");
+  window.claude = { use: async name => {
+    switch (name) {
+      case "user": await ensure(); return user;
+      case "db": { const s = await ensure(); return s.reg ? db : null; }
+      case "sample": return (await aiReady) ? sample : null;
+      case "mcp": return (await mailReady) ? mcp : null;
+      case "dictation": return dictation;
+      case "tts": return tts;
+      case "downloads": return downloads;
+      default: return null;
+    }
+  } };
+})();
+</script>
+<script>
+{
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl = u => /^https:\/\//i.test(String(u || '').trim()) ? String(u).trim() : '';
+const list = v => Array.isArray(v) ? v.map(String).map(s => s.trim()).filter(Boolean) : String(v || '').split(/,| and /).map(s => s.trim()).filter(Boolean);
+const today = () => new Date().toISOString().slice(0, 10);
+const clamp = v => Math.max(0, Math.min(100, Math.round(Number(v) || 0)));
+const toast = t => { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('on'), 3000); };
+const I = {
+  check:'<svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>',
+  doc:'<svg class="ic" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>',
+  heart:'<svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  x:'<svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  xls:'<svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8l8 8M16 8l-8 8"/></svg>',
+  pdf:'<svg class="ic" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M8 15h8"/></svg>',
+  bell:'<svg class="ic" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/></svg>',
+  list:'<svg class="ic" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>',
+  star:'<svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>',
+  user:'<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  up:'<svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>',
+  mic:'<svg class="ic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  redo:'<svg class="ic" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4"/></svg>'
+};
+
+const FIELDS = ['Match %','Status','Company','Job title, experience & Req ID','Location','Posted & source','Skills matched','Gaps','Apply link','Recruiter','Recruiter role','Email','Recruiter LinkedIn','Referral contact','Contact role','Connection','Why relevant','Contact LinkedIn','Recommended action','Mock interview'];
+const DEF = {direction:'',roles:[],locations:[],workMode:'',seniority:'',expMin:null,expMax:null,industries:[],companyTypes:[],mustSkills:[],avoid:[],companiesInclude:[],companiesExclude:[],salary:'',notice:'',country:'',threshold:80,postedWithin:30,notes:''};
+const LISTKEYS = ['roles','locations','industries','companyTypes','mustSkills','avoid','companiesInclude','companiesExclude'];
+const REASONS = ['Wrong role','Wrong location','Too junior','Too senior','Wrong industry','Missing a key skill','Company not for me','Already applied'];
+
+let db, user, sample, mcp, dict, tts, dl, uid, ctl, busy = false, isOwner = false, voiceOn = true, usage = {}, myName = '', myEmail = '';
+let profile = {resumeText:'', fileName:'', prefs:{...DEF}, fields:FIELDS.map((_, i) => i + 1), scan:null, answered:{}};
+let ars = null; // the member's ARS record: registration, practice scores, exam
+let turns = [], schedule = null, learnings = {rules:[], changelog:[]}, myFeedback = [], hunt = null;
+const jobs = new Map(), matches = new Map();
+let mode = 'chat', gapQueue = [], gapIdx = 0, multiSel = new Set(), curOpts = {kind:'', items:[]}, statusEl = null;
+
+/* ---------- persistence ---------- */
+const q = {};
+function save(ref, data) {
+  q[ref.path] = (q[ref.path] || Promise.resolve()).catch(() => {}).then(() => ref.set(data)).catch(e => { toast(e && e.code === 'invalid_argument' ? 'Saving needs Contributor access from the owner.' : 'Could not save just now.'); throw e; });
+  return q[ref.path].catch(() => {});
+}
+const profRef = () => db.doc(`data/users/${uid}/profile`);
+const chatRef = () => db.doc(`data/users/${uid}/chat`);
+const matchCol = () => profRef().collection('matches');
+const searchRef = () => db.doc(`ksearches/${uid}`);
+const schedRef = () => db.doc(`kschedules/${uid}`);
+const fbRef = () => db.doc(`kfeedback/${uid}`);
+let chatTimer;
+const saveChat = () => { clearTimeout(chatTimer); chatTimer = setTimeout(() => db && save(chatRef(), {turns:turns.filter(t => !t.local).slice(-60), updatedAt:Date.now()}), 400); };
+async function persistProfile() {
+  if (!db) return;
+  await save(profRef(), {...profile, updatedAt:Date.now()});
+  const p = profile.prefs;
+  save(searchRef(), { roles:p.roles, locations:p.locations, country:p.country, workMode:p.workMode, seniority:p.seniority, expMin:p.expMin, expMax:p.expMax, industries:p.industries, companyTypes:p.companyTypes, mustSkills:p.mustSkills, companiesInclude:p.companiesInclude, companiesExclude:p.companiesExclude, postedWithin:p.postedWithin, huntRequestedAt:hunt ? hunt.at : null, huntBrief:hunt ? hunt.brief : '', updatedAt:Date.now() });
+  if (schedule && schedule.active && schedule.consent) save(schedRef(), schedDoc(schedule));
+}
+
+/* ---------- helpers ---------- */
+const jobOf = m => m.job || jobs.get(m.jobId) || null;
+const ARS = '/';
+function arsTopic(j) {
+  const t = JSON.stringify([j.title, j.skills, j.jd, j.domain]).toLowerCase();
+  if (/ifrs ?9|expected credit loss|\becl\b/.test(t)) return ['ifrs9', 'IFRS 9'];
+  if (/credit risk|corep|finrep|basel|regulatory report|prudential|\brwa\b|capital adequacy|\bpra\b|\bcrr\b/.test(t)) return ['credit-risk', 'credit risk'];
+  if (/\bsql\b|teradata|data warehouse|\betl\b/.test(t)) return ['sql', 'SQL'];
+  if (/business analyst|\bba\b/.test(t)) return ['', 'BA'];
+  return null;
+}
+const arsLink = j => { const a = arsTopic(j); return a ? {url:ARS + '#practice' + (a[0] ? '-' + a[0] : ''), label:a[1]} : null; };
+function readiness() {
+  const c = (ars && ars.cats) || {}, ex = (ars && ars.exams) || {}, p = (ars && ars.profile) || {};
+  const avg = k => c[k] && c[k].n ? Math.round(c[k].sum / c[k].n * 10) / 10 : null;
+  return {sql:avg('sql'), reg:avg('reg'), sqlN:(c.sql && c.sql.n) || 0, regN:(c.reg && c.reg.n) || 0, exam:ex.attempts ? (ex.bestPct || 0) : null, passed:!!ex.passed, totalExp:p.totalExp, baExp:p.baExp, sqlExp:p.sqlExp, regExp:p.ukRegExp};
+}
+function readyFor(topic) {
+  const r = readiness(), v = topic === 'sql' ? r.sql : topic === '' ? (r.sql != null && r.reg != null ? Math.round((r.sql + r.reg) * 5) / 10 : r.sql ?? r.reg) : r.reg;
+  return v == null ? null : v;
+}
+const arsSummary = () => { const r = readiness(); return ars ? `ARS PRACTICE: SQL ${r.sql ?? 'not practised'}${r.sql != null ? '/10 over ' + r.sqlN + ' answers' : ''}; UK credit risk ${r.reg ?? 'not practised'}${r.reg != null ? '/10 over ' + r.regN + ' answers' : ''}; 60-min exam ${r.exam == null ? 'not taken' : 'best ' + r.exam + '%' + (r.passed ? ' (passed, AI Generated Certificate)' : '')}. Registered experience: ${r.totalExp ?? '?'} yrs total, ${r.baExp ?? '?'} BA, ${r.sqlExp ?? '?'} SQL, ${r.regExp ?? '?'} UK regulatory reporting.` : ''; };
+const fitCls = v => v >= 85 ? 'g' : v >= 80 ? 'a' : '';
+const scoreCls = v => v >= 75 ? 'g' : v >= 55 ? 'a' : 'r';
+function splitOpts(t) {
+  const s = String(t || ''), m = s.match(/(^|\n)\s*(OPTIONS|MULTI)\s*:(.*)$/im);
+  if (!m) return {body:s.trim(), kind:'', items:[]};
+  return {body:s.slice(0, m.index).trim(), kind:m[2].toUpperCase() === 'MULTI' ? 'multi' : 'single', items:m[3].split('|').map(x => x.trim().replace(/^[-*•\d.)\s]+/, '')).filter(Boolean).slice(0, 8)};
+}
+const fmt = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(https:\/\/[^\s<)]+)/g, '<a href="$1" target="_blank" rel="noopener">link</a>');
+const pendingGaps = () => ((profile.scan && profile.scan.missing) || []).filter(g => g.kind !== 'resume' && !(g.key in profile.answered));
+function stage() {
+  if (!profile.resumeText) return 0;
+  if (!profile.scan) return 1;
+  if (pendingGaps().length) return 2;
+  return 3;
+}
+
+/* ---------- rendering ---------- */
+function scanHtml(sc) {
+  if (!sc) return '';
+  const bars = [['Completeness', sc.scores.completeness], ['Impact', sc.scores.impact], ['Skills clarity', sc.scores.skills], ['ATS-ready', sc.scores.ats]];
+  const miss = sc.missing || [];
+  const done = miss.filter(g => g.key in profile.answered).length;
+  return `<div class="card scan">
+    <div class="sh"><div class="ring big ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></div>
+      <div><div class="co">Resume strength</div><h3>${esc(sc.headline || 'Your profile')}</h3><div class="who">${esc([sc.years ? sc.years + ' yrs' : '', sc.location, sc.domain].filter(Boolean).join(' · '))}</div>${sc.prev != null && sc.overall > sc.prev ? `<span class="delta">+${clamp(sc.overall) - clamp(sc.prev)} since last version</span>` : ''}</div></div>
+    <div class="bars">${bars.map(([k, v]) => `<div class="bar"><span>${k}</span><div class="track"><i style="--c:var(--${scoreCls(v) === 'g' ? 'good' : scoreCls(v) === 'a' ? 'warn' : 'bad'})" data-w="${clamp(v)}"></i></div><em>${clamp(v)}</em></div>`).join('')}</div>
+    <div class="lbl">Top skills</div><div class="chips">${(sc.skills || []).slice(0, 10).map(x => `<span class="chip ink">${esc(x)}</span>`).join('')}</div>
+    ${(sc.strengths || []).length ? `<div class="lbl">Strengths</div><ul class="strong">${sc.strengths.slice(0, 3).map(x => `<li>${I.check}<span>${esc(x)}</span></li>`).join('')}</ul>` : ''}
+    ${miss.length ? `<div class="lbl">What's missing · ${done}/${miss.length} sorted</div><ul class="gaps">${miss.map(g => { const ok = g.key in profile.answered; return `<li class="${ok ? 'ok' : ''}"><span class="dot"></span><div><b>${esc(g.label)}</b><small>${esc(g.why || '')}</small></div>${ok ? `<span class="val">${esc(profile.answered[g.key])}</span>` : `<span class="chip ${g.kind === 'resume' ? '' : 'a'}">${g.kind === 'resume' ? 'Resume' : 'Ask'}</span>`}</li>`; }).join('')}</ul>` : ''}
+    <div class="row" style="margin-top:18px">${pendingGaps().length ? `<button class="btn p" data-a="gaps">Fill ${pendingGaps().length} gaps · 30 sec</button>` : `<button class="btn p" data-a="find">Find my matches</button>`}<button class="btn o" data-a="reup">${I.redo}Upload updated</button></div>
+  </div>`;
+}
+function cardHtml(m) {
+  const j = jobOf(m); if (!j) return '';
+  const thr = profile.prefs.threshold || 80, fb = m.feedback || {};
+  const meta = [j.location, j.workMode, j.experience].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('');
+  return `<article class="jc${m.nearMiss ? ' near' : ''}" data-id="${esc(m.id)}">
+    <div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${esc(j.company)}</div><h4>${esc(j.title)}</h4></div></div>
+    <div class="chips">${m.match >= 85 ? '<span class="chip g">Strong fit</span>' : m.match >= thr ? '<span class="chip a">Good fit</span>' : '<span class="chip">Near miss</span>'}${meta}</div>
+    <p class="why">${esc(m.why)}</p>
+    ${m.mandatoryGaps && !/^none/i.test(m.mandatoryGaps) ? `<p class="gap">Gap: ${esc(m.mandatoryGaps)}</p>` : ''}
+    ${(() => { const l = arsLink(j); if (!l) return ''; const t = arsTopic(j)[0], v = readyFor(t); return `<a class="practise ${v == null ? '' : v >= 8 ? 'ok' : v >= 6 ? 'mid' : 'low'}" href="${esc(l.url)}" data-a="practise">${I.mic}<span>${esc(l.label.charAt(0).toUpperCase() + l.label.slice(1))} readiness</span><b>${v == null ? 'Practise' : v + '/10'}</b></a>`; })()}
+    <div class="row">${safeUrl(j.applyUrl) ? `<a class="btn p" href="${esc(safeUrl(j.applyUrl))}" target="_blank" rel="noopener" data-a="apply">Apply</a>` : `<button class="btn p" data-a="prep">Details</button>`}
+      <button class="btn o" data-a="prep">Prep</button>
+      <button class="btn i" data-a="save" aria-pressed="${m.status === 'Saved' || m.status === 'Applied'}" aria-label="Save">${I.heart}</button>
+      <button class="btn i" data-a="skip" aria-pressed="${fb.vote === 'down'}" aria-label="Not for me">${I.x}</button></div></article>`;
+}
+function deckHtml(ids) {
+  const arr = ids.map(id => matches.get(id)).filter(m => m && jobOf(m));
+  if (!arr.length) return '';
+  return `<div class="deck">${arr.map(cardHtml).join('')}<button class="more" data-a="all">All ${matches.size} saved roles</button></div>
+    <div class="tools"><button class="tool" data-a="xlsx">${I.xls}Excel</button><button class="tool" data-a="pdf">${I.pdf}PDF</button><button class="tool" data-a="alerts">${I.bell}Daily email</button><button class="tool" data-a="fb">${I.star}Rate</button></div>`;
+}
+const linksHtml = t => `<div class="card lc"><div class="lbl" style="margin-top:0">Live searches for you</div>${(t.links || []).map(l => `<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)} <span>${esc(l.site)} ↗</span></a>`).join('')}</div>`;
+function turnHtml(t, i, lastAi) {
+  switch (t.role) {
+    case 'user': return `<div class="m me"><div class="tx">${esc(t.content)}</div></div>`;
+    case 'file': return `<div class="m me"><span class="filepill">${I.doc}${esc(t.name)}</span></div>`;
+    case 'tool': return `<div class="m st">${I.check}<span>${esc(t.content)}</span></div>`;
+    case 'scan': return t.snap ? scanHtml(t.snap) : '';
+    case 'cards': return deckHtml(t.ids || []);
+    case 'links': return linksHtml(t);
+    case 'assistant': { const b = splitOpts(t.content).body; return b ? `<div class="m ai${i === lastAi ? ' q' : ''}"><span class="orb"></span><div class="tx">${fmt(b)}</div></div>` : ''; }
+  }
+  return '';
+}
+function render() {
+  const started = turns.length > 0 || !!profile.resumeText;
+  $('#hero').hidden = started; $('#dock').hidden = !started; $('#steps').hidden = !started;
+  let lastAi = -1; turns.forEach((t, i) => { if (t.role === 'assistant') lastAi = i; });
+  // latest scan turn shows live state; older ones show their snapshot
+  let lastScan = -1; turns.forEach((t, i) => { if (t.role === 'scan') lastScan = i; });
+  $('#stream').innerHTML = turns.map((t, i) => t.role === 'scan' && i === lastScan ? scanHtml(profile.scan) : turnHtml(t, i, lastAi)).join('');
+  requestAnimationFrame(() => { for (const b of document.querySelectorAll('.track i')) b.style.width = b.dataset.w + '%'; });
+  const st = stage(); [...$('#steps').children].forEach((d, i) => d.className = i < st ? 'done' : i === st ? 'now' : '');
+  if (st === 3 && [...matches.values()].some(m => jobOf(m))) $('#steps').lastElementChild.className = 'done';
+  renderOpts();
+  requestAnimationFrame(() => window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
+}
+function defaultOpts() {
+  const n = [...matches.values()].filter(m => jobOf(m) && m.match >= (profile.prefs.threshold || 80) && m.status !== 'Not interested').length;
+  if (!profile.resumeText) return {kind:'single', items:['Upload my resume']};
+  if (!profile.scan) return {kind:'single', items:['Check my resume']};
+  if (pendingGaps().length) return {kind:'single', items:[`Fill ${pendingGaps().length} gaps`, 'Upload updated resume']};
+  return {kind:'single', items:[n ? `Show my ${n} matches` : 'Find my matches', 'Find new matches', 'Daily email alerts', 'Refine my search']};
+}
+function renderOpts() {
+  const box = $('#opts'); $('#qmeta').hidden = true;
+  if (busy) { box.innerHTML = ''; $('#mid').textContent = 'Kairo is working…'; return; }
+  let o;
+  if (mode === 'gaps' && gapQueue[gapIdx]) {
+    const g = gapQueue[gapIdx];
+    o = {kind:g.multi ? 'multi' : 'single', items:[...(g.options || []), 'Skip']};
+    $('#qmeta').hidden = false; $('#qmeta').textContent = `Gap ${gapIdx + 1} of ${gapQueue.length}`;
+  } else {
+    const last = [...turns].reverse().find(t => t.role === 'assistant' || t.role === 'user' || t.role === 'file');
+    o = last && last.role === 'assistant' ? splitOpts(last.content) : null;
+    if (!o || !o.items.length) o = defaultOpts();
+  }
+  curOpts = o; multiSel = new Set();
+  box.innerHTML = o.items.map((x, i) => `<button class="opt" data-i="${i}" aria-pressed="false">${esc(x)}</button>`).join('') + (o.kind === 'multi' ? `<button class="opt done" id="doneBtn" disabled>Done</button>` : '');
+  $('#mid').textContent = dict ? 'Tap an answer — or the mic to speak' : 'Tap an answer';
+}
+$('#opts').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.id === 'doneBtn') { const a = [...multiSel]; if (a.length) answer(a.join(', ')); return; }
+  const t = curOpts.items[Number(b.dataset.i)];
+  if (curOpts.kind === 'multi' && !/^(skip|something else|any|open to all|anywhere)/i.test(t)) { multiSel.has(t) ? multiSel.delete(t) : multiSel.add(t); b.setAttribute('aria-pressed', multiSel.has(t)); $('#doneBtn').disabled = !multiSel.size; return; }
+  answer(t);
+};
+function answer(t) {
+  const x = t.toLowerCase();
+  if (/^(something else|other|let me say)$/.test(x)) { if (dict) return startMic(); return openTyper(); }
+  if (mode === 'gaps') return gapAnswer(t);
+  if (/^choose file$/.test(x) || /(upload|update|new).*(resume|cv)/.test(x)) return $('#file').click();
+  if (/^check my resume$/.test(x)) return assess();
+  if (/^fill \d+ gaps$/.test(x)) return startGaps();
+  if (/^show my \d+ matches$/.test(x)) return showMatchesLocal();
+  if (/^daily email alerts$/.test(x)) return openAlerts();
+  if (/^rate (these|kairo)/.test(x)) return openFeedback();
+  if (/excel|pdf|export/.test(x)) return $('#menuBtn').click() || setTimeout(() => document.querySelector('[data-go="export"]')?.click(), 50);
+  if (/^prep me for the top one$/.test(x)) { const top = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match)[0]; if (top) return openPrep(top); }
+  send(t);
+}
+
+/* ---------- step 1+2: resume intake and assessment ---------- */
+async function readFile(f) {
+  const n = f.name.toLowerCase();
+  if (n.endsWith('.pdf')) { const pdf = await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer()), isEvalSupported:false}).promise; let out = ''; for (let i = 1; i <= Math.min(pdf.numPages, 12); i++) { const tc = await (await pdf.getPage(i)).getTextContent(); for (const it of tc.items) out += it.str + (it.hasEOL ? '\n' : ' '); out += '\n'; } return out; }
+  if (n.endsWith('.docx')) return (await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value;
+  return await f.text();
+}
+async function takeResume(f) {
+  try {
+    const t = (await readFile(f)).replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    if (t.length < 150) return toast('I couldn\'t read text in that file — try a PDF or Word version.');
+    profile.resumeText = t.slice(0, 40000); profile.fileName = f.name; mode = 'chat'; track({stage:Math.max(usage.stage || 0, 1)}, {resumeUploads:1});
+    turns.push({role:'file', name:f.name}); render(); speak('Got it. Reading your resume now.'); await persistProfile(); assess();
+  } catch { toast('I couldn\'t open that file.'); }
+}
+$('#file').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) takeResume(f); };
+for (const id of ['#heroUp', '#attBtn']) $(id).onclick = () => $('#file').click();
+
+async function assess() {
+  if (!sample) return toast('Kairo\'s AI is being switched on. Please try again soon.');
+  if (busy) return; busy = true; $('#hOrb').classList.add('busy'); renderOpts();
+  const wrap = document.createElement('div'); wrap.className = 'm ai';
+  const STEPS = ['Reading your resume', 'Understanding your experience', 'Measuring impact and skills', 'Spotting what\'s missing'];
+  wrap.innerHTML = `<span class="orb busy"></span><div class="scanning">${STEPS.map(s => `<span>${I.check}${s}</span>`).join('')}</div>`;
+  $('#stream').append(wrap); window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'});
+  const spans = [...wrap.querySelectorAll('.scanning span')]; let k = 0; spans[0].classList.add('on');
+  const tick = setInterval(() => { if (k < spans.length - 1) { spans[k].classList.add('ok'); k++; spans[k].classList.add('on'); } }, 1600);
+  const answered = Object.keys(profile.answered);
+  try {
+    const r = await sample.json(`You are an elite career agent and resume expert with 20 years' experience across every industry and country. Assess this resume for job search and find what is missing to match the person to vacancies that fit 80–90%+.
+RESUME:\n${profile.resumeText.slice(0, 16000)}\n
+Already known from the person (do NOT ask again): ${JSON.stringify(profile.answered)}
+${arsSummary()}
+Reply with only JSON:
+{"name":"","headline":"current or last job title, short","seniority":"entry|mid|senior|lead|executive","years":0,"location":"city","country":"ISO 2-letter","domain":"industry/field, 1-3 words",
+"known":{"roles":["target titles ONLY if the resume states an objective/target"],"locations":["preferred cities ONLY if stated (current city alone is not a preference)"],"salary":"expected pay ONLY if stated","workMode":"only if stated","notice":"notice period/availability only if stated"},
+"skills":["8 top skills/tools, 1-3 words each"],"strengths":["3 strengths, each under 9 words, specific"],
+"scores":{"completeness":0,"impact":0,"skills":0,"ats":0},"overall":0,
+"missing":[{"key":"slug","label":"under 5 words","why":"under 10 words","kind":"ask|resume","prefKey":"roles|locations|workMode|salary|notice|industries|companyTypes|seniority|threshold|mustSkills|note","multi":false,"question":"under 12 words, a direct question","options":["2-6 answers, under 28 chars each, most likely first"]}]}
+Rules for "missing":
+- kind "ask" = job-search facts needed to search. Ask ONLY what the resume, "known" and the person's earlier answers don't already settle — never ask for something the resume clearly states. Typical gaps: target roles (prefKey roles, multi true, options = 4-5 concrete titles that suit this resume, including a step up), where to work (locations, multi true, their city, nearby hubs, "Remote", "Open to relocate"), work mode (workMode), expected salary (salary, 4 realistic bands for their level and market in local currency), availability (notice), how close a fit to show (threshold, options "80%+","85%+","90%+"). Add industries or company types only if it matters for this profile. At most 7 ask items, ordered by impact.
+- kind "resume" = things to improve in the resume itself (e.g. no measurable results, missing skills section, no LinkedIn/contact, unexplained gap, missing certifications common for this role). At most 4, each with options ["I'll update it","Skip"].
+- Scores 0-100, honest; overall = weighted (completeness 25, impact 30, skills 25, ats 20).`, {modelTier:'default', cache:false});
+    clearInterval(tick); spans.forEach(s => s.classList.add('on', 'ok'));
+    if (!r || !r.scores) throw 0;
+    const prev = profile.scan ? profile.scan.overall : null;
+    r.missing = (Array.isArray(r.missing) ? r.missing : []).filter(g => g && g.key && g.label).map(g => ({...g, key:String(g.key), options:list(g.options).slice(0, 6)})).filter(g => !answered.includes(g.key) || g.kind === 'resume');
+    r.prev = prev; profile.scan = r; track({resumeScore:clamp(r.overall), headline:String(r.headline || ''), domain:String(r.domain || ''), country:String(r.country || ''), seniority:String(r.seniority || ''), years:Number(r.years) || null, stage:Math.max(usage.stage || 0, 2)});
+    const p = profile.prefs, kn = r.known || {};
+    for (const k of ['roles', 'locations']) if (Array.isArray(kn[k]) && kn[k].filter(Boolean).length && !p[k].length) p[k] = list(kn[k]);
+    for (const k of ['salary', 'workMode', 'notice']) if (kn[k] && !p[k]) p[k] = String(kn[k]);
+    r.missing = r.missing.filter(g => g.kind === 'resume' || !(Array.isArray(kn[g.prefKey]) ? kn[g.prefKey].filter(Boolean).length : kn[g.prefKey]));
+    if (r.country && !p.country) p.country = String(r.country).toLowerCase();
+    if (r.seniority && !p.seniority) p.seniority = String(r.seniority);
+    if (r.years && p.expMin == null) { p.expMin = Math.max(0, Number(r.years) - 2); p.expMax = Number(r.years) + 4; }
+    await new Promise(res => setTimeout(res, 500));
+    wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
+    turns.push({role:'scan', snap:{...r}});
+    const pg = pendingGaps().length;
+    turns.push({role:'assistant', content:`${r.name ? r.name.split(' ')[0] + ', y' : 'Y'}our resume scores ${clamp(r.overall)}. ${pg ? `${pg} quick answers and I can search.` : 'I have what I need.'}\nOPTIONS: ${pg ? `Fill ${pg} gaps | Upload updated resume` : 'Find my matches | Upload updated resume'}`});
+    await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + ((r.strengths || [])[0] ? ' Your standout: ' + r.strengths[0] + '.' : ''));
+  } catch (e) {
+    clearInterval(tick); wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
+    turns.push({role:'tool', content:e && e.code === 'rate_limited' ? 'Usage limit reached — try again shortly' : 'I couldn\'t finish reading that — tap to retry'});
+    turns.push({role:'assistant', local:true, content:'Shall I try again?\nOPTIONS: Check my resume | Upload updated resume'}); render();
+  }
+}
+
+/* ---------- step 3: gaps (instant, no waiting) ---------- */
+function startGaps() {
+  gapQueue = pendingGaps(); gapIdx = 0;
+  if (!gapQueue.length) return send('Find my matches');
+  mode = 'gaps'; askGap();
+}
+function askGap() {
+  const g = gapQueue[gapIdx];
+  turns.push({role:'assistant', local:true, content:g.question}); render(); speak(g.question);
+}
+function gapAnswer(t) {
+  const g = gapQueue[gapIdx], p = profile.prefs, skip = /^skip/i.test(t);
+  turns.push({role:'user', content:t});
+  if (!skip) {
+    const k = g.prefKey;
+    if (LISTKEYS.includes(k)) p[k] = list(t);
+    else if (k === 'threshold') p.threshold = Math.min(100, Math.max(50, parseInt(t, 10) || 80));
+    else if (k && k in DEF && k !== 'notes') p[k] = t;
+    else p.notes = [p.notes, `${g.label}: ${t}`].filter(Boolean).join('; ');
+  }
+  profile.answered[g.key] = skip ? 'Skipped' : t;
+  gapIdx++;
+  if (gapIdx < gapQueue.length) { persistProfile(); askGap(); return; }
+  mode = 'chat'; persistProfile(); track({stage:Math.max(usage.stage || 0, 3), gapsAnswered:Object.keys(profile.answered).length});
+  const resumeFixes = ((profile.scan && profile.scan.missing) || []).filter(x => x.kind === 'resume' && !(x.key in profile.answered));
+  turns.push({role:'tool', content:'Profile complete'});
+  if (resumeFixes.length) { turns.push({role:'assistant', local:true, content:`All set. Improving ${resumeFixes.length} resume items could lift your fit — search now or update first?\nOPTIONS: Search now | Upload updated resume`}); render(); saveChat(); }
+  else { render(); send('Find my matches'); }
+}
+
+/* ---------- step 4: agent search ---------- */
+function personalSignals() {
+  const out = [];
+  for (const m of matches.values()) { const j = jobOf(m); if (!j) continue;
+    if (m.feedback && m.feedback.vote === 'down') out.push(`REJECTED ${j.title} at ${j.company}${m.feedback.reason ? ' — ' + m.feedback.reason : ''}`);
+    else if (m.status === 'Saved' || m.status === 'Applied') out.push(`${m.status.toUpperCase()} ${j.title} at ${j.company}`); }
+  return out.slice(-25);
+}
+function brain() {
+  const p = profile.prefs, sc = profile.scan || {}, sig = personalSignals();
+  return `You are Kairo, an elite career agent (20 years as a headhunter across every industry and country). Goal: open vacancies that fit this person 80–90%+. Today ${today()}.
+RESUME:\n${(profile.resumeText || '(none)').slice(0, 12000)}\n
+ASSESSMENT: ${JSON.stringify({headline:sc.headline, seniority:sc.seniority, years:sc.years, domain:sc.domain, skills:sc.skills})}
+PREFERENCES: ${JSON.stringify(p)}
+ANSWERS: ${JSON.stringify(profile.answered)}
+${arsSummary()}
+Use their ARS readiness: mention a passed ARS exam as a strength, and when a top match needs a skill they scored low on in ARS, suggest practising it there.
+${sig.length ? 'THEIR REACTIONS TO EARLIER MATCHES:\n- ' + sig.join('\n- ') : ''}
+${learnings.rules && learnings.rules.length ? 'LESSONS FROM USER FEEDBACK (follow):\n- ' + learnings.rules.join('\n- ') : ''}
+
+WHEN ASKED TO FIND MATCHES: first call search_web, then call list_jobs; score every job strictly — role/title fit 25, skills/tools 30, industry/domain 15, seniority/experience 15, location/work mode 10, salary/company type/other 5; breaking a hard preference (excluded company, location not wanted, far off seniority, older than postedWithin days, like a rejected job) = not a match. Call show_matches with all at or above ${p.threshold || 80}%, best first (if none, the closest 1–3 with nearMiss true). Before scoring, call search_web once with a one-line brief (best titles, places, seniority, top skills, country) to pull live openings. After show_matches, call share_search_links (2–3 searches from their best titles and places). Then reply in at most 2 short lines: how many strong fits and the best one in a few words; mention you searched the live web.
+OTHER REQUESTS: refine preferences with one question at a time (save_preferences after each answer); prep → open_prep; alerts → tell them to use the Daily email button; feedback → save_feedback.
+EVERY reply ends with exactly one line "OPTIONS: a | b | c" (single choice) or "MULTI: a | b | c" (several), 2–6 options under 28 characters, in their voice. After results use: OPTIONS: Prep me for the top one | Excel or PDF | Daily email alerts | Refine my search
+STYLE: very few words — at most 30 words before the options line. The screen shows visuals; don't repeat what cards show. No headings, tables or lists.
+HONESTY: only vacancies from list_jobs exist; never invent jobs, links, names or numbers.`;
+}
+const tools = [
+  { name:'save_preferences', description:'Save job-search preferences. Only changed fields; lists are arrays of strings.',
+    inputSchema:{ type:'object', properties:{ roles:{type:'array',items:{type:'string'}}, locations:{type:'array',items:{type:'string'}}, country:{type:'string'}, workMode:{type:'string'}, seniority:{type:'string'}, industries:{type:'array',items:{type:'string'}}, companyTypes:{type:'array',items:{type:'string'}}, mustSkills:{type:'array',items:{type:'string'}}, avoid:{type:'array',items:{type:'string'}}, companiesInclude:{type:'array',items:{type:'string'}}, companiesExclude:{type:'array',items:{type:'string'}}, salary:{type:'string'}, notice:{type:'string'}, threshold:{type:'number'}, postedWithin:{type:'number'}, notes:{type:'string'} } },
+    async execute(i) { const p = {...profile.prefs}; for (const k of Object.keys(DEF)) if (i[k] != null) p[k] = Array.isArray(DEF[k]) ? list(i[k]) : (['expMin','expMax','threshold','postedWithin'].includes(k) ? Number(i[k]) : String(i[k])); p.threshold = Math.min(100, Math.max(50, Number(p.threshold) || 80)); profile.prefs = p; await persistProfile(); return 'saved'; } },
+  { name:'list_jobs', description:'Open vacancies in the verified feed (id, company, title, experience, location, work mode, posted date, skills, short JD).',
+    inputSchema:{ type:'object', properties:{ keyword:{type:'string'} } },
+    execute(i) {
+      setStatus('Scanning open vacancies…');
+      const kw = String(i.keyword || '').toLowerCase();
+      const out = [...jobs.values()].filter(j => j.status !== 'closed').filter(j => !kw || JSON.stringify([j.title, j.skills, j.jd, j.domain]).toLowerCase().includes(kw))
+        .sort((a, b) => String(b.postedDate || '').localeCompare(String(a.postedDate || ''))).slice(0, 30)
+        .map(j => ({ id:j.id, company:j.company, title:j.title, experience:j.experience, location:j.location, workMode:j.workMode, postedDate:j.postedDate, domain:j.domain, skills:(j.skills || []).slice(0, 12), jd:String(j.jd || '').slice(0, 500) }));
+      note(`Scanned ${out.length} open vacancies`); return out.length ? out : 'No open vacancies in the feed right now.';
+    } },
+  { name:'show_matches', description:'Show scored vacancies as cards and save them. Each: jobId, match 0-100, why (one specific line), mandatoryGaps, optionalGaps, nearMiss.',
+    inputSchema:{ type:'object', properties:{ matches:{ type:'array', items:{ type:'object', properties:{ jobId:{type:'string'}, match:{type:'number'}, why:{type:'string'}, mandatoryGaps:{type:'string'}, optionalGaps:{type:'string'}, nearMiss:{type:'boolean'} }, required:['jobId','match','why'] } } }, required:['matches'] },
+    async execute(i) {
+      setStatus('Ranking your best fits…');
+      const ids = [];
+      for (const m of (Array.isArray(i.matches) ? i.matches : [])) {
+        const id = String(m.jobId || ''); if (!jobs.has(id)) continue;
+        const {id:_x, ...old} = matches.get(id) || {};
+        const doc = { ...old, jobId:id, match:clamp(m.match), why:String(m.why || ''), mandatoryGaps:String(m.mandatoryGaps || 'None'), optionalGaps:String(m.optionalGaps || ''), nearMiss:!!m.nearMiss, status:old.status || 'New', scoredOn:today() };
+        matches.set(id, {...doc, id}); ids.push(id); await save(matchCol().doc(id), doc);
+      }
+      ids.sort((a, b) => matches.get(b).match - matches.get(a).match);
+      if (ids.length) turns.push({role:'cards', ids});
+      track({stage:Math.max(usage.stage || 0, 4), bestMatch:ids.length ? matches.get(ids[0]).match : (usage.bestMatch || null)}, {searches:1, matchesShown:ids.length});
+      profile.lastScoredAt = Date.now(); persistProfile(); render(); return `Shown ${ids.length} cards.`;
+    } },
+  { name:'share_search_links', description:'Show live searches on major job sites. country = ISO 2-letter code.',
+    inputSchema:{ type:'object', properties:{ country:{type:'string'}, searches:{ type:'array', items:{ type:'object', properties:{ title:{type:'string'}, location:{type:'string'} }, required:['title'] } } }, required:['searches'] },
+    execute(i) { const links = buildLinks(String(i.country || profile.prefs.country || ''), Array.isArray(i.searches) ? i.searches.slice(0, 3) : []); if (links.length) { turns.push({role:'links', links}); render(); } return 'shown'; } },
+  { name:'search_web', description:'Search the live web now for fresh, open vacancies that fit this person (takes up to a minute). brief = one line: target titles, places, seniority, must-have skills. country = ISO 2-letter code. New vacancies are added to the feed; call list_jobs afterwards.',
+    inputSchema:{ type:'object', properties:{ brief:{type:'string'}, country:{type:'string'} }, required:['brief'] },
+    async execute(i) {
+      setStatus('Searching the web for live openings…');
+      const r = await window.__arsApi('kairo?a=hunt', {brief:String(i.brief || '').slice(0, 500), country:String(i.country || profile.prefs.country || '')});
+      try { const sn = await db.collection('kjobs').get(); for (const d of sn.docs) jobs.set(d.id, {...d.data(), id:d.id}); } catch {}
+      note(`Found ${(r.ids || []).length} live openings on the web`); track({}, {webSearches:1});
+      return `Added ${(r.ids || []).length} live vacancies to the feed. Now call list_jobs.`;
+    } },
+  { name:'save_feedback', description:'Save feedback about Kairo. rating 1-5 if given.',
+    inputSchema:{ type:'object', properties:{ rating:{type:'number'}, text:{type:'string'}, tags:{type:'array',items:{type:'string'}} }, required:['text'] },
+    async execute(i) { await addFeedback({rating:Number(i.rating) || null, text:String(i.text || ''), tags:list(i.tags), source:'chat'}); note('Feedback saved — thank you'); return 'saved'; } },
+  { name:'open_prep', description:'Open interview prep (all 20 fields) for a matched job.', inputSchema:{ type:'object', properties:{ jobId:{type:'string'} }, required:['jobId'] },
+    execute(i) { const m = matches.get(String(i.jobId)); if (!m) throw new Error('Not a shown match'); setTimeout(() => openPrep(m), 300); return 'opened'; } }
+];
+const note = t => { turns.push({role:'tool', content:t}); render(); };
+const setStatus = t => { if (statusEl) statusEl.textContent = t; };
+
+async function send(text) {
+  text = String(text || '').trim(); if (!text || busy) return;
+  if (!sample) return toast('Kairo\'s AI is being switched on. Please try again soon.');
+  if (/^(find my matches|search now|find new matches)$/i.test(text)) mode = 'chat';
+  if (tts && tts.active()) tts.stop().catch(() => {});
+  busy = true; closeTyper(); $('#hOrb').classList.add('busy'); $('#stopBtn').hidden = false; $('#kbBtn').hidden = true;
+  turns.push({role:'user', content:text}); render();
+  const wrap = document.createElement('div'); wrap.className = 'm ai q';
+  wrap.innerHTML = '<span class="orb busy"></span><div class="tx"><span class="thinking"><i></i><i></i><i></i></span><span class="stline">Thinking…</span></div>';
+  $('#stream').append(wrap); statusEl = wrap.querySelector('.stline'); window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'});
+  ctl = new AbortController();
+  const convo = turns.filter(t => (t.role === 'user' || t.role === 'assistant') && !t.local).slice(-20);
+  while (convo.length && convo[0].role !== 'user') convo.shift();
+  const lim = await sample.limits().catch(() => null);
+  try {
+    const { text:out } = await sample([{role:'user', content:brain()}, ...convo.map(t => ({role:t.role, content:t.content}))], {
+      cache:false, signal:ctl.signal, tools:lim && lim.tools ? tools : undefined,
+      onText:({text}) => { const b = splitOpts(text).body; if (b) wrap.querySelector('.tx').innerHTML = fmt(b); }
+    });
+    wrap.remove(); turns.push({role:'assistant', content:out}); speak(splitOpts(out).body);
+  } catch (e) {
+    wrap.remove();
+    if (e && e.text) turns.push({role:'assistant', content:e.text});
+    turns.push({role:'tool', content:{ cancelled:'Stopped', not_granted:'Kairo needs permission to use Claude — reload and allow', rate_limited:'Usage limit reached — try again shortly' }[e && e.code] || 'Something went wrong — tap to retry'});
+  }
+  busy = false; statusEl = null; $('#hOrb').classList.remove('busy'); $('#stopBtn').hidden = true; $('#kbBtn').hidden = !!dict;
+  render(); saveChat();
+}
+$('#stopBtn').onclick = () => ctl && ctl.abort();
+function showMatchesLocal() {
+  const thr = profile.prefs.threshold || 80;
+  const ids = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested' && (m.match >= thr || m.nearMiss)).sort((a, b) => b.match - a.match).map(m => m.id);
+  if (ids.length) turns.push({role:'cards', ids});
+  turns.push({role:'assistant', local:true, content:ids.length ? `Your ${ids.length} best fits.\nOPTIONS: Prep me for the top one | Find new matches | Daily email alerts` : 'Nothing saved yet.\nOPTIONS: Find my matches'});
+  render();
+}
+
+/* ---------- links ---------- */
+const INDEED = {in:'in.indeed.com', gb:'uk.indeed.com', uk:'uk.indeed.com', ae:'ae.indeed.com', sg:'sg.indeed.com', au:'au.indeed.com', ca:'ca.indeed.com', de:'de.indeed.com', fr:'fr.indeed.com', ie:'ie.indeed.com', nl:'nl.indeed.com', za:'za.indeed.com', nz:'nz.indeed.com', my:'malaysia.indeed.com', ph:'ph.indeed.com'};
+function buildLinks(cc, searches) {
+  cc = cc.toLowerCase(); const out = [], slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  for (const s of searches) {
+    const t = String(s.title || '').trim(), l = String(s.location || '').trim(); if (!t) continue; const lab = `${t}${l ? ' · ' + l : ''}`;
+    out.push({label:lab, site:'LinkedIn', url:`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(t)}${l ? '&location=' + encodeURIComponent(l) : ''}&f_TPR=r2592000`});
+    out.push({label:lab, site:'Google Jobs', url:`https://www.google.com/search?q=${encodeURIComponent(t + ' jobs ' + l)}&ibp=htl;jobs`});
+    out.push({label:lab, site:'Indeed', url:`https://${INDEED[cc] || 'www.indeed.com'}/jobs?q=${encodeURIComponent(t)}${l ? '&l=' + encodeURIComponent(l) : ''}&fromage=30`});
+    if (cc === 'in') out.push({label:lab, site:'Naukri', url:`https://www.naukri.com/${slug(t)}-jobs${l ? '-in-' + slug(l) : ''}`});
+  }
+  return out.slice(0, 9);
+}
+
+/* ---------- clicks on cards / tools ---------- */
+function saveMatch(m) { const {id, ...doc} = m; matches.set(id, m); return save(matchCol().doc(id), doc); }
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-a]'); if (!b) return; const a = b.dataset.a;
+  if (a === 'gaps') return startGaps();
+  if (a === 'find') return send('Find my matches');
+  if (a === 'reup') return $('#file').click();
+  if (a === 'all') return openShortlist();
+  if (a === 'xlsx') return exportXlsx(b);
+  if (a === 'pdf') return exportPdf(b);
+  if (a === 'alerts') return openAlerts();
+  if (a === 'fb') return openFeedback();
+  const card = b.closest('[data-id]'); const m = card && matches.get(card.dataset.id); if (!m) return;
+  if (a === 'practise') { track({}, {practiseClicks:1}); return; }
+  if (a === 'apply') { if (m.status !== 'Applied') { m.status = 'Applied'; saveMatch(m); track({stage:Math.max(usage.stage || 0, 5)}, {applies:1}); } return; }
+  if (a === 'prep') return openPrep(m);
+  if (a === 'save') { m.status = m.status === 'Saved' ? 'New' : 'Saved'; await saveMatch(m); b.setAttribute('aria-pressed', m.status === 'Saved'); toast(m.status === 'Saved' ? 'Saved' : 'Removed'); if (m.status === 'Saved') track({}, {saves:1}); return; }
+  if (a === 'skip') return askReason(m);
+});
+function askReason(m) {
+  openSheet(`<h2>Not for you?</h2><p class="sub">One tap and I'll learn.</p><div class="seg" style="margin-top:18px">${REASONS.map(r => `<button class="opt" data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>`);
+  $('#sheetBody').onclick = async e => { const b = e.target.closest('[data-r]'); if (!b) return; m.feedback = {vote:'down', reason:b.dataset.r, at:Date.now()}; m.status = 'Not interested'; await saveMatch(m); track({}, {rejects:1}); closeSheet(); render(); toast('Noted — I\'ll learn from that'); };
+}
+
+/* ---------- export ---------- */
+function loadScript(src) { return new Promise((ok, no) => { if (document.querySelector(`script[src="${src}"]`)) return ok(); const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.append(s); }); }
+function exportRows() {
+  const arr = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match);
+  return arr.map(m => { const j = jobOf(m), r = m.report || {}, rc = j.recruiter || {}, ct = j.contact || {}, na = 'Not publicly available';
+    const v = {1:m.match + '%', 2:j.status === 'closed' ? 'Closed' : 'Open', 3:j.company, 4:[j.title, j.experience, j.reqId && 'Req ' + j.reqId].filter(Boolean).join(' · '), 5:[j.location, j.workMode].filter(Boolean).join(' · '), 6:[j.postedDate, safeUrl(j.sourceUrl)].filter(Boolean).join(' · '),
+      7:(r.skillsMatched || []).map(s => `${s.area}: ${s.jd} ↔ ${s.you}`).join(' | '), 8:[m.mandatoryGaps, m.optionalGaps].filter(Boolean).join(' | '), 9:safeUrl(j.applyUrl) || '', 10:rc.name || na, 11:rc.role || na, 12:rc.email || na, 13:rc.linkedin || j.recruiterSearchUrl || na,
+      14:ct.name || na, 15:ct.role || na, 16:'Not verified', 17:r.whyRelevant || m.why || '', 18:ct.linkedin || na, 19:r.outreach ? `${r.applyTip} | ${r.outreach}` : '', 20:(r.mock || []).map(x => `${x.q} — ${x.points}`).join(' | ')};
+    return {m, j, v}; });
+}
+async function deliver(filename, data) {
+  if (!dl) return toast('Downloads aren\'t available in this view.');
+  try { await dl.save({filename, data}); toast('Saved ' + filename); }
+  catch (e) { if (e && e.code !== 'declined') toast(e && e.code === 'host_unavailable' ? 'Open Kairo in a browser to save files.' : 'Couldn\'t save the file.'); }
+}
+async function exportXlsx(btn) {
+  const rows = exportRows(); if (!rows.length) return toast('No matches to export yet.');
+  btn.disabled = true;
+  try {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+    const f = profile.fields.length ? profile.fields : FIELDS.map((_, i) => i + 1);
+    const aoa = [f.map(n => FIELDS[n - 1]), ...rows.map(r => f.map(n => r.v[n]))];
+    const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = f.map(n => ({wch:[1, 2, 16].includes(n) ? 10 : [4, 7, 19, 20].includes(n) ? 50 : 26}));
+    const p = profile.prefs, sc = profile.scan || {};
+    const ws2 = XLSX.utils.aoa_to_sheet([['Kairo match report', today()], [], ['Profile', sc.headline || ''], ['Resume score', sc.overall || ''], ['Target roles', p.roles.join(', ')], ['Locations', p.locations.join(', ')], ['Work mode', p.workMode], ['Salary', p.salary], ['Availability', p.notice], ['Minimum match', (p.threshold || 80) + '%']]);
+    ws2['!cols'] = [{wch:18}, {wch:60}];
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Matches'); XLSX.utils.book_append_sheet(wb, ws2, 'Profile');
+    track({}, {exportsXlsx:1});
+    await deliver(`Kairo-matches-${today()}.xlsx`, XLSX.write(wb, {type:'array', bookType:'xlsx'}));
+  } catch { toast('Couldn\'t build the Excel file.'); }
+  btn.disabled = false;
+}
+async function exportPdf(btn) {
+  const rows = exportRows(); if (!rows.length) return toast('No matches to export yet.');
+  btn.disabled = true;
+  try {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+    const doc = new window.jspdf.jsPDF({orientation:'landscape', unit:'pt', format:'a4'}), W = doc.internal.pageSize.getWidth();
+    doc.setFillColor(20, 20, 22); doc.rect(0, 0, W, 64, 'F'); doc.setFillColor(219, 0, 17); doc.rect(0, 64, W, 4, 'F');
+    doc.setTextColor(255, 255, 255); doc.setFontSize(20); doc.setFont('helvetica', 'bold'); doc.text('Kairo · your matched roles', 32, 40);
+    doc.setFontSize(10); doc.setFont('helvetica', 'normal'); doc.text(today(), W - 32, 40, {align:'right'});
+    const p = profile.prefs, sc = profile.scan || {};
+    doc.setTextColor(20, 20, 22); doc.setFontSize(11);
+    doc.text(`${sc.headline || ''}${sc.overall ? '  ·  Resume score ' + sc.overall : ''}  ·  ${p.roles.slice(0, 3).join(', ')}  ·  ${p.locations.slice(0, 3).join(', ')}  ·  ${rows.length} roles`, 32, 92, {maxWidth:W - 64});
+    doc.autoTable({ startY:108, margin:{left:32, right:32}, styles:{fontSize:9, cellPadding:6, valign:'top'}, headStyles:{fillColor:[20, 20, 22], textColor:255},
+      head:[['Fit', 'Role', 'Company', 'Location', 'Experience', 'Posted', 'Why it fits', 'Apply']],
+      body:rows.map(r => [r.m.match + '%', r.j.title, r.j.company, [r.j.location, r.j.workMode].filter(Boolean).join(' · '), r.j.experience || '', r.j.postedDate || '', r.m.why || '', safeUrl(r.j.applyUrl) || safeUrl(r.j.sourceUrl) || '']),
+      columnStyles:{0:{cellWidth:36, fontStyle:'bold'}, 6:{cellWidth:200}, 7:{cellWidth:140, textColor:[176, 0, 14]}},
+      didParseCell:d => { if (d.section === 'body' && d.column.index === 0) { const v = parseInt(d.cell.raw, 10); d.cell.styles.textColor = v >= 85 ? [10, 138, 92] : [163, 93, 0]; } } });
+    track({}, {exportsPdf:1});
+    await deliver(`Kairo-matches-${today()}.pdf`, doc.output('arraybuffer'));
+  } catch { toast('Couldn\'t build the PDF.'); }
+  btn.disabled = false;
+}
+
+/* ---------- sheets ---------- */
+function openSheet(html) { $('#sheetBody').innerHTML = html; $('#sheetBody').onclick = null; $('#scrim').classList.add('on'); $('#sheet').classList.add('on'); $('#sheet').scrollTop = 0; }
+function closeSheet() { $('#scrim').classList.remove('on'); $('#sheet').classList.remove('on'); }
+$('#scrim').onclick = closeSheet;
+addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet').classList.contains('on')) { e.preventDefault(); closeSheet(); } });
+$('#menuBtn').onclick = () => {
+  const p = profile.prefs, sc = profile.scan, s = schedule, n = [...matches.values()].filter(m => jobOf(m)).length;
+  openSheet(`<h2>${esc(myName || 'Kairo')}</h2><p class="sub">${esc(sc ? [sc.headline, p.roles.slice(0, 2).join(', ')].filter(Boolean).join(' · ') : 'Upload your resume to begin')}</p>
+  <div class="menu">
+    <button class="mi" data-go="resume">${sc ? `<span class="ring ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></span>` : `<span class="ico">${I.doc}</span>`}<div><b>Resume</b><small>${esc(profile.fileName || 'Not uploaded')}</small></div>${I.up}</button>
+    ${ars ? (() => { const r = readiness(); return `<a class="mi" href="/" style="text-decoration:none;color:inherit"><span class="ico">${I.mic}</span><div><b>Interview readiness</b><small>SQL ${r.sql ?? '–'}/10 · Credit risk ${r.reg ?? '–'}/10 · Exam ${r.exam == null ? 'not taken' : r.exam + '%' + (r.passed ? ' ✓' : '')}</small></div></a>`; })() : ''}
+    <button class="mi" data-go="short"><span class="ico">${I.list}</span><div><b>Shortlist</b><small>${n} role${n === 1 ? '' : 's'} · ${[...matches.values()].filter(m => m.status === 'Applied').length} applied</small></div></button>
+    <button class="mi" data-go="alerts"><span class="ico">${I.bell}</span><div><b>Daily email</b><small>${s && s.active ? esc(schedText(s)) : 'Off'}</small></div></button>
+    <button class="mi" data-go="export"><span class="ico">${I.xls}</span><div><b>Export</b><small>Excel or PDF</small></div></button>
+    <button class="mi" data-go="fb"><span class="ico">${I.star}</span><div><b>Feedback</b><small>Help Kairo get better</small></div></button>
+    <button class="mi" data-go="prefs"><span class="ico">${I.user}</span><div><b>Search preferences</b><small>${esc([p.workMode, p.salary, p.notice].filter(Boolean).join(' · ') || 'Set as we talk')}</small></div></button>
+  </div>
+  <div class="lbl">Appearance</div><div class="seg"><button class="opt" data-thm="dark" aria-pressed="${document.documentElement.dataset.theme !== 'light'}">Night</button><button class="opt" data-thm="light" aria-pressed="${document.documentElement.dataset.theme === 'light'}">Day</button></div>
+  <div class="lbl">Voice</div><div class="seg"><button class="opt" data-voice="1" aria-pressed="${voiceOn}">Voice guide on</button><button class="opt" data-voice="0" aria-pressed="${!voiceOn}">Silent</button></div>
+  <details style="margin-top:20px"><summary class="note" style="cursor:pointer">Fields in job details and exports</summary><div class="togs" style="margin-top:10px">${FIELDS.map((f, i) => `<label><input type="checkbox" data-f="${i + 1}" ${profile.fields.includes(i + 1) ? 'checked' : ''}>${i + 1}. ${esc(f)}</label>`).join('')}</div></details>
+  ${isOwner ? `<div class="lbl">Owner</div><p class="note" id="ownStats">Loading…</p><div class="row"><button class="btn p" data-go="insights">Insights</button><button class="btn o" data-go="learn">Learn from feedback</button></div>` : ''}
+  <p class="note" style="margin-top:18px">Kairo records how the app is used (steps reached, scores, actions) to keep improving it.</p>
+  <div class="row" style="margin-top:14px"><button class="btn o" data-go="reset">${I.redo}Start over</button></div>`);
+  if (isOwner) loadOwnerStats();
+  $('#sheetBody').onclick = e => {
+    const th = e.target.closest('[data-thm]'); if (th) { setTheme(th.dataset.thm); for (const x of document.querySelectorAll('[data-thm]')) x.setAttribute('aria-pressed', x === th); return; }
+    const vb = e.target.closest('[data-voice]'); if (vb) { setVoice(vb.dataset.voice === '1'); for (const x of document.querySelectorAll('[data-voice]')) x.setAttribute('aria-pressed', (x.dataset.voice === '1') === voiceOn); return; }
+    const f = e.target.closest('[data-f]'); if (f) { profile.fields = [...document.querySelectorAll('[data-f]:checked')].map(x => Number(x.dataset.f)); persistProfile(); return; }
+    const g = e.target.closest('[data-go]'); if (!g) return; const k = g.dataset.go;
+    if (k === 'short') return openShortlist();
+    if (k === 'alerts') return openAlerts();
+    if (k === 'fb') return openFeedback();
+    if (k === 'learn') return learnNow(g);
+    if (k === 'insights') return openInsights();
+    if (k === 'export') return openSheet(`<h2>Export your matches</h2><p class="sub">${[...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').length} roles, with the fields you chose.</p><div class="menu"><button class="mi" data-a="xlsx"><span class="ico">${I.xls}</span><div><b>Excel workbook</b><small>Every field, filterable</small></div></button><button class="mi" data-a="pdf"><span class="ico">${I.pdf}</span><div><b>PDF report</b><small>Clean summary to share</small></div></button></div>`);
+    closeSheet();
+    if (k === 'resume') return $('#file').click();
+    if (k === 'prefs') return send('I want to change my search preferences.');
+    if (k === 'reset') { turns = []; profile.scan = null; profile.answered = {}; mode = 'chat'; persistProfile(); saveChat(); render(); }
+  };
+};
+function openShortlist() {
+  const arr = [...matches.values()].filter(m => jobOf(m)).sort((a, b) => b.match - a.match);
+  openSheet(`<h2>Shortlist</h2><p class="sub">${arr.length} roles · ${arr.filter(m => m.status === 'Applied').length} applied</p><div class="menu">${arr.map(m => { const j = jobOf(m); return `<button class="mi" data-id="${esc(m.id)}" data-a="prep"><span class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}</b></span><div><b>${esc(j.title)}</b><small>${esc(j.company)} · ${esc(m.status || 'New')}</small></div></button>`; }).join('') || '<p class="note">Nothing yet.</p>'}</div>
+  ${arr.length ? `<div class="tools" style="margin-top:18px"><button class="tool" data-a="xlsx">${I.xls}Excel</button><button class="tool" data-a="pdf">${I.pdf}PDF</button></div>` : ''}`);
+}
+
+/* ---------- prep (20 fields) ---------- */
+function shareText(m) { const j = jobOf(m); return `${j.title} — ${j.company} (${j.location || ''})\nFit: ${m.match}% — ${m.why}\nApply: ${safeUrl(j.applyUrl) || safeUrl(j.sourceUrl) || 'careers site'}`; }
+function fieldsHtml(m, j) {
+  const r = m.report || {}, na = 'Not publicly available', on = n => profile.fields.includes(n);
+  const link = (u, t) => safeUrl(u) ? `<a href="${esc(safeUrl(u))}" target="_blank" rel="noopener">${esc(t)}</a>` : esc(na);
+  const rc = j.recruiter || {}, ct = j.contact || {}, wait = '<span class="note">Preparing…</span>';
+  const v = {1:`${clamp(m.match)}%`, 2:j.status === 'closed' ? 'Closed' : `Open${j.verifiedOn ? ' · verified ' + esc(j.verifiedOn) : ''}`, 3:esc(j.company), 4:`${esc(j.title)} · ${esc(j.experience || 'not stated')}${j.reqId ? ' · Req ' + esc(j.reqId) : ''}`, 5:esc([j.location, j.workMode].filter(Boolean).join(' · ')), 6:`${esc(j.postedDate || 'Not stated')} · ${link(j.sourceUrl, 'Source')}`,
+    7:r.skillsMatched ? r.skillsMatched.map(s => `${esc(s.area)}: ${esc(s.jd)} ↔ ${esc(s.you)}`).join('<br>') : wait, 8:`${esc(r.mandatoryGaps || m.mandatoryGaps || 'None')}${(r.optionalGaps || m.optionalGaps) ? '<br>Nice-to-have: ' + esc(r.optionalGaps || m.optionalGaps) : ''}`,
+    9:link(j.applyUrl, 'Apply'), 10:esc(rc.name || na), 11:esc(rc.role || na), 12:esc(rc.email || na), 13:rc.linkedin ? link(rc.linkedin, 'Profile') : (j.recruiterSearchUrl ? link(j.recruiterSearchUrl, 'Find recruiters') : esc(na)),
+    14:esc(ct.name || na), 15:esc(ct.role || na), 16:'Not verified as a 1st-degree connection', 17:esc(r.whyRelevant || m.why || ''), 18:ct.linkedin ? link(ct.linkedin, 'Profile') : esc(na),
+    19:r.outreach ? `${esc(r.applyTip)}<br><br>“${esc(r.outreach)}”` : wait, 20:r.mock ? r.mock.map(x => `<b style="color:var(--ink);font-size:14px">${esc(x.q)}</b>${esc(x.points)}`).join('<br><br>') + (r.gapQuestion ? `<br><br><b style="color:var(--ink);font-size:14px">Likely gap question</b>${esc(r.gapQuestion)}` : '') : wait};
+  return `<ul class="flds">${FIELDS.map((f, i) => on(i + 1) ? `<li><b>${i + 1}. ${esc(f)}</b>${v[i + 1]}</li>` : '').join('')}</ul>`;
+}
+function openPrep(m) {
+  const j = jobOf(m); if (!j) return; const url = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl);
+  openSheet(`<div data-id="${esc(m.id)}"><div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${esc(j.company)}</div><h2>${esc(j.title)}</h2></div></div>
+    <p>${esc(m.why)}</p>
+    <div class="row">${safeUrl(j.applyUrl) ? `<a class="btn p" data-a="apply" href="${esc(safeUrl(j.applyUrl))}" target="_blank" rel="noopener">Apply</a>` : ''}${(() => { const l = arsLink(j); return l ? `<a class="btn o" href="${esc(l.url)}" data-a="practise">Practise this interview</a>` : ''; })()}<button class="btn o" id="cpy">Copy</button><a class="btn o" href="https://wa.me/?text=${encodeURIComponent(shareText(m))}" target="_blank" rel="noopener">WhatsApp</a>${url ? `<a class="btn o" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}" target="_blank" rel="noopener">LinkedIn</a>` : ''}</div>
+    <div class="lbl">Status</div><div class="seg">${['New','Saved','Applied','Interview','Offer'].map(s => `<button class="opt" data-st="${s}" aria-pressed="${m.status === s}">${s}</button>`).join('')}</div>
+    <div class="lbl">Interview prep</div><div id="prepFields">${fieldsHtml(m, j)}</div></div>`);
+  $('#cpy').onclick = async () => { try { await navigator.clipboard.writeText(shareText(m)); toast('Copied'); } catch { toast('Copy blocked'); } };
+  $('#sheetBody').onclick = async e => { const s = e.target.closest('[data-st]'); if (!s) return; m.status = s.dataset.st; await saveMatch(m); for (const x of document.querySelectorAll('[data-st]')) x.setAttribute('aria-pressed', x.dataset.st === m.status); };
+  if (!m.report) prepare(m);
+}
+async function prepare(m) {
+  if (!sample || !profile.resumeText) return;
+  const j = jobOf(m);
+  try {
+    const r = await sample.json(`You are an elite recruiter and interview coach. Compare this resume with this vacancy; brief to win the interview. Specific, honest, facts from the resume and JD only.
+RESUME:\n${profile.resumeText.slice(0, 12000)}\n${arsSummary()}\nVACANCY: ${JSON.stringify({company:j.company, title:j.title, experience:j.experience, location:j.location, jd:j.jd, skills:j.skills})}
+Reply with only JSON: {"skillsMatched":[{"area":"","jd":"","you":""}] (3),"mandatoryGaps":"or None","optionalGaps":"","whyRelevant":"one line","applyTip":"one line","outreach":"LinkedIn note under 300 characters, first person, naming the role","mock":[{"q":"","points":""}] (3),"gapQuestion":"with an honest answer"}`, {modelTier:'complex'});
+    if (!r || !Array.isArray(r.skillsMatched)) throw 0;
+    m.report = r; await saveMatch(m);
+    if ($('#sheetBody').querySelector(`[data-id="${CSS.escape(m.id)}"]`)) $('#prepFields').innerHTML = fieldsHtml(m, j);
+  } catch { const el = $('#prepFields'); if (el) for (const w of el.querySelectorAll('.note')) w.textContent = 'Couldn\'t prepare — reopen to retry'; }
+}
+
+/* ---------- alerts sheet ---------- */
+const schedText = s => `${{daily:'Every day', weekdays:'Weekdays', weekly:'Every ' + (s.day || 'Monday'), twice:'Every day'}[s.frequency] || 'Every day'} · morning`;
+function schedDoc(s) { return { ...s, prefs:profile.prefs, fields:profile.fields, resumeText:s.consent && s.active ? (profile.resumeText || '').slice(0, 12000) : '', sentJobIds:s.sentJobIds || [], updatedAt:Date.now() }; }
+function openAlerts() {
+  const s = {active:true, frequency:'daily', time:'09:00', day:'Monday', minMatch:profile.prefs.threshold || 80, email:myEmail, consent:false, timezone:Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', ...(schedule || {})};
+  const seg = (k, vals, labels) => `<div class="seg">${vals.map((v, i) => `<button class="opt" data-k="${k}" data-v="${esc(v)}" aria-pressed="${String(s[k]) === String(v)}">${esc(labels ? labels[i] : v)}</button>`).join('')}</div>`;
+  openSheet(`<h2>Daily email</h2><p class="sub">New matches in your inbox, on your schedule.</p>
+    <div class="lbl">How often</div>${seg('frequency', ['daily','weekdays','weekly'], ['Every day','Weekdays','Weekly'])}
+    <div id="dayRow" ${s.frequency === 'weekly' ? '' : 'hidden'}><div class="lbl">Which day</div>${seg('day', ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])}</div>
+    <p class="note" style="margin-top:10px">Emails go out each morning around 9 am India time.</p>
+    <div class="lbl">Roles from</div>${seg('minMatch', [80, 85, 90], ['80%+','85%+','90%+'])}
+    <div class="lbl">Send to</div><input class="field" id="aEmail" type="email" value="${esc(s.email || '')}" placeholder="you@example.com" autocomplete="email">
+    <label class="check"><input type="checkbox" id="aConsent" ${s.consent ? 'checked' : ''}><span>Kairo may read my resume and preferences to pick my roles each time.</span></label>
+    <div class="row" style="margin-top:20px"><button class="btn p" id="aSave">${s.active && schedule && schedule.active ? 'Update' : 'Turn on'}</button>${schedule && schedule.active ? '<button class="btn o" id="aOff">Pause</button>' : ''}${mcp ? '<button class="btn o" id="aTest">Send a preview</button>' : ''}</div>
+    ${schedule && schedule.lastSent ? `<p class="note" style="margin-top:14px">Last sent ${esc(schedule.lastSent)} · ${esc(schedule.lastResult || '')}</p>` : ''}`);
+  $('#sheetBody').onclick = e => { const b = e.target.closest('[data-k]'); if (!b) return; const k = b.dataset.k; s[k] = k === 'minMatch' ? Number(b.dataset.v) : b.dataset.v; for (const x of document.querySelectorAll(`[data-k="${k}"]`)) x.setAttribute('aria-pressed', x.dataset.v === b.dataset.v); if (k === 'frequency') $('#dayRow').hidden = s.frequency !== 'weekly'; };
+  $('#aSave').onclick = async () => {
+    s.email = $('#aEmail').value.trim(); s.consent = $('#aConsent').checked;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email)) return toast('Add your email address');
+    if (!s.consent) return toast('Tick the permission box to continue');
+    s.active = true; s.maxRoles = s.maxRoles || 10; s.onlyNew = s.onlyNew !== false; s.research = s.research !== false;
+    schedule = s; await save(schedRef(), schedDoc(s)); track({alertsOn:true, alertFreq:s.frequency}); closeSheet(); note(`Daily email on · ${schedText(s)}`); speak(`Done. I'll email you ${schedText(s).toLowerCase().replace(' · ', ' at ')}.`); saveChat();
+  };
+  if ($('#aOff')) $('#aOff').onclick = async () => { schedule = {...schedule, active:false}; await save(schedRef(), schedDoc(schedule)); track({alertsOn:false}); closeSheet(); note('Daily email paused'); saveChat(); };
+  if ($('#aTest')) $('#aTest').onclick = () => sendPreview($('#aTest'), $('#aEmail').value.trim());
+}
+async function sendPreview(btn, to) {
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return toast('Add your email address');
+  const arr = exportRows().slice(0, 10);
+  const html = `<div style="font-family:Arial,sans-serif;max-width:640px;color:#141416"><div style="background:#141416;color:#fff;padding:16px 20px;border-bottom:4px solid #db0011;font-size:18px;font-weight:bold">Kairo · your matched roles</div><p>${arr.length} roles that fit you.</p>${arr.map(({m, j}) => { const u = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl); return `<div style="border:1px solid #e7e4df;border-radius:14px;padding:14px 16px;margin:10px 0"><div style="color:${m.match >= 85 ? '#0a8a5c' : '#a35d00'};font-weight:bold;font-size:20px">${esc(m.match)}%</div><b>${esc(j.title)}</b><br>${esc(j.company)} · ${esc(j.location || '')}<br><span style="color:#6b6b70">${esc(m.why)}</span>${u ? `<br><a href="${esc(u)}" style="color:#db0011">Apply</a>` : ''}</div>`; }).join('')}</div>`;
+  btn.disabled = true;
+  try { await mcp.callTool('Gmail', 'send_message', {to:[to], subject:`Kairo – ${arr.length} roles that fit you`, htmlBody:html, body:arr.map(({m}) => shareText(m)).join('\n\n') || 'No matches yet.'}); toast('Preview sent'); }
+  catch (e) { toast({server_not_connected:'Email isn\'t switched on yet', needs_reauth:'Reconnect Gmail in Claude settings', not_in_manifest:'Gmail access was declined', approval_required:'Allow the send to continue'}[e && e.code] || 'It may not have sent — check your Sent folder.'); }
+  btn.disabled = false;
+}
+
+/* ---------- feedback ---------- */
+function openFeedback() {
+  let rating = 0; const good = new Set(), bad = new Set();
+  const GOOD = ['Accurate matches','Smart questions','Fast','Easy to use','Great resume check','Useful exports'], BAD = ['Matches off target','Too few roles','Too many questions','Slow','Confusing','Want more countries'];
+  openSheet(`<h2>How's Kairo doing?</h2><p class="sub">Your feedback trains Kairo for everyone.</p>
+    <div class="lbl">Your rating</div><div class="stars">${[1, 2, 3, 4, 5].map(n => `<button class="star" data-s="${n}" aria-label="${n} stars">${I.star}</button>`).join('')}</div>
+    <div class="lbl">What worked</div><div class="seg">${GOOD.map(t => `<button class="opt" data-g="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join('')}</div>
+    <div class="lbl">What to improve</div><div class="seg">${BAD.map(t => `<button class="opt" data-b="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join('')}</div>
+    <div class="lbl">Anything else (optional)</div><textarea class="field" id="fbText" rows="3" placeholder="${dict ? 'Type, or use the mic in the chat' : 'Type here'}"></textarea>
+    <div class="row" style="margin-top:20px"><button class="btn p" id="fbSend">Send feedback</button></div>
+    ${(learnings.changelog || []).length ? `<div class="lbl">Improved from your feedback</div><ul class="flds">${learnings.changelog.slice(-3).reverse().map(c => `<li><b>${esc(c.date)}</b>${esc(c.text)}</li>`).join('')}</ul>` : ''}`);
+  $('#sheetBody').onclick = e => {
+    const s = e.target.closest('[data-s]'); if (s) { rating = Number(s.dataset.s); for (const x of document.querySelectorAll('.star')) x.classList.toggle('on', Number(x.dataset.s) <= rating); return; }
+    const g = e.target.closest('[data-g]'); if (g) { const t = g.dataset.g; good.has(t) ? good.delete(t) : good.add(t); g.setAttribute('aria-pressed', good.has(t)); return; }
+    const b = e.target.closest('[data-b]'); if (b) { const t = b.dataset.b; bad.has(t) ? bad.delete(t) : bad.add(t); b.setAttribute('aria-pressed', bad.has(t)); }
+  };
+  $('#fbSend').onclick = async () => {
+    if (!rating && !good.size && !bad.size && !$('#fbText').value.trim()) return toast('Tap a star or a tag');
+    await addFeedback({rating:rating || null, tags:[...good, ...[...bad].map(x => 'Improve: ' + x)], text:$('#fbText').value.trim(), source:'form'});
+    closeSheet(); note('Feedback received — thank you'); saveChat();
+  };
+}
+async function addFeedback(entry) { track(entry.rating ? {rating:entry.rating} : {}, {feedbacks:1}); myFeedback = [...myFeedback, {...entry, at:Date.now()}].slice(-40); await save(fbRef(), {entries:myFeedback, updatedAt:Date.now()}); }
+let allFb = [];
+async function loadOwnerStats() {
+  try { const s = await db.collection('kfeedback').get(); allFb = s.docs.flatMap(d => d.data().entries || []); const rated = allFb.filter(f => f.rating), avg = rated.length ? (rated.reduce((a, f) => a + f.rating, 0) / rated.length).toFixed(1) : '—'; const el = $('#ownStats'); if (el) el.textContent = `${s.size} people · ${allFb.length} responses · ${avg}/5${learnings.updated ? ' · learned ' + learnings.updated : ''}`; } catch {}
+}
+async function learnNow(btn) {
+  if (!sample || !allFb.length) return toast('No feedback yet.');
+  btn.disabled = true; btn.textContent = 'Learning…';
+  try {
+    const r = await sample.json(`You improve "Kairo", an AI career agent, from user feedback. Current rules: ${JSON.stringify(learnings.rules || [])}
+Feedback: ${JSON.stringify(allFb.sort((a, b) => b.at - a.at).slice(0, 150).map(f => ({rating:f.rating, tags:f.tags, text:String(f.text || '').slice(0, 400)})))}
+Write at most 12 short concrete rules for Kairo responding to repeated or important feedback (keep good rules, drop contradicted ones), plus 1–3 plain-English changelog lines.
+Reply with only JSON: {"rules":["..."],"changelog":["..."]}`, {modelTier:'complex', cache:false});
+    if (!r || !Array.isArray(r.rules)) throw 0;
+    const date = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+    learnings = {rules:r.rules.map(String).slice(0, 12), changelog:[...(learnings.changelog || []), ...(r.changelog || []).map(t => ({date, text:String(t)}))].slice(-30), updated:date, updatedAt:Date.now()};
+    await save(db.doc('kmeta/learnings'), learnings); toast('Kairo updated from feedback'); closeSheet();
+  } catch { toast('Couldn\'t learn just now.'); btn.disabled = false; btn.textContent = 'Learn from all feedback'; }
+}
+
+/* ---------- usage analytics ---------- */
+const usageRef = () => db.doc(`kusage/${uid}`);
+function track(patch = {}, inc = {}) {
+  if (!db || !uid) return;
+  usage = {...usage, ...patch}; for (const k in inc) usage[k] = (Number(usage[k]) || 0) + inc[k];
+  usage.lastSeen = Date.now();
+  clearTimeout(track.t); track.t = setTimeout(() => save(usageRef(), usage), 900);
+}
+const STAGES = ['Visited', 'Uploaded resume', 'Resume checked', 'Gaps filled', 'Saw matches', 'Applied'];
+async function openInsights() {
+  openSheet(`<h2>Insights</h2><p class="sub">How people use Kairo. Only you can see this.</p><div id="ins"><p class="note" style="margin-top:16px">Loading…</p></div>`);
+  try {
+    const snap = await db.collection('kusage').get(), rows = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    let names = {}; try { names = await user.profiles(rows.map(r => r.id)); } catch {}
+    const n = rows.length, wk = rows.filter(r => r.lastSeen > Date.now() - 7 * 864e5).length;
+    const avg = k => { const v = rows.map(r => Number(r[k])).filter(x => x > 0); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length * 10) / 10 : '—'; };
+    const sum = k => rows.reduce((a, r) => a + (Number(r[k]) || 0), 0);
+    const top = k => Object.entries(rows.reduce((m, r) => { if (r[k]) m[r[k]] = (m[r[k]] || 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    const funnel = STAGES.map((l, i) => [l, rows.filter(r => (r.stage || 0) >= i).length]);
+    $('#ins').innerHTML = `<div class="kpis"><div class="kpi"><b>${n}</b><small>People</small></div><div class="kpi"><b>${wk}</b><small>Active this week</small></div><div class="kpi"><b>${rows.filter(r => r.alertsOn).length}</b><small>Email alerts on</small></div><div class="kpi"><b>${avg('resumeScore')}</b><small>Avg resume score</small></div><div class="kpi"><b>${avg('rating')}</b><small>Avg rating /5</small></div><div class="kpi"><b>${sum('applies')}</b><small>Applications</small></div></div>
+      <div class="lbl">Journey</div><div class="funnel">${funnel.map(([l, v]) => `<div class="bar"><span>${l}</span><div class="track"><i style="--c:var(--acc);width:${n ? Math.round(v / n * 100) : 0}%"></i></div><em>${v}</em></div>`).join('')}</div>
+      <div class="lbl">Fields</div><div class="chips">${top('domain').map(([k, v]) => `<span class="chip ink">${esc(k)} · ${v}</span>`).join('') || '<span class="note">—</span>'}</div>
+      <div class="lbl">Countries</div><div class="chips">${top('country').map(([k, v]) => `<span class="chip ink">${esc(String(k).toUpperCase())} · ${v}</span>`).join('') || '<span class="note">—</span>'}</div>
+      <div class="lbl">Activity</div><div class="chips"><span class="chip">${sum('searches')} searches</span><span class="chip">${sum('matchesShown')} matches shown</span><span class="chip">${sum('saves')} saved</span><span class="chip">${sum('exportsXlsx') + sum('exportsPdf')} exports</span><span class="chip">${sum('feedbacks')} feedback</span><span class="chip">${sum('practiseClicks')} to ARS practice</span><span class="chip">${rows.filter(r => r.voiceOn).length} use voice</span></div>
+      <div class="lbl">People</div><ul class="ulist">${rows.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0)).slice(0, 30).map(r => { const p = names[r.id] || {}; return `<li><b>${esc(p.name || 'Someone')}</b><span class="chip ${r.stage >= 4 ? 'g' : r.stage >= 2 ? 'a' : ''}">${esc(STAGES[r.stage || 0])}</span><small>${esc([p.email, r.headline, r.domain, r.country && String(r.country).toUpperCase(), r.resumeScore && 'score ' + r.resumeScore, r.lastSeen && 'seen ' + new Date(r.lastSeen).toLocaleDateString('en-GB')].filter(Boolean).join(' · '))}</small></li>`; }).join('')}</ul>
+      <div class="row" style="margin-top:18px"><button class="btn o" id="insX">${I.xls}Export to Excel</button></div>`;
+    $('#insX').onclick = async () => {
+      try { await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+        const head = ['Name','Email','Stage','Headline','Field','Country','Seniority','Years','Resume score','Best match','Searches','Matches shown','Saved','Applied','Rejected','Excel exports','PDF exports','Alerts on','Rating','Voice','Visits','First seen','Last seen'];
+        const d = t => t ? new Date(t).toISOString().slice(0, 16).replace('T', ' ') : '';
+        const aoa = [head, ...rows.map(r => { const p = names[r.id] || {}; return [p.name || '', p.email || '', STAGES[r.stage || 0], r.headline || '', r.domain || '', r.country || '', r.seniority || '', r.years || '', r.resumeScore || '', r.bestMatch || '', r.searches || 0, r.matchesShown || 0, r.saves || 0, r.applies || 0, r.rejects || 0, r.exportsXlsx || 0, r.exportsPdf || 0, r.alertsOn ? 'Yes' : 'No', r.rating || '', r.voiceOn ? 'Yes' : 'No', r.visits || 0, d(r.firstSeen), d(r.lastSeen)]; })];
+        const wb = XLSX.utils.book_new(), ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = head.map(() => ({wch:16})); XLSX.utils.book_append_sheet(wb, ws, 'Users');
+        await deliver(`Kairo-usage-${today()}.xlsx`, XLSX.write(wb, {type:'array', bookType:'xlsx'})); } catch { toast('Couldn\'t build the file.'); }
+    };
+  } catch { $('#ins').innerHTML = '<p class="note">Couldn\'t load usage yet.</p>'; }
+}
+function applyTheme(t) { document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; }
+try { applyTheme(localStorage.getItem('baTheme') === 'light' ? 'light' : 'dark'); } catch { applyTheme('dark'); }
+const setTheme = n => { applyTheme(n); try { localStorage.setItem('baTheme', n); } catch {} };
+let skin = 'ars';
+
+/* ---------- voice + typing ---------- */
+function openTyper() { $('#typer').hidden = false; $('#mid').hidden = true; $('#micBtn').hidden = true; $('#kbBtn').hidden = true; $('#box').focus(); }
+function closeTyper() { $('#typer').hidden = true; $('#mid').hidden = false; $('#micBtn').hidden = !dict; $('#kbBtn').hidden = busy || !!dict; $('#box').value = ''; }
+$('#kbBtn').onclick = openTyper;
+$('#typer').onsubmit = e => { e.preventDefault(); const t = $('#box').value.trim(); closeTyper(); if (t) answer(t); };
+$('#box').onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#typer').requestSubmit(); } if (e.key === 'Escape') closeTyper(); };
+let heard = '', autoSend = false, lastHeard = 0, silenceT = null;
+function startMic() {
+  if (!dict) return openTyper();
+  if (dict.active()) { dict.stop().catch(() => {}); return; }
+  if (tts && tts.active()) tts.stop().catch(() => {});
+  heard = ''; autoSend = true; $('#micBtn').classList.remove('invite');
+  dict.start().catch(err => { autoSend = false; toast(err && err.code === 'not_granted' ? 'Microphone is off — tap an answer instead' : 'Couldn\'t start listening'); if (err && (err.code === 'not_granted' || err.code === 'unavailable')) { dict = null; $('#micBtn').hidden = true; $('#kbBtn').hidden = false; } });
+}
+$('#micBtn').onclick = startMic;
+const norm = t => String(t || '').toLowerCase().replace(/[^a-z0-9₹$£€%+ ]/g, ' ').replace(/\s+/g, ' ').trim();
+function matchSpoken(text, items, multi) {
+  const tn = ' ' + norm(text) + ' ';
+  const scored = items.map(it => { const w = norm(it).split(' ').filter(x => x.length > 1 || /\d/.test(x)); const hit = w.filter(x => tn.includes(' ' + x + ' ') || tn.includes(x)).length; return {it, s:w.length ? hit / w.length : 0}; });
+  if (multi) { const pick = scored.filter(x => x.s >= .6 && !/^skip$/i.test(x.it)).map(x => x.it); return pick.length ? pick.join(', ') : null; }
+  const best = scored.sort((a, b) => b.s - a.s)[0]; return best && best.s >= .6 ? best.it : null;
+}
+function voiceIntent(t) {
+  const x = norm(t);
+  if (/(upload|load|open|attach|add|pick|choose|select).*(resume|cv|file)|resume folder/.test(x)) { askForFile(); return true; }
+  if (/(voice off|stop talking|be quiet|mute|silent mode)/.test(x)) { setVoice(false); return true; }
+  if (/excel|spreadsheet/.test(x)) { exportXlsx({}); return true; }
+  if (/\bpdf\b/.test(x)) { exportPdf({}); return true; }
+  if (/(email|alert|notification|schedule)/.test(x) && !/^(yes|no)/.test(x)) { openAlerts(); speak('Choose how often and when — then tap Turn on.'); return true; }
+  if (/(show|see|open).*(match|jobs|roles|shortlist)/.test(x)) { showMatchesLocal(); return true; }
+  if (/(feedback|rate kairo|give a rating)/.test(x)) { openFeedback(); speak('Tap the stars and anything that stood out.'); return true; }
+  if (mode === 'gaps' && /^(skip|next|pass|not now)/.test(x)) { gapAnswer('Skip'); return true; }
+  return false;
+}
+function heardAnswer(t) {
+  t = t.trim(); if (!t) return;
+  if (voiceIntent(t)) return;
+  const items = (curOpts.items || []).filter(i => !/^(something else|other)$/i.test(i));
+  const hit = items.length ? matchSpoken(t, items, curOpts.kind === 'multi') : null;
+  answer(hit || t);
+}
+function askForFile() {
+  turns.push({role:'assistant', local:true, content:'Tap Choose file and pick your resume — for your privacy, browsers let only you open files.\nOPTIONS: Choose file'});
+  render(); speak('Sure. Tap Choose file and pick your resume. For your privacy, only you can open files on your device.');
+}
+let lastSpoken = '';
+function speak(t) {
+  if (!voiceOn || !tts || !t) return;
+  lastSpoken = t;
+  tts.speak(String(t).replace(/https:\/\/\S+/g, '').slice(0, 1900), {voice:'airy', language:'en-IN', rate:1.04}).catch(e => { if (e && e.code === 'not_granted') { setVoice(false); $('#ttsBtn').hidden = true; } });
+}
+function setVoice(on) {
+  voiceOn = !!on; $('#ttsBtn').setAttribute('aria-pressed', voiceOn);
+  try { localStorage.setItem('kairo-voice', voiceOn ? '1' : '0'); } catch {}
+  if (!voiceOn && tts) tts.stop().catch(() => {});
+  track({voiceOn});
+  toast(voiceOn ? 'Voice guide on' : 'Silent mode — tap answers');
+}
+$('#ttsBtn').onclick = () => setVoice(!voiceOn);
+function greet() {
+  const nm = myName ? myName.split(' ')[0] : '';
+  const line = profile.resumeText
+    ? `Welcome back${nm ? ', ' + nm : ''}. Tap an option, or tap the mic and tell me what you need.`
+    : `Hi${nm ? ' ' + nm : ''}, I'm Kairo, your career agent. Let's find your next role. Tap Upload resume and pick your file — I'll read it and tell you what's missing.`;
+  speak(line);
+}
+let greeted = false;
+/* ---------- living hero ---------- */
+const ROLES = ['role.', 'Senior Business Analyst', 'Regulatory Reporting BA', 'Data Analyst', 'Credit Risk BA', 'Lead Business Analyst', 'Product Owner', 'Data Governance Lead'];
+const CHIPS = [['Senior BA · Pune', 91], ['Regulatory Reporting BA · Gurugram', 88], ['Data Analyst · Noida', 86], ['Credit Risk BA · London', 87], ['Lead BA · Bengaluru', 90], ['COREP Analyst · Remote', 84], ['Product Owner · Mumbai', 85], ['Data Governance Lead · Pune', 89], ['IFRS 9 BA · Chennai', 86], ['SQL Data BA · Hyderabad', 92], ['Basel 3.1 BA · Leeds', 83], ['BI Analyst · Noida', 88]];
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fl = $('#float');
+  fl.innerHTML = CHIPS.map(([t, p], i) => `<span style="left:${i % 2 ? 58 + (i * 13) % 30 : 1 + (i * 11) % 22}%;--d:${13 + (i * 7) % 9}s;--dl:${-(i * 2.3).toFixed(1)}s">${esc(t)}<b>${p}%</b></span>`).join('');
+  const el = $('#roleWord'); let w = 0, c = ROLES[0].length, del = false;
+  if (!reduce) setInterval(() => {
+    if (!$('#hero') || $('#hero').hidden) return;
+    const word = ROLES[w];
+    if (!del) { c++; if (c > word.length) { del = true; c = word.length + 6; } }
+    else { c--; if (c <= 0) { del = false; w = (w + 1) % ROLES.length; c = 0; } }
+    el.textContent = ROLES[w].slice(0, Math.max(0, Math.min(c, ROLES[w].length))) || '​';
+  }, 85);
+  const ob = $('#startBtn');
+  if (!reduce) addEventListener('pointermove', e => { if (!$('#hero') || $('#hero').hidden) return; const r = ob.getBoundingClientRect(), dx = (e.clientX - (r.left + r.width / 2)) / innerWidth, dy = (e.clientY - (r.top + r.height / 2)) / innerHeight; ob.style.transform = `translate(${dx * 26}px,${dy * 26}px)`; });
+  const hero = $('#hero');
+  addEventListener('dragover', e => { if (!hero.isConnected || hero.hidden) return; e.preventDefault(); hero.classList.add('drag'); });
+  addEventListener('dragleave', e => { if (!e.relatedTarget) hero.classList.remove('drag'); });
+  addEventListener('drop', e => { e.preventDefault(); hero.classList.remove('drag'); const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) takeResume(f); });
+})();
+$('#startBtn').onclick = () => { greeted = true; if (!tts || !voiceOn) { $('#heroUp').focus(); return toast('Voice is off here — tap Upload resume'); } greet(); };
+$('#heroUp').addEventListener('click', () => { if (!greeted && voiceOn) { greeted = true; speak('Great. Pick your resume — PDF or Word.'); } });
+function initVoice() {
+  $('#kbBtn').hidden = !!dict;
+  if (dict) {
+    $('#micBtn').hidden = false;
+    dict.onState(({state}) => {
+      const live = state === 'listening' || state === 'starting';
+      $('#micBtn').classList.toggle('live', live); $('#hOrb').classList.toggle('listen', live);
+      if (live) { $('#mid').textContent = 'Listening…'; clearInterval(silenceT); silenceT = setInterval(() => { if (heard.trim() && Date.now() - lastHeard > 1400) dict.stop().catch(() => {}); }, 300); }
+      if (state === 'idle') { clearInterval(silenceT); const t = heard.trim(); heard = ''; if (autoSend && t) heardAnswer(t); autoSend = false; if (!busy) renderOpts(); }
+    });
+    dict.onPartial(({text}) => { if (text) { lastHeard = Date.now(); $('#mid').textContent = '“' + (heard + ' ' + text).trim().slice(-70) + '”'; } });
+    dict.onFinal(({text}) => { heard += text; lastHeard = Date.now(); $('#mid').textContent = '“' + heard.trim().slice(-70) + '”'; });
+  }
+  if (tts) {
+    $('#ttsBtn').hidden = false;
+    try { voiceOn = localStorage.getItem('kairo-voice') !== '0'; } catch {}
+    $('#ttsBtn').setAttribute('aria-pressed', voiceOn);
+    tts.onState(({state, reason}) => {
+      const on = state === 'speaking' || state === 'starting';
+      $('#hOrb').classList.toggle('busy', on || busy); $('#startBtn').classList.toggle('talking', on);
+      if (state === 'idle' && reason === 'completed' && dict && !busy && !$('#dock').hidden) { $('#micBtn').classList.add('invite'); $('#mid').textContent = 'Tap the mic and answer'; }
+    });
+  } else voiceOn = false;
+}
+
+/* ---------- start ---------- */
+function gate(msg) { $('#main').innerHTML = `<div class="gate"><div><span class="orb" style="--s:84px;display:inline-block;margin-bottom:22px"></span><h2 style="font-size:28px;margin:0 0 8px">Kairo is unavailable</h2><p class="note">${esc(msg || 'Please reload the page.')}</p></div></div>`; $('#dock').hidden = true; }
+render();
+(async () => {
+  if (!window.claude) return gate();
+  [db, user, sample, mcp, dict, tts, dl] = await Promise.all(['db', 'user', 'sample', 'mcp', 'dictation', 'tts', 'downloads'].map(n => claude.use(n).catch(() => null)));
+  if (!db || !user) {
+    const s = window.__arsSession || {};
+    if (!s.reg) {
+      $('#main').innerHTML = `<div class="gate"><div><span class="orb" style="--s:84px;display:inline-block;margin-bottom:22px"></span><h2 style="font-size:28px;margin:0 0 8px">Sign in with your ARS account</h2><p class="note" style="margin:0 0 22px">One account for interview practice and job matching.</p><button class="up" id="goSign" style="animation:none">Sign in or register free</button></div></div>`;
+      $('#dock').hidden = true;
+      $('#goSign').onclick = () => { try { localStorage.setItem('arsNext', '/kairo'); } catch {} location.href = '/'; };
+      return;
+    }
+    return gate('Kairo couldn\'t reach the ARS server. Check your connection and reload.');
+  }
+  uid = await user.id(); if (!uid) return gate();
+  try { const me = await user.me(); if (me) { myName = me.name || ''; myEmail = me.email || ''; } } catch {}
+  isOwner = !!(await user.isOwner().catch(() => false));
+  if (myName) $('#hiName').textContent = `Hi ${myName.split(' ')[0]},`;
+  try {
+    const [ps, cs, ss, fs, ls] = await Promise.all([profRef().get(), chatRef().get(), schedRef().get(), fbRef().get(), db.doc('kmeta/learnings').get()]);
+    if (ps.exists) { const d = ps.data(); profile = {...profile, ...d, prefs:{...DEF, ...(d.prefs || {})}, fields:Array.isArray(d.fields) ? [...d.fields] : profile.fields, answered:{...(d.answered || {})}}; hunt = d.hunt || null; }
+    if (cs.exists) turns = [...(cs.data().turns || [])];
+    if (ss.exists) { const {resumeText, prefs, fields, ...rest} = ss.data(); schedule = {...rest}; }
+    if (fs.exists) myFeedback = [...(fs.data().entries || [])];
+    if (ls.exists) learnings = {...ls.data()};
+  } catch {}
+  try { const a = await db.doc('attempts/' + uid).get(); ars = a.exists ? a.data() : null; } catch {}
+  if (ars && ars.profile && profile.prefs.expMin == null && Number(ars.profile.totalExp)) { profile.prefs.expMin = Math.max(0, Number(ars.profile.totalExp) - 2); profile.prefs.expMax = Number(ars.profile.totalExp) + 4; }
+  try { const us = await usageRef().get(); usage = us.exists ? {...us.data()} : {}; } catch {}
+  track({firstSeen:usage.firstSeen || Date.now(), device:matchMedia('(max-width:700px)').matches ? 'mobile' : 'desktop', skin, stage:usage.stage || 0}, {visits:1});
+  addEventListener('pointerdown', () => { if (!greeted && profile.resumeText && voiceOn) { greeted = true; setTimeout(greet, 60); } }, {once:true, capture:true});
+  if (profile.resumeText && !turns.some(t => t.role === 'scan') && profile.scan) turns.push({role:'scan', snap:profile.scan});
+  initVoice();
+  let first = true;
+  db.collection('kjobs').onSnapshot(s => {
+    jobs.clear(); for (const d of s.docs) jobs.set(d.id, {...d.data(), id:d.id});
+    if (first) {
+      first = false;
+      if (profile.resumeText && turns.length) {
+        const fresh = profile.lastScoredAt ? [...jobs.values()].filter(j => j.status !== 'closed' && Date.parse(j.addedOn || 0) > profile.lastScoredAt - 864e5).length : 0;
+        const wo = [...new Set([...(fresh ? ['Find new matches'] : []), ...defaultOpts().items])].slice(0, 4);
+        turns.push({role:'assistant', local:true, content:`Welcome back${myName ? ', ' + myName.split(' ')[0] : ''}.${fresh ? ` ${fresh} new role${fresh === 1 ? '' : 's'} since your last visit.` : ''}\nOPTIONS: ${wo.join(' | ')}`});
+      }
+    }
+    render();
+  }, () => {});
+  matchCol().onSnapshot(s => { matches.clear(); for (const d of s.docs) matches.set(d.id, {...d.data(), id:d.id}); render(); }, () => {});
+  schedRef().onSnapshot(s => { if (s.exists) { const {resumeText, prefs, fields, ...rest} = s.data(); schedule = {...rest}; } }, () => {});
+  render();
+})();
+}
+</script>
+</body>
+</html>
