@@ -550,9 +550,16 @@ function stage() {
 /* ---------- rendering ---------- */
 function scanHtml(sc) {
   if (!sc) return '';
-  const bars = [['Completeness', sc.scores.completeness], ['Impact', sc.scores.impact], ['Skills clarity', sc.scores.skills], ['ATS-ready', sc.scores.ats]];
+  const S = sc.scores || {}, bars = [['Completeness', S.completeness], ['Impact', S.impact], ['Skills clarity', S.skills], ['ATS-ready', S.ats]];
   const miss = sc.missing || [];
   const done = miss.filter(g => g.key in profile.answered).length;
+  if (!sc.scores) return `<div class="card scan">
+    <div class="sh"><div class="ring big g" style="--p:100"><b style="font-size:20px">${sc.years ? esc(sc.years) + '<small> yrs</small>' : '✓'}</b></div>
+      <div><div class="co">Quick read</div><h3>${esc(sc.headline || 'Your profile')}</h3><div class="who">${esc([sc.location, sc.domain].filter(Boolean).join(' · ') || 'Resume saved')}</div></div></div>
+    ${(sc.skills || []).length ? `<div class="lbl">Skills I spotted</div><div class="chips">${sc.skills.map(x => `<span class="chip ink">${esc(x)}</span>`).join('')}</div>` : ''}
+    <div class="lbl">Your search profile · ${miss.filter(g => g.key in profile.answered).length}/${miss.length} done</div><ul class="gaps">${miss.map(g => { const ok = g.key in profile.answered; return `<li class="${ok ? 'ok' : ''}"><span class="dot"></span><div><b>${esc(g.label)}</b><small>${esc(g.why || '')}</small></div>${ok ? `<span class="val">${esc(profile.answered[g.key])}</span>` : '<span class="chip a">Ask</span>'}</li>`; }).join('')}</ul>
+    <div class="row" style="margin-top:18px">${pendingGaps().length ? `<button class="btn p" data-a="gaps">Answer ${pendingGaps().length} questions · 30 sec</button>` : `<button class="btn p" data-a="find">Find my matches</button>`}<button class="btn o" data-a="reup">${I.redo}Upload updated</button></div>
+  </div>`;
   return `<div class="card scan">
     <div class="sh"><div class="ring big ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></div>
       <div><div class="co">Resume strength</div><h3>${esc(sc.headline || 'Your profile')}</h3><div class="who">${esc([sc.years ? sc.years + ' yrs' : '', sc.location, sc.domain].filter(Boolean).join(' · '))}</div>${sc.prev != null && sc.overall > sc.prev ? `<span class="delta">+${clamp(sc.overall) - clamp(sc.prev)} since last version</span>` : ''}</div></div>
@@ -675,7 +682,14 @@ $('#file').onchange = e => { const f = e.target.files[0]; e.target.value = ''; i
 for (const id of ['#heroUp', '#attBtn']) $(id).onclick = () => $('#file').click();
 
 async function assess() {
-  if (!sample) return aiOff();
+  if (!sample) {
+    const r = quickScan(); profile.scan = r; track({stage:Math.max(usage.stage || 0, 2), headline:r.headline, years:r.years || null});
+    turns.push({role:'scan', snap:{...r}});
+    const pg = pendingGaps().length;
+    turns.push({role:'assistant', content:`${myName ? myName.split(' ')[0] + ', I' : 'I'} read your resume${r.years ? ` — ${r.years} years` : ''}${r.headline && r.headline !== 'Your profile' ? `, ${r.headline}` : ''}. ${pg ? `${pg} quick questions and your profile is ready.` : 'Your profile is ready.'}\nOPTIONS: ${pg ? `Fill ${pg} gaps` : 'Find my matches'} | Upload updated resume`});
+    await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body);
+    return;
+  }
   if (busy) return; busy = true; $('#hOrb').classList.add('busy'); renderOpts();
   const wrap = document.createElement('div'); wrap.className = 'm ai';
   const STEPS = ['Reading your resume', 'Understanding your experience', 'Measuring impact and skills', 'Spotting what\'s missing'];
@@ -741,6 +755,8 @@ function gapAnswer(t) {
     const k = g.prefKey;
     if (LISTKEYS.includes(k)) p[k] = list(t);
     else if (k === 'threshold') p.threshold = Math.min(100, Math.max(50, parseInt(t, 10) || 80));
+    else if (k === 'totalExp') { const n = parseInt(t, 10); if (!isNaN(n)) { const hi = /\+/.test(t) ? n + 10 : (parseInt(t.split(/[–-]/)[1], 10) || n); p.expMin = n; p.expMax = hi; } p.notes = [p.notes, `Total experience: ${t}`].filter(Boolean).join('; '); }
+    else if (k === 'baExp') p.notes = [p.notes, `BA experience: ${t}`].filter(Boolean).join('; ');
     else if (k && k in DEF && k !== 'notes') p[k] = t;
     else p.notes = [p.notes, `${g.label}: ${t}`].filter(Boolean).join('; ');
   }
@@ -755,11 +771,52 @@ function gapAnswer(t) {
 }
 
 /* ---------- step 4: agent search ---------- */
+/* Built-in quick read: works without the AI, so the interview always starts right after the upload */
+const CITIES = ['Bengaluru','Bangalore','Pune','Gurugram','Gurgaon','Noida','Delhi','Mumbai','Hyderabad','Chennai','Kolkata','Ahmedabad','Jaipur','Chandigarh','Kochi','Indore','London','Leeds','Manchester','Glasgow','Edinburgh','Birmingham','Dubai','Singapore','New York','Toronto','Sydney'];
+const SKILLS = ['SQL','Teradata','Oracle','Snowflake','Python','Power BI','Tableau','Excel','JIRA','Confluence','Agile','Scrum','UAT','ETL','Data lineage','Data mapping','Data warehouse','Reconciliation','COREP','FINREP','Basel','IFRS 9','Credit risk','Regulatory reporting','BCBS 239','Azure','AWS','Databricks','OBIEE','Requirements','User stories','Stakeholder management','Process mapping','Visio'];
+function localScan(text) {
+  const t = String(text || ''), lo = t.toLowerCase();
+  const yrs = [...t.matchAll(/(\d{1,2})\s*\+?\s*(?:years|yrs)/gi)].map(m => Number(m[1])).filter(n => n > 0 && n < 45);
+  const head = (t.split(/\n/).map(s => s.trim()).find(s => s.length < 90 && /(analyst|manager|lead|engineer|consultant|developer|owner|architect|specialist|officer|head|director|scientist)/i.test(s)) || '').replace(/[|•·,(–-].*$/, '').trim();
+  const city = CITIES.find(c => new RegExp('\\b' + c + '\\b', 'i').test(t)) || '';
+  const skills = SKILLS.filter(s => lo.includes(s.toLowerCase())).slice(0, 10);
+  const ba = /business analyst|\bba\b/i.test(t);
+  return {headline:head || 'Your profile', years:yrs.length ? Math.max(...yrs) : null, location:city.replace('Bangalore', 'Bengaluru').replace('Gurgaon', 'Gurugram'), skills, ba, domain:/bank|bfsi|credit|lending|financ/i.test(t) ? 'Banking & finance' : ''};
+}
+function bands(y) {
+  if (y == null) return ['₹10–20 L', '₹20–30 L', '₹30–45 L', '₹45 L+'];
+  if (y < 3) return ['₹3–6 L', '₹6–10 L', '₹10–15 L', '₹15 L+'];
+  if (y < 6) return ['₹8–12 L', '₹12–18 L', '₹18–25 L', '₹25 L+'];
+  if (y < 10) return ['₹15–22 L', '₹22–30 L', '₹30–40 L', '₹40 L+'];
+  return ['₹25–35 L', '₹35–45 L', '₹45–60 L', '₹60 L+'];
+}
+function quickScan() {
+  const q = localScan(profile.resumeText), r = readiness(), known = profile.answered, p = profile.prefs;
+  const total = r.totalExp != null && r.totalExp !== '' ? Number(r.totalExp) : q.years;
+  const roles = q.ba || (ars && r.baExp) ? ['Senior Business Analyst', 'Lead Business Analyst', 'Regulatory Reporting BA', 'Data Business Analyst', 'Product Owner'] : [q.headline, 'Senior ' + q.headline, 'Lead ' + q.headline].filter((x, i, a) => x && a.indexOf(x) === i);
+  const cities = [...new Set([q.location, 'Bengaluru', 'Pune', 'Gurugram', 'Noida', 'Mumbai', 'Hyderabad'].filter(Boolean))].slice(0, 6).concat(['Remote', 'Open to relocate']);
+  const exp = ['0–3 yrs', '3–6 yrs', '6–10 yrs', '10–15 yrs', '15+ yrs'];
+  const asks = [
+    {key:'roles', label:'Target designation', why:'Decides which roles I search', prefKey:'roles', multi:true, question:'Which designation are you targeting?', options:roles.slice(0, 5)},
+    {key:'loc', label:'Job cities', why:'Filters vacancies by place', prefKey:'locations', multi:true, question:'Which cities are you targeting?', options:cities},
+    {key:'sal', label:'Salary package', why:'Avoids roles below your level', prefKey:'salary', question:'What package are you targeting (per year)?', options:bands(total)},
+    total == null ? {key:'totalExp', label:'Total experience', why:'Matches seniority', prefKey:'totalExp', question:'How many years of total experience do you have?', options:exp} : null,
+    (q.ba || roles[0] === 'Senior Business Analyst') && !(ars && r.baExp != null && r.baExp !== '') ? {key:'baExp', label:'BA experience', why:'Recruiters filter on BA years', prefKey:'baExp', question:'How many of those years as a Business Analyst?', options:exp} : null,
+    {key:'mode', label:'Work mode', why:'On-site, hybrid or remote', prefKey:'workMode', question:'How do you prefer to work?', options:['Hybrid', 'Remote', 'On-site', 'Any']},
+    {key:'notice', label:'Notice period', why:'Many roles need quick joiners', prefKey:'notice', question:'When can you join?', options:['Immediately', '15 days', '30 days', '60 days', '90 days']},
+    {key:'fit', label:'Match level', why:'How close a fit to show', prefKey:'threshold', question:'How close a fit should I show you?', options:['80%+', '85%+', '90%+']}
+  ].filter(Boolean).filter(g => !(g.key in known)).map(g => ({...g, kind:'ask'}));
+  if (total != null && p.expMin == null) { p.expMin = Math.max(0, total - 2); p.expMax = total + 4; }
+  if (q.location && !p.country) p.country = CITIES.indexOf(q.location) < 16 ? 'in' : '';
+  return {quick:true, name:myName, headline:q.headline, years:total, location:q.location, domain:q.domain, skills:q.skills, strengths:[], scores:null, overall:null, missing:asks};
+}
 function aiOff() {
+  const done = profile.scan && !pendingGaps().length;
+  const lead = done ? 'Your search profile is complete and saved.' : 'Your resume is saved.';
   turns.push({role:'assistant', local:true, content:isOwner
-    ? "Your resume is saved, but I can't read it yet: my AI isn't switched on for this site. Add ANTHROPIC_API_KEY in Vercel → Project → Settings → Environment Variables, redeploy, then tap Check my resume.\nOPTIONS: Check my resume"
-    : "Your resume is saved. My AI is being switched on for this site — please come back a little later and tap Check my resume.\nOPTIONS: Check my resume"});
-  render(); speak(isOwner ? 'Your resume is saved, but my AI is not switched on for this site yet.' : 'Your resume is saved. Please come back a little later.');
+    ? `${lead} Live job search needs my AI, which isn't switched on for this site yet: add ANTHROPIC_API_KEY in Vercel → Project → Settings → Environment Variables and redeploy.\nOPTIONS: Find my matches | Daily email alerts`
+    : `${lead} I'll start finding matches as soon as live search is switched on — turn on daily email and I'll send them to you.\nOPTIONS: Daily email alerts | Find my matches`});
+  render(); speak(lead + ' Live job search is being switched on.');
 }
 function personalSignals() {
   const out = [];
