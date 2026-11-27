@@ -675,7 +675,7 @@ $('#file').onchange = e => { const f = e.target.files[0]; e.target.value = ''; i
 for (const id of ['#heroUp', '#attBtn']) $(id).onclick = () => $('#file').click();
 
 async function assess() {
-  if (!sample) return toast('Kairo\'s AI is being switched on. Please try again soon.');
+  if (!sample) return aiOff();
   if (busy) return; busy = true; $('#hOrb').classList.add('busy'); renderOpts();
   const wrap = document.createElement('div'); wrap.className = 'm ai';
   const STEPS = ['Reading your resume', 'Understanding your experience', 'Measuring impact and skills', 'Spotting what\'s missing'];
@@ -755,6 +755,12 @@ function gapAnswer(t) {
 }
 
 /* ---------- step 4: agent search ---------- */
+function aiOff() {
+  turns.push({role:'assistant', local:true, content:isOwner
+    ? "Your resume is saved, but I can't read it yet: my AI isn't switched on for this site. Add ANTHROPIC_API_KEY in Vercel → Project → Settings → Environment Variables, redeploy, then tap Check my resume.\nOPTIONS: Check my resume"
+    : "Your resume is saved. My AI is being switched on for this site — please come back a little later and tap Check my resume.\nOPTIONS: Check my resume"});
+  render(); speak(isOwner ? 'Your resume is saved, but my AI is not switched on for this site yet.' : 'Your resume is saved. Please come back a little later.');
+}
 function personalSignals() {
   const out = [];
   for (const m of matches.values()) { const j = jobOf(m); if (!j) continue;
@@ -833,7 +839,7 @@ const setStatus = t => { if (statusEl) statusEl.textContent = t; };
 
 async function send(text) {
   text = String(text || '').trim(); if (!text || busy) return;
-  if (!sample) return toast('Kairo\'s AI is being switched on. Please try again soon.');
+  if (!sample) return aiOff();
   if (/^(find my matches|search now|find new matches)$/i.test(text)) mode = 'chat';
   if (tts && tts.active()) tts.stop().catch(() => {});
   busy = true; closeTyper(); $('#hOrb').classList.add('busy'); $('#stopBtn').hidden = false; $('#kbBtn').hidden = true;
