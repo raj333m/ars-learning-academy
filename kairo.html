@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-skin="sunrise">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Kairo · ARS Learning Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -15,12 +17,13 @@
    PICTURE: the agent's red orb, a resume scorecard (score ring, bars, skill chips, gap checklist), swipeable match cards.
    COLOUR and TYPE: dark-first ink with one warm red; fit shown in green/amber; Plus Jakarta Sans.
    LAYOUT: one 720px column, slim step rail under the header, thumb-reach answer dock, sheets for the rest. */
-:root{color-scheme:dark;--bg:#050817;--panel:#0c1129;--ink:#e8ecf7;--mute:#98a4c6;--line:#232a55;--soft:#141b40;--acc:#00b38c;--acc2:#2ee6b0;--accsoft:#0f3a2c;--onacc:#03241c;--good:#3fe08f;--goodsoft:#0f3a2c;--warn:#f5c542;--warnsoft:#3a2d0c;--bad:#ff7a66;--shadow:0 12px 32px rgba(0,0,0,.42);--glow:rgba(46,230,176,.34);--orb:radial-gradient(circle at 32% 28%,#e9fff6 0,#2ee6b0 24%,#00a884 50%,#0a4f6e 80%,#071033 100%);--bgfx:radial-gradient(900px 520px at 12% -160px,rgba(0,179,140,.20),transparent 70%),radial-gradient(900px 560px at 100% -120px,rgba(123,97,255,.20),transparent 70%)}
-:root[data-theme=light]{color-scheme:light;--bg:#f0f2f5;--panel:#ffffff;--ink:#111b21;--mute:#667781;--line:#e3e7ea;--soft:#f5f6f6;--acc:#00a884;--acc2:#008069;--accsoft:#d9fdd3;--onacc:#fff;--good:#1f8b4c;--goodsoft:#dff5e7;--warn:#a86b00;--warnsoft:#fdf0d5;--bad:#c4321d;--shadow:0 10px 26px rgba(17,27,33,.08);--glow:rgba(0,168,132,.32);--orb:radial-gradient(circle at 32% 28%,#ffffff 0,#7ff0cf 24%,#00a884 52%,#00695a 82%,#033d35 100%);--bgfx:radial-gradient(900px 480px at 50% -200px,rgba(0,168,132,.14),transparent 70%)}
+:root,[data-skin=sunrise]{color-scheme:light;--bg:#fff8f1;--panel:#ffffff;--ink:#1e1b3a;--mute:#6e6a86;--line:#efe3d5;--soft:#fbefe3;--acc:#e2550f;--acc2:#c2410c;--accsoft:#ffe8d6;--onacc:#fff;--good:#0e8a63;--goodsoft:#e2f5ec;--warn:#b46a00;--warnsoft:#fff1d9;--bad:#d93f3f;--shadow:0 12px 30px rgba(120,60,20,.10);--glow:rgba(242,107,29,.42);--orb:radial-gradient(circle at 34% 28%,#fff2c6 0,#ffc463 22%,#ff8a3d 48%,#e8461e 72%,#8f2410 100%);--bgfx:radial-gradient(1000px 560px at 50% -200px,rgba(255,170,90,.45),transparent 70%),radial-gradient(700px 420px at 100% 100%,rgba(255,214,170,.35),transparent 70%)}
+[data-skin=ember]{color-scheme:dark;--bg:#0b0b0d;--panel:#151518;--ink:#f3f2f0;--mute:#9c9ca3;--line:#2a2a2f;--soft:#1f1f23;--acc:#db0011;--acc2:#ff3b4a;--accsoft:#2b1013;--onacc:#fff;--good:#3fd39b;--goodsoft:#0f2a21;--warn:#f4b350;--warnsoft:#2d2110;--bad:#ff4d5b;--shadow:0 10px 30px rgba(0,0,0,.45);--glow:rgba(219,0,17,.38);--orb:radial-gradient(circle at 32% 30%,#ff8a93 0,#ff2a3a 28%,#db0011 55%,#5c0007 100%);--bgfx:radial-gradient(900px 520px at 50% -180px,rgba(219,0,17,.22),transparent 70%)}
+[data-skin=ocean]{color-scheme:dark;--bg:#061a22;--panel:#0c2731;--ink:#eaf6f8;--mute:#8fb0b8;--line:#173c48;--soft:#0f303b;--acc:#12b5ab;--acc2:#3fe0d4;--accsoft:#0e3a3c;--onacc:#03201f;--good:#43d39b;--goodsoft:#0d3027;--warn:#f4b350;--warnsoft:#33270f;--bad:#ff6b6b;--shadow:0 12px 30px rgba(0,0,0,.4);--glow:rgba(18,181,171,.42);--orb:radial-gradient(circle at 32% 28%,#d8fffb 0,#6ff1e6 22%,#12b5ab 50%,#0a5d78 78%,#062a3a 100%);--bgfx:radial-gradient(1000px 560px at 50% -200px,rgba(18,181,171,.30),transparent 70%)}
 *{box-sizing:border-box;min-width:0}
 [hidden]{display:none!important}
 html,body{margin:0}
-body{background:var(--bgfx) no-repeat,var(--bg);background-attachment:fixed;color:var(--ink);font:16px/1.5 "Segoe UI","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+body{background:var(--bgfx) no-repeat,var(--bg);background-attachment:fixed;color:var(--ink);font:16px/1.5 "Plus Jakarta Sans",system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none;padding:0}
 :focus-visible{outline:2px solid var(--acc2);outline-offset:3px}
@@ -30,12 +33,9 @@ a{color:var(--acc2)}
 /* header + steps */
 .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 .top .row{display:flex;align-items:center;gap:10px;height:60px;flex-wrap:nowrap}
-.brand{display:flex;align-items:center;flex:none}.arslogo{width:34px;height:34px;display:block}
-.mods{display:flex;gap:4px;margin-left:10px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px}
-.mods a{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;font-size:14px;font-weight:700;color:var(--mute);text-decoration:none;white-space:nowrap}
-.mods a:hover{color:var(--ink)}
-.mods a[aria-current=page]{background:var(--acc);color:var(--onacc)}
-.mods a[aria-current=page] .orb{box-shadow:none}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.arslink{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}
+.arslink:hover{border-color:var(--acc);color:var(--acc2)}.arslink .ic{width:16px;height:16px}
 .sp{flex:1}
 .hbtn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
 .hbtn:hover{background:var(--soft)}
@@ -245,19 +245,19 @@ a{color:var(--acc2)}
 #toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;max-width:90vw;text-align:center}
 #toast.on{opacity:1}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-@media(max-width:520px){.hero h1{font-size:clamp(34px,9.5vw,44px)!important}.mods{margin-left:6px}.mods a{padding:7px 11px;font-size:13px}.hbtn{width:38px;height:38px}.float span{font-size:11px;padding:6px 10px}.float span:nth-child(n+9){display:none}.float{-webkit-mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%);mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%)}.orbbtn{width:176px;height:176px}.orbbtn .orb{--s:116px}.col{padding:0 16px}.deck{margin:0 -16px 12px;padding-inline:16px}.m.st{padding-left:0}.bar{grid-template-columns:92px 1fr 30px}.scan .sh{gap:14px}.ring.big{width:96px;height:96px}.ring.big b{font-size:28px}.card{padding:18px}}
+@media(max-width:520px){.hero h1{font-size:clamp(34px,9.5vw,44px)!important}.arslink{padding:7px 11px}.hbtn{width:38px;height:38px}.float span{font-size:11px;padding:6px 10px}.float span:nth-child(n+9){display:none}.float{-webkit-mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%);mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%)}.orbbtn{width:176px;height:176px}.orbbtn .orb{--s:116px}.col{padding:0 16px}.deck{margin:0 -16px 12px;padding-inline:16px}.m.st{padding-left:0}.bar{grid-template-columns:92px 1fr 30px}.scan .sh{gap:14px}.ring.big{width:96px;height:96px}.ring.big b{font-size:28px}.card{padding:18px}}
 </style>
 </head>
 <body>
 <header class="top"><div class="col">
   <div class="row">
-    <a class="brand" href="/" title="ARS Learning Academy"><svg class="arslogo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#00a884"/><path d="M9 13.5L20 8l11 5.5L20 19z" fill="#d9fdd3"/><path d="M13 16v4.5c2 1.8 4.4 2.6 7 2.6s5-.8 7-2.6V16" fill="none" stroke="#d9fdd3" stroke-width="1.6"/><text x="20" y="34" text-anchor="middle" font-family="Segoe UI,Helvetica,Arial,sans-serif" font-weight="800" font-size="10.5" letter-spacing=".6" fill="#fff">ARS</text></svg></a>
-    <nav class="mods" aria-label="ARS modules"><a href="/">Practise</a><a href="/#exam">Exam</a><a href="/kairo" aria-current="page"><span class="orb" id="hOrb" style="--s:14px"></span>Jobs</a></nav>
+    <div class="brand"><span class="orb" id="hOrb" style="--s:28px"></span>Kairo</div>
     <span class="sp"></span>
-    <button class="hbtn" id="ttsBtn" aria-label="Voice guide" title="Voice guide" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
+    <a class="arslink" href="/" title="ARS Learning Academy: practise BA, SQL and regulatory reporting interview questions"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg><span>Practise questions</span></a>
+    <button class="hbtn" id="ttsBtn" aria-label="Voice mode" title="Voice mode" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
     <button class="hbtn" id="menuBtn" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
   </div>
-  <div class="steps" id="steps" hidden><div>Resume</div><div>Check</div><div>Gaps</div><div>Matches</div></div>
+  <div class="steps" id="steps" hidden><div>Resume</div><div>Questions</div><div>Matches</div><div>Practise</div></div>
 </div></header>
 
 <main class="col" id="main">
@@ -357,41 +357,6 @@ a{color:var(--acc2)}
     me: async () => { const s = await ensure(); const p = s.uid ? await arsProfile(s.uid) : {}; return { id: s.uid, name: p.name || "", email: p.email || "", isOwner: !!s.admin }; },
     profiles: async ids => { const s = await ensure(); const out = {}; if (!s.admin) return out; await Promise.all((ids || []).map(async id => { const p = await arsProfile(id); out[id] = { id, name: p.name || "", email: p.email || "" }; })); return out; }
   };
-  /* AI: Claude through this site's server, with the page's tools run here in the browser */
-  const JSONSYS = "Reply with only one valid JSON value and nothing else: no markdown, no code fences, no commentary.";
-  function loose(text) { const t = String(text || "").trim(); try { return JSON.parse(t); } catch (e) {} const f = t.match(/```(?:json)?\s*([\s\S]*?)```/); if (f) { try { return JSON.parse(f[1]); } catch (e) {} } const a = [t.indexOf("{"), t.indexOf("[")].filter(x => x >= 0), i = a.length ? Math.min(...a) : -1, j = Math.max(t.lastIndexOf("}"), t.lastIndexOf("]")); if (i >= 0 && j > i) { try { return JSON.parse(t.slice(i, j + 1)); } catch (e) {} } return undefined; }
-  async function sample(input, opts) {
-    opts = opts || {};
-    const messages = [];
-    for (const t of (typeof input === "string" ? [{ role: "user", content: input }] : input)) { const last = messages[messages.length - 1]; if (last && last.role === t.role) last.content += "\n\n" + t.content; else messages.push({ role: t.role, content: String(t.content) }); }
-    const tools = (opts.tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
-    let text = "";
-    for (let round = 0; round < 8; round++) {
-      if (opts.signal && opts.signal.aborted) throw { code: "cancelled", text };
-      let r;
-      try { r = await api("kairo?a=chat", { messages, tools, tier: opts.modelTier, system: opts.__json ? JSONSYS : undefined }); }
-      catch (e) { throw { code: e.code === "rate_limited" ? "rate_limited" : e.status === 401 ? "not_granted" : "upstream_error", message: e.message, text }; }
-      if (opts.signal && opts.signal.aborted) throw { code: "cancelled", text };
-      const content = r.content || [], t = content.filter(c => c.type === "text").map(c => c.text).join("");
-      if (t) { text += (text ? "\n\n" : "") + t; try { opts.onText && opts.onText({ text, delta: t }); } catch (e) {} }
-      const uses = content.filter(c => c.type === "tool_use");
-      if (r.stop_reason !== "tool_use" || !uses.length) break;
-      messages.push({ role: "assistant", content });
-      const results = [];
-      for (const u of uses) {
-        const tool = (opts.tools || []).find(x => x.name === u.name); let out, bad = false;
-        try { out = tool ? await tool.execute(u.input || {}, { signal: opts.signal }) : "Unknown tool"; } catch (e) { out = "Error: " + ((e && e.message) || e); bad = true; }
-        results.push({ type: "tool_result", tool_use_id: u.id, content: (typeof out === "string" ? out : JSON.stringify(out)).slice(0, 32000), is_error: bad });
-      }
-      messages.push({ role: "user", content: results });
-    }
-    if (!text.trim()) throw { code: "empty_completion", text: "" };
-    return { text, truncated: false, modelTierApplied: opts.modelTier || "default" };
-  }
-  sample.json = async (input, opts) => { const { text } = await sample(input, Object.assign({}, opts || {}, { tools: undefined, __json: true })); const v = loose(text); if (v === undefined) throw { code: "invalid_json", text }; return v; };
-  sample.limits = async () => ({ maxPromptBytes: 262144, tools: { maxCount: 16 } });
-  /* email: only to the member's own registered address */
-  const mcp = { callTool: async (srv, tool, input) => { if (srv === "Gmail" && tool === "send_message") return { payload: await api("email", input) }; const e = new Error("Not available"); e.code = "server_not_connected"; throw e; } };
   /* voice input: the browser's speech recognition, Indian English */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const dictation = SR ? (() => {
@@ -435,13 +400,10 @@ a{color:var(--acc2)}
   /* downloads */
   const downloads = { save: async ({ filename, data }) => { const blob = data instanceof Blob ? data : new Blob([data]); const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = filename || "download"; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 8000); return { status: "saved" }; } };
   const ready = name => api(name).then(r => !!r.ready).catch(() => false);
-  const aiReady = ready("kairo"), mailReady = ready("email");
   window.claude = { use: async name => {
     switch (name) {
       case "user": await ensure(); return user;
       case "db": { const s = await ensure(); return s.reg ? db : null; }
-      case "sample": return (await aiReady) ? sample : null;
-      case "mcp": return (await mailReady) ? mcp : null;
       case "dictation": return dictation;
       case "tts": return tts;
       case "downloads": return downloads;
@@ -476,8 +438,8 @@ const I = {
 };
 
 const FIELDS = ['Match %','Status','Company','Job title, experience & Req ID','Location','Posted & source','Skills matched','Gaps','Apply link','Recruiter','Recruiter role','Email','Recruiter LinkedIn','Referral contact','Contact role','Connection','Why relevant','Contact LinkedIn','Recommended action','Mock interview'];
-const DEF = {direction:'',roles:[],locations:[],workMode:'',seniority:'',expMin:null,expMax:null,industries:[],companyTypes:[],mustSkills:[],avoid:[],companiesInclude:[],companiesExclude:[],salary:'',notice:'',country:'',threshold:80,postedWithin:30,notes:''};
-const LISTKEYS = ['roles','locations','industries','companyTypes','mustSkills','avoid','companiesInclude','companiesExclude'];
+const DEF = {sqlLevel:'',regAreas:[],direction:'',roles:[],locations:[],workMode:'',seniority:'',expMin:null,expMax:null,industries:[],companyTypes:[],mustSkills:[],avoid:[],companiesInclude:[],companiesExclude:[],salary:'',notice:'',country:'',threshold:80,postedWithin:30,notes:''};
+const LISTKEYS = ['regAreas','roles','locations','industries','companyTypes','mustSkills','avoid','companiesInclude','companiesExclude'];
 const REASONS = ['Wrong role','Wrong location','Too junior','Too senior','Wrong industry','Missing a key skill','Company not for me','Already applied'];
 
 let db, user, sample, mcp, dict, tts, dl, uid, ctl, busy = false, isOwner = false, voiceOn = true, usage = {}, myName = '', myEmail = '';
@@ -506,7 +468,6 @@ async function persistProfile() {
   await save(profRef(), {...profile, updatedAt:Date.now()});
   const p = profile.prefs;
   save(searchRef(), { roles:p.roles, locations:p.locations, country:p.country, workMode:p.workMode, seniority:p.seniority, expMin:p.expMin, expMax:p.expMax, industries:p.industries, companyTypes:p.companyTypes, mustSkills:p.mustSkills, companiesInclude:p.companiesInclude, companiesExclude:p.companiesExclude, postedWithin:p.postedWithin, huntRequestedAt:hunt ? hunt.at : null, huntBrief:hunt ? hunt.brief : '', updatedAt:Date.now() });
-  if (schedule && schedule.active && schedule.consent) save(schedRef(), schedDoc(schedule));
 }
 
 /* ---------- helpers ---------- */
@@ -542,8 +503,8 @@ const fmt = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(https:\
 const pendingGaps = () => ((profile.scan && profile.scan.missing) || []).filter(g => g.kind !== 'resume' && !(g.key in profile.answered));
 function stage() {
   if (!profile.resumeText) return 0;
-  if (!profile.scan) return 1;
-  if (pendingGaps().length) return 2;
+  if (!profile.scan || pendingGaps().length) return 1;
+  if (![...matches.values()].some(m => jobOf(m))) return 2;
   return 3;
 }
 
@@ -589,7 +550,7 @@ function deckHtml(ids) {
   const arr = ids.map(id => matches.get(id)).filter(m => m && jobOf(m));
   if (!arr.length) return '';
   return `<div class="deck">${arr.map(cardHtml).join('')}<button class="more" data-a="all">All ${matches.size} saved roles</button></div>
-    <div class="tools"><button class="tool" data-a="xlsx">${I.xls}Excel</button><button class="tool" data-a="pdf">${I.pdf}PDF</button><button class="tool" data-a="alerts">${I.bell}Daily email</button><button class="tool" data-a="fb">${I.star}Rate</button></div>`;
+    <div class="tools"><button class="tool" data-a="xlsx">${I.xls}Excel</button><button class="tool" data-a="pdf">${I.pdf}PDF</button><a class="tool" href="/" data-a="practise">${I.mic}Practise questions</a><button class="tool" data-a="fb">${I.star}Rate</button></div>`;
 }
 const linksHtml = t => `<div class="card lc"><div class="lbl" style="margin-top:0">Live searches for you</div>${(t.links || []).map(l => `<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)} <span>${esc(l.site)} ↗</span></a>`).join('')}</div>`;
 function turnHtml(t, i, lastAi) {
@@ -613,7 +574,6 @@ function render() {
   $('#stream').innerHTML = turns.map((t, i) => t.role === 'scan' && i === lastScan ? scanHtml(profile.scan) : turnHtml(t, i, lastAi)).join('');
   requestAnimationFrame(() => { for (const b of document.querySelectorAll('.track i')) b.style.width = b.dataset.w + '%'; });
   const st = stage(); [...$('#steps').children].forEach((d, i) => d.className = i < st ? 'done' : i === st ? 'now' : '');
-  if (st === 3 && [...matches.values()].some(m => jobOf(m))) $('#steps').lastElementChild.className = 'done';
   renderOpts();
   requestAnimationFrame(() => window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
 }
@@ -621,8 +581,8 @@ function defaultOpts() {
   const n = [...matches.values()].filter(m => jobOf(m) && m.match >= (profile.prefs.threshold || 80) && m.status !== 'Not interested').length;
   if (!profile.resumeText) return {kind:'single', items:['Upload my resume']};
   if (!profile.scan) return {kind:'single', items:['Check my resume']};
-  if (pendingGaps().length) return {kind:'single', items:[`Fill ${pendingGaps().length} gaps`, 'Upload updated resume']};
-  return {kind:'single', items:[n ? `Show my ${n} matches` : 'Find my matches', 'Find new matches', 'Daily email alerts', 'Refine my search']};
+  if (pendingGaps().length) return {kind:'single', items:[`Answer ${pendingGaps().length} questions`, 'Upload updated resume']};
+  return {kind:'single', items:[n ? `Show my ${n} matches` : 'View my matches', 'Change my answers', 'Practise questions']};
 }
 function renderOpts() {
   const box = $('#opts'); $('#qmeta').hidden = true;
@@ -631,7 +591,7 @@ function renderOpts() {
   if (mode === 'gaps' && gapQueue[gapIdx]) {
     const g = gapQueue[gapIdx];
     o = {kind:g.multi ? 'multi' : 'single', items:[...(g.options || []), 'Skip']};
-    $('#qmeta').hidden = false; $('#qmeta').textContent = `Gap ${gapIdx + 1} of ${gapQueue.length}`;
+    $('#qmeta').hidden = false; $('#qmeta').textContent = `Question ${gapIdx + 1} of ${gapQueue.length}`;
   } else {
     const last = [...turns].reverse().find(t => t.role === 'assistant' || t.role === 'user' || t.role === 'file');
     o = last && last.role === 'assistant' ? splitOpts(last.content) : null;
@@ -654,9 +614,8 @@ function answer(t) {
   if (mode === 'gaps') return gapAnswer(t);
   if (/^choose file$/.test(x) || /(upload|update|new).*(resume|cv)/.test(x)) return $('#file').click();
   if (/^check my resume$/.test(x)) return assess();
-  if (/^fill \d+ gaps$/.test(x)) return startGaps();
+  if (/^(fill|answer) \d+ (gaps|questions)$/.test(x)) return startGaps();
   if (/^show my \d+ matches$/.test(x)) return showMatchesLocal();
-  if (/^daily email alerts$/.test(x)) return openAlerts();
   if (/^rate (these|kairo)/.test(x)) return openFeedback();
   if (/excel|pdf|export/.test(x)) return $('#menuBtn').click() || setTimeout(() => document.querySelector('[data-go="export"]')?.click(), 50);
   if (/^prep me for the top one$/.test(x)) { const top = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match)[0]; if (top) return openPrep(top); }
@@ -682,60 +641,12 @@ $('#file').onchange = e => { const f = e.target.files[0]; e.target.value = ''; i
 for (const id of ['#heroUp', '#attBtn']) $(id).onclick = () => $('#file').click();
 
 async function assess() {
-  if (!sample) {
+  if (busy) return;
     const r = quickScan(); profile.scan = r; track({stage:Math.max(usage.stage || 0, 2), headline:r.headline, years:r.years || null});
-    turns.push({role:'scan', snap:{...r}});
-    const pg = pendingGaps().length;
-    turns.push({role:'assistant', content:`${myName ? myName.split(' ')[0] + ', I' : 'I'} read your resume${r.years ? ` — ${r.years} years` : ''}${r.headline && r.headline !== 'Your profile' ? `, ${r.headline}` : ''}. ${pg ? `${pg} quick questions and your profile is ready.` : 'Your profile is ready.'}\nOPTIONS: ${pg ? `Fill ${pg} gaps` : 'Find my matches'} | Upload updated resume`});
-    await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body);
-    return;
-  }
-  if (busy) return; busy = true; $('#hOrb').classList.add('busy'); renderOpts();
-  const wrap = document.createElement('div'); wrap.className = 'm ai';
-  const STEPS = ['Reading your resume', 'Understanding your experience', 'Measuring impact and skills', 'Spotting what\'s missing'];
-  wrap.innerHTML = `<span class="orb busy"></span><div class="scanning">${STEPS.map(s => `<span>${I.check}${s}</span>`).join('')}</div>`;
-  $('#stream').append(wrap); window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'});
-  const spans = [...wrap.querySelectorAll('.scanning span')]; let k = 0; spans[0].classList.add('on');
-  const tick = setInterval(() => { if (k < spans.length - 1) { spans[k].classList.add('ok'); k++; spans[k].classList.add('on'); } }, 1600);
-  const answered = Object.keys(profile.answered);
-  try {
-    const r = await sample.json(`You are an elite career agent and resume expert with 20 years' experience across every industry and country. Assess this resume for job search and find what is missing to match the person to vacancies that fit 80–90%+.
-RESUME:\n${profile.resumeText.slice(0, 16000)}\n
-Already known from the person (do NOT ask again): ${JSON.stringify(profile.answered)}
-${arsSummary()}
-Reply with only JSON:
-{"name":"","headline":"current or last job title, short","seniority":"entry|mid|senior|lead|executive","years":0,"location":"city","country":"ISO 2-letter","domain":"industry/field, 1-3 words",
-"known":{"roles":["target titles ONLY if the resume states an objective/target"],"locations":["preferred cities ONLY if stated (current city alone is not a preference)"],"salary":"expected pay ONLY if stated","workMode":"only if stated","notice":"notice period/availability only if stated"},
-"skills":["8 top skills/tools, 1-3 words each"],"strengths":["3 strengths, each under 9 words, specific"],
-"scores":{"completeness":0,"impact":0,"skills":0,"ats":0},"overall":0,
-"missing":[{"key":"slug","label":"under 5 words","why":"under 10 words","kind":"ask|resume","prefKey":"roles|locations|workMode|salary|notice|industries|companyTypes|seniority|threshold|mustSkills|note","multi":false,"question":"under 12 words, a direct question","options":["2-6 answers, under 28 chars each, most likely first"]}]}
-Rules for "missing":
-- kind "ask" = job-search facts needed to search. Ask ONLY what the resume, "known" and the person's earlier answers don't already settle — never ask for something the resume clearly states. Typical gaps: target roles (prefKey roles, multi true, options = 4-5 concrete titles that suit this resume, including a step up), where to work (locations, multi true, their city, nearby hubs, "Remote", "Open to relocate"), work mode (workMode), expected salary (salary, 4 realistic bands for their level and market in local currency), availability (notice), how close a fit to show (threshold, options "80%+","85%+","90%+"). Add industries or company types only if it matters for this profile. At most 7 ask items, ordered by impact.
-- kind "resume" = things to improve in the resume itself (e.g. no measurable results, missing skills section, no LinkedIn/contact, unexplained gap, missing certifications common for this role). At most 4, each with options ["I'll update it","Skip"].
-- Scores 0-100, honest; overall = weighted (completeness 25, impact 30, skills 25, ats 20).`, {modelTier:'default', cache:false});
-    clearInterval(tick); spans.forEach(s => s.classList.add('on', 'ok'));
-    if (!r || !r.scores) throw 0;
-    const prev = profile.scan ? profile.scan.overall : null;
-    r.missing = (Array.isArray(r.missing) ? r.missing : []).filter(g => g && g.key && g.label).map(g => ({...g, key:String(g.key), options:list(g.options).slice(0, 6)})).filter(g => !answered.includes(g.key) || g.kind === 'resume');
-    r.prev = prev; profile.scan = r; track({resumeScore:clamp(r.overall), headline:String(r.headline || ''), domain:String(r.domain || ''), country:String(r.country || ''), seniority:String(r.seniority || ''), years:Number(r.years) || null, stage:Math.max(usage.stage || 0, 2)});
-    const p = profile.prefs, kn = r.known || {};
-    for (const k of ['roles', 'locations']) if (Array.isArray(kn[k]) && kn[k].filter(Boolean).length && !p[k].length) p[k] = list(kn[k]);
-    for (const k of ['salary', 'workMode', 'notice']) if (kn[k] && !p[k]) p[k] = String(kn[k]);
-    r.missing = r.missing.filter(g => g.kind === 'resume' || !(Array.isArray(kn[g.prefKey]) ? kn[g.prefKey].filter(Boolean).length : kn[g.prefKey]));
-    if (r.country && !p.country) p.country = String(r.country).toLowerCase();
-    if (r.seniority && !p.seniority) p.seniority = String(r.seniority);
-    if (r.years && p.expMin == null) { p.expMin = Math.max(0, Number(r.years) - 2); p.expMax = Number(r.years) + 4; }
-    await new Promise(res => setTimeout(res, 500));
-    wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
-    turns.push({role:'scan', snap:{...r}});
-    const pg = pendingGaps().length;
-    turns.push({role:'assistant', content:`${r.name ? r.name.split(' ')[0] + ', y' : 'Y'}our resume scores ${clamp(r.overall)}. ${pg ? `${pg} quick answers and I can search.` : 'I have what I need.'}\nOPTIONS: ${pg ? `Fill ${pg} gaps | Upload updated resume` : 'Find my matches | Upload updated resume'}`});
-    await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + ((r.strengths || [])[0] ? ' Your standout: ' + r.strengths[0] + '.' : ''));
-  } catch (e) {
-    clearInterval(tick); wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
-    turns.push({role:'tool', content:e && e.code === 'rate_limited' ? 'Usage limit reached — try again shortly' : 'I couldn\'t finish reading that — tap to retry'});
-    turns.push({role:'assistant', local:true, content:'Shall I try again?\nOPTIONS: Check my resume | Upload updated resume'}); render();
-  }
+  turns.push({role:'scan', snap:{...r}});
+  const pg = pendingGaps().length;
+  turns.push({role:'assistant', content:`${myName ? myName.split(' ')[0] + ', I' : 'I'} read your resume${r.years ? ` — ${r.years} years` : ''}${r.headline && r.headline !== 'Your profile' ? `, ${r.headline}` : ''}. ${pg ? `${pg} quick questions and your profile is ready.` : 'Your profile is ready.'}\nOPTIONS: ${pg ? `Answer ${pg} questions` : 'Find my matches'} | Upload updated resume`});
+  await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body);
 }
 
 /* ---------- step 3: gaps (instant, no waiting) ---------- */
@@ -764,10 +675,10 @@ function gapAnswer(t) {
   gapIdx++;
   if (gapIdx < gapQueue.length) { persistProfile(); askGap(); return; }
   mode = 'chat'; persistProfile(); track({stage:Math.max(usage.stage || 0, 3), gapsAnswered:Object.keys(profile.answered).length});
-  const resumeFixes = ((profile.scan && profile.scan.missing) || []).filter(x => x.kind === 'resume' && !(x.key in profile.answered));
-  turns.push({role:'tool', content:'Profile complete'});
-  if (resumeFixes.length) { turns.push({role:'assistant', local:true, content:`All set. Improving ${resumeFixes.length} resume items could lift your fit — search now or update first?\nOPTIONS: Search now | Upload updated resume`}); render(); saveChat(); }
-  else { render(); send('Find my matches'); }
+  const p2 = profile.prefs;
+  turns.push({role:'tool', content:'Search profile complete'});
+  turns.push({role:'assistant', local:true, content:`All set${myName ? ', ' + myName.split(' ')[0] : ''}. ${[p2.roles.slice(0, 2).join(' / '), p2.locations.slice(0, 3).join(', '), p2.salary].filter(Boolean).join(' · ')}\nOPTIONS: View my matches | Change my answers`});
+  render(); saveChat(); speak('All set. Tap View my matches.');
 }
 
 /* ---------- step 4: agent search ---------- */
@@ -793,15 +704,17 @@ function bands(y) {
 function quickScan() {
   const q = localScan(profile.resumeText), r = readiness(), known = profile.answered, p = profile.prefs;
   const total = r.totalExp != null && r.totalExp !== '' ? Number(r.totalExp) : q.years;
-  const roles = q.ba || (ars && r.baExp) ? ['Senior Business Analyst', 'Lead Business Analyst', 'Regulatory Reporting BA', 'Data Business Analyst', 'Product Owner'] : [q.headline, 'Senior ' + q.headline, 'Lead ' + q.headline].filter((x, i, a) => x && a.indexOf(x) === i);
+  const roles = ['Senior Business Analyst', 'Lead Business Analyst', 'Regulatory Reporting BA', 'Data / SQL Business Analyst', 'Credit Risk BA', 'Product Owner'];
   const cities = [...new Set([q.location, 'Bengaluru', 'Pune', 'Gurugram', 'Noida', 'Mumbai', 'Hyderabad'].filter(Boolean))].slice(0, 6).concat(['Remote', 'Open to relocate']);
   const exp = ['0–3 yrs', '3–6 yrs', '6–10 yrs', '10–15 yrs', '15+ yrs'];
   const asks = [
-    {key:'roles', label:'Target designation', why:'Decides which roles I search', prefKey:'roles', multi:true, question:'Which designation are you targeting?', options:roles.slice(0, 5)},
+    {key:'roles', label:'Target designation', why:'Decides which roles I match', prefKey:'roles', multi:true, question:'Which designation are you targeting?', options:roles},
     {key:'loc', label:'Job cities', why:'Filters vacancies by place', prefKey:'locations', multi:true, question:'Which cities are you targeting?', options:cities},
     {key:'sal', label:'Salary package', why:'Avoids roles below your level', prefKey:'salary', question:'What package are you targeting (per year)?', options:bands(total)},
     total == null ? {key:'totalExp', label:'Total experience', why:'Matches seniority', prefKey:'totalExp', question:'How many years of total experience do you have?', options:exp} : null,
-    (q.ba || roles[0] === 'Senior Business Analyst') && !(ars && r.baExp != null && r.baExp !== '') ? {key:'baExp', label:'BA experience', why:'Recruiters filter on BA years', prefKey:'baExp', question:'How many of those years as a Business Analyst?', options:exp} : null,
+    !(ars && r.baExp != null && r.baExp !== '') ? {key:'baExp', label:'BA experience', why:'Recruiters filter on BA years', prefKey:'baExp', question:'How many of those years as a Business Analyst?', options:exp} : null,
+    {key:'sql', label:'SQL level', why:'Most of these roles test SQL', prefKey:'sqlLevel', question:'How strong is your SQL?', options:['Advanced', 'Intermediate', 'Basic', 'Not using SQL']},
+    {key:'reg', label:'Regulatory areas', why:'Matches regulatory reporting roles', prefKey:'regAreas', multi:true, question:'Which regulatory areas do you know?', options:['COREP / FINREP', 'Basel 3.1 / CRR', 'IFRS 9', 'Credit risk', 'Liquidity', 'AML / KYC', 'None yet']},
     {key:'mode', label:'Work mode', why:'On-site, hybrid or remote', prefKey:'workMode', question:'How do you prefer to work?', options:['Hybrid', 'Remote', 'On-site', 'Any']},
     {key:'notice', label:'Notice period', why:'Many roles need quick joiners', prefKey:'notice', question:'When can you join?', options:['Immediately', '15 days', '30 days', '60 days', '90 days']},
     {key:'fit', label:'Match level', why:'How close a fit to show', prefKey:'threshold', question:'How close a fit should I show you?', options:['80%+', '85%+', '90%+']}
@@ -810,124 +723,106 @@ function quickScan() {
   if (q.location && !p.country) p.country = CITIES.indexOf(q.location) < 16 ? 'in' : '';
   return {quick:true, name:myName, headline:q.headline, years:total, location:q.location, domain:q.domain, skills:q.skills, strengths:[], scores:null, overall:null, missing:asks};
 }
-function aiOff() {
-  const done = profile.scan && !pendingGaps().length;
-  const lead = done ? 'Your search profile is complete and saved.' : 'Your resume is saved.';
-  turns.push({role:'assistant', local:true, content:isOwner
-    ? `${lead} Live job search needs my AI, which isn't switched on for this site yet: add ANTHROPIC_API_KEY in Vercel → Project → Settings → Environment Variables and redeploy.\nOPTIONS: Find my matches | Daily email alerts`
-    : `${lead} I'll start finding matches as soon as live search is switched on — turn on daily email and I'll send them to you.\nOPTIONS: Daily email alerts | Find my matches`});
-  render(); speak(lead + ' Live job search is being switched on.');
-}
-function personalSignals() {
-  const out = [];
-  for (const m of matches.values()) { const j = jobOf(m); if (!j) continue;
-    if (m.feedback && m.feedback.vote === 'down') out.push(`REJECTED ${j.title} at ${j.company}${m.feedback.reason ? ' — ' + m.feedback.reason : ''}`);
-    else if (m.status === 'Saved' || m.status === 'Applied') out.push(`${m.status.toUpperCase()} ${j.title} at ${j.company}`); }
-  return out.slice(-25);
-}
-function brain() {
-  const p = profile.prefs, sc = profile.scan || {}, sig = personalSignals();
-  return `You are Kairo, an elite career agent (20 years as a headhunter across every industry and country). Goal: open vacancies that fit this person 80–90%+. Today ${today()}.
-RESUME:\n${(profile.resumeText || '(none)').slice(0, 12000)}\n
-ASSESSMENT: ${JSON.stringify({headline:sc.headline, seniority:sc.seniority, years:sc.years, domain:sc.domain, skills:sc.skills})}
-PREFERENCES: ${JSON.stringify(p)}
-ANSWERS: ${JSON.stringify(profile.answered)}
-${arsSummary()}
-Use their ARS readiness: mention a passed ARS exam as a strength, and when a top match needs a skill they scored low on in ARS, suggest practising it there.
-${sig.length ? 'THEIR REACTIONS TO EARLIER MATCHES:\n- ' + sig.join('\n- ') : ''}
-${learnings.rules && learnings.rules.length ? 'LESSONS FROM USER FEEDBACK (follow):\n- ' + learnings.rules.join('\n- ') : ''}
-
-WHEN ASKED TO FIND MATCHES: first call search_web, then call list_jobs; score every job strictly — role/title fit 25, skills/tools 30, industry/domain 15, seniority/experience 15, location/work mode 10, salary/company type/other 5; breaking a hard preference (excluded company, location not wanted, far off seniority, older than postedWithin days, like a rejected job) = not a match. Call show_matches with all at or above ${p.threshold || 80}%, best first (if none, the closest 1–3 with nearMiss true). Before scoring, call search_web once with a one-line brief (best titles, places, seniority, top skills, country) to pull live openings. After show_matches, call share_search_links (2–3 searches from their best titles and places). Then reply in at most 2 short lines: how many strong fits and the best one in a few words; mention you searched the live web.
-OTHER REQUESTS: refine preferences with one question at a time (save_preferences after each answer); prep → open_prep; alerts → tell them to use the Daily email button; feedback → save_feedback.
-EVERY reply ends with exactly one line "OPTIONS: a | b | c" (single choice) or "MULTI: a | b | c" (several), 2–6 options under 28 characters, in their voice. After results use: OPTIONS: Prep me for the top one | Excel or PDF | Daily email alerts | Refine my search
-STYLE: very few words — at most 30 words before the options line. The screen shows visuals; don't repeat what cards show. No headings, tables or lists.
-HONESTY: only vacancies from list_jobs exist; never invent jobs, links, names or numbers.`;
-}
-const tools = [
-  { name:'save_preferences', description:'Save job-search preferences. Only changed fields; lists are arrays of strings.',
-    inputSchema:{ type:'object', properties:{ roles:{type:'array',items:{type:'string'}}, locations:{type:'array',items:{type:'string'}}, country:{type:'string'}, workMode:{type:'string'}, seniority:{type:'string'}, industries:{type:'array',items:{type:'string'}}, companyTypes:{type:'array',items:{type:'string'}}, mustSkills:{type:'array',items:{type:'string'}}, avoid:{type:'array',items:{type:'string'}}, companiesInclude:{type:'array',items:{type:'string'}}, companiesExclude:{type:'array',items:{type:'string'}}, salary:{type:'string'}, notice:{type:'string'}, threshold:{type:'number'}, postedWithin:{type:'number'}, notes:{type:'string'} } },
-    async execute(i) { const p = {...profile.prefs}; for (const k of Object.keys(DEF)) if (i[k] != null) p[k] = Array.isArray(DEF[k]) ? list(i[k]) : (['expMin','expMax','threshold','postedWithin'].includes(k) ? Number(i[k]) : String(i[k])); p.threshold = Math.min(100, Math.max(50, Number(p.threshold) || 80)); profile.prefs = p; await persistProfile(); return 'saved'; } },
-  { name:'list_jobs', description:'Open vacancies in the verified feed (id, company, title, experience, location, work mode, posted date, skills, short JD).',
-    inputSchema:{ type:'object', properties:{ keyword:{type:'string'} } },
-    execute(i) {
-      setStatus('Scanning open vacancies…');
-      const kw = String(i.keyword || '').toLowerCase();
-      const out = [...jobs.values()].filter(j => j.status !== 'closed').filter(j => !kw || JSON.stringify([j.title, j.skills, j.jd, j.domain]).toLowerCase().includes(kw))
-        .sort((a, b) => String(b.postedDate || '').localeCompare(String(a.postedDate || ''))).slice(0, 30)
-        .map(j => ({ id:j.id, company:j.company, title:j.title, experience:j.experience, location:j.location, workMode:j.workMode, postedDate:j.postedDate, domain:j.domain, skills:(j.skills || []).slice(0, 12), jd:String(j.jd || '').slice(0, 500) }));
-      note(`Scanned ${out.length} open vacancies`); return out.length ? out : 'No open vacancies in the feed right now.';
-    } },
-  { name:'show_matches', description:'Show scored vacancies as cards and save them. Each: jobId, match 0-100, why (one specific line), mandatoryGaps, optionalGaps, nearMiss.',
-    inputSchema:{ type:'object', properties:{ matches:{ type:'array', items:{ type:'object', properties:{ jobId:{type:'string'}, match:{type:'number'}, why:{type:'string'}, mandatoryGaps:{type:'string'}, optionalGaps:{type:'string'}, nearMiss:{type:'boolean'} }, required:['jobId','match','why'] } } }, required:['matches'] },
-    async execute(i) {
-      setStatus('Ranking your best fits…');
-      const ids = [];
-      for (const m of (Array.isArray(i.matches) ? i.matches : [])) {
-        const id = String(m.jobId || ''); if (!jobs.has(id)) continue;
-        const {id:_x, ...old} = matches.get(id) || {};
-        const doc = { ...old, jobId:id, match:clamp(m.match), why:String(m.why || ''), mandatoryGaps:String(m.mandatoryGaps || 'None'), optionalGaps:String(m.optionalGaps || ''), nearMiss:!!m.nearMiss, status:old.status || 'New', scoredOn:today() };
-        matches.set(id, {...doc, id}); ids.push(id); await save(matchCol().doc(id), doc);
-      }
-      ids.sort((a, b) => matches.get(b).match - matches.get(a).match);
-      if (ids.length) turns.push({role:'cards', ids});
-      track({stage:Math.max(usage.stage || 0, 4), bestMatch:ids.length ? matches.get(ids[0]).match : (usage.bestMatch || null)}, {searches:1, matchesShown:ids.length});
-      profile.lastScoredAt = Date.now(); persistProfile(); render(); return `Shown ${ids.length} cards.`;
-    } },
-  { name:'share_search_links', description:'Show live searches on major job sites. country = ISO 2-letter code.',
-    inputSchema:{ type:'object', properties:{ country:{type:'string'}, searches:{ type:'array', items:{ type:'object', properties:{ title:{type:'string'}, location:{type:'string'} }, required:['title'] } } }, required:['searches'] },
-    execute(i) { const links = buildLinks(String(i.country || profile.prefs.country || ''), Array.isArray(i.searches) ? i.searches.slice(0, 3) : []); if (links.length) { turns.push({role:'links', links}); render(); } return 'shown'; } },
-  { name:'search_web', description:'Search the live web now for fresh, open vacancies that fit this person (takes up to a minute). brief = one line: target titles, places, seniority, must-have skills. country = ISO 2-letter code. New vacancies are added to the feed; call list_jobs afterwards.',
-    inputSchema:{ type:'object', properties:{ brief:{type:'string'}, country:{type:'string'} }, required:['brief'] },
-    async execute(i) {
-      setStatus('Searching the web for live openings…');
-      const r = await window.__arsApi('kairo?a=hunt', {brief:String(i.brief || '').slice(0, 500), country:String(i.country || profile.prefs.country || '')});
-      try { const sn = await db.collection('kjobs').get(); for (const d of sn.docs) jobs.set(d.id, {...d.data(), id:d.id}); } catch {}
-      note(`Found ${(r.ids || []).length} live openings on the web`); track({}, {webSearches:1});
-      return `Added ${(r.ids || []).length} live vacancies to the feed. Now call list_jobs.`;
-    } },
-  { name:'save_feedback', description:'Save feedback about Kairo. rating 1-5 if given.',
-    inputSchema:{ type:'object', properties:{ rating:{type:'number'}, text:{type:'string'}, tags:{type:'array',items:{type:'string'}} }, required:['text'] },
-    async execute(i) { await addFeedback({rating:Number(i.rating) || null, text:String(i.text || ''), tags:list(i.tags), source:'chat'}); note('Feedback saved — thank you'); return 'saved'; } },
-  { name:'open_prep', description:'Open interview prep (all 20 fields) for a matched job.', inputSchema:{ type:'object', properties:{ jobId:{type:'string'} }, required:['jobId'] },
-    execute(i) { const m = matches.get(String(i.jobId)); if (!m) throw new Error('Not a shown match'); setTimeout(() => openPrep(m), 300); return 'opened'; } }
-];
-const note = t => { turns.push({role:'tool', content:t}); render(); };
-const setStatus = t => { if (statusEl) statusEl.textContent = t; };
-
 async function send(text) {
-  text = String(text || '').trim(); if (!text || busy) return;
-  if (!sample) return aiOff();
-  if (/^(find my matches|search now|find new matches)$/i.test(text)) mode = 'chat';
-  if (tts && tts.active()) tts.stop().catch(() => {});
-  busy = true; closeTyper(); $('#hOrb').classList.add('busy'); $('#stopBtn').hidden = false; $('#kbBtn').hidden = true;
-  turns.push({role:'user', content:text}); render();
-  const wrap = document.createElement('div'); wrap.className = 'm ai q';
-  wrap.innerHTML = '<span class="orb busy"></span><div class="tx"><span class="thinking"><i></i><i></i><i></i></span><span class="stline">Thinking…</span></div>';
-  $('#stream').append(wrap); statusEl = wrap.querySelector('.stline'); window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'});
-  ctl = new AbortController();
-  const convo = turns.filter(t => (t.role === 'user' || t.role === 'assistant') && !t.local).slice(-20);
-  while (convo.length && convo[0].role !== 'user') convo.shift();
-  const lim = await sample.limits().catch(() => null);
+  const x = String(text || '').trim().toLowerCase(); if (!x || busy) return;
+  closeTyper();
+  if (/(view|find|show|search|new).*(match|job|role)|search now/.test(x)) return findMatches(text);
+  if (/change|refine|edit|update my (answers|preferences)/.test(x)) { turns.push({role:'user', content:text}); for (const g of (profile.scan && profile.scan.missing) || []) delete profile.answered[g.key]; persistProfile(); return startGaps(); }
+  if (/practi[cs]e/.test(x)) { location.href = '/'; return; }
+  if (/prep|top one|details/.test(x)) { const top = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match)[0]; if (top) return openPrep(top); }
+  if (/excel|pdf|export/.test(x)) return $('#menuBtn').click();
+  if (/feedback|rate/.test(x)) return openFeedback();
+  turns.push({role:'user', content:text});
+  turns.push({role:'assistant', local:true, content:'I work with taps here — choose one of these.\nOPTIONS: ' + defaultOpts().items.join(' | ')});
+  render();
+}
+
+/* ---------- matching (free, in the browser) ---------- */
+let feedInfo = {};
+async function loadFeed() {
   try {
-    const { text:out } = await sample([{role:'user', content:brain()}, ...convo.map(t => ({role:t.role, content:t.content}))], {
-      cache:false, signal:ctl.signal, tools:lim && lim.tools ? tools : undefined,
-      onText:({text}) => { const b = splitOpts(text).body; if (b) wrap.querySelector('.tx').innerHTML = fmt(b); }
-    });
-    wrap.remove(); turns.push({role:'assistant', content:out}); speak(splitOpts(out).body);
-  } catch (e) {
-    wrap.remove();
-    if (e && e.text) turns.push({role:'assistant', content:e.text});
-    turns.push({role:'tool', content:{ cancelled:'Stopped', not_granted:'Kairo needs permission to use Claude — reload and allow', rate_limited:'Usage limit reached — try again shortly' }[e && e.code] || 'Something went wrong — tap to retry'});
+    const r = await fetch('/kairo-jobs.json', {cache:'no-cache'}); const d = await r.json();
+    feedInfo = {updated:d.updated || ''}; jobs.clear();
+    for (const j of d.jobs || []) if (j && j.id) jobs.set(j.id, j);
+  } catch {}
+}
+function myYears() { const r = readiness(); if (r.totalExp != null && r.totalExp !== '') return Number(r.totalExp); const p = profile.prefs; if (profile.scan && profile.scan.years) return profile.scan.years; return p.expMin != null && p.expMax != null ? (p.expMin + p.expMax) / 2 : null; }
+function scoreJob(j) {
+  const p = profile.prefs, q = localScan(profile.resumeText);
+  const title = String(j.title || '').toLowerCase(), text = [j.title, (j.skills || []).join(' '), j.jd, j.domain].join(' ').toLowerCase();
+  const wants = (p.roles || []).join(' ').toLowerCase();
+  let t = /business analyst|\bba\b|data analyst|product owner|analyst/.test(title) ? 14 : 4;
+  if (/lead/.test(wants) && /lead|\bvp\b|head|manager/.test(title)) t += 6; else if (/senior/.test(wants) && /senior|\bsr\b|avp|\bvp\b|manager|lead/.test(title)) t += 6; else t += 2;
+  if (/regulatory/.test(wants) && /regulat/.test(text)) t += 5; else if (/data|sql/.test(wants) && /data|sql/.test(text)) t += 5; else if (/credit/.test(wants) && /credit/.test(text)) t += 5; else if (/product owner/.test(wants) && /product owner/.test(title)) t += 5; else t += 2;
+  t = Math.min(25, t);
+  const mine = [...q.skills, ...(p.regAreas || []).flatMap(a => a.split(/\s*\/\s*/))].map(s => s.toLowerCase()).filter(s => s && s !== 'none yet');
+  const jsk = (j.skills || []).map(String);
+  const hit = s => { const l = s.toLowerCase(); return mine.some(m => l.includes(m) || m.includes(l) || (m.length > 3 && l.split(/[^a-z0-9]+/).includes(m))); };
+  const hits = jsk.filter(hit), miss = jsk.filter(s => !hit(s));
+  const sk = jsk.length ? Math.round(30 * Math.min(1, hits.length / Math.min(5, jsk.length))) : 15;
+  const regWords = (p.regAreas || []).filter(a => !/none/i.test(a)).flatMap(a => a.toLowerCase().split(/[^a-z0-9]+/)).filter(w => w.length > 3);
+  const dm = regWords.some(w => text.includes(w)) ? 15 : /regulat|credit|bank|risk|financ/.test(text) ? 10 : 4;
+  const y = myYears(); let ex = 10;
+  if (y != null && j.expMin != null) { const hi = j.expMax != null ? j.expMax : j.expMin + 8; ex = y >= j.expMin && y <= hi + 2 ? 15 : y >= j.expMin - 2 ? 9 : 2; }
+  const locs = (p.locations || []).map(s => s.toLowerCase()), jl = String(j.location || '').toLowerCase(), remote = /remote/.test(jl + ' ' + String(j.workMode || '').toLowerCase());
+  let lc = !locs.length ? 7 : locs.some(c => c && !/remote|relocate/.test(c) && jl.includes(c.split(/[ ,]/)[0])) ? 10 : locs.includes('remote') && remote ? 10 : locs.some(c => /relocate/.test(c)) ? 7 : 2;
+  if (/remote/i.test(p.workMode || '') && !remote) lc = Math.min(lc, 5);
+  const sq = /\bsql\b/.test(text) ? (/advanced|intermediate/i.test(p.sqlLevel || '') ? 5 : /basic/i.test(p.sqlLevel || '') ? 2 : 0) : 3;
+  const match = Math.max(0, Math.min(100, t + sk + dm + ex + lc + sq));
+  const why = [hits.length ? hits.slice(0, 3).join(', ') + ' match your resume' : '', lc >= 10 ? (remote ? 'remote' : j.location) + ' fits your cities' : '', ex === 15 && y != null ? `${j.experience} suits your ${y} yrs` : ''].filter(Boolean).join(' · ') || 'Partly fits your profile';
+  return {match, why, hits, miss};
+}
+function localReport(j, s) {
+  const y = myYears(), head = (profile.scan && profile.scan.headline) || 'Business Analyst', a = arsTopic(j);
+  return {
+    skillsMatched:s.hits.slice(0, 3).map(h => ({area:h, jd:'Asked in the job description', you:'On your resume / profile'})),
+    mandatoryGaps:s.miss.length ? s.miss.slice(0, 2).join(', ') : 'None', optionalGaps:s.miss.slice(2, 4).join(', '),
+    whyRelevant:s.why,
+    applyTip:`Lead with ${s.hits.slice(0, 2).join(' and ') || 'your BA delivery'}${y ? ` and your ${y} years` : ''}; mirror the job's wording in your summary.`,
+    outreach:`Hi, I'm a ${head}${y ? ` with ${y} years` : ''} in BFSI${s.hits.length ? ` (${s.hits.slice(0, 3).join(', ')})` : ''}. I'm interested in the ${j.title} role at ${j.company} and would welcome a quick chat.`.slice(0, 295),
+    mock:[{q:`Practise ${a ? a[1] : 'BA'} interview questions on ARS`, points:'Open “Practise questions” (top right) — the matching AI interviewer is ready for this role.'}],
+    gapQuestion:s.miss.length ? `Expect questions on ${s.miss.slice(0, 2).join(' and ')}.` : ''
+  };
+}
+async function findMatches(label) {
+  if (busy) return;
+  turns.push({role:'user', content:label || 'View my matches'});
+  busy = true; $('#hOrb').classList.add('busy'); render();
+  const wrap = document.createElement('div'); wrap.className = 'm ai q';
+  wrap.innerHTML = '<span class="orb busy"></span><div class="tx"><span class="thinking"><i></i><i></i><i></i></span><span class="stline">Matching open BA roles to your resume…</span></div>';
+  $('#stream').append(wrap); window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'});
+  if (!jobs.size) await loadFeed();
+  await new Promise(r => setTimeout(r, 900));
+  const thr = profile.prefs.threshold || 80, scored = [];
+  for (const j of jobs.values()) { if (j.status === 'closed') continue; const s = scoreJob(j); scored.push({j, s}); }
+  scored.sort((a, b) => b.s.match - a.s.match);
+  let pick = scored.filter(x => x.s.match >= thr), near = false;
+  if (!pick.length) { pick = scored.slice(0, 3); near = true; }
+  const close = near ? [] : scored.filter(x => x.s.match < thr && x.s.match >= thr - 15).slice(0, Math.max(0, 3 - pick.length));
+  const ids = [];
+  for (const {j, s} of [...pick, ...close]) {
+    const isNear = near || s.match < thr;
+    const {id:_x, ...old} = matches.get(j.id) || {};
+    const doc = {...old, jobId:j.id, match:s.match, why:s.why, mandatoryGaps:s.miss.slice(0, 2).join(', ') || 'None', optionalGaps:'', nearMiss:isNear, status:old.status || 'New', scoredOn:today(), report:localReport(j, s)};
+    matches.set(j.id, {...doc, id:j.id}); ids.push(j.id); await save(matchCol().doc(j.id), doc);
   }
-  busy = false; statusEl = null; $('#hOrb').classList.remove('busy'); $('#stopBtn').hidden = true; $('#kbBtn').hidden = !!dict;
-  render(); saveChat();
+  wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
+  turns.push({role:'tool', content:`Checked ${scored.length} open BA vacancies${feedInfo.updated ? ' (list updated ' + feedInfo.updated + ')' : ''}`});
+  if (ids.length) turns.push({role:'cards', ids});
+  const best = pick[0];
+  turns.push({role:'assistant', local:true, content:near
+    ? `No role reaches ${thr}% yet. Here are the closest ${pick.length} — new vacancies are added every day.\nOPTIONS: Change my answers | Practise questions | Excel or PDF`
+    : `${pick.length} role${pick.length === 1 ? '' : 's'} fit you ${thr}%+${close.length ? ', plus ' + close.length + ' close' : ''}. Best: ${best.j.title} at ${best.j.company} (${best.s.match}%).\nOPTIONS: Prep me for the top one | Practise questions | Excel or PDF | Change my answers`});
+  profile.lastScoredAt = Date.now(); persistProfile();
+  track({stage:Math.max(usage.stage || 0, 4), bestMatch:best ? best.s.match : null}, {searches:1, matchesShown:ids.length});
+  render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body);
 }
 $('#stopBtn').onclick = () => ctl && ctl.abort();
 function showMatchesLocal() {
   const thr = profile.prefs.threshold || 80;
   const ids = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested' && (m.match >= thr || m.nearMiss)).sort((a, b) => b.match - a.match).map(m => m.id);
   if (ids.length) turns.push({role:'cards', ids});
-  turns.push({role:'assistant', local:true, content:ids.length ? `Your ${ids.length} best fits.\nOPTIONS: Prep me for the top one | Find new matches | Daily email alerts` : 'Nothing saved yet.\nOPTIONS: Find my matches'});
+  turns.push({role:'assistant', local:true, content:ids.length ? `Your ${ids.length} best fits.\nOPTIONS: Prep me for the top one | Find new matches | Practise questions` : 'Nothing saved yet.\nOPTIONS: Find my matches'});
   render();
 }
 
@@ -955,7 +850,6 @@ document.addEventListener('click', async e => {
   if (a === 'all') return openShortlist();
   if (a === 'xlsx') return exportXlsx(b);
   if (a === 'pdf') return exportPdf(b);
-  if (a === 'alerts') return openAlerts();
   if (a === 'fb') return openFeedback();
   const card = b.closest('[data-id]'); const m = card && matches.get(card.dataset.id); if (!m) return;
   if (a === 'practise') { track({}, {practiseClicks:1}); return; }
@@ -1037,27 +931,24 @@ $('#menuBtn').onclick = () => {
     <button class="mi" data-go="resume">${sc ? `<span class="ring ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></span>` : `<span class="ico">${I.doc}</span>`}<div><b>Resume</b><small>${esc(profile.fileName || 'Not uploaded')}</small></div>${I.up}</button>
     ${ars ? (() => { const r = readiness(); return `<a class="mi" href="/" style="text-decoration:none;color:inherit"><span class="ico">${I.mic}</span><div><b>Interview readiness</b><small>SQL ${r.sql ?? '–'}/10 · Credit risk ${r.reg ?? '–'}/10 · Exam ${r.exam == null ? 'not taken' : r.exam + '%' + (r.passed ? ' ✓' : '')}</small></div></a>`; })() : ''}
     <button class="mi" data-go="short"><span class="ico">${I.list}</span><div><b>Shortlist</b><small>${n} role${n === 1 ? '' : 's'} · ${[...matches.values()].filter(m => m.status === 'Applied').length} applied</small></div></button>
-    <button class="mi" data-go="alerts"><span class="ico">${I.bell}</span><div><b>Daily email</b><small>${s && s.active ? esc(schedText(s)) : 'Off'}</small></div></button>
     <button class="mi" data-go="export"><span class="ico">${I.xls}</span><div><b>Export</b><small>Excel or PDF</small></div></button>
     <button class="mi" data-go="fb"><span class="ico">${I.star}</span><div><b>Feedback</b><small>Help Kairo get better</small></div></button>
     <button class="mi" data-go="prefs"><span class="ico">${I.user}</span><div><b>Search preferences</b><small>${esc([p.workMode, p.salary, p.notice].filter(Boolean).join(' · ') || 'Set as we talk')}</small></div></button>
   </div>
-  <div class="lbl">Appearance</div><div class="seg"><button class="opt" data-thm="dark" aria-pressed="${document.documentElement.dataset.theme !== 'light'}">Night</button><button class="opt" data-thm="light" aria-pressed="${document.documentElement.dataset.theme === 'light'}">Day</button></div>
+  <div class="lbl">Look</div><div class="skins">${SKINS.map(([k, l, bg, orb]) => `<button class="skin" data-skin="${k}" aria-pressed="${skin === k}"><span class="sw" style="background:${bg}"><i style="background:${orb}"></i></span>${l}</button>`).join('')}</div>
   <div class="lbl">Voice</div><div class="seg"><button class="opt" data-voice="1" aria-pressed="${voiceOn}">Voice guide on</button><button class="opt" data-voice="0" aria-pressed="${!voiceOn}">Silent</button></div>
   <details style="margin-top:20px"><summary class="note" style="cursor:pointer">Fields in job details and exports</summary><div class="togs" style="margin-top:10px">${FIELDS.map((f, i) => `<label><input type="checkbox" data-f="${i + 1}" ${profile.fields.includes(i + 1) ? 'checked' : ''}>${i + 1}. ${esc(f)}</label>`).join('')}</div></details>
-  ${isOwner ? `<div class="lbl">Owner</div><p class="note" id="ownStats">Loading…</p><div class="row"><button class="btn p" data-go="insights">Insights</button><button class="btn o" data-go="learn">Learn from feedback</button></div>` : ''}
+  ${isOwner ? `<div class="lbl">Owner</div><p class="note" id="ownStats">Loading…</p><div class="row"><button class="btn p" data-go="insights">Insights</button></div>` : ''}
   <p class="note" style="margin-top:18px">Kairo records how the app is used (steps reached, scores, actions) to keep improving it.</p>
   <div class="row" style="margin-top:14px"><button class="btn o" data-go="reset">${I.redo}Start over</button></div>`);
   if (isOwner) loadOwnerStats();
   $('#sheetBody').onclick = e => {
-    const th = e.target.closest('[data-thm]'); if (th) { setTheme(th.dataset.thm); for (const x of document.querySelectorAll('[data-thm]')) x.setAttribute('aria-pressed', x === th); return; }
+    const sk = e.target.closest('[data-skin]'); if (sk) { applySkin(sk.dataset.skin); track({skin}); for (const x of document.querySelectorAll('.skin')) x.setAttribute('aria-pressed', x.dataset.skin === skin); return; }
     const vb = e.target.closest('[data-voice]'); if (vb) { setVoice(vb.dataset.voice === '1'); for (const x of document.querySelectorAll('[data-voice]')) x.setAttribute('aria-pressed', (x.dataset.voice === '1') === voiceOn); return; }
     const f = e.target.closest('[data-f]'); if (f) { profile.fields = [...document.querySelectorAll('[data-f]:checked')].map(x => Number(x.dataset.f)); persistProfile(); return; }
     const g = e.target.closest('[data-go]'); if (!g) return; const k = g.dataset.go;
     if (k === 'short') return openShortlist();
-    if (k === 'alerts') return openAlerts();
     if (k === 'fb') return openFeedback();
-    if (k === 'learn') return learnNow(g);
     if (k === 'insights') return openInsights();
     if (k === 'export') return openSheet(`<h2>Export your matches</h2><p class="sub">${[...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').length} roles, with the fields you chose.</p><div class="menu"><button class="mi" data-a="xlsx"><span class="ico">${I.xls}</span><div><b>Excel workbook</b><small>Every field, filterable</small></div></button><button class="mi" data-a="pdf"><span class="ico">${I.pdf}</span><div><b>PDF report</b><small>Clean summary to share</small></div></button></div>`);
     closeSheet();
@@ -1077,7 +968,7 @@ function shareText(m) { const j = jobOf(m); return `${j.title} — ${j.company} 
 function fieldsHtml(m, j) {
   const r = m.report || {}, na = 'Not publicly available', on = n => profile.fields.includes(n);
   const link = (u, t) => safeUrl(u) ? `<a href="${esc(safeUrl(u))}" target="_blank" rel="noopener">${esc(t)}</a>` : esc(na);
-  const rc = j.recruiter || {}, ct = j.contact || {}, wait = '<span class="note">Preparing…</span>';
+  const rc = j.recruiter || {}, ct = j.contact || {}, wait = '<span class="note">—</span>';
   const v = {1:`${clamp(m.match)}%`, 2:j.status === 'closed' ? 'Closed' : `Open${j.verifiedOn ? ' · verified ' + esc(j.verifiedOn) : ''}`, 3:esc(j.company), 4:`${esc(j.title)} · ${esc(j.experience || 'not stated')}${j.reqId ? ' · Req ' + esc(j.reqId) : ''}`, 5:esc([j.location, j.workMode].filter(Boolean).join(' · ')), 6:`${esc(j.postedDate || 'Not stated')} · ${link(j.sourceUrl, 'Source')}`,
     7:r.skillsMatched ? r.skillsMatched.map(s => `${esc(s.area)}: ${esc(s.jd)} ↔ ${esc(s.you)}`).join('<br>') : wait, 8:`${esc(r.mandatoryGaps || m.mandatoryGaps || 'None')}${(r.optionalGaps || m.optionalGaps) ? '<br>Nice-to-have: ' + esc(r.optionalGaps || m.optionalGaps) : ''}`,
     9:link(j.applyUrl, 'Apply'), 10:esc(rc.name || na), 11:esc(rc.role || na), 12:esc(rc.email || na), 13:rc.linkedin ? link(rc.linkedin, 'Profile') : (j.recruiterSearchUrl ? link(j.recruiterSearchUrl, 'Find recruiters') : esc(na)),
@@ -1094,57 +985,8 @@ function openPrep(m) {
     <div class="lbl">Interview prep</div><div id="prepFields">${fieldsHtml(m, j)}</div></div>`);
   $('#cpy').onclick = async () => { try { await navigator.clipboard.writeText(shareText(m)); toast('Copied'); } catch { toast('Copy blocked'); } };
   $('#sheetBody').onclick = async e => { const s = e.target.closest('[data-st]'); if (!s) return; m.status = s.dataset.st; await saveMatch(m); for (const x of document.querySelectorAll('[data-st]')) x.setAttribute('aria-pressed', x.dataset.st === m.status); };
-  if (!m.report) prepare(m);
+  if (!m.report) { const j2 = jobOf(m); if (j2) { m.report = localReport(j2, scoreJob(j2)); saveMatch(m); $('#prepFields').innerHTML = fieldsHtml(m, j2); } }
 }
-async function prepare(m) {
-  if (!sample || !profile.resumeText) return;
-  const j = jobOf(m);
-  try {
-    const r = await sample.json(`You are an elite recruiter and interview coach. Compare this resume with this vacancy; brief to win the interview. Specific, honest, facts from the resume and JD only.
-RESUME:\n${profile.resumeText.slice(0, 12000)}\n${arsSummary()}\nVACANCY: ${JSON.stringify({company:j.company, title:j.title, experience:j.experience, location:j.location, jd:j.jd, skills:j.skills})}
-Reply with only JSON: {"skillsMatched":[{"area":"","jd":"","you":""}] (3),"mandatoryGaps":"or None","optionalGaps":"","whyRelevant":"one line","applyTip":"one line","outreach":"LinkedIn note under 300 characters, first person, naming the role","mock":[{"q":"","points":""}] (3),"gapQuestion":"with an honest answer"}`, {modelTier:'complex'});
-    if (!r || !Array.isArray(r.skillsMatched)) throw 0;
-    m.report = r; await saveMatch(m);
-    if ($('#sheetBody').querySelector(`[data-id="${CSS.escape(m.id)}"]`)) $('#prepFields').innerHTML = fieldsHtml(m, j);
-  } catch { const el = $('#prepFields'); if (el) for (const w of el.querySelectorAll('.note')) w.textContent = 'Couldn\'t prepare — reopen to retry'; }
-}
-
-/* ---------- alerts sheet ---------- */
-const schedText = s => `${{daily:'Every day', weekdays:'Weekdays', weekly:'Every ' + (s.day || 'Monday'), twice:'Every day'}[s.frequency] || 'Every day'} · morning`;
-function schedDoc(s) { return { ...s, prefs:profile.prefs, fields:profile.fields, resumeText:s.consent && s.active ? (profile.resumeText || '').slice(0, 12000) : '', sentJobIds:s.sentJobIds || [], updatedAt:Date.now() }; }
-function openAlerts() {
-  const s = {active:true, frequency:'daily', time:'09:00', day:'Monday', minMatch:profile.prefs.threshold || 80, email:myEmail, consent:false, timezone:Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', ...(schedule || {})};
-  const seg = (k, vals, labels) => `<div class="seg">${vals.map((v, i) => `<button class="opt" data-k="${k}" data-v="${esc(v)}" aria-pressed="${String(s[k]) === String(v)}">${esc(labels ? labels[i] : v)}</button>`).join('')}</div>`;
-  openSheet(`<h2>Daily email</h2><p class="sub">New matches in your inbox, on your schedule.</p>
-    <div class="lbl">How often</div>${seg('frequency', ['daily','weekdays','weekly'], ['Every day','Weekdays','Weekly'])}
-    <div id="dayRow" ${s.frequency === 'weekly' ? '' : 'hidden'}><div class="lbl">Which day</div>${seg('day', ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])}</div>
-    <p class="note" style="margin-top:10px">Emails go out each morning around 9 am India time.</p>
-    <div class="lbl">Roles from</div>${seg('minMatch', [80, 85, 90], ['80%+','85%+','90%+'])}
-    <div class="lbl">Send to</div><input class="field" id="aEmail" type="email" value="${esc(s.email || '')}" placeholder="you@example.com" autocomplete="email">
-    <label class="check"><input type="checkbox" id="aConsent" ${s.consent ? 'checked' : ''}><span>Kairo may read my resume and preferences to pick my roles each time.</span></label>
-    <div class="row" style="margin-top:20px"><button class="btn p" id="aSave">${s.active && schedule && schedule.active ? 'Update' : 'Turn on'}</button>${schedule && schedule.active ? '<button class="btn o" id="aOff">Pause</button>' : ''}${mcp ? '<button class="btn o" id="aTest">Send a preview</button>' : ''}</div>
-    ${schedule && schedule.lastSent ? `<p class="note" style="margin-top:14px">Last sent ${esc(schedule.lastSent)} · ${esc(schedule.lastResult || '')}</p>` : ''}`);
-  $('#sheetBody').onclick = e => { const b = e.target.closest('[data-k]'); if (!b) return; const k = b.dataset.k; s[k] = k === 'minMatch' ? Number(b.dataset.v) : b.dataset.v; for (const x of document.querySelectorAll(`[data-k="${k}"]`)) x.setAttribute('aria-pressed', x.dataset.v === b.dataset.v); if (k === 'frequency') $('#dayRow').hidden = s.frequency !== 'weekly'; };
-  $('#aSave').onclick = async () => {
-    s.email = $('#aEmail').value.trim(); s.consent = $('#aConsent').checked;
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email)) return toast('Add your email address');
-    if (!s.consent) return toast('Tick the permission box to continue');
-    s.active = true; s.maxRoles = s.maxRoles || 10; s.onlyNew = s.onlyNew !== false; s.research = s.research !== false;
-    schedule = s; await save(schedRef(), schedDoc(s)); track({alertsOn:true, alertFreq:s.frequency}); closeSheet(); note(`Daily email on · ${schedText(s)}`); speak(`Done. I'll email you ${schedText(s).toLowerCase().replace(' · ', ' at ')}.`); saveChat();
-  };
-  if ($('#aOff')) $('#aOff').onclick = async () => { schedule = {...schedule, active:false}; await save(schedRef(), schedDoc(schedule)); track({alertsOn:false}); closeSheet(); note('Daily email paused'); saveChat(); };
-  if ($('#aTest')) $('#aTest').onclick = () => sendPreview($('#aTest'), $('#aEmail').value.trim());
-}
-async function sendPreview(btn, to) {
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return toast('Add your email address');
-  const arr = exportRows().slice(0, 10);
-  const html = `<div style="font-family:Arial,sans-serif;max-width:640px;color:#141416"><div style="background:#141416;color:#fff;padding:16px 20px;border-bottom:4px solid #db0011;font-size:18px;font-weight:bold">Kairo · your matched roles</div><p>${arr.length} roles that fit you.</p>${arr.map(({m, j}) => { const u = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl); return `<div style="border:1px solid #e7e4df;border-radius:14px;padding:14px 16px;margin:10px 0"><div style="color:${m.match >= 85 ? '#0a8a5c' : '#a35d00'};font-weight:bold;font-size:20px">${esc(m.match)}%</div><b>${esc(j.title)}</b><br>${esc(j.company)} · ${esc(j.location || '')}<br><span style="color:#6b6b70">${esc(m.why)}</span>${u ? `<br><a href="${esc(u)}" style="color:#db0011">Apply</a>` : ''}</div>`; }).join('')}</div>`;
-  btn.disabled = true;
-  try { await mcp.callTool('Gmail', 'send_message', {to:[to], subject:`Kairo – ${arr.length} roles that fit you`, htmlBody:html, body:arr.map(({m}) => shareText(m)).join('\n\n') || 'No matches yet.'}); toast('Preview sent'); }
-  catch (e) { toast({server_not_connected:'Email isn\'t switched on yet', needs_reauth:'Reconnect Gmail in Claude settings', not_in_manifest:'Gmail access was declined', approval_required:'Allow the send to continue'}[e && e.code] || 'It may not have sent — check your Sent folder.'); }
-  btn.disabled = false;
-}
-
 /* ---------- feedback ---------- */
 function openFeedback() {
   let rating = 0; const good = new Set(), bad = new Set();
@@ -1172,20 +1014,6 @@ let allFb = [];
 async function loadOwnerStats() {
   try { const s = await db.collection('kfeedback').get(); allFb = s.docs.flatMap(d => d.data().entries || []); const rated = allFb.filter(f => f.rating), avg = rated.length ? (rated.reduce((a, f) => a + f.rating, 0) / rated.length).toFixed(1) : '—'; const el = $('#ownStats'); if (el) el.textContent = `${s.size} people · ${allFb.length} responses · ${avg}/5${learnings.updated ? ' · learned ' + learnings.updated : ''}`; } catch {}
 }
-async function learnNow(btn) {
-  if (!sample || !allFb.length) return toast('No feedback yet.');
-  btn.disabled = true; btn.textContent = 'Learning…';
-  try {
-    const r = await sample.json(`You improve "Kairo", an AI career agent, from user feedback. Current rules: ${JSON.stringify(learnings.rules || [])}
-Feedback: ${JSON.stringify(allFb.sort((a, b) => b.at - a.at).slice(0, 150).map(f => ({rating:f.rating, tags:f.tags, text:String(f.text || '').slice(0, 400)})))}
-Write at most 12 short concrete rules for Kairo responding to repeated or important feedback (keep good rules, drop contradicted ones), plus 1–3 plain-English changelog lines.
-Reply with only JSON: {"rules":["..."],"changelog":["..."]}`, {modelTier:'complex', cache:false});
-    if (!r || !Array.isArray(r.rules)) throw 0;
-    const date = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-    learnings = {rules:r.rules.map(String).slice(0, 12), changelog:[...(learnings.changelog || []), ...(r.changelog || []).map(t => ({date, text:String(t)}))].slice(-30), updated:date, updatedAt:Date.now()};
-    await save(db.doc('kmeta/learnings'), learnings); toast('Kairo updated from feedback'); closeSheet();
-  } catch { toast('Couldn\'t learn just now.'); btn.disabled = false; btn.textContent = 'Learn from all feedback'; }
-}
 
 /* ---------- usage analytics ---------- */
 const usageRef = () => db.doc(`kusage/${uid}`);
@@ -1206,7 +1034,7 @@ async function openInsights() {
     const sum = k => rows.reduce((a, r) => a + (Number(r[k]) || 0), 0);
     const top = k => Object.entries(rows.reduce((m, r) => { if (r[k]) m[r[k]] = (m[r[k]] || 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 6);
     const funnel = STAGES.map((l, i) => [l, rows.filter(r => (r.stage || 0) >= i).length]);
-    $('#ins').innerHTML = `<div class="kpis"><div class="kpi"><b>${n}</b><small>People</small></div><div class="kpi"><b>${wk}</b><small>Active this week</small></div><div class="kpi"><b>${rows.filter(r => r.alertsOn).length}</b><small>Email alerts on</small></div><div class="kpi"><b>${avg('resumeScore')}</b><small>Avg resume score</small></div><div class="kpi"><b>${avg('rating')}</b><small>Avg rating /5</small></div><div class="kpi"><b>${sum('applies')}</b><small>Applications</small></div></div>
+    $('#ins').innerHTML = `<div class="kpis"><div class="kpi"><b>${n}</b><small>People</small></div><div class="kpi"><b>${wk}</b><small>Active this week</small></div><div class="kpi"><b>${sum('matchesShown')}</b><small>Matches shown</small></div><div class="kpi"><b>${avg('resumeScore')}</b><small>Avg resume score</small></div><div class="kpi"><b>${avg('rating')}</b><small>Avg rating /5</small></div><div class="kpi"><b>${sum('applies')}</b><small>Applications</small></div></div>
       <div class="lbl">Journey</div><div class="funnel">${funnel.map(([l, v]) => `<div class="bar"><span>${l}</span><div class="track"><i style="--c:var(--acc);width:${n ? Math.round(v / n * 100) : 0}%"></i></div><em>${v}</em></div>`).join('')}</div>
       <div class="lbl">Fields</div><div class="chips">${top('domain').map(([k, v]) => `<span class="chip ink">${esc(k)} · ${v}</span>`).join('') || '<span class="note">—</span>'}</div>
       <div class="lbl">Countries</div><div class="chips">${top('country').map(([k, v]) => `<span class="chip ink">${esc(String(k).toUpperCase())} · ${v}</span>`).join('') || '<span class="note">—</span>'}</div>
@@ -1223,10 +1051,10 @@ async function openInsights() {
     };
   } catch { $('#ins').innerHTML = '<p class="note">Couldn\'t load usage yet.</p>'; }
 }
-function applyTheme(t) { document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; }
-try { applyTheme(localStorage.getItem('baTheme') === 'light' ? 'light' : 'dark'); } catch { applyTheme('dark'); }
-const setTheme = n => { applyTheme(n); try { localStorage.setItem('baTheme', n); } catch {} };
-let skin = 'ars';
+let skin = 'sunrise';
+const SKINS = [['sunrise', 'Sunrise', 'linear-gradient(135deg,#fff8f1,#ffe8d6)', 'radial-gradient(circle at 34% 28%,#fff2c6,#ff8a3d 50%,#e8461e)'], ['ember', 'Ember', '#0b0b0d', 'radial-gradient(circle at 32% 30%,#ff8a93,#db0011 55%,#5c0007)'], ['ocean', 'Ocean', '#061a22', 'radial-gradient(circle at 32% 28%,#d8fffb,#12b5ab 50%,#0a5d78)']];
+function applySkin(k) { skin = SKINS.some(x => x[0] === k) ? k : 'sunrise'; document.documentElement.dataset.skin = skin; try { localStorage.setItem('kairo-skin', skin); } catch {} }
+try { applySkin(localStorage.getItem('kairo-skin') || 'sunrise'); } catch { applySkin('sunrise'); }
 
 /* ---------- voice + typing ---------- */
 function openTyper() { $('#typer').hidden = false; $('#mid').hidden = true; $('#micBtn').hidden = true; $('#kbBtn').hidden = true; $('#box').focus(); }
@@ -1256,7 +1084,6 @@ function voiceIntent(t) {
   if (/(voice off|stop talking|be quiet|mute|silent mode)/.test(x)) { setVoice(false); return true; }
   if (/excel|spreadsheet/.test(x)) { exportXlsx({}); return true; }
   if (/\bpdf\b/.test(x)) { exportPdf({}); return true; }
-  if (/(email|alert|notification|schedule)/.test(x) && !/^(yes|no)/.test(x)) { openAlerts(); speak('Choose how often and when — then tap Turn on.'); return true; }
   if (/(show|see|open).*(match|jobs|roles|shortlist)/.test(x)) { showMatchesLocal(); return true; }
   if (/(feedback|rate kairo|give a rating)/.test(x)) { openFeedback(); speak('Tap the stars and anything that stood out.'); return true; }
   if (mode === 'gaps' && /^(skip|next|pass|not now)/.test(x)) { gapAnswer('Skip'); return true; }
@@ -1365,7 +1192,7 @@ render();
   isOwner = !!(await user.isOwner().catch(() => false));
   if (myName) $('#hiName').textContent = `Hi ${myName.split(' ')[0]},`;
   try {
-    const [ps, cs, ss, fs, ls] = await Promise.all([profRef().get(), chatRef().get(), schedRef().get(), fbRef().get(), db.doc('kmeta/learnings').get()]);
+    const [ps, cs, fs] = await Promise.all([profRef().get(), chatRef().get(), fbRef().get()]); const ss = {exists:false}, ls = {exists:false};
     if (ps.exists) { const d = ps.data(); profile = {...profile, ...d, prefs:{...DEF, ...(d.prefs || {})}, fields:Array.isArray(d.fields) ? [...d.fields] : profile.fields, answered:{...(d.answered || {})}}; hunt = d.hunt || null; }
     if (cs.exists) turns = [...(cs.data().turns || [])];
     if (ss.exists) { const {resumeText, prefs, fields, ...rest} = ss.data(); schedule = {...rest}; }
@@ -1380,20 +1207,14 @@ render();
   if (profile.resumeText && !turns.some(t => t.role === 'scan') && profile.scan) turns.push({role:'scan', snap:profile.scan});
   initVoice();
   let first = true;
-  db.collection('kjobs').onSnapshot(s => {
-    jobs.clear(); for (const d of s.docs) jobs.set(d.id, {...d.data(), id:d.id});
-    if (first) {
-      first = false;
-      if (profile.resumeText && turns.length) {
-        const fresh = profile.lastScoredAt ? [...jobs.values()].filter(j => j.status !== 'closed' && Date.parse(j.addedOn || 0) > profile.lastScoredAt - 864e5).length : 0;
-        const wo = [...new Set([...(fresh ? ['Find new matches'] : []), ...defaultOpts().items])].slice(0, 4);
-        turns.push({role:'assistant', local:true, content:`Welcome back${myName ? ', ' + myName.split(' ')[0] : ''}.${fresh ? ` ${fresh} new role${fresh === 1 ? '' : 's'} since your last visit.` : ''}\nOPTIONS: ${wo.join(' | ')}`});
-      }
-    }
-    render();
-  }, () => {});
+  await loadFeed();
+  if (profile.resumeText && turns.length) {
+    const fresh = profile.lastScoredAt ? [...jobs.values()].filter(j => j.status !== 'closed' && Date.parse(j.addedOn || 0) > profile.lastScoredAt - 864e5).length : 0;
+    const wo = [...new Set([...(fresh ? ['Find new matches'] : []), ...defaultOpts().items])].slice(0, 4);
+    turns.push({role:'assistant', local:true, content:`Welcome back${myName ? ', ' + myName.split(' ')[0] : ''}.${fresh ? ` ${fresh} new role${fresh === 1 ? '' : 's'} since your last visit.` : ''}\nOPTIONS: ${wo.join(' | ')}`});
+  }
+  render();
   matchCol().onSnapshot(s => { matches.clear(); for (const d of s.docs) matches.set(d.id, {...d.data(), id:d.id}); render(); }, () => {});
-  schedRef().onSnapshot(s => { if (s.exists) { const {resumeText, prefs, fields, ...rest} = s.data(); schedule = {...rest}; } }, () => {});
   render();
 })();
 }

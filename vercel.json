@@ -33,11 +33,5 @@
       "source": "/kairo",
       "destination": "/kairo.html"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/kairo-cron",
-      "schedule": "30 3 * * *"
-    }
   ]
 }
