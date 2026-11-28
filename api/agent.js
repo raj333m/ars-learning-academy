@@ -52,8 +52,12 @@ HOW MATCH % WORKS
 Score out of 100 from: role/title fit (25), skills in the job description found in the resume (30), regulatory domain (15), experience band (15), location/work mode (10), SQL level and Teradata/Oracle match (up to 7). It's a guide, not a guarantee.
 
 ACCOUNT, MENU, OTHER
-- The round initials badge at the top right opens the menu: Start over, Sign out, Resume (upload a new one), Interview readiness, My matches, Export, Feedback, Search preferences (re-answer the questions). Admins also see Insights.
-- Start over (also: tap the Kairo logo, or say "start over") clears answers and matches and returns to the first page; ARS practice is kept.
+- After signing in, a slim bar under the header has "Back to home" (top left) and "Log out" (top right). The Matches page has the same two as round icons beside Download.
+- "Back to home" (also tapping the Kairo logo, or saying "start over") asks to confirm, then clears the resume, answers and matches so the user starts fresh; they stay signed in and ARS practice is kept. "Log out" only signs out (of Kairo and ARS).
+- The round initials badge at the top right shows the user's name, Feedback, and the privacy note (admins also see Insights).
+- After the quick questions Kairo shows a one-line review of every answer and two choices: "Find roles to apply" or "Change an answer" (pick one field, e.g. Job cities, and only that question is asked again). Users can also say "change my salary" etc.
+- Upload a new resume with the paperclip button at the bottom left of the chat.
+- The Ask Kairo robot (bottom right on the first page and Matches page) listens as soon as it's tapped.
 - Speaker icon at the top turns Kairo's voice on/off. Microphone: allow it when the browser asks; in Chrome click the icon left of the address bar, then Microphone, then Allow. The Claude app's built-in browser blocks the microphone; use Chrome. On iPhone, tapping answers works best.
 - Privacy: the resume and answers are visible only to the user; the admin sees anonymous usage counts. Data is deleted 10 days after registering (they can register again).
 - Job list: a small set of verified roles from employer sites, refreshed regularly; if a company isn't shown it's because no verified listing link was found.
