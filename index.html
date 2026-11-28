@@ -165,6 +165,25 @@ body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
 .mplist .jc{width:auto;max-width:none}
 .mpdiv{grid-column:1/-1;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:12px;font-weight:700;margin:6px 0 -2px}.mpdiv::before,.mpdiv::after{content:"";flex:1;height:1px;background:var(--line)}
 @media(max-width:520px){.mplist{grid-template-columns:minmax(0,1fr)}.mprank{display:none}.mpx{display:none}}
+/* header polish */
+.top{background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 96%,transparent),color-mix(in srgb,var(--bg) 82%,transparent));box-shadow:0 1px 0 var(--line),0 8px 24px -18px rgba(60,30,10,.25);border-bottom:0}
+.top .row{height:66px;gap:10px}
+.brand{gap:11px}.brand .bt{display:grid;line-height:1.05;text-align:left}.brand .bt b{font-size:21px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,var(--ink),color-mix(in srgb,var(--acc) 70%,var(--ink)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .bt small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:3px}
+.arslink{height:42px;padding:0 16px;border:1px solid var(--line);box-shadow:0 2px 8px -4px rgba(60,30,10,.18);transition:transform .15s,box-shadow .15s}
+.arslink:hover{transform:translateY(-1px);box-shadow:0 6px 14px -6px rgba(60,30,10,.25)}
+.regtop{height:42px;min-height:42px!important;padding:0 18px!important;font-size:14px!important;box-shadow:0 8px 18px -8px var(--glow)}
+.hbtn{width:42px;height:42px;background:var(--panel);border:1px solid var(--line);box-shadow:0 2px 8px -4px rgba(60,30,10,.18);color:var(--acc)}
+#menuBtn.me{border:0}
+@media(max-width:520px){.top .row{height:60px;gap:8px}.brand .bt b{font-size:19px}.brand .bt small{font-size:10px}.regtop{display:none!important}.arslink{height:38px;padding:0 12px}.hbtn{width:38px;height:38px}}
+@media(max-width:360px){.brand .bt small{display:none}}
+/* job details */
+.jd h2{font-size:clamp(18px,4.8vw,22px);line-height:1.28;margin:4px 0 0}.jd .co{display:flex;align-items:center;gap:8px}
+.jdhost{display:flex;align-items:center;gap:6px}.jdhost .ic{width:14px;height:14px;color:var(--good)}.jd .chips{margin-top:12px}
+.jdact{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 0}.jdact .btn{flex:1 1 220px;justify-content:center}
+.jdhost{font-size:12px;color:var(--mute);margin:8px 0 0}
+.jdtx{margin:0;font-size:15px;line-height:1.55}
+.jdmsg{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:14px}.jdmsg p{margin:0 0 12px;font-size:14px;line-height:1.5}
 /* account */
 .acct{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}.acct .btn{justify-content:center;width:100%}
 #menuBtn.me{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:800;letter-spacing:.02em}
@@ -343,9 +362,10 @@ body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
 <body>
 <header class="top"><div class="col">
   <div class="row">
-    <button class="brand" id="homeBtn" aria-label="Kairo home — start over"><span class="orb" id="hOrb" style="--s:28px"></span>Kairo</button>
+    <button class="brand" id="homeBtn" aria-label="Kairo home — start over"><span class="orb" id="hOrb" style="--s:32px"></span><span class="bt"><b>Kairo</b><small>BA job agent</small></span></button>
     <span class="sp"></span>
     <a class="arslink" id="arsLink" href="/ars" title="ARS Learning Academy: practise BA, SQL and regulatory reporting interview questions"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg><span class="lg">Practise questions</span><span class="sm">Practise</span></a>
+    <button class="btn p regtop" id="regTop" type="button" hidden>Register free</button>
     <button class="hbtn" id="ttsBtn" aria-label="Voice mode" title="Voice mode" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
     <button class="hbtn" id="menuBtn" aria-label="Account and menu: start over, sign out"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
   </div>
@@ -637,12 +657,12 @@ function cardHtml(m) {
   const meta = [j.location, j.workMode, j.experience].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('');
   return `<article class="jc${m.nearMiss ? ' near' : ''}" data-id="${esc(m.id)}">
     <div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${avatar(j.company)}${esc(j.company)}</div><h4>${esc(j.title)}</h4></div></div>
-    <div class="chips">${m.match >= 85 ? '<span class="chip g">Strong fit</span>' : m.match >= thr ? '<span class="chip a">Good fit</span>' : '<span class="chip">Near miss</span>'}${meta}</div>
+    <div class="chips">${m.status === 'Saved' ? `<span class="chip ink">${I.heart}Saved</span>` : isApplied(m.status) ? `<span class="chip g">${I.check}Applied</span>` : ''}${m.match >= 85 ? '<span class="chip g">Strong fit</span>' : m.match >= thr ? '<span class="chip a">Good fit</span>' : '<span class="chip">Near miss</span>'}${meta}</div>
     ${m.parts ? `<div class="fit">${Object.entries(m.parts).map(([k, v]) => `<span>${k}</span><div class="tk"><i style="--w:${clamp(v)}%;--c:var(--${v >= 80 ? 'good' : v >= 55 ? 'warn' : 'bad'})"></i></div>`).join('')}</div>` : `<p class="why">${esc(m.why)}</p>`}
     ${m.mandatoryGaps && !/^none/i.test(m.mandatoryGaps) ? `<div class="chips">${m.mandatoryGaps.split(/,\s*/).map(g => `<span class="chip a">+ ${esc(g)}</span>`).join('')}</div>` : ''}
     ${(() => { const l = arsLink(j); if (!l) return ''; const t = arsTopic(j)[0], v = readyFor(t); return `<a class="practise ${v == null ? '' : v >= 8 ? 'ok' : v >= 6 ? 'mid' : 'low'}" href="${esc(l.url)}" data-a="practise">${I.mic}<span>${esc(l.label.charAt(0).toUpperCase() + l.label.slice(1))} readiness</span><b>${v == null ? 'Practise' : v + '/10'}</b></a>`; })()}
     <div class="row">${safeUrl(j.applyUrl) ? `<a class="btn p" href="${esc(safeUrl(j.applyUrl))}" target="_blank" rel="noopener" data-a="apply">Apply</a>` : `<button class="btn p" data-a="prep">Details</button>`}
-      <button class="btn o" data-a="prep">Prep</button>
+      <button class="btn o" data-a="prep">Details</button>
       <button class="btn i" data-a="save" aria-pressed="${m.status === 'Saved' || m.status === 'Applied'}" aria-label="Save">${I.heart}</button>
       <button class="btn i" data-a="skip" aria-pressed="${fb.vote === 'down'}" aria-label="Not for me">${I.x}</button></div></article>`;
 }
@@ -680,7 +700,7 @@ function render() {
   if ($('#mpage') && !$('#mpage').hidden) { const y = $('#mpage').scrollTop; openMatchesPage(false); $('#mpage').scrollTop = y; }
 }
 function defaultOpts() {
-  const n = [...matches.values()].filter(m => jobOf(m) && m.match >= (profile.prefs.threshold || 80) && m.status !== 'Not interested').length;
+  const n = [...matches.values()].filter(m => jobOf(m) && m.match >= (profile.prefs.threshold || 80) && m.status !== 'Not interested' && !['Applied', 'Interview', 'Offer'].includes(m.status)).length;
   if (!profile.resumeText) return {kind:'single', items:['Upload my resume']};
   if (!profile.scan) return {kind:'single', items:['Check my resume']};
   if (pendingGaps().length) return {kind:'single', items:[`Answer ${pendingGaps().length} questions`, 'Upload updated resume']};
@@ -942,8 +962,9 @@ async function findMatches(label) {
   const thr = profile.prefs.threshold || 80, scored = [];
   for (const j of jobs.values()) { if (j.status === 'closed') continue; const s = scoreJob(j); scored.push({j, s}); }
   scored.sort((a, b) => b.s.match - a.s.match);
-  let pick = scored.filter(x => x.s.match >= thr), near = false;
-  if (!pick.length) { pick = scored.slice(0, 3); near = true; }
+  const openS = scored.filter(x => { const o = matches.get(x.j.id); return !o || (!isApplied(o.status) && o.status !== 'Not interested'); });
+  let pick = openS.filter(x => x.s.match >= thr), near = false;
+  if (!pick.length) { pick = openS.slice(0, 3); near = true; }
   const ids = [], saves = [];
   for (const {j, s} of scored) {
     const isNear = s.match < thr;
@@ -958,8 +979,8 @@ async function findMatches(label) {
   turns.push({role:'tool', content:`Live BA list · updated ${feedInfo.updated || today()}`});
   const best = pick[0];
   turns.push({role:'assistant', local:true, content:near
-    ? `${scored.length} roles ranked for you — none at ${thr}% yet. New roles land daily.\nOPTIONS: Open my matches | Change my answers | Start over`
-    : `🎯 ${pick.length} of ${scored.length} roles fit ${thr}%+. Best: ${best.j.company} at ${best.s.match}%.\nOPTIONS: Open my matches | Practise questions | Start over`});
+    ? `${openS.length} roles ranked for you — none at ${thr}% yet. New roles land daily.\nOPTIONS: Open my matches | Change my answers | Start over`
+    : `🎯 ${pick.length} of ${openS.length} roles fit ${thr}%+. Best: ${best.j.company} at ${best.s.match}%.\nOPTIONS: Open my matches | Practise questions | Start over`});
   profile.lastScoredAt = Date.now(); persistProfile();
   track({stage:Math.max(usage.stage || 0, 4), bestMatch:best ? best.s.match : null}, {searches:1, matchesShown:ids.length});
   render(); saveChat(); openMatchesPage();
@@ -967,14 +988,16 @@ async function findMatches(label) {
 }
 $('#stopBtn').onclick = () => ctl && ctl.abort();
 /* ---------- matches page: every role, best fit first ---------- */
+const isApplied = st => ['Applied', 'Interview', 'Offer'].includes(st);
+const isOpen = m => m.status !== 'Not interested' && !isApplied(m.status);
 let mpFilter = 'all';
 function openMatchesPage(push = true) {
   const pg = $('#mpage'); if (!pg) return;
   const thr = profile.prefs.threshold || 80;
   const all = [...matches.values()].filter(m => jobOf(m)).sort((a, b) => b.match - a.match);
-  const keep = m => mpFilter === 'all' ? m.status !== 'Not interested' : mpFilter === 'fit' ? m.match >= thr && m.status !== 'Not interested' : mpFilter === 'saved' ? ['Saved', 'Applied', 'Interview', 'Offer'].includes(m.status) : m.status === 'Not interested';
-  const list = all.filter(keep), fit = all.filter(m => m.match >= thr && m.status !== 'Not interested').length;
-  const best = all[0] ? all[0].match : 0, applied = all.filter(m => ['Applied', 'Interview', 'Offer'].includes(m.status)).length;
+  const keep = m => mpFilter === 'all' ? isOpen(m) : mpFilter === 'fit' ? isOpen(m) && m.match >= thr : mpFilter === 'saved' ? m.status === 'Saved' : mpFilter === 'applied' ? isApplied(m.status) : m.status === 'Not interested';
+  const open = all.filter(isOpen), list = all.filter(keep), fit = open.filter(m => m.match >= thr).length;
+  const best = open[0] ? open[0].match : 0, applied = all.filter(m => isApplied(m.status)).length;
   const rd = readyFor('');
   let body = '', divided = false;
   list.forEach((m, i) => {
@@ -983,10 +1006,10 @@ function openMatchesPage(push = true) {
   });
   const chip = (k, l, n) => `<button type="button" class="opt" data-mpf="${k}" aria-pressed="${mpFilter === k}">${l}${n != null ? ` · ${n}` : ''}</button>`;
   $('#mpBody').innerHTML = `
-    <div class="pulse"><div><b>${all.length}</b><small>roles ranked</small></div><div><b>${fit}</b><small>fit ${thr}%+</small></div><div class="hi"><b>${best}%</b><small>best fit</small></div><a class="rd" href="/ars" data-a="practise"><b>${rd == null ? '—' : rd + '<small>/10</small>'}</b><small>interview ready ↗</small></a></div>
-    <div class="mpf">${chip('all', 'All', all.filter(m => m.status !== 'Not interested').length)}${chip('fit', `${thr}%+`, fit)}${chip('saved', 'Saved & applied', all.filter(m => ['Saved', 'Applied', 'Interview', 'Offer'].includes(m.status)).length)}${all.some(m => m.status === 'Not interested') ? chip('hidden', 'Hidden') : ''}</div>
-    <div class="mplist">${body || `<p class="note" style="text-align:center;padding:30px 0">Nothing here yet.</p>`}</div>
-    <p class="note" style="text-align:center;margin:18px 0 6px">Ranked from most to least likely match · ${applied} applied · list updated ${esc(feedInfo.updated || today())}</p>`;
+    <div class="pulse"><div><b>${open.length}</b><small>roles to explore</small></div><div><b>${fit}</b><small>fit ${thr}%+</small></div><div class="hi"><b>${best}%</b><small>best fit</small></div><a class="rd" href="/ars" data-a="practise"><b>${rd == null ? '—' : rd + '<small>/10</small>'}</b><small>interview ready ↗</small></a></div>
+    <div class="mpf">${chip('all', 'All', open.length)}${chip('fit', `${thr}%+`, fit)}${chip('saved', 'Saved', all.filter(m => m.status === 'Saved').length)}${chip('applied', 'Applied', applied)}${all.some(m => m.status === 'Not interested') ? chip('hidden', 'Hidden') : ''}</div>
+    <div class="mplist">${body || `<p class="note" style="text-align:center;padding:30px 0">${mpFilter === 'applied' ? 'Roles you apply for move here.' : mpFilter === 'saved' ? 'Tap the heart on a role to save it.' : 'Nothing here yet.'}</p>`}</div>
+    <p class="note" style="text-align:center;margin:18px 0 6px">Most to least likely match${applied ? ` · ${applied} applied (under Applied)` : ''} · list updated ${esc(feedInfo.updated || today())}</p>`;
   if (pg.hidden) { pg.hidden = false; document.body.classList.add('mp-open'); pg.scrollTop = 0; if (push) try { history.pushState({mp:1}, '', '#matches'); } catch {} }
   for (const b of document.querySelectorAll('[data-mpf]')) b.onclick = () => { mpFilter = b.dataset.mpf; openMatchesPage(false); };
 }
@@ -1033,7 +1056,7 @@ document.addEventListener('click', async e => {
   if (a === 'fb') return openFeedback();
   const card = b.closest('[data-id]'); const m = card && matches.get(card.dataset.id); if (!m) return;
   if (a === 'practise') { track({}, {practiseClicks:1}); return; }
-  if (a === 'apply') { if (m.status !== 'Applied') { m.status = 'Applied'; saveMatch(m); track({stage:Math.max(usage.stage || 0, 5)}, {applies:1}); } return; }
+  if (a === 'apply') { if (!isApplied(m.status)) pendingApply = {id:m.id, at:Date.now()}; track({stage:Math.max(usage.stage || 0, 5)}, {applyClicks:1}); return; }
   if (a === 'prep') return openPrep(m);
   if (a === 'save') { m.status = m.status === 'Saved' ? 'New' : 'Saved'; await saveMatch(m); b.setAttribute('aria-pressed', m.status === 'Saved'); toast(m.status === 'Saved' ? 'Saved' : 'Removed'); if (m.status === 'Saved') track({}, {saves:1}); return; }
   if (a === 'skip') return askReason(m);
@@ -1063,11 +1086,11 @@ async function exportXlsx(btn) {
   btn.disabled = true;
   try {
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
-    const f = profile.fields.length ? profile.fields : FIELDS.map((_, i) => i + 1);
-    const aoa = [f.map(n => FIELDS[n - 1]), ...rows.map(r => f.map(n => r.v[n]))];
-    const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = f.map(n => ({wch:[1, 2, 16].includes(n) ? 10 : [4, 7, 19, 20].includes(n) ? 50 : 26}));
+    const head = ['#', 'Fit %', 'Company', 'Role', 'Location', 'Work mode', 'Experience', 'Posted / checked', 'Your status', 'Skills you have', 'Brush up on', 'Practise on ARS', 'Job listing'];
+    const aoa = [head, ...rows.map((r, i) => { const sc = scoreJob(r.j), l = arsLink(r.j); return [i + 1, r.m.match, r.j.company, r.j.title, r.j.location || '', r.j.workMode || '', r.j.experience || '', r.j.postedDate || r.j.verifiedOn || '', r.m.status || 'New', sc.hits.join(', '), sc.miss.join(', '), l ? location.origin + l.url : '', safeUrl(r.j.applyUrl) || safeUrl(r.j.sourceUrl) || '']; })];
+    const ws = XLSX.utils.aoa_to_sheet(aoa); ws['!cols'] = [4, 7, 14, 48, 12, 11, 12, 15, 12, 40, 30, 34, 60].map(w => ({wch:w}));
     const p = profile.prefs, sc = profile.scan || {};
-    const ws2 = XLSX.utils.aoa_to_sheet([['Kairo match report', today()], [], ['Profile', sc.headline || ''], ['Resume score', sc.overall || ''], ['Target roles', p.roles.join(', ')], ['Locations', p.locations.join(', ')], ['Work mode', p.workMode], ['Salary', p.salary], ['Availability', p.notice], ['Minimum match', (p.threshold || 80) + '%']]);
+    const ws2 = XLSX.utils.aoa_to_sheet([['Kairo match report', today()], [],  ['Profile', sc.headline || ''], ['Target roles', p.roles.join(', ')], ['Locations', p.locations.join(', ')], ['Work mode', p.workMode], ['Salary', p.salary], ['Availability', p.notice], ['Minimum match', (p.threshold || 80) + '%']]);
     ws2['!cols'] = [{wch:18}, {wch:60}];
     const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Matches'); XLSX.utils.book_append_sheet(wb, ws2, 'Profile');
     track({}, {exportsXlsx:1});
@@ -1090,7 +1113,7 @@ async function exportPdf(btn) {
     doc.text(`${sc.headline || ''}${sc.overall ? '  ·  Resume score ' + sc.overall : ''}  ·  ${p.roles.slice(0, 3).join(', ')}  ·  ${p.locations.slice(0, 3).join(', ')}  ·  ${rows.length} roles`, 32, 92, {maxWidth:W - 64});
     doc.autoTable({ startY:108, margin:{left:32, right:32}, styles:{fontSize:9, cellPadding:6, valign:'top'}, headStyles:{fillColor:[20, 20, 22], textColor:255},
       head:[['Fit', 'Role', 'Company', 'Location', 'Experience', 'Posted', 'Why it fits', 'Apply']],
-      body:rows.map(r => [r.m.match + '%', r.j.title, r.j.company, [r.j.location, r.j.workMode].filter(Boolean).join(' · '), r.j.experience || '', r.j.postedDate || '', r.m.why || '', safeUrl(r.j.applyUrl) || safeUrl(r.j.sourceUrl) || '']),
+      body:rows.map(r => [r.m.match + '%', r.j.title, r.j.company, [r.j.location, r.j.workMode].filter(Boolean).join(' · '), r.j.experience || '', r.j.postedDate || r.j.verifiedOn || '', r.m.why || '', safeUrl(r.j.applyUrl) || safeUrl(r.j.sourceUrl) || '']),
       columnStyles:{0:{cellWidth:36, fontStyle:'bold'}, 6:{cellWidth:200}, 7:{cellWidth:140, textColor:[176, 0, 14]}},
       didParseCell:d => { if (d.section === 'body' && d.column.index === 0) { const v = parseInt(d.cell.raw, 10); d.cell.styles.textColor = v >= 85 ? [10, 138, 92] : [163, 93, 0]; } } });
     track({}, {exportsPdf:1});
@@ -1111,7 +1134,7 @@ $('#menuBtn').onclick = () => {
   <div class="menu">
     <button class="mi" data-go="resume">${sc && sc.overall != null ? `<span class="ring ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></span>` : `<span class="ico">${I.doc}</span>`}<div><b>Resume</b><small>${esc(profile.fileName || 'Not uploaded')}</small></div>${I.up}</button>
     ${ars ? (() => { const r = readiness(); return `<a class="mi" href="${r.sql == null && r.reg == null ? '/ars#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/ars#practice-sql' : '/ars#practice-credit-risk'}" style="text-decoration:none;color:inherit"><span class="ico">${I.mic}</span><div><b>Interview readiness</b><small>SQL ${r.sql ?? '–'}/10 · Credit risk ${r.reg ?? '–'}/10 · Exam ${r.exam == null ? 'not taken' : r.exam + '%' + (r.passed ? '&nbsp;✓' : '')}</small></div>${I.up ? '' : ''}</a>`; })() : ''}
-    <button class="mi" data-go="short"><span class="ico">${I.list}</span><div><b>Shortlist</b><small>${n} role${n === 1 ? '' : 's'} · ${[...matches.values()].filter(m => m.status === 'Applied').length} applied</small></div></button>
+    <button class="mi" data-go="short"><span class="ico">${I.list}</span><div><b>My matches</b><small>${n} role${n === 1 ? "" : "s"} ranked · ${[...matches.values()].filter(m => m.status === 'Applied').length} applied</small></div></button>
     <button class="mi" data-go="export"><span class="ico">${I.xls}</span><div><b>Export</b><small>Excel or PDF</small></div></button>
     <button class="mi" data-go="fb"><span class="ico">${I.star}</span><div><b>Feedback</b><small>Help Kairo get better</small></div></button>
     <button class="mi" data-go="prefs"><span class="ico">${I.user}</span><div><b>Search preferences</b><small>${esc([p.workMode, p.salary, p.notice].filter(Boolean).join(' · ') || 'Set as we talk')}</small></div></button>
@@ -1125,7 +1148,7 @@ $('#menuBtn').onclick = () => {
     const vb = e.target.closest('[data-voice]'); if (vb) { setVoice(vb.dataset.voice === '1'); for (const x of document.querySelectorAll('[data-voice]')) x.setAttribute('aria-pressed', (x.dataset.voice === '1') === voiceOn); return; }
     const f = e.target.closest('[data-f]'); if (f) { profile.fields = [...document.querySelectorAll('[data-f]:checked')].map(x => Number(x.dataset.f)); persistProfile(); return; }
     const g = e.target.closest('[data-go]'); if (!g) return; const k = g.dataset.go;
-    if (k === 'short') return openShortlist();
+    if (k === 'short') { closeSheet(); return openMatchesPage(); }
     if (k === 'fb') return openFeedback();
     if (k === 'insights') return openInsights();
     if (k === 'export') return openSheet(`<h2>Export your matches</h2><p class="sub">${[...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').length} roles, with the fields you chose.</p><div class="menu"><button class="mi" data-a="xlsx"><span class="ico">${I.xls}</span><div><b>Excel workbook</b><small>Every field, filterable</small></div></button><button class="mi" data-a="pdf"><span class="ico">${I.pdf}</span><div><b>PDF report</b><small>Clean summary to share</small></div></button></div>`);
@@ -1266,6 +1289,7 @@ function enterGuest() {
   guest = true; $('#dock').hidden = true;
   const al = $('#arsLink'); al.innerHTML = `<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Sign in</span>`; al.href = '#'; al.onclick = e => { e.preventDefault(); openAuth('in'); };
   $('#menuBtn').hidden = true; $('#heroSign').hidden = false; $('#heroSignBtn').onclick = () => openAuth('in');
+  $('#regTop').hidden = false; $('#regTop').onclick = () => openAuth('reg');
   for (const id of ['#valPrac', '#valCert']) $(id).onclick = e => { e.preventDefault(); openAuth('reg'); };
   $('#homeBtn').onclick = () => scrollTo({top:0, behavior:'smooth'});
   $('#file').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) guestResume(f); };
@@ -1312,15 +1336,29 @@ function fieldsHtml(m, j) {
   return `<ul class="flds">${FIELDS.map((f, i) => on(i + 1) ? `<li><b>${i + 1}. ${esc(f)}</b>${v[i + 1]}</li>` : '').join('')}</ul>`;
 }
 function openPrep(m) {
-  const j = jobOf(m); if (!j) return; const url = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl);
-  openSheet(`<div data-id="${esc(m.id)}"><div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${esc(j.company)}</div><h2>${esc(j.title)}</h2></div></div>
-    <p>${esc(m.why)}</p>
-    <div class="row">${safeUrl(j.applyUrl) ? `<a class="btn p" data-a="apply" href="${esc(safeUrl(j.applyUrl))}" target="_blank" rel="noopener">Apply</a>` : ''}${(() => { const l = arsLink(j); return l ? `<a class="btn o" href="${esc(l.url)}" data-a="practise">Practise this interview</a>` : ''; })()}<button class="btn o" id="cpy">Copy</button><a class="btn o" href="https://wa.me/?text=${encodeURIComponent(shareText(m))}" target="_blank" rel="noopener">WhatsApp</a>${url ? `<a class="btn o" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}" target="_blank" rel="noopener">LinkedIn</a>` : ''}</div>
-    <div class="lbl">Status</div><div class="seg">${['New','Saved','Applied','Interview','Offer'].map(s => `<button class="opt" data-st="${s}" aria-pressed="${m.status === s}">${s}</button>`).join('')}</div>
-    <div class="lbl">Interview prep</div><div id="prepFields">${fieldsHtml(m, j)}</div></div>`);
-  $('#cpy').onclick = async () => { try { await navigator.clipboard.writeText(shareText(m)); toast('Copied'); } catch { toast('Copy blocked'); } };
-  $('#sheetBody').onclick = async e => { const s = e.target.closest('[data-st]'); if (!s) return; m.status = s.dataset.st; await saveMatch(m); for (const x of document.querySelectorAll('[data-st]')) x.setAttribute('aria-pressed', x.dataset.st === m.status); };
-  if (!m.report) { const j2 = jobOf(m); if (j2) { m.report = localReport(j2, scoreJob(j2)); saveMatch(m); $('#prepFields').innerHTML = fieldsHtml(m, j2); } }
+  const j = jobOf(m); if (!j) return;
+  const sc = scoreJob(j), r = m.report || localReport(j, sc), l = arsLink(j), apply = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl);
+  const meta = [j.location, j.workMode, j.experience].filter(Boolean);
+  const dt = d => { const t = Date.parse(d || ''); return isNaN(t) ? '' : new Date(t).toLocaleDateString('en-GB', {day:'numeric', month:'short'}); };
+  const when = dt(j.postedDate) ? `Posted ${dt(j.postedDate)}` : dt(j.verifiedOn) ? `Checked open ${dt(j.verifiedOn)}` : '';
+  const host = (() => { try { return new URL(apply).hostname.replace(/^www\./, ''); } catch { return ''; } })();
+  const parts = m.parts || sc.parts;
+  openSheet(`<div class="jd" data-id="${esc(m.id)}">
+    <div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${avatar(j.company)}${esc(j.company)}</div><h2>${esc(j.title)}</h2></div></div>
+    <div class="chips">${meta.map(x => `<span class="chip">${esc(x)}</span>`).join('')}${when ? `<span class="chip g">${esc(when)}</span>` : ''}</div>
+    <div class="jdact">${apply ? `<a class="btn p" data-a="apply" href="${esc(apply)}" target="_blank" rel="noopener">Apply on ${esc(j.company)} ↗</a>` : ''}${l ? `<a class="btn o" href="${esc(l.url)}" data-a="practise">${I.mic}Practise this interview</a>` : ''}</div>
+    ${apply ? `<p class="jdhost">${I.check}Opens ${esc(j.company)}'s official job listing</p>` : ''}
+    ${parts ? `<div class="lbl">Why you fit</div><div class="fit">${Object.entries(parts).map(([k, v]) => `<span>${k}</span><div class="tk"><i style="--w:${clamp(v)}%;--c:var(--${v >= 80 ? 'good' : v >= 55 ? 'warn' : 'bad'})"></i></div>`).join('')}</div>` : ''}
+    ${sc.hits.length ? `<div class="lbl">Skills they want that you have</div><div class="chips">${sc.hits.map(x => `<span class="chip g">${I.check}${esc(x)}</span>`).join('')}</div>` : ''}
+    ${sc.miss.length ? `<div class="lbl">Brush up before the interview</div><div class="chips">${sc.miss.map(x => `<span class="chip a">${esc(x)}</span>`).join('')}</div>` : ''}
+    ${j.jd ? `<div class="lbl">About the role</div><p class="jdtx">${esc(j.jd)}</p>` : ''}
+    <div class="lbl">Your edge</div><p class="jdtx">${esc(r.applyTip)}</p>
+    <div class="lbl">Message the hiring team</div><div class="jdmsg"><p>${esc(r.outreach)}</p><div class="row"><button class="btn o" id="cpy">Copy message</button>${safeUrl(j.recruiterSearchUrl) ? `<a class="btn o" href="${esc(safeUrl(j.recruiterSearchUrl))}" target="_blank" rel="noopener">Find recruiters on LinkedIn ↗</a>` : ''}</div></div>
+    <div class="lbl">Track this application</div><div class="seg">${['Saved','Applied'].map(st => `<button class="opt" data-st="${st}" aria-pressed="${m.status === st}">${st}</button>`).join('')}</div>
+  </div>`);
+  $('#cpy').onclick = async () => { try { await navigator.clipboard.writeText(r.outreach); toast('Message copied'); } catch { toast('Copy blocked'); } };
+  $('#sheetBody').onclick = async e => { const b = e.target.closest('[data-st]'); if (!b) return; m.status = m.status === b.dataset.st ? 'New' : b.dataset.st; await saveMatch(m); for (const x of document.querySelectorAll('[data-st]')) x.setAttribute('aria-pressed', x.dataset.st === m.status); };
+  if (!m.report) { m.report = r; saveMatch(m); }
 }
 /* ---------- feedback ---------- */
 function openFeedback() {
@@ -1463,16 +1501,30 @@ function heardAnswer(t) {
   if (!hit && items.length) { const n = (t.match(/\d{1,3}/) || [])[0]; if (n) hit = items.find(i => i.match(/\d{1,3}/) && i.match(/\d{1,3}/)[0] === n) || null; }
   answer(hit || t);
 }
+var pendingApply = null;
+async function markApplied(m) { m.status = 'Applied'; await saveMatch(m); track({}, {applies:1}); toast('Moved to Applied'); render(); }
+function askApplied() {
+  if (!pendingApply || Date.now() - pendingApply.at < 2500 || document.hidden) return;
+  const m = matches.get(pendingApply.id); pendingApply = null; if (!m || isApplied(m.status)) return; const j = jobOf(m); if (!j) return;
+  openSheet(`<div style="text-align:center;padding:6px 0">${avatar(j.company)}<h2 style="margin:12px 0 6px">Did you apply?</h2><p class="sub" style="margin:0 auto 20px;max-width:34ch">${esc(j.title)} at ${esc(j.company)}</p>
+    <div class="row" style="justify-content:center"><button class="btn p" id="apYes">${I.check}Yes, I applied</button><button class="btn o" id="apNo">Not yet</button></div>
+    <p class="note" style="margin-top:14px">Applied roles move to the Applied tab, so your list shows only new options.</p></div>`);
+  $('#apYes').onclick = async () => { closeSheet(); await markApplied(m); };
+  $('#apNo').onclick = () => { closeSheet(); if (m.status !== 'Saved') { m.status = 'Saved'; saveMatch(m); render(); toast('Saved for later'); } };
+  speak('Welcome back. Did you apply for this role?');
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(askApplied, 400); });
+addEventListener('focus', () => setTimeout(askApplied, 400));
 function applyByVoice(x) {
   const thr = profile.prefs.threshold || 80;
-  const list = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match);
+  const list = [...matches.values()].filter(m => jobOf(m) && isOpen(m)).sort((a, b) => b.match - a.match);
   const ord = {first:0,top:0,best:0,one:0,second:1,two:1,third:2,three:2};
   let m = list.find(z => x.includes(norm(jobOf(z).company))) || list[Object.entries(ord).find(([k]) => new RegExp('\\b' + k + '\\b').test(x))?.[1] ?? 0];
   if (!m) { speak('Let me find your matches first.'); return send('View my matches'); }
   const j = jobOf(m), url = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl);
   if (!url) return speak('This one has no apply link yet.');
-  if (m.status !== 'Applied') { m.status = 'Applied'; saveMatch(m); track({stage:Math.max(usage.stage || 0, 5)}, {applies:1}); }
-  turns.push({role:'assistant', local:true, content:`Opening ${j.company}'s careers page for ${j.title}. Finish your application there — I've marked it Applied.\nOPTIONS: View my matches | Practise questions`});
+  pendingApply = {id:m.id, at:Date.now()}; track({stage:Math.max(usage.stage || 0, 5)}, {applyClicks:1});
+  turns.push({role:'assistant', local:true, content:`Opening ${j.company}'s listing for ${j.title}. Apply there — when you're back, I'll ask so I can move it to Applied.\nOPTIONS: View my matches | Practise questions`});
   render(); saveChat(); speak(`Opening ${j.company}'s careers page. All the best!`);
   const w = window.open(url, '_blank');
   if (w) { try { w.opener = null; } catch (e) {} } else toast('Tap Apply on the card to open the careers page');
@@ -1496,7 +1548,7 @@ function setVoice(on) {
 }
 $('#ttsBtn').onclick = () => setVoice(!voiceOn);
 $('#mpBack').onclick = () => closeMatchesPage();
-addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#mpage').hidden && !$('#sheet').classList.contains('on')) closeMatchesPage(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !e.defaultPrevented && !$('#mpage').hidden && !$('#sheet').classList.contains('on')) closeMatchesPage(); });
 $('#homeBtn').onclick = askStartOver;
 function greet() {
   const nm = myName ? myName.split(' ')[0] : '';
