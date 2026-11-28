@@ -1212,8 +1212,9 @@ function phoneOk(cc, num) { num = String(num || '').replace(/[\s-]/g, '').replac
 function phoneHint(cc) { return cc === '91' ? '10-digit Indian mobile number' : cc === '44' ? '10-digit UK mobile number, without the leading 0' : cc === '1' ? '10-digit number' : 'mobile number without the country code'; }
 async function phHash(d) { d = String(d || '').replace(/\D/g, ''); if (!d) return null; try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('ars-ba|' + d)); return [...new Uint8Array(b)].slice(0, 12).map(x => x.toString(16).padStart(2, '0')).join(''); } catch { return 'p' + d.split('').reverse().join(''); } }
 const tokNow = () => { try { return localStorage.getItem('arsTok') || ''; } catch { return ''; } };
-async function apiCall(path, body) {
-  const r = await fetch('/api/' + path, {method:body !== undefined ? 'POST' : 'GET', headers:{'content-type':'application/json', ...(tokNow() ? {authorization:'Bearer ' + tokNow()} : {})}, body:body !== undefined ? JSON.stringify(body) : undefined});
+async function apiCall(path, body, ms) {
+  const ac = ms ? new AbortController() : null; if (ac) setTimeout(() => ac.abort(), ms);
+  const r = await fetch('/api/' + path, {signal:ac ? ac.signal : undefined, method:body !== undefined ? 'POST' : 'GET', headers:{'content-type':'application/json', ...(tokNow() ? {authorization:'Bearer ' + tokNow()} : {})}, body:body !== undefined ? JSON.stringify(body) : undefined});
   let j = {}; try { j = await r.json(); } catch {}
   if (!r.ok) { const e = new Error(j.error || 'Something went wrong. Please try again.'); e.code = j.code; throw e; }
   return j;
@@ -1411,11 +1412,13 @@ function pointAt(sel) {
 async function askAgent(q, where) {
   q = String(q || '').trim(); if (!q) return;
   const kb = kbAnswer(q); let out = null;
+  const box0 = where !== 'chat' && $('#askLog');
+  if (box0) { box0.insertAdjacentHTML('beforeend', `<div class="aq">${esc(q)}</div><div class="aa pending"><span class="orb busy" style="--s:22px"></span><div><p class="thinking"><i></i><i></i><i></i></p></div></div>`); box0.scrollTop = box0.scrollHeight; }
   if (where === 'chat') { turns.push({role:'user', content:q}); busy = true; $('#hOrb').classList.add('busy'); render(); }
   if (AGENT.ai) {
     try {
       if (!tokNow()) { const a = await apiCall('auth?a=anon', {}); localStorage.setItem('arsTok', a.token); }
-      out = await apiCall('agent', {op:'ask', q, ctx:agentCtx(), history:AGENT.history});
+      out = await apiCall('agent', {op:'ask', q, ctx:agentCtx(), history:AGENT.history}, 11000);
     } catch { out = null; }
   }
   if (!out || !out.reply) out = kb ? {reply:kb.a, action:kb.act || 'none'} : {reply:`I can help with anything in Kairo and ARS — uploading your resume, registering, the quick questions, your matches, applying, or interview practice. What would you like to do?`, action:'none'};
@@ -1430,7 +1433,7 @@ async function askAgent(q, where) {
     if (can && a.label) agentActs[a.label.toLowerCase()] = a.run;
     render(); saveChat();
   } else {
-    const box = $('#askLog'); if (box) { box.insertAdjacentHTML('beforeend', `<div class="aq">${esc(q)}</div><div class="aa"><span class="orb" style="--s:22px"></span><div><p>${esc(out.reply)}</p>${can ? `<button class="btn p" type="button" data-askact="${esc(out.action)}">${esc(a.label)}</button>` : ''}</div></div>`); box.scrollTop = box.scrollHeight; }
+    const box = $('#askLog'); if (box) { const pend = box.querySelector('.aa.pending:last-of-type') || [...box.querySelectorAll('.aa.pending')].pop(); if (pend) pend.remove(); box.insertAdjacentHTML('beforeend', `<div class="aa"><span class="orb" style="--s:22px"></span><div><p>${esc(out.reply)}</p>${can ? `<button class="btn p" type="button" data-askact="${esc(out.action)}">${esc(a.label)}</button>` : ''}</div></div>`); box.scrollTop = box.scrollHeight; }
   }
   speak(out.reply);
   if (can && a.at) setTimeout(() => pointAt(a.at()), where === 'chat' ? 300 : 0);

@@ -68,9 +68,11 @@ async function gemini(q, ctx, history) {
       responseSchema: { type: 'OBJECT', properties: { reply: { type: 'STRING' }, action: { type: 'STRING', enum: ACTIONS } }, required: ['reply', 'action'] } } };
   let last;
   for (const m of MODELS) {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': KEY }, body: JSON.stringify(body) });
-    if (r.status === 404) { last = 'model_not_found'; continue; }
+    const t0 = Date.now();
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': KEY }, body: JSON.stringify(body), signal: AbortSignal.timeout(9000) });
     const j = await r.json().catch(() => ({}));
+    console.log(`[agent] model=${m} status=${r.status} ms=${Date.now() - t0}${r.ok ? '' : ' error=' + JSON.stringify((j.error && j.error.message) || '').slice(0, 300)}`);
+    if (r.status === 404 || (r.status === 400 && /model|not found|not supported/i.test((j.error && j.error.message) || ''))) { last = 'model_not_found'; continue; }
     if (!r.ok) throw Object.assign(new Error((j.error && j.error.message) || 'ai_failed'), { status: r.status });
     const t = j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts.map(p => p.text || '').join('');
     let o = {}; try { o = JSON.parse(t); } catch { o = { reply: String(t || '').trim(), action: 'none' }; }
@@ -115,5 +117,5 @@ export async function POST(request) {
     const out = await gemini(q, b.ctx, b.history);
     await setDoc(rk, { n: used + 1 });
     return json(out);
-  } catch (e) { return fail(e.status === 429 ? 429 : 502, 'ai_failed', String(e.message || e).slice(0, 200)); }
+  } catch (e) { console.error('[agent] failed:', String(e.message || e).slice(0, 300)); return fail(e.status === 429 ? 429 : 502, 'ai_failed', String(e.message || e).slice(0, 200)); }
 }
