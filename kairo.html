@@ -34,7 +34,7 @@ a{color:var(--acc2)}
 .arslink .sm{display:none}@media(max-width:400px){.arslink .lg{display:none}.arslink .sm{display:inline}}
 .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 .top .row{display:flex;align-items:center;gap:10px;height:60px;flex-wrap:nowrap}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand{background:none;border:0;padding:0;color:inherit;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
 .arslink{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}
 .arslink:hover{border-color:var(--acc);color:var(--acc2)}.arslink .ic{width:16px;height:16px}
 .sp{flex:1}
@@ -281,7 +281,7 @@ a{color:var(--acc2)}
 <body>
 <header class="top"><div class="col">
   <div class="row">
-    <div class="brand"><span class="orb" id="hOrb" style="--s:28px"></span>Kairo</div>
+    <button class="brand" id="homeBtn" aria-label="Kairo home — start over"><span class="orb" id="hOrb" style="--s:28px"></span>Kairo</button>
     <span class="sp"></span>
     <a class="arslink" href="/" title="ARS Learning Academy: practise BA, SQL and regulatory reporting interview questions"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg><span class="lg">Practise questions</span><span class="sm">Practise</span></a>
     <button class="hbtn" id="ttsBtn" aria-label="Voice mode" title="Voice mode" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
@@ -612,7 +612,7 @@ function defaultOpts() {
   if (!profile.resumeText) return {kind:'single', items:['Upload my resume']};
   if (!profile.scan) return {kind:'single', items:['Check my resume']};
   if (pendingGaps().length) return {kind:'single', items:[`Answer ${pendingGaps().length} questions`, 'Upload updated resume']};
-  return {kind:'single', items:[n ? `Show my ${n} matches` : 'View my matches', 'Change my answers', 'Practise questions']};
+  return {kind:'single', items:[n ? `Show my ${n} matches` : 'Submit & see my matches', 'Change my answers', 'Start over']};
 }
 function renderOpts() {
   const box = $('#opts'); $('#qmeta').hidden = true;
@@ -707,8 +707,8 @@ function gapAnswer(t) {
   mode = 'chat'; persistProfile(); track({stage:Math.max(usage.stage || 0, 3), gapsAnswered:Object.keys(profile.answered).length});
   const p2 = profile.prefs;
   turns.push({role:'tool', content:'Search profile complete'});
-  turns.push({role:'assistant', local:true, content:`All set${myName ? ', ' + myName.split(' ')[0] : ''}. ${[p2.roles.slice(0, 2).join(' / '), p2.locations.slice(0, 3).join(', '), p2.salary].filter(Boolean).join(' · ')}\nOPTIONS: View my matches | Change my answers`});
-  render(); saveChat(); speak('All set. Shall I show your matches? Just say show my matches.');
+  turns.push({role:'assistant', local:true, content:`All set${myName ? ', ' + myName.split(' ')[0] : ''}. ${[p2.roles.slice(0, 2).join(' / '), p2.locations.slice(0, 3).join(', '), p2.salary].filter(Boolean).join(' · ')}\nOPTIONS: Submit & see my matches | Change my answers | Start over`});
+  render(); saveChat(); speak('All set. Shall I submit and show your matches? Just say submit.');
 }
 
 /* ---------- step 4: agent search ---------- */
@@ -757,7 +757,8 @@ function quickScan() {
 async function send(text) {
   const x = String(text || '').trim().toLowerCase(); if (!x || busy) return;
   closeTyper();
-  if (/(view|find|show|search|new).*(match|job|role)|search now/.test(x)) return findMatches(text);
+  if (/start over|start again|reset|go home|home page|first page/.test(x)) return askStartOver();
+  if (/submit|(view|find|show|search|new|see).*(match|job|role)|search now/.test(x)) return findMatches(text);
   if (/change|refine|edit|update my (answers|preferences)/.test(x)) { turns.push({role:'user', content:text}); for (const g of (profile.scan && profile.scan.missing) || []) delete profile.answered[g.key]; persistProfile(); return startGaps(); }
   if (/practi[cs]e/.test(x)) { const r = readiness(); location.href = r.sql == null && r.reg == null ? '/#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/#practice-sql' : '/#practice-credit-risk'; return; }
   if (/prep|top one|details/.test(x)) { const top = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match)[0]; if (top) return openPrep(top); }
@@ -860,7 +861,7 @@ async function findMatches(label) {
   const best = pick[0];
   turns.push({role:'assistant', local:true, content:near
     ? `Closest ${pick.length} for now — new roles land daily.\nOPTIONS: Change my answers | Practise questions | Excel or PDF`
-    : `Your best fit: ${best.j.company}, ${best.s.match}%.\nOPTIONS: Prep the top one | Practise questions | Excel or PDF`});
+    : `Your best fit: ${best.j.company}, ${best.s.match}%.\nOPTIONS: Prep the top one | Practise questions | Excel or PDF | Start over`});
   profile.lastScoredAt = Date.now(); persistProfile();
   track({stage:Math.max(usage.stage || 0, 4), bestMatch:best ? best.s.match : null}, {searches:1, matchesShown:ids.length});
   render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + (near || !best ? '' : ` Say apply, to open ${best.j.company}'s careers page, or say prep, for the details.`));
@@ -999,9 +1000,26 @@ $('#menuBtn').onclick = () => {
     closeSheet();
     if (k === 'resume') return $('#file').click();
     if (k === 'prefs') return send('I want to change my search preferences.');
-    if (k === 'reset') { turns = []; profile.scan = null; profile.answered = {}; mode = 'chat'; persistProfile(); saveChat(); render(); }
+    if (k === 'reset') return setTimeout(askStartOver, 60);
   };
 };
+function askStartOver() {
+  if (!profile.resumeText && !turns.length) { scrollTo({top:0, behavior:'smooth'}); return; }
+  openSheet(`<div style="text-align:center;padding:8px 0 4px"><span class="orb" style="--s:56px;display:inline-block;margin-bottom:14px"></span><h2 style="margin:0 0 6px">Start over?</h2><p class="sub" style="margin:0 auto 22px;max-width:34ch">Back to the first page. Your answers and matches are cleared so you can begin fresh. Your ARS practice stays.</p>
+    <div class="row" style="justify-content:center"><button class="btn p" id="soYes">${I.redo}Start over</button><button class="btn o" id="soNo">Keep going</button></div>
+    <a class="note" href="/" style="display:inline-block;margin-top:18px">Go to ARS home instead ↗</a></div>`);
+  $('#soNo').onclick = closeSheet;
+  $('#soYes').onclick = startOver;
+}
+async function startOver() {
+  closeSheet(); if (tts) tts.stop().catch(() => {}); if (dict && dict.active()) dict.stop().catch(() => {});
+  const ids = [...matches.keys()];
+  turns = []; mode = 'chat'; gapQueue = []; gapIdx = 0; matches.clear();
+  profile = {...profile, resumeText:'', fileName:'', scan:null, answered:{}, prefs:{...DEF}};
+  await Promise.all(ids.map(id => matchCol().doc(id).delete().catch(() => {})));
+  await persistProfile(); saveChat(); greeted = false; render(); scrollTo({top:0});
+  track({}, {restarts:1}); toast('Fresh start — upload your resume');
+}
 function openShortlist() {
   const arr = [...matches.values()].filter(m => jobOf(m)).sort((a, b) => b.match - a.match);
   openSheet(`<h2>Shortlist</h2><p class="sub">${arr.length} roles · ${arr.filter(m => m.status === 'Applied').length} applied</p><div class="menu">${arr.map(m => { const j = jobOf(m); return `<button class="mi" data-id="${esc(m.id)}" data-a="prep"><span class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}</b></span><div><b>${esc(j.title)}</b><small>${esc(j.company)} · ${esc(m.status || 'New')}</small></div></button>`; }).join('') || '<p class="note">Nothing yet.</p>'}</div>
@@ -1145,6 +1163,8 @@ function voiceIntent(t) {
   if (/(show|see|open).*(match|jobs|roles|shortlist)/.test(x)) { matches.size ? showMatchesLocal() : send('View my matches'); return true; }
   if (/(feedback|rate kairo|give a rating)/.test(x)) { openFeedback(); speak('Tap the stars and anything that stood out.'); return true; }
   if (mode === 'gaps' && /^(skip|next|pass|not now)/.test(x)) { gapAnswer('Skip'); return true; }
+  if (/start over|start again|reset|go home|home page|first page/.test(x)) { askStartOver(); return true; }
+  if (/^submit|submit (it|now|and)/.test(x) && mode !== 'gaps') { send('Submit & see my matches'); return true; }
   if (/\bapply\b/.test(x)) { applyByVoice(x); return true; }
   if (/(prep|prepare|details|tell me more).*(top|first|best|one)|^(prep|details)$/.test(x)) { send('Prep me for the top one'); return true; }
   if (/(view|show|see|find).*(match|jobs|roles)|^(matches|show jobs)$/.test(x) && mode !== 'gaps') { send('View my matches'); return true; }
@@ -1164,7 +1184,7 @@ function spokenNums(t) {
 }
 function heardAnswer(t) {
   t = spokenNums(t.trim()); if (!t) return;
-  if (mode !== 'gaps' && /^(yes|yeah|yep|sure|ok|okay|go ahead|start|let'?s go|haan|ha|ji)\b/i.test(t) && (curOpts.items || []).length) return answer(curOpts.items[0]);
+  if (mode !== 'gaps' && /^(yes|yeah|yep|sure|ok|okay|go ahead|start|let'?s go|haan|ha|ji)( please| now| let'?s go| sure)?[.!]?$/i.test(t) && (curOpts.items || []).length) return answer(curOpts.items[0]);
   if (voiceIntent(t)) return;
   const items = (curOpts.items || []).filter(i => !/^(something else|other)$/i.test(i));
   let hit = items.length ? matchSpoken(t, items, curOpts.kind === 'multi') : null;
@@ -1203,6 +1223,7 @@ function setVoice(on) {
   toast(voiceOn ? 'Voice guide on' : 'Silent mode — tap answers');
 }
 $('#ttsBtn').onclick = () => setVoice(!voiceOn);
+$('#homeBtn').onclick = askStartOver;
 function greet() {
   const nm = myName ? myName.split(' ')[0] : '';
   const line = profile.resumeText
