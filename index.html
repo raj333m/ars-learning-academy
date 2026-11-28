@@ -149,6 +149,9 @@ a{color:var(--acc2)}
 .fit .tk i{display:block;height:100%;border-radius:7px;width:var(--w);background:var(--c,var(--good));animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
 @keyframes grow{from{width:0}}
 .jc .co{display:flex;align-items:center;gap:8px}
+/* account */
+.acct{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}.acct .btn{justify-content:center;width:100%}
+#menuBtn.me{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:800;letter-spacing:.02em}
 /* front door: living first page */
 .bubble{position:absolute;top:6px;right:-34px;z-index:3;padding:9px 14px;border-radius:18px 18px 18px 4px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}
 .bubble.swap{animation:none;opacity:0;transform:translateY(6px) scale(.96);transition:opacity .25s,transform .25s}
@@ -328,7 +331,7 @@ a{color:var(--acc2)}
     <span class="sp"></span>
     <a class="arslink" id="arsLink" href="/ars" title="ARS Learning Academy: practise BA, SQL and regulatory reporting interview questions"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg><span class="lg">Practise questions</span><span class="sm">Practise</span></a>
     <button class="hbtn" id="ttsBtn" aria-label="Voice mode" title="Voice mode" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
-    <button class="hbtn" id="menuBtn" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <button class="hbtn" id="menuBtn" aria-label="Account and menu: start over, sign out"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
   </div>
   <div class="steps" id="steps" hidden><div>Resume</div><div>Questions</div><div>Matches</div><div>Practise</div></div>
 </div></header>
@@ -1048,6 +1051,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet').classLi
 $('#menuBtn').onclick = () => {
   const p = profile.prefs, sc = profile.scan, s = schedule, n = [...matches.values()].filter(m => jobOf(m)).length;
   openSheet(`<h2>${esc(myName || 'Kairo')}</h2><p class="sub">${esc(sc ? [sc.headline, p.roles.slice(0, 2).join(', ')].filter(Boolean).join(' · ') : 'Upload your resume to begin')}</p>
+  <div class="acct"><button class="btn o" data-go="reset">${I.redo}Start over</button><button class="btn o" data-go="out"><svg class="ic" viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg>Sign out</button></div>
   <div class="menu">
     <button class="mi" data-go="resume">${sc && sc.overall != null ? `<span class="ring ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></span>` : `<span class="ico">${I.doc}</span>`}<div><b>Resume</b><small>${esc(profile.fileName || 'Not uploaded')}</small></div>${I.up}</button>
     ${ars ? (() => { const r = readiness(); return `<a class="mi" href="${r.sql == null && r.reg == null ? '/ars#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/ars#practice-sql' : '/ars#practice-credit-risk'}" style="text-decoration:none;color:inherit"><span class="ico">${I.mic}</span><div><b>Interview readiness</b><small>SQL ${r.sql ?? '–'}/10 · Credit risk ${r.reg ?? '–'}/10 · Exam ${r.exam == null ? 'not taken' : r.exam + '%' + (r.passed ? '&nbsp;✓' : '')}</small></div>${I.up ? '' : ''}</a>`; })() : ''}
@@ -1058,7 +1062,7 @@ $('#menuBtn').onclick = () => {
   </div>
   ${isOwner ? `<div class="lbl">Owner</div><p class="note" id="ownStats">Loading…</p><div class="row"><button class="btn p" data-go="insights">Insights</button></div>` : ''}
   <p class="note" style="margin-top:18px">🔒 Your resume and answers are visible only to you. We count app usage (no personal details) to improve Kairo, and never share your data.</p>
-  <div class="row" style="margin-top:14px"><button class="btn o" data-go="reset">${I.redo}Start over</button><button class="btn o" data-go="out">Sign out</button></div>`);
+`);
   if (isOwner) loadOwnerStats();
   $('#sheetBody').onclick = e => {
     const sk = e.target.closest('button[data-skin]'); if (sk) { applySkin(sk.dataset.skin); track({skin}); for (const x of document.querySelectorAll('.skin')) x.setAttribute('aria-pressed', x.dataset.skin === skin); return; }
@@ -1516,6 +1520,7 @@ render();
   try { const me = await user.me(); if (me) { myName = me.name || ''; myEmail = me.email || ''; } } catch {}
   isOwner = !!(await user.isOwner().catch(() => false));
   if (myName) $('#hiName').textContent = `Hi ${myName.split(' ')[0]},`;
+  { const ini = (myName || '').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase(); if (ini) { const mb = $('#menuBtn'); mb.textContent = ini; mb.classList.add('me'); mb.title = 'Account · Start over · Sign out'; } }
   try {
     const [ps, cs, fs] = await Promise.all([profRef().get(), chatRef().get(), fbRef().get()]); const ss = {exists:false}, ls = {exists:false};
     if (ps.exists) { const d = ps.data(); profile = {...profile, ...d, prefs:{...DEF, ...(d.prefs || {})}, fields:Array.isArray(d.fields) ? [...d.fields] : profile.fields, answered:{...(d.answered || {})}}; hunt = d.hunt || null; }
