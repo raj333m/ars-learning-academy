@@ -6,7 +6,7 @@ import { getDoc, setDoc } from '../lib/store.js';
 
 const clean = v => String(v || '').trim().replace(/^["']|["']$/g, '').replace(/^\w+\s*=\s*/, '').replace(/^["']|["']$/g, '');
 const KEY = clean(process.env.GEMINI_API_KEY);
-const MODELS = [clean(process.env.GEMINI_MODEL), 'gemini-flash-latest', 'gemini-flash-lite-latest'].filter(Boolean);
+const MODELS = [...new Set([clean(process.env.GEMINI_MODEL), 'gemini-flash-lite-latest', 'gemini-flash-latest'].filter(Boolean))];
 const MAIL_USER = clean(process.env.GMAIL_USER), MAIL_PASS = clean(process.env.GMAIL_APP_PASSWORD).replace(/\s+/g, '');
 const WA = (clean(process.env.KAIRO_WHATSAPP) || String(process.env.ADMIN_PHONES || '').split(/[,\s]+/)[0] || '').replace(/\D/g, '');
 const DAILY = { reg: 60, anon: 20 };
@@ -66,18 +66,33 @@ async function gemini(q, ctx, history) {
   const body = { systemInstruction: { parts: [{ text: SYS }] }, contents,
     generationConfig: { temperature: 0.4, maxOutputTokens: 350, responseMimeType: 'application/json',
       responseSchema: { type: 'OBJECT', properties: { reply: { type: 'STRING' }, action: { type: 'STRING', enum: ACTIONS } }, required: ['reply', 'action'] } } };
-  let last;
-  for (const m of MODELS) {
+  let last = 'ai_failed'; const deadline = Date.now() + 12000;
+  const call = async (m, gc, ms) => {
     const t0 = Date.now();
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': KEY }, body: JSON.stringify(body), signal: AbortSignal.timeout(9000) });
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': KEY }, body: JSON.stringify({ ...body, generationConfig: gc }), signal: AbortSignal.timeout(ms) });
     const j = await r.json().catch(() => ({}));
-    console.log(`[agent] model=${m} status=${r.status} ms=${Date.now() - t0}${r.ok ? '' : ' error=' + JSON.stringify((j.error && j.error.message) || '').slice(0, 300)}`);
-    if (r.status === 404 || (r.status === 400 && /model|not found|not supported/i.test((j.error && j.error.message) || ''))) { last = 'model_not_found'; continue; }
-    if (!r.ok) throw Object.assign(new Error((j.error && j.error.message) || 'ai_failed'), { status: r.status });
-    const t = j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts.map(p => p.text || '').join('');
-    let o = {}; try { o = JSON.parse(t); } catch { o = { reply: String(t || '').trim(), action: 'none' }; }
-    if (!ACTIONS.includes(o.action)) o.action = 'none';
-    return { reply: String(o.reply || '').slice(0, 700), action: o.action };
+    console.log(`[agent] model=${m} status=${r.status} ms=${Date.now() - t0}${r.ok ? '' : ' error=' + JSON.stringify((j.error && j.error.message) || '').slice(0, 200)}`);
+    return { r, j };
+  };
+  for (const m of MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const left = deadline - Date.now(); if (left < 1500) break;
+      let gc = { ...body.generationConfig, thinkingConfig: { thinkingBudget: 0 } };
+      let res;
+      try {
+        res = await call(m, gc, Math.min(6000, left));
+        if (res.r.status === 400 && /thinking/i.test((res.j.error && res.j.error.message) || '')) { gc = body.generationConfig; res = await call(m, gc, Math.min(6000, deadline - Date.now())); }
+      } catch (e) { last = String(e.message || e); continue; }
+      const { r, j } = res;
+      if (r.status === 404 || (r.status === 400 && /model|not found|not supported/i.test((j.error && j.error.message) || ''))) { last = 'model_not_found'; break; }
+      if (r.status === 503 || r.status === 500) { last = (j.error && j.error.message) || 'busy'; await new Promise(z => setTimeout(z, 400)); continue; }
+      if (!r.ok) throw Object.assign(new Error((j.error && j.error.message) || 'ai_failed'), { status: r.status });
+      const t = j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts.map(p => p.text || '').join('');
+      let o = {}; try { o = JSON.parse(t); } catch { o = { reply: String(t || '').trim(), action: 'none' }; }
+      if (!o.reply) { last = 'empty'; continue; }
+      if (!ACTIONS.includes(o.action)) o.action = 'none';
+      return { reply: String(o.reply || '').slice(0, 700), action: o.action };
+    }
   }
   throw new Error(last || 'ai_failed');
 }

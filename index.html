@@ -1368,7 +1368,8 @@ const KB = [
   {k:/mic|microphone|voice|speak|listen|talk/, a:"Tap the orange mic at the bottom right, or just speak when I’m listening. If your browser asks, choose Allow. In Chrome you can also click the icon left of the address bar, then Microphone, then Allow."},
   {k:/mute|quiet|stop talking|sound|speaker/, a:"Tap the speaker icon at the top right to turn my voice off or on.", act:'voice_off'},
   {k:/change.*(answer|preference|city|cities|salary|package|designation)|edit.*answer/, a:"Sure — tap “Change my answers” (or the badge menu, then Search preferences) and I’ll ask the quick questions again.", act:'change_answers'},
-  {k:/question|answer the|skip/, a:"I ask up to 9 quick questions — role, cities, package, SQL level, databases, regulatory areas, work mode, notice period and match level. Tap an option or just say it; say “skip” to move on."},
+  {k:/recruiter|hiring (team|manager)|\bhr\b|linked ?in|contact (person|details)|referral|reach out|connect with/, a:"Open a role’s Details on the Matches page and scroll to “Message the hiring team”. Tap “Copy message” for a ready note, then “Find recruiters on LinkedIn” — it opens a LinkedIn search for that company’s recruiters, where you can send it. Kairo doesn’t store personal recruiter contacts.", act:'show_matches'},
+  {k:/(quick|those|the|your) questions|which questions|what questions|why .*(ask|need)|\bskip\b/, a:"I ask up to 9 quick questions — role, cities, package, SQL level, databases, regulatory areas, work mode, notice period and match level. Tap an option or just say it; say “skip” to move on."},
   {k:/privacy|private|data|safe|secure|who can see|delete/, a:"Your resume and answers are visible only to you. The admin sees anonymous usage counts only, and your data is deleted 10 days after you register — you can register again any time."},
   {k:/free|cost|price|pay|charge|fees/, a:"Kairo and ARS are free to use."},
   {k:/why.*(citi|bny|hsbc|company|not see|missing)|only \d+ (roles|jobs)|few (roles|jobs)|more (roles|jobs)/, a:"I only show roles with a verified link to the employer’s own listing, so Apply always lands on the real vacancy. The list is refreshed regularly as new verified roles appear."},
@@ -1418,10 +1419,10 @@ async function askAgent(q, where) {
   if (AGENT.ai) {
     try {
       if (!tokNow()) { const a = await apiCall('auth?a=anon', {}); localStorage.setItem('arsTok', a.token); }
-      out = await apiCall('agent', {op:'ask', q, ctx:agentCtx(), history:AGENT.history}, 11000);
+      out = await apiCall('agent', {op:'ask', q, ctx:agentCtx(), history:AGENT.history}, 15000);
     } catch { out = null; }
   }
-  if (!out || !out.reply) out = kb ? {reply:kb.a, action:kb.act || 'none'} : {reply:`I can help with anything in Kairo and ARS — uploading your resume, registering, the quick questions, your matches, applying, or interview practice. What would you like to do?`, action:'none'};
+  if (!out || !out.reply) out = kb ? {reply:kb.a, action:kb.act || 'none'} : {reply:`Sure — ask me anything about Kairo or ARS. For example: “how do I upload my resume?”, “how is my match % worked out?”, “how do I contact recruiters?” or “where do I practise SQL?”.`, action:'none'};
   AGENT.history.push({role:'user', text:q}, {role:'model', text:out.reply}); AGENT.history = AGENT.history.slice(-8);
   const a = ACT[out.action], can = a && (!a.ok || a.ok());
   track({}, {helpAsks:1});
