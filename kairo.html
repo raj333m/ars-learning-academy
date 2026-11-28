@@ -31,6 +31,7 @@ a{color:var(--acc2)}
 .col{width:min(720px,100%);margin:0 auto;padding:0 20px}
 .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 /* header + steps */
+.arslink .sm{display:none}@media(max-width:400px){.arslink .lg{display:none}.arslink .sm{display:inline}}
 .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 .top .row{display:flex;align-items:center;gap:10px;height:60px;flex-wrap:nowrap}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
@@ -89,6 +90,7 @@ a{color:var(--acc2)}
 .ring.g b{color:var(--good)}.ring.a b{color:var(--warn)}
 .ring.big{width:112px;height:112px}.ring.big::before{inset:9px}.ring.big b{font-size:34px}
 .chip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--soft);color:var(--mute)}
+.chip .ic{width:13px;height:13px;margin-right:5px;flex:none}.chip.g{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good)}.chip.a{background:color-mix(in srgb,var(--warn) 16%,transparent);color:color-mix(in srgb,var(--warn) 80%,var(--ink))}
 .chip.g{background:var(--goodsoft);color:var(--good)}.chip.a{background:var(--warnsoft);color:var(--warn)}.chip.ink{background:var(--soft);color:var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .lbl{font-size:12px;font-weight:700;color:var(--mute);text-transform:none;margin:18px 0 8px;letter-spacing:.01em}
@@ -120,12 +122,40 @@ a{color:var(--acc2)}
 .btn.i{width:46px;padding:0;border:1.5px solid var(--line);color:var(--ink)}
 .btn.i[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .btn:disabled{opacity:.45}
+/* hero marquee + 3-step strip */
+.float{display:none!important}
+.how{display:flex;align-items:center;gap:10px;margin:26px 0 0;font-size:13px;font-weight:700;color:var(--ink)}
+.how i{display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);color:var(--acc)}
+.how i .ic{width:20px;height:20px}.how span{display:grid;justify-items:center;gap:6px}.how b{font-weight:700}
+.how .ar{width:22px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--line),var(--acc));margin-bottom:20px}
+.marq{width:100%;max-width:760px;margin:30px 0 0;display:grid;gap:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mrow{display:flex;gap:10px;width:max-content;animation:mq var(--t,38s) linear infinite}
+.mrow.r{animation-direction:reverse}
+.mrow>span{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:13px;font-weight:600;padding:7px 12px 7px 7px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.mrow b{color:var(--good);font-weight:800}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.mrow{animation:none}}
+.av{display:inline-grid;place-items:center;flex:none;width:26px;height:26px;border-radius:9px;font-size:11px;font-weight:800;color:#fff;background:hsl(var(--h,20) 62% 46%)}
+/* match infographics */
+.pulse{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 14px}
+@media(max-width:520px){.pulse{grid-template-columns:repeat(2,1fr)}}
+.pulse .rd{background:color-mix(in srgb,var(--acc) 10%,var(--panel));border-color:color-mix(in srgb,var(--acc) 35%,var(--line));color:var(--ink);text-decoration:none}
+.pulse .rd b{color:var(--acc)}.pulse b small{font-size:13px;color:var(--mute)}
+.pulse>*{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:grid;gap:2px}
+.pulse b{font-size:24px;letter-spacing:-.02em;line-height:1.1}.pulse small{font-size:12px;color:var(--mute);font-weight:600}
+.pulse .hi b{color:var(--good)}
+.fit{display:grid;grid-template-columns:auto 1fr;gap:7px 12px;align-items:center;font-size:12px;font-weight:600;color:var(--mute)}
+.fit .tk{height:7px;border-radius:7px;background:var(--soft);overflow:hidden}
+.fit .tk i{display:block;height:100%;border-radius:7px;width:var(--w);background:var(--c,var(--good));animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{width:0}}
+.jc .co{display:flex;align-items:center;gap:8px}
 /* match deck */
-.deck{margin:0 -20px 12px;padding:4px 20px 14px;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.deck{margin:0 0 14px;display:grid;gap:14px}
 .deck::-webkit-scrollbar{display:none}
-.jc{flex:0 0 min(310px,82vw);scroll-snap-align:start;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;animation:card .45s cubic-bezier(.2,.8,.2,1) both}
+.jc{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;animation:card .45s cubic-bezier(.2,.8,.2,1) both}
 .jc:nth-child(2){animation-delay:.08s}.jc:nth-child(3){animation-delay:.16s}.jc:nth-child(n+4){animation-delay:.24s}
-@keyframes card{from{opacity:0;transform:translateX(24px) scale(.97)}}
+@keyframes card{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.jc h4{overflow-wrap:anywhere}
 .jc.near{border-style:dashed}
 .jh{display:flex;gap:14px;align-items:flex-start}
 .co{font-size:13px;color:var(--mute);font-weight:600}
@@ -147,7 +177,7 @@ a{color:var(--acc2)}
 .lc a:first-of-type{border-top:0}
 .lc a span{color:var(--mute);font-weight:500;white-space:nowrap}
 /* dock */
-.dock{position:sticky;bottom:0;z-index:15;background:linear-gradient(to top,var(--bg) 80%,transparent);padding:16px 0 calc(14px + env(safe-area-inset-bottom))}
+.dock{position:sticky;bottom:0;z-index:15;background:linear-gradient(to top,var(--bg) calc(100% - 16px),transparent);padding:16px 0 calc(14px + env(safe-area-inset-bottom))}
 .qmeta{font-size:12px;font-weight:700;color:var(--mute);margin:0 0 8px}
 .opts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
 .opt{min-height:48px;padding:12px 18px;border-radius:16px;background:var(--panel);border:1.5px solid var(--line);font-weight:600;font-size:15px;text-align:left;box-shadow:var(--shadow);animation:rise .3s ease both;transition:transform .12s,border-color .12s}
@@ -245,7 +275,7 @@ a{color:var(--acc2)}
 #toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;max-width:90vw;text-align:center}
 #toast.on{opacity:1}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-@media(max-width:520px){.hero h1{font-size:clamp(34px,9.5vw,44px)!important}.arslink{padding:7px 11px}.hbtn{width:38px;height:38px}.float span{font-size:11px;padding:6px 10px}.float span:nth-child(n+9){display:none}.float{-webkit-mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%);mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%)}.orbbtn{width:176px;height:176px}.orbbtn .orb{--s:116px}.col{padding:0 16px}.deck{margin:0 -16px 12px;padding-inline:16px}.m.st{padding-left:0}.bar{grid-template-columns:92px 1fr 30px}.scan .sh{gap:14px}.ring.big{width:96px;height:96px}.ring.big b{font-size:28px}.card{padding:18px}}
+@media(max-width:520px){.float{display:none}.hero h1{font-size:clamp(34px,9.5vw,44px)!important}.arslink{padding:7px 11px}.hbtn{width:38px;height:38px}.float span{font-size:11px;padding:6px 10px}.float span:nth-child(n+9){display:none}.float{-webkit-mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%);mask-image:radial-gradient(ellipse 70% 34% at 50% 52%,transparent 60%,#000 95%)}.orbbtn{width:176px;height:176px}.orbbtn .orb{--s:116px}.col{padding:0 16px}.deck{margin:0 0 12px}.m.st{padding-left:0}.bar{grid-template-columns:92px 1fr 30px}.scan .sh{gap:14px}.ring.big{width:96px;height:96px}.ring.big b{font-size:28px}.card{padding:18px}}
 </style>
 </head>
 <body>
@@ -253,7 +283,7 @@ a{color:var(--acc2)}
   <div class="row">
     <div class="brand"><span class="orb" id="hOrb" style="--s:28px"></span>Kairo</div>
     <span class="sp"></span>
-    <a class="arslink" href="/" title="ARS Learning Academy: practise BA, SQL and regulatory reporting interview questions"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg><span>Practise questions</span></a>
+    <a class="arslink" href="/" title="ARS Learning Academy: practise BA, SQL and regulatory reporting interview questions"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg><span class="lg">Practise questions</span><span class="sm">Practise</span></a>
     <button class="hbtn" id="ttsBtn" aria-label="Voice mode" title="Voice mode" aria-pressed="true" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
     <button class="hbtn" id="menuBtn" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
   </div>
@@ -269,7 +299,8 @@ a{color:var(--acc2)}
     </button>
     <h1 id="heroH"><span id="hiName"></span>Your next<br><em id="roleWord">role</em><span class="caret"></span></h1>
     <button class="up" id="heroUp"><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>Upload resume</button>
-    <span class="tap" id="tapLbl">or tap the orb to talk to Kairo, your job agent</span>
+    <div class="how" aria-label="Upload, speak, apply"><span><i><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg></i><b>Upload</b></span><span class="ar"></span><span><i><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></i><b>Speak</b></span><span class="ar"></span><span><i><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></i><b>Apply</b></span></div>
+    <div class="marq" id="marq" aria-hidden="true"></div>
     <div class="dropzone" id="dropzone" aria-hidden="true"><span>Drop it anywhere</span></div>
   </section>
   <section id="stream" aria-live="polite"></section>
@@ -438,8 +469,8 @@ const I = {
 };
 
 const FIELDS = ['Match %','Status','Company','Job title, experience & Req ID','Location','Posted & source','Skills matched','Gaps','Apply link','Recruiter','Recruiter role','Email','Recruiter LinkedIn','Referral contact','Contact role','Connection','Why relevant','Contact LinkedIn','Recommended action','Mock interview'];
-const DEF = {sqlLevel:'',regAreas:[],direction:'',roles:[],locations:[],workMode:'',seniority:'',expMin:null,expMax:null,industries:[],companyTypes:[],mustSkills:[],avoid:[],companiesInclude:[],companiesExclude:[],salary:'',notice:'',country:'',threshold:80,postedWithin:30,notes:''};
-const LISTKEYS = ['regAreas','roles','locations','industries','companyTypes','mustSkills','avoid','companiesInclude','companiesExclude'];
+const DEF = {sqlLevel:'',sqlDbs:[],regAreas:[],direction:'',roles:[],locations:[],workMode:'',seniority:'',expMin:null,expMax:null,industries:[],companyTypes:[],mustSkills:[],avoid:[],companiesInclude:[],companiesExclude:[],salary:'',notice:'',country:'',threshold:80,postedWithin:30,notes:''};
+const LISTKEYS = ['regAreas','sqlDbs','roles','locations','industries','companyTypes','mustSkills','avoid','companiesInclude','companiesExclude'];
 const REASONS = ['Wrong role','Wrong location','Too junior','Too senior','Wrong industry','Missing a key skill','Company not for me','Already applied'];
 
 let db, user, sample, mcp, dict, tts, dl, uid, ctl, busy = false, isOwner = false, voiceOn = true, usage = {}, myName = '', myEmail = '';
@@ -518,8 +549,7 @@ function scanHtml(sc) {
     <div class="sh"><div class="ring big g" style="--p:100"><b style="font-size:20px">${sc.years ? esc(sc.years) + '<small> yrs</small>' : '✓'}</b></div>
       <div><div class="co">Quick read</div><h3>${esc(sc.headline || 'Your profile')}</h3><div class="who">${esc([sc.location, sc.domain].filter(Boolean).join(' · ') || 'Resume saved')}</div></div></div>
     ${(sc.skills || []).length ? `<div class="lbl">Skills I spotted</div><div class="chips">${sc.skills.map(x => `<span class="chip ink">${esc(x)}</span>`).join('')}</div>` : ''}
-    <div class="lbl">Your search profile · ${miss.filter(g => g.key in profile.answered).length}/${miss.length} done</div><ul class="gaps">${miss.map(g => { const ok = g.key in profile.answered; return `<li class="${ok ? 'ok' : ''}"><span class="dot"></span><div><b>${esc(g.label)}</b><small>${esc(g.why || '')}</small></div>${ok ? `<span class="val">${esc(profile.answered[g.key])}</span>` : '<span class="chip a">Ask</span>'}</li>`; }).join('')}</ul>
-    <div class="row" style="margin-top:18px">${pendingGaps().length ? `<button class="btn p" data-a="gaps">Answer ${pendingGaps().length} questions · 30 sec</button>` : `<button class="btn p" data-a="find">Find my matches</button>`}<button class="btn o" data-a="reup">${I.redo}Upload updated</button></div>
+    <div class="lbl">Your search profile · ${done}/${miss.length} done</div><div class="chips">${miss.map(g => { const ok = g.key in profile.answered, v = profile.answered[g.key]; return ok ? `<span class="chip g" title="${esc(g.label)}">${I.check}${esc(v === 'Skipped' ? g.label + ': skipped' : String(v).split(', ').slice(0, 2).join(', ') + (String(v).split(', ').length > 2 ? ' +' + (String(v).split(', ').length - 2) : ''))}</span>` : `<span class="chip a">${esc(g.label)}</span>`; }).join('')}</div>
   </div>`;
   return `<div class="card scan">
     <div class="sh"><div class="ring big ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></div>
@@ -528,7 +558,6 @@ function scanHtml(sc) {
     <div class="lbl">Top skills</div><div class="chips">${(sc.skills || []).slice(0, 10).map(x => `<span class="chip ink">${esc(x)}</span>`).join('')}</div>
     ${(sc.strengths || []).length ? `<div class="lbl">Strengths</div><ul class="strong">${sc.strengths.slice(0, 3).map(x => `<li>${I.check}<span>${esc(x)}</span></li>`).join('')}</ul>` : ''}
     ${miss.length ? `<div class="lbl">What's missing · ${done}/${miss.length} sorted</div><ul class="gaps">${miss.map(g => { const ok = g.key in profile.answered; return `<li class="${ok ? 'ok' : ''}"><span class="dot"></span><div><b>${esc(g.label)}</b><small>${esc(g.why || '')}</small></div>${ok ? `<span class="val">${esc(profile.answered[g.key])}</span>` : `<span class="chip ${g.kind === 'resume' ? '' : 'a'}">${g.kind === 'resume' ? 'Resume' : 'Ask'}</span>`}</li>`; }).join('')}</ul>` : ''}
-    <div class="row" style="margin-top:18px">${pendingGaps().length ? `<button class="btn p" data-a="gaps">Fill ${pendingGaps().length} gaps · 30 sec</button>` : `<button class="btn p" data-a="find">Find my matches</button>`}<button class="btn o" data-a="reup">${I.redo}Upload updated</button></div>
   </div>`;
 }
 function cardHtml(m) {
@@ -536,10 +565,10 @@ function cardHtml(m) {
   const thr = profile.prefs.threshold || 80, fb = m.feedback || {};
   const meta = [j.location, j.workMode, j.experience].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('');
   return `<article class="jc${m.nearMiss ? ' near' : ''}" data-id="${esc(m.id)}">
-    <div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${esc(j.company)}</div><h4>${esc(j.title)}</h4></div></div>
+    <div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${avatar(j.company)}${esc(j.company)}</div><h4>${esc(j.title)}</h4></div></div>
     <div class="chips">${m.match >= 85 ? '<span class="chip g">Strong fit</span>' : m.match >= thr ? '<span class="chip a">Good fit</span>' : '<span class="chip">Near miss</span>'}${meta}</div>
-    <p class="why">${esc(m.why)}</p>
-    ${m.mandatoryGaps && !/^none/i.test(m.mandatoryGaps) ? `<p class="gap">Gap: ${esc(m.mandatoryGaps)}</p>` : ''}
+    ${m.parts ? `<div class="fit">${Object.entries(m.parts).map(([k, v]) => `<span>${k}</span><div class="tk"><i style="--w:${clamp(v)}%;--c:var(--${v >= 80 ? 'good' : v >= 55 ? 'warn' : 'bad'})"></i></div>`).join('')}</div>` : `<p class="why">${esc(m.why)}</p>`}
+    ${m.mandatoryGaps && !/^none/i.test(m.mandatoryGaps) ? `<div class="chips">${m.mandatoryGaps.split(/,\s*/).map(g => `<span class="chip a">+ ${esc(g)}</span>`).join('')}</div>` : ''}
     ${(() => { const l = arsLink(j); if (!l) return ''; const t = arsTopic(j)[0], v = readyFor(t); return `<a class="practise ${v == null ? '' : v >= 8 ? 'ok' : v >= 6 ? 'mid' : 'low'}" href="${esc(l.url)}" data-a="practise">${I.mic}<span>${esc(l.label.charAt(0).toUpperCase() + l.label.slice(1))} readiness</span><b>${v == null ? 'Practise' : v + '/10'}</b></a>`; })()}
     <div class="row">${safeUrl(j.applyUrl) ? `<a class="btn p" href="${esc(safeUrl(j.applyUrl))}" target="_blank" rel="noopener" data-a="apply">Apply</a>` : `<button class="btn p" data-a="prep">Details</button>`}
       <button class="btn o" data-a="prep">Prep</button>
@@ -549,8 +578,9 @@ function cardHtml(m) {
 function deckHtml(ids) {
   const arr = ids.map(id => matches.get(id)).filter(m => m && jobOf(m));
   if (!arr.length) return '';
-  return `<div class="deck">${arr.map(cardHtml).join('')}<button class="more" data-a="all">All ${matches.size} saved roles</button></div>
-    <div class="tools"><button class="tool" data-a="xlsx">${I.xls}Excel</button><button class="tool" data-a="pdf">${I.pdf}PDF</button><a class="tool" href="/" data-a="practise">${I.mic}Practise questions</a><button class="tool" data-a="fb">${I.star}Rate</button></div>`;
+  const best = Math.max(...arr.map(m => m.match)), strong = arr.filter(m => !m.nearMiss).length;
+  const rd = readyFor(''), weak = (() => { const r = readiness(); return r.sql == null && r.reg == null ? 'practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? 'practice-sql' : 'practice-credit-risk'; })();
+  return `<div class="pulse"><div><b>${jobs.size || arr.length}</b><small>BA roles checked</small></div><div><b>${strong}</b><small>fit ${esc(profile.prefs.threshold || 80)}%+</small></div><div class="hi"><b>${best}%</b><small>best fit</small></div><a class="rd" href="/#${weak}" data-a="practise"><b>${rd == null ? '—' : rd + '<small>/10</small>'}</b><small>interview ready ↗</small></a></div><div class="deck">${arr.map(cardHtml).join('')}</div>`;
 }
 const linksHtml = t => `<div class="card lc"><div class="lbl" style="margin-top:0">Live searches for you</div>${(t.links || []).map(l => `<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)} <span>${esc(l.site)} ↗</span></a>`).join('')}</div>`;
 function turnHtml(t, i, lastAi) {
@@ -714,6 +744,7 @@ function quickScan() {
     total == null ? {key:'totalExp', label:'Total experience', why:'Matches seniority', prefKey:'totalExp', question:'How many years of total experience do you have?', options:exp} : null,
     !(ars && r.baExp != null && r.baExp !== '') ? {key:'baExp', label:'BA experience', why:'Recruiters filter on BA years', prefKey:'baExp', question:'How many of those years as a Business Analyst?', options:exp} : null,
     {key:'sql', label:'SQL level', why:'Most of these roles test SQL', prefKey:'sqlLevel', question:'How strong is your SQL?', options:['Advanced', 'Intermediate', 'Basic', 'Not using SQL']},
+    {key:'db', label:'SQL databases', why:'Teradata and Oracle roles first', prefKey:'sqlDbs', multi:true, question:'Which databases do you write SQL on?', options:['Teradata', 'Oracle', 'SQL Server', 'Snowflake', 'Other']},
     {key:'reg', label:'Regulatory areas', why:'Matches regulatory reporting roles', prefKey:'regAreas', multi:true, question:'Which regulatory areas do you know?', options:['COREP / FINREP', 'Basel 3.1 / CRR', 'IFRS 9', 'Credit risk', 'Liquidity', 'AML / KYC', 'None yet']},
     {key:'mode', label:'Work mode', why:'On-site, hybrid or remote', prefKey:'workMode', question:'How do you prefer to work?', options:['Hybrid', 'Remote', 'On-site', 'Any']},
     {key:'notice', label:'Notice period', why:'Many roles need quick joiners', prefKey:'notice', question:'When can you join?', options:['Immediately', '15 days', '30 days', '60 days', '90 days']},
@@ -728,7 +759,7 @@ async function send(text) {
   closeTyper();
   if (/(view|find|show|search|new).*(match|job|role)|search now/.test(x)) return findMatches(text);
   if (/change|refine|edit|update my (answers|preferences)/.test(x)) { turns.push({role:'user', content:text}); for (const g of (profile.scan && profile.scan.missing) || []) delete profile.answered[g.key]; persistProfile(); return startGaps(); }
-  if (/practi[cs]e/.test(x)) { location.href = '/'; return; }
+  if (/practi[cs]e/.test(x)) { const r = readiness(); location.href = r.sql == null && r.reg == null ? '/#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/#practice-sql' : '/#practice-credit-risk'; return; }
   if (/prep|top one|details/.test(x)) { const top = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match)[0]; if (top) return openPrep(top); }
   if (/excel|pdf|export/.test(x)) return $('#menuBtn').click();
   if (/feedback|rate/.test(x)) return openFeedback();
@@ -739,12 +770,23 @@ async function send(text) {
 
 /* ---------- matching (free, in the browser) ---------- */
 let feedInfo = {};
+const hue = t => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+const avatar = c => `<span class="av" style="--h:${hue(c)}">${esc(String(c || '?').replace(/[^A-Za-z0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || '?')}</span>`;
+function fillMarquee() {
+  const el = document.getElementById('marq'); if (!el) return;
+  const live = [...jobs.values()].filter(j => j.status !== 'closed').map(j => [j.company, `${j.title.split(/[,(–-]/)[0].trim().slice(0, 34)} · ${String(j.location || '').split(/[,·]/)[0]}`]);
+  const base = live.length >= 4 ? live : CHIPS.map(([t]) => ['', t]);
+  const row = (arr, r, t) => `<div class="mrow${r ? ' r' : ''}" style="--t:${t}s">${[...arr, ...arr].map(([c, x]) => `<span>${c ? avatar(c) : ''}${esc(x)}</span>`).join('')}</div>`;
+  const half = Math.ceil(base.length / 2);
+  el.innerHTML = row(base.slice(0, half).concat(base.slice(0, half)), false, 40) + row(base.slice(half).concat(base.slice(half)), true, 46);
+}
 async function loadFeed() {
   try {
     const r = await fetch('/kairo-jobs.json', {cache:'no-cache'}); const d = await r.json();
     feedInfo = {updated:d.updated || ''}; jobs.clear();
     for (const j of d.jobs || []) if (j && j.id) jobs.set(j.id, j);
   } catch {}
+  fillMarquee();
 }
 function myYears() { const r = readiness(); if (r.totalExp != null && r.totalExp !== '') return Number(r.totalExp); const p = profile.prefs; if (profile.scan && profile.scan.years) return profile.scan.years; return p.expMin != null && p.expMax != null ? (p.expMin + p.expMax) / 2 : null; }
 function scoreJob(j) {
@@ -757,7 +799,9 @@ function scoreJob(j) {
   t = Math.min(25, t);
   const mine = [...q.skills, ...(p.regAreas || []).flatMap(a => a.split(/\s*\/\s*/))].map(s => s.toLowerCase()).filter(s => s && s !== 'none yet');
   const jsk = (j.skills || []).map(String);
-  const hit = s => { const l = s.toLowerCase(); return mine.some(m => l.includes(m) || m.includes(l) || (m.length > 3 && l.split(/[^a-z0-9]+/).includes(m))); };
+  const rtext = String(profile.resumeText || '').toLowerCase();
+  const SYN = {requirements:['requirement', 'brd', 'user stor'], mappings:['mapping'], 'product ownership':['product owner', 'backlog'], 'business rules':['business rule', 'rules'], reconciliation:['reconcil'], 'data dictionaries':['data dictionar', 'metadata']};
+  const hit = s => { const l = s.toLowerCase(); if (mine.some(m => l.includes(m) || m.includes(l) || (m.length > 3 && l.split(/[^a-z0-9]+/).includes(m)))) return true; if (l.length > 3 && rtext.includes(l)) return true; return (SYN[l] || []).some(x => rtext.includes(x)); };
   const hits = jsk.filter(hit), miss = jsk.filter(s => !hit(s));
   const sk = jsk.length ? Math.round(30 * Math.min(1, hits.length / Math.min(5, jsk.length))) : 15;
   const regWords = (p.regAreas || []).filter(a => !/none/i.test(a)).flatMap(a => a.toLowerCase().split(/[^a-z0-9]+/)).filter(w => w.length > 3);
@@ -767,10 +811,14 @@ function scoreJob(j) {
   const locs = (p.locations || []).map(s => s.toLowerCase()), jl = String(j.location || '').toLowerCase(), remote = /remote/.test(jl + ' ' + String(j.workMode || '').toLowerCase());
   let lc = !locs.length ? 7 : locs.some(c => c && !/remote|relocate/.test(c) && jl.includes(c.split(/[ ,]/)[0])) ? 10 : locs.includes('remote') && remote ? 10 : locs.some(c => /relocate/.test(c)) ? 7 : 2;
   if (/remote/i.test(p.workMode || '') && !remote) lc = Math.min(lc, 5);
-  const sq = /\bsql\b/.test(text) ? (/advanced|intermediate/i.test(p.sqlLevel || '') ? 5 : /basic/i.test(p.sqlLevel || '') ? 2 : 0) : 3;
+  const dbs = [...(p.sqlDbs || []), ...q.skills].map(x => String(x).toLowerCase());
+  const jdb = ['teradata', 'oracle', 'snowflake', 'sql server'].filter(d => text.includes(d)), dbHit = jdb.filter(d => dbs.includes(d)).length;
+  const lvl = /advanced/i.test(p.sqlLevel || '') ? 1 : /intermediate/i.test(p.sqlLevel || '') ? .75 : /basic/i.test(p.sqlLevel || '') ? .35 : (q.skills.includes('SQL') ? .7 : .2);
+  const sqPct = Math.round(100 * Math.min(1, (/\bsql\b/.test(text) || jdb.length ? lvl * .7 : .7) + (jdb.length ? (dbHit ? .3 : 0) : .3 * (dbs.some(d => /teradata|oracle/.test(d)) ? 1 : .5))));
+  const sq = Math.round(sqPct / 100 * 5) + (dbHit ? 2 : 0);
   const match = Math.max(0, Math.min(100, t + sk + dm + ex + lc + sq));
   const why = [hits.length ? hits.slice(0, 3).join(', ') + ' match your resume' : '', lc >= 10 ? (remote ? 'remote' : j.location) + ' fits your cities' : '', ex === 15 && y != null ? `${j.experience} suits your ${y} yrs` : ''].filter(Boolean).join(' · ') || 'Partly fits your profile';
-  return {match, why, hits, miss};
+  return {match, why, hits, miss, parts:{Skills:Math.round(sk / 30 * 100), SQL:sqPct, Regulatory:Math.round(dm / 15 * 100), Experience:Math.round(ex / 15 * 100), Location:Math.round(lc / 10 * 100)}};
 }
 function localReport(j, s) {
   const y = myYears(), head = (profile.scan && profile.scan.headline) || 'Business Analyst', a = arsTopic(j);
@@ -803,16 +851,16 @@ async function findMatches(label) {
   for (const {j, s} of [...pick, ...close]) {
     const isNear = near || s.match < thr;
     const {id:_x, ...old} = matches.get(j.id) || {};
-    const doc = {...old, jobId:j.id, match:s.match, why:s.why, mandatoryGaps:s.miss.slice(0, 2).join(', ') || 'None', optionalGaps:'', nearMiss:isNear, status:old.status || 'New', scoredOn:today(), report:localReport(j, s)};
+    const doc = {...old, jobId:j.id, match:s.match, why:s.why, mandatoryGaps:s.miss.slice(0, 2).join(', ') || 'None', optionalGaps:'', parts:s.parts, nearMiss:isNear, status:old.status || 'New', scoredOn:today(), report:localReport(j, s)};
     matches.set(j.id, {...doc, id:j.id}); ids.push(j.id); await save(matchCol().doc(j.id), doc);
   }
   wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
-  turns.push({role:'tool', content:`Checked ${scored.length} open BA vacancies${feedInfo.updated ? ' (list updated ' + feedInfo.updated + ')' : ''}`});
+  turns.push({role:'tool', content:`Live BA list · updated ${feedInfo.updated || today()}`});
   if (ids.length) turns.push({role:'cards', ids});
   const best = pick[0];
   turns.push({role:'assistant', local:true, content:near
-    ? `No role reaches ${thr}% yet. Here are the closest ${pick.length} — new vacancies are added every day.\nOPTIONS: Change my answers | Practise questions | Excel or PDF`
-    : `${pick.length} role${pick.length === 1 ? '' : 's'} fit you ${thr}%+${close.length ? ', plus ' + close.length + ' close' : ''}. Best: ${best.j.title} at ${best.j.company} (${best.s.match}%).\nOPTIONS: Prep me for the top one | Practise questions | Excel or PDF | Change my answers`});
+    ? `Closest ${pick.length} for now — new roles land daily.\nOPTIONS: Change my answers | Practise questions | Excel or PDF`
+    : `Your best fit: ${best.j.company}, ${best.s.match}%.\nOPTIONS: Prep the top one | Practise questions | Excel or PDF`});
   profile.lastScoredAt = Date.now(); persistProfile();
   track({stage:Math.max(usage.stage || 0, 4), bestMatch:best ? best.s.match : null}, {searches:1, matchesShown:ids.length});
   render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + (near || !best ? '' : ` Say apply, to open ${best.j.company}'s careers page, or say prep, for the details.`));
@@ -928,22 +976,19 @@ $('#menuBtn').onclick = () => {
   const p = profile.prefs, sc = profile.scan, s = schedule, n = [...matches.values()].filter(m => jobOf(m)).length;
   openSheet(`<h2>${esc(myName || 'Kairo')}</h2><p class="sub">${esc(sc ? [sc.headline, p.roles.slice(0, 2).join(', ')].filter(Boolean).join(' · ') : 'Upload your resume to begin')}</p>
   <div class="menu">
-    <button class="mi" data-go="resume">${sc ? `<span class="ring ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></span>` : `<span class="ico">${I.doc}</span>`}<div><b>Resume</b><small>${esc(profile.fileName || 'Not uploaded')}</small></div>${I.up}</button>
-    ${ars ? (() => { const r = readiness(); return `<a class="mi" href="/" style="text-decoration:none;color:inherit"><span class="ico">${I.mic}</span><div><b>Interview readiness</b><small>SQL ${r.sql ?? '–'}/10 · Credit risk ${r.reg ?? '–'}/10 · Exam ${r.exam == null ? 'not taken' : r.exam + '%' + (r.passed ? ' ✓' : '')}</small></div></a>`; })() : ''}
+    <button class="mi" data-go="resume">${sc && sc.overall != null ? `<span class="ring ${scoreCls(sc.overall)}" style="--p:${clamp(sc.overall)}"><b>${clamp(sc.overall)}</b></span>` : `<span class="ico">${I.doc}</span>`}<div><b>Resume</b><small>${esc(profile.fileName || 'Not uploaded')}</small></div>${I.up}</button>
+    ${ars ? (() => { const r = readiness(); return `<a class="mi" href="${r.sql == null && r.reg == null ? '/#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/#practice-sql' : '/#practice-credit-risk'}" style="text-decoration:none;color:inherit"><span class="ico">${I.mic}</span><div><b>Interview readiness</b><small>SQL ${r.sql ?? '–'}/10 · Credit risk ${r.reg ?? '–'}/10 · Exam ${r.exam == null ? 'not taken' : r.exam + '%' + (r.passed ? '&nbsp;✓' : '')}</small></div>${I.up ? '' : ''}</a>`; })() : ''}
     <button class="mi" data-go="short"><span class="ico">${I.list}</span><div><b>Shortlist</b><small>${n} role${n === 1 ? '' : 's'} · ${[...matches.values()].filter(m => m.status === 'Applied').length} applied</small></div></button>
     <button class="mi" data-go="export"><span class="ico">${I.xls}</span><div><b>Export</b><small>Excel or PDF</small></div></button>
     <button class="mi" data-go="fb"><span class="ico">${I.star}</span><div><b>Feedback</b><small>Help Kairo get better</small></div></button>
     <button class="mi" data-go="prefs"><span class="ico">${I.user}</span><div><b>Search preferences</b><small>${esc([p.workMode, p.salary, p.notice].filter(Boolean).join(' · ') || 'Set as we talk')}</small></div></button>
   </div>
-  <div class="lbl">Look</div><div class="skins">${SKINS.map(([k, l, bg, orb]) => `<button class="skin" data-skin="${k}" aria-pressed="${skin === k}"><span class="sw" style="background:${bg}"><i style="background:${orb}"></i></span>${l}</button>`).join('')}</div>
-  <div class="lbl">Voice</div><div class="seg"><button class="opt" data-voice="1" aria-pressed="${voiceOn}">Voice guide on</button><button class="opt" data-voice="0" aria-pressed="${!voiceOn}">Silent</button></div>
-  <details style="margin-top:20px"><summary class="note" style="cursor:pointer">Fields in job details and exports</summary><div class="togs" style="margin-top:10px">${FIELDS.map((f, i) => `<label><input type="checkbox" data-f="${i + 1}" ${profile.fields.includes(i + 1) ? 'checked' : ''}>${i + 1}. ${esc(f)}</label>`).join('')}</div></details>
   ${isOwner ? `<div class="lbl">Owner</div><p class="note" id="ownStats">Loading…</p><div class="row"><button class="btn p" data-go="insights">Insights</button></div>` : ''}
-  <p class="note" style="margin-top:18px">Kairo records how the app is used (steps reached, scores, actions) to keep improving it.</p>
+  <p class="note" style="margin-top:18px">🔒 Your resume and answers are visible only to you. We count app usage (no personal details) to improve Kairo, and never share your data.</p>
   <div class="row" style="margin-top:14px"><button class="btn o" data-go="reset">${I.redo}Start over</button></div>`);
   if (isOwner) loadOwnerStats();
   $('#sheetBody').onclick = e => {
-    const sk = e.target.closest('[data-skin]'); if (sk) { applySkin(sk.dataset.skin); track({skin}); for (const x of document.querySelectorAll('.skin')) x.setAttribute('aria-pressed', x.dataset.skin === skin); return; }
+    const sk = e.target.closest('button[data-skin]'); if (sk) { applySkin(sk.dataset.skin); track({skin}); for (const x of document.querySelectorAll('.skin')) x.setAttribute('aria-pressed', x.dataset.skin === skin); return; }
     const vb = e.target.closest('[data-voice]'); if (vb) { setVoice(vb.dataset.voice === '1'); for (const x of document.querySelectorAll('[data-voice]')) x.setAttribute('aria-pressed', (x.dataset.voice === '1') === voiceOn); return; }
     const f = e.target.closest('[data-f]'); if (f) { profile.fields = [...document.querySelectorAll('[data-f]:checked')].map(x => Number(x.dataset.f)); persistProfile(); return; }
     const g = e.target.closest('[data-go]'); if (!g) return; const k = g.dataset.go;
@@ -1006,7 +1051,7 @@ function openFeedback() {
   $('#fbSend').onclick = async () => {
     if (!rating && !good.size && !bad.size && !$('#fbText').value.trim()) return toast('Tap a star or a tag');
     await addFeedback({rating:rating || null, tags:[...good, ...[...bad].map(x => 'Improve: ' + x)], text:$('#fbText').value.trim(), source:'form'});
-    closeSheet(); note('Feedback received — thank you'); saveChat();
+    closeSheet(); toast('Thank you — feedback received'); saveChat();
   };
 }
 async function addFeedback(entry) { track(entry.rating ? {rating:entry.rating} : {}, {feedbacks:1}); myFeedback = [...myFeedback, {...entry, at:Date.now()}].slice(-40); await save(fbRef(), {entries:myFeedback, updatedAt:Date.now()}); }
@@ -1034,10 +1079,8 @@ async function openInsights() {
     const sum = k => rows.reduce((a, r) => a + (Number(r[k]) || 0), 0);
     const top = k => Object.entries(rows.reduce((m, r) => { if (r[k]) m[r[k]] = (m[r[k]] || 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 6);
     const funnel = STAGES.map((l, i) => [l, rows.filter(r => (r.stage || 0) >= i).length]);
-    $('#ins').innerHTML = `<div class="kpis"><div class="kpi"><b>${n}</b><small>People</small></div><div class="kpi"><b>${wk}</b><small>Active this week</small></div><div class="kpi"><b>${sum('matchesShown')}</b><small>Matches shown</small></div><div class="kpi"><b>${avg('resumeScore')}</b><small>Avg resume score</small></div><div class="kpi"><b>${avg('rating')}</b><small>Avg rating /5</small></div><div class="kpi"><b>${sum('applies')}</b><small>Applications</small></div></div>
+    $('#ins').innerHTML = `<div class="kpis"><div class="kpi"><b>${n}</b><small>People</small></div><div class="kpi"><b>${wk}</b><small>Active this week</small></div><div class="kpi"><b>${sum('matchesShown')}</b><small>Matches shown</small></div><div class="kpi"><b>${sum('practiseClicks')}</b><small>Went to ARS practice</small></div><div class="kpi"><b>${avg('rating')}</b><small>Avg rating /5</small></div><div class="kpi"><b>${sum('applies')}</b><small>Applications</small></div></div>
       <div class="lbl">Journey</div><div class="funnel">${funnel.map(([l, v]) => `<div class="bar"><span>${l}</span><div class="track"><i style="--c:var(--acc);width:${n ? Math.round(v / n * 100) : 0}%"></i></div><em>${v}</em></div>`).join('')}</div>
-      <div class="lbl">Fields</div><div class="chips">${top('domain').map(([k, v]) => `<span class="chip ink">${esc(k)} · ${v}</span>`).join('') || '<span class="note">—</span>'}</div>
-      <div class="lbl">Countries</div><div class="chips">${top('country').map(([k, v]) => `<span class="chip ink">${esc(String(k).toUpperCase())} · ${v}</span>`).join('') || '<span class="note">—</span>'}</div>
       <div class="lbl">Activity</div><div class="chips"><span class="chip">${sum('searches')} searches</span><span class="chip">${sum('matchesShown')} matches shown</span><span class="chip">${sum('saves')} saved</span><span class="chip">${sum('exportsXlsx') + sum('exportsPdf')} exports</span><span class="chip">${sum('feedbacks')} feedback</span><span class="chip">${sum('practiseClicks')} to ARS practice</span><span class="chip">${rows.filter(r => r.voiceOn).length} use voice</span></div>
       <div class="lbl">People</div><ul class="ulist">${rows.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0)).slice(0, 30).map(r => { const p = names[r.id] || {}; return `<li><b>${esc(p.name || 'Someone')}</b><span class="chip ${r.stage >= 4 ? 'g' : r.stage >= 2 ? 'a' : ''}">${esc(STAGES[r.stage || 0])}</span><small>${esc([p.email, r.headline, r.domain, r.country && String(r.country).toUpperCase(), r.resumeScore && 'score ' + r.resumeScore, r.lastSeen && 'seen ' + new Date(r.lastSeen).toLocaleDateString('en-GB')].filter(Boolean).join(' · '))}</small></li>`; }).join('')}</ul>
       <div class="row" style="margin-top:18px"><button class="btn o" id="insX">${I.xls}Export to Excel</button></div>`;
@@ -1157,11 +1200,12 @@ function greet() {
 }
 let greeted = false;
 /* ---------- living hero ---------- */
-const ROLES = ['role.', 'Senior Business Analyst', 'Regulatory Reporting BA', 'Data Analyst', 'Credit Risk BA', 'Lead Business Analyst', 'Product Owner', 'Data Governance Lead'];
+const ROLES = ['role.', 'Regulatory Reporting BA', 'Teradata SQL BA', 'Senior Business Analyst', 'COREP / FINREP BA', 'Oracle SQL BA', 'Lead Business Analyst', 'IFRS 9 Data BA'];
 const CHIPS = [['Senior BA · Pune', 91], ['Regulatory Reporting BA · Gurugram', 88], ['Data Analyst · Noida', 86], ['Credit Risk BA · London', 87], ['Lead BA · Bengaluru', 90], ['COREP Analyst · Remote', 84], ['Product Owner · Mumbai', 85], ['Data Governance Lead · Pune', 89], ['IFRS 9 BA · Chennai', 86], ['SQL Data BA · Hyderabad', 92], ['Basel 3.1 BA · Leeds', 83], ['BI Analyst · Noida', 88]];
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fl = $('#float');
+  fillMarquee();
   fl.innerHTML = CHIPS.map(([t, p], i) => `<span style="left:${i % 2 ? 58 + (i * 13) % 30 : 1 + (i * 11) % 22}%;--d:${13 + (i * 7) % 9}s;--dl:${-(i * 2.3).toFixed(1)}s">${esc(t)}<b>${p}%</b></span>`).join('');
   const el = $('#roleWord'); let w = 0, c = ROLES[0].length, del = false;
   if (!reduce) setInterval(() => {
