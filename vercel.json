@@ -30,8 +30,20 @@
   ],
   "rewrites": [
     {
+      "source": "/ars",
+      "destination": "/ars.html"
+    }
+  ],
+  "redirects": [
+    {
       "source": "/kairo",
-      "destination": "/kairo.html"
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": false
     }
   ]
 }
