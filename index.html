@@ -149,6 +149,22 @@ a{color:var(--acc2)}
 .fit .tk i{display:block;height:100%;border-radius:7px;width:var(--w);background:var(--c,var(--good));animation:grow .9s cubic-bezier(.2,.8,.2,1) both}
 @keyframes grow{from{width:0}}
 .jc .co{display:flex;align-items:center;gap:8px}
+/* matches page */
+.mpage{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;animation:mpIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes mpIn{from{opacity:0;transform:translateY(16px)}}
+body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
+.mph{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.mphin{display:flex;align-items:center;gap:10px;padding-top:12px;padding-bottom:12px}
+.mpback{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;color:var(--ink);cursor:pointer}.mpback .ic{width:20px;height:20px}
+.mpt{display:grid}.mpt b{font-size:18px}.mpt small{font-size:12px;color:var(--mute);font-weight:600}
+.mpx{min-height:40px!important;padding:8px 14px!important}
+#mpBody{padding-top:16px;padding-bottom:40px}
+.mpf{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.mpf .opt{min-height:38px;padding:8px 14px;font-size:14px}
+.mplist{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px 10px;align-items:start}
+.mprank{display:grid;place-items:center;width:30px;height:30px;margin-top:22px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:13px;font-weight:800}
+.mplist .jc{width:auto;max-width:none}
+.mpdiv{grid-column:1/-1;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:12px;font-weight:700;margin:6px 0 -2px}.mpdiv::before,.mpdiv::after{content:"";flex:1;height:1px;background:var(--line)}
+@media(max-width:520px){.mplist{grid-template-columns:minmax(0,1fr)}.mprank{display:none}.mpx{display:none}}
 /* account */
 .acct{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}.acct .btn{justify-content:center;width:100%}
 #menuBtn.me{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:800;letter-spacing:.02em}
@@ -351,12 +367,15 @@ a{color:var(--acc2)}
     <div class="live" id="live" aria-hidden="true"></div>
     <div class="vals"><div class="v1"><i><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></i>Find roles<small>80%+ fit</small></div><a class="v2" href="/ars" id="valPrac"><i><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H8l-4 4z"/></svg></i>Practise<small>AI interviews</small></a><a class="v3" href="/ars#exam" id="valCert"><i><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L8 21l4-2 4 2-1-7.5"/></svg></i>Get certified<small>60-min exam</small></a></div>
     <div class="marq" id="marq" aria-hidden="true"></div>
-    <div class="trust"><span><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Free</span><span><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Resume stays private</span><span><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>No spam</span></div>
     <div class="dropzone" id="dropzone" aria-hidden="true"><span>Drop it anywhere</span></div>
   </section>
   <section id="stream" aria-live="polite"></section>
 </main>
 
+<section class="mpage" id="mpage" hidden aria-label="Your matches">
+  <header class="mph"><div class="col mphin"><button type="button" class="mpback" id="mpBack" aria-label="Back to Kairo"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="mpt"><b>Your matches</b><small>Best fit first</small></div><span style="flex:1"></span><button type="button" class="btn o mpx" data-a="xlsx">Excel</button><button type="button" class="btn o mpx" data-a="pdf">PDF</button></div></header>
+  <div class="col" id="mpBody"></div>
+</section>
 <div class="dock" id="dock" hidden><div class="col">
   <p class="qmeta" id="qmeta" hidden></p>
   <div class="opts" id="opts"></div>
@@ -403,7 +422,7 @@ a{color:var(--acc2)}
   const bump = path => { watchers.forEach(w => { if (path.startsWith(w.path)) w.run(); }); };
   function poll(path, fetcher, next, onErr, every) {
     let alive = true, timer = null, busy = false;
-    const run = async () => { if (!alive || busy) return; busy = true; try { next(await fetcher()); } catch (e) { onErr && onErr(e); } busy = false; };
+    let again = false; const run = async () => { if (!alive) return; if (busy) { again = true; return; } busy = true; try { next(await fetcher()); } catch (e) { onErr && onErr(e); } busy = false; if (again) { again = false; run(); } };
     const w = { path, run }; watchers.add(w);
     const loop = () => { if (!alive) return; timer = setTimeout(() => { if (!document.hidden) run(); loop(); }, every || 30000); };
     run(); loop();
@@ -658,6 +677,7 @@ function render() {
   const st = stage(); [...$('#steps').children].forEach((d, i) => d.className = i < st ? 'done' : i === st ? 'now' : '');
   renderOpts();
   if (started) requestAnimationFrame(() => window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
+  if ($('#mpage') && !$('#mpage').hidden) { const y = $('#mpage').scrollTop; openMatchesPage(false); $('#mpage').scrollTop = y; }
 }
 function defaultOpts() {
   const n = [...matches.values()].filter(m => jobOf(m) && m.match >= (profile.prefs.threshold || 80) && m.status !== 'Not interested').length;
@@ -810,6 +830,7 @@ async function send(text) {
   const x = String(text || '').trim().toLowerCase(); if (!x || busy) return;
   closeTyper();
   if (/start over|start again|reset|go home|home page|first page/.test(x)) return askStartOver();
+  if (/^open my matches|^my matches$|^show my \d+ matches$/.test(x) && [...matches.values()].some(m => jobOf(m))) return openMatchesPage();
   if (/submit|(view|find|show|search|new|see).*(match|job|role)|search now/.test(x)) return findMatches(text);
   if (/change|refine|edit|update my (answers|preferences)/.test(x)) { turns.push({role:'user', content:text}); for (const g of (profile.scan && profile.scan.missing) || []) delete profile.answered[g.key]; persistProfile(); return startGaps(); }
   if (/practi[cs]e/.test(x)) { const r = readiness(); location.href = r.sql == null && r.reg == null ? '/ars#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/ars#practice-sql' : '/ars#practice-credit-risk'; return; }
@@ -923,27 +944,61 @@ async function findMatches(label) {
   scored.sort((a, b) => b.s.match - a.s.match);
   let pick = scored.filter(x => x.s.match >= thr), near = false;
   if (!pick.length) { pick = scored.slice(0, 3); near = true; }
-  const close = near ? [] : scored.filter(x => x.s.match < thr && x.s.match >= thr - 15).slice(0, Math.max(0, 3 - pick.length));
-  const ids = [];
-  for (const {j, s} of [...pick, ...close]) {
-    const isNear = near || s.match < thr;
+  const ids = [], saves = [];
+  for (const {j, s} of scored) {
+    const isNear = s.match < thr;
     const {id:_x, ...old} = matches.get(j.id) || {};
     const doc = {...old, jobId:j.id, match:s.match, why:s.why, mandatoryGaps:s.miss.slice(0, 2).join(', ') || 'None', optionalGaps:'', parts:s.parts, nearMiss:isNear, status:old.status || 'New', scoredOn:today(), report:localReport(j, s)};
-    matches.set(j.id, {...doc, id:j.id}); ids.push(j.id); await save(matchCol().doc(j.id), doc);
+    matches.set(j.id, {...doc, id:j.id}); ids.push(j.id); saves.push([j.id, doc]);
   }
+  const keepAll = new Map(matches);
+  await Promise.all(saves.map(([id, doc]) => save(matchCol().doc(id), doc)));
+  for (const [k, v] of keepAll) if (!matches.has(k)) matches.set(k, v);
   wrap.remove(); busy = false; $('#hOrb').classList.remove('busy');
   turns.push({role:'tool', content:`Live BA list · updated ${feedInfo.updated || today()}`});
-  if (ids.length) turns.push({role:'cards', ids});
   const best = pick[0];
   turns.push({role:'assistant', local:true, content:near
-    ? `Closest ${pick.length} for now — new roles land daily.\nOPTIONS: Change my answers | Practise questions | Excel or PDF`
-    : `🎯 Your best fit: ${best.j.company} at ${best.s.match}%.\nOPTIONS: Prep the top one | Practise questions | Excel or PDF | Start over`});
+    ? `${scored.length} roles ranked for you — none at ${thr}% yet. New roles land daily.\nOPTIONS: Open my matches | Change my answers | Start over`
+    : `🎯 ${pick.length} of ${scored.length} roles fit ${thr}%+. Best: ${best.j.company} at ${best.s.match}%.\nOPTIONS: Open my matches | Practise questions | Start over`});
   profile.lastScoredAt = Date.now(); persistProfile();
   track({stage:Math.max(usage.stage || 0, 4), bestMatch:best ? best.s.match : null}, {searches:1, matchesShown:ids.length});
-  render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + (near || !best ? '' : ` Say apply, to open ${best.j.company}'s careers page, or say prep, for the details.`));
+  render(); saveChat(); openMatchesPage();
+  speak(near ? 'Here are your roles, best first. None reach your bar yet, but new ones land daily.' : `Here are your matches, best first. ${best.j.company} leads at ${best.s.match} percent. Say apply to open its careers page.`);
 }
 $('#stopBtn').onclick = () => ctl && ctl.abort();
+/* ---------- matches page: every role, best fit first ---------- */
+let mpFilter = 'all';
+function openMatchesPage(push = true) {
+  const pg = $('#mpage'); if (!pg) return;
+  const thr = profile.prefs.threshold || 80;
+  const all = [...matches.values()].filter(m => jobOf(m)).sort((a, b) => b.match - a.match);
+  const keep = m => mpFilter === 'all' ? m.status !== 'Not interested' : mpFilter === 'fit' ? m.match >= thr && m.status !== 'Not interested' : mpFilter === 'saved' ? ['Saved', 'Applied', 'Interview', 'Offer'].includes(m.status) : m.status === 'Not interested';
+  const list = all.filter(keep), fit = all.filter(m => m.match >= thr && m.status !== 'Not interested').length;
+  const best = all[0] ? all[0].match : 0, applied = all.filter(m => ['Applied', 'Interview', 'Offer'].includes(m.status)).length;
+  const rd = readyFor('');
+  let body = '', divided = false;
+  list.forEach((m, i) => {
+    if (mpFilter === 'all' && !divided && m.match < thr) { divided = true; body += `<div class="mpdiv"><span>Below your ${thr}% bar</span></div>`; }
+    body += `<div class="mprank"><b>${i + 1}</b></div>` + cardHtml(m);
+  });
+  const chip = (k, l, n) => `<button type="button" class="opt" data-mpf="${k}" aria-pressed="${mpFilter === k}">${l}${n != null ? ` · ${n}` : ''}</button>`;
+  $('#mpBody').innerHTML = `
+    <div class="pulse"><div><b>${all.length}</b><small>roles ranked</small></div><div><b>${fit}</b><small>fit ${thr}%+</small></div><div class="hi"><b>${best}%</b><small>best fit</small></div><a class="rd" href="/ars" data-a="practise"><b>${rd == null ? '—' : rd + '<small>/10</small>'}</b><small>interview ready ↗</small></a></div>
+    <div class="mpf">${chip('all', 'All', all.filter(m => m.status !== 'Not interested').length)}${chip('fit', `${thr}%+`, fit)}${chip('saved', 'Saved & applied', all.filter(m => ['Saved', 'Applied', 'Interview', 'Offer'].includes(m.status)).length)}${all.some(m => m.status === 'Not interested') ? chip('hidden', 'Hidden') : ''}</div>
+    <div class="mplist">${body || `<p class="note" style="text-align:center;padding:30px 0">Nothing here yet.</p>`}</div>
+    <p class="note" style="text-align:center;margin:18px 0 6px">Ranked from most to least likely match · ${applied} applied · list updated ${esc(feedInfo.updated || today())}</p>`;
+  if (pg.hidden) { pg.hidden = false; document.body.classList.add('mp-open'); pg.scrollTop = 0; if (push) try { history.pushState({mp:1}, '', '#matches'); } catch {} }
+  for (const b of document.querySelectorAll('[data-mpf]')) b.onclick = () => { mpFilter = b.dataset.mpf; openMatchesPage(false); };
+}
+function closeMatchesPage(fromPop) {
+  const pg = $('#mpage'); if (!pg || pg.hidden) return;
+  pg.hidden = true; document.body.classList.remove('mp-open');
+  if (!fromPop && location.hash === '#matches') try { history.back(); } catch {}
+}
+addEventListener('popstate', () => { if (location.hash !== '#matches') closeMatchesPage(true); });
+addEventListener('hashchange', () => { if (location.hash === '#matches' && $('#mpage').hidden && [...matches.values()].some(m => jobOf(m))) openMatchesPage(false); });
 function showMatchesLocal() {
+  if ([...matches.values()].some(m => jobOf(m))) return openMatchesPage();
   const thr = profile.prefs.threshold || 80;
   const ids = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested' && (m.match >= thr || m.nearMiss)).sort((a, b) => b.match - a.match).map(m => m.id);
   if (ids.length) turns.push({role:'cards', ids});
@@ -1229,7 +1284,8 @@ function askStartOver() {
 }
 async function startOver() {
   closeSheet(); if (tts) tts.stop().catch(() => {}); if (dict && dict.active()) dict.stop().catch(() => {});
-  const ids = [...matches.keys()];
+  let ids = [...matches.keys()];
+  try { const ms = await matchCol().get(); ids = [...new Set([...ids, ...ms.docs.map(d => d.id)])]; } catch {}
   turns = []; mode = 'chat'; gapQueue = []; gapIdx = 0; matches.clear();
   profile = {...profile, resumeText:'', fileName:'', scan:null, answered:{}, prefs:{...DEF}};
   await Promise.all(ids.map(id => matchCol().doc(id).delete().catch(() => {})));
@@ -1439,6 +1495,8 @@ function setVoice(on) {
   toast(voiceOn ? 'Voice guide on' : 'Silent mode — tap answers');
 }
 $('#ttsBtn').onclick = () => setVoice(!voiceOn);
+$('#mpBack').onclick = () => closeMatchesPage();
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#mpage').hidden && !$('#sheet').classList.contains('on')) closeMatchesPage(); });
 $('#homeBtn').onclick = askStartOver;
 function greet() {
   const nm = myName ? myName.split(' ')[0] : '';
@@ -1542,13 +1600,15 @@ render();
   try { const pj = JSON.parse(sessionStorage.getItem('kairoPending') || 'null'); sessionStorage.removeItem('kairoPending');
     if (pj && pj.text && (!profile.resumeText || !turns.length)) { profile.resumeText = pj.text; profile.fileName = pj.fileName; turns = [{role:'file', name:pj.fileName}]; render(); await persistProfile(); await assess(); }
   } catch {}
+  try { const ms = await matchCol().get(); for (const d of ms.docs) matches.set(d.id, {...d.data(), id:d.id}); } catch {}
   if (profile.resumeText && turns.length) {
     const fresh = profile.lastScoredAt ? [...jobs.values()].filter(j => j.status !== 'closed' && Date.parse(j.addedOn || 0) > profile.lastScoredAt - 864e5).length : 0;
     const wo = [...new Set([...(fresh ? ['Find new matches'] : []), ...defaultOpts().items])].slice(0, 4);
     turns.push({role:'assistant', local:true, content:`Welcome back${myName ? ', ' + myName.split(' ')[0] : ''} 👋${fresh ? ` ${fresh} new role${fresh === 1 ? '' : 's'} since your last visit.` : ''}\nOPTIONS: ${wo.join(' | ')}`});
   }
   render();
-  matchCol().onSnapshotSlow(s => { matches.clear(); for (const d of s.docs) matches.set(d.id, {...d.data(), id:d.id}); render(); }, () => {});
+  let mpBoot = location.hash === '#matches';
+  matchCol().onSnapshotSlow(s => { matches.clear(); for (const d of s.docs) matches.set(d.id, {...d.data(), id:d.id}); render(); if (mpBoot && matches.size) { mpBoot = false; openMatchesPage(false); } else if (!$('#mpage').hidden) openMatchesPage(false); }, () => {});
   render();
 })();
 }

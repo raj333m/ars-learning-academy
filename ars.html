@@ -2618,7 +2618,7 @@ html.side-off body.in-pane .side{display:none}
     <section class="scrhome jobshome" id="jobsHome">
       <div class="scrhico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><rect x="3" y="7" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
       <div class="scrhtxt"><h2>Jobs that fit you</h2><p id="jobsHomeTxt">Upload your resume and Kairo, your job agent, finds open roles that fit you 80%+, with your interview readiness for each.</p></div>
-      <a class="btn primary big" href="/" id="jobsHomeGo">Find matching jobs</a>
+      <a class="btn primary big" href="/#matches" id="jobsHomeGo">Find matching jobs</a>
     </section>
 
     <section class="scrhome">
@@ -2755,7 +2755,7 @@ html.side-off body.in-pane .side{display:none}
   const bump = path => { watchers.forEach(w => { if (path.startsWith(w.path)) w.run(); }); };
   function poll(path, fetcher, next, onErr, every) {
     let alive = true, timer = null, busy = false;
-    const run = async () => { if (!alive || busy) return; busy = true; try { next(await fetcher()); } catch (e) { onErr && onErr(e); } busy = false; };
+    let again = false; const run = async () => { if (!alive) return; if (busy) { again = true; return; } busy = true; try { next(await fetcher()); } catch (e) { onErr && onErr(e); } busy = false; if (again) { again = false; run(); } };
     const w = { path, run }; watchers.add(w);
     const loop = () => { if (!alive) return; timer = setTimeout(() => { if (!document.hidden) run(); loop(); }, every || 30000); };
     run(); loop();
