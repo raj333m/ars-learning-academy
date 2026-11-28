@@ -207,6 +207,22 @@ body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
 .dlm b{display:block;font-size:14px}.dlm small{font-size:12px;color:var(--mute)}
 .dli{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;font-size:10px;font-weight:800;color:#fff;letter-spacing:.04em}.dli.x{background:#1d7a46}.dli.p{background:#c8361d}
 @media(max-width:520px){.dlt{display:none}.dl summary{width:42px;padding:0!important;justify-content:center}}
+/* Ask Kairo */
+body.sheet-on .askfab{display:none}body.mp-open .askfab{bottom:calc(18px + env(safe-area-inset-bottom))}body.mp-open.chat-on .askfab span{display:inline}body.mp-open.chat-on .askfab{width:auto;padding:0 18px 0 14px;height:50px}
+.askfab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:35;display:inline-flex;align-items:center;gap:8px;height:50px;padding:0 18px 0 14px;border-radius:999px;border:0;background:linear-gradient(135deg,#2a1d3a,#1a1426);color:#fff;font:inherit;font-weight:800;font-size:14px;box-shadow:0 14px 30px -12px rgba(30,15,40,.6);cursor:pointer}
+.askfab .ic{width:22px;height:22px;color:#ffb36b}
+body.chat-on:not(.mp-open) .askfab{display:none}
+.askh{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.asklog{display:grid;gap:10px;max-height:46vh;overflow-y:auto;margin:6px 0 12px}
+.asklog .aq{justify-self:end;max-width:85%;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:18px 18px 4px 18px;font-size:14px;font-weight:600}
+.asklog .aa{display:flex;gap:10px;align-items:flex-start}.asklog .aa p{margin:0 0 8px;font-size:15px;line-height:1.5}.asklog .aa .btn{min-height:40px;padding:8px 16px}
+.asksug{margin:0 0 12px}.asksug .opt{font-size:13px;min-height:38px;padding:8px 12px}
+.askf{display:flex;gap:8px;align-items:center;border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 6px 6px 16px}
+.askf input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:16px;color:var(--ink);outline:none}
+.askmic,.askgo{width:42px;height:42px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer}.askmic{background:var(--soft);color:var(--acc)}.askmic.live{background:var(--acc);color:#fff}.askgo{background:var(--acc);color:#fff}.askmic .ic,.askgo .ic{width:20px;height:20px}
+.hintglow{position:relative;z-index:25;animation:hint 1.1s ease-in-out 4;box-shadow:0 0 0 0 color-mix(in srgb,var(--acc) 70%,transparent)!important}
+@keyframes hint{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--acc) 70%,transparent)}70%{box-shadow:0 0 0 14px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@media(max-width:520px){.askfab{right:14px;bottom:calc(14px + env(safe-area-inset-bottom))}}
 /* account */
 .acct{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}.acct .btn{justify-content:center;width:100%}
 #menuBtn.me{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:800;letter-spacing:.02em}
@@ -415,6 +431,7 @@ body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
   <section id="stream" aria-live="polite"></section>
 </main>
 
+<button class="askfab" id="askFab" type="button" aria-label="Ask Kairo a question"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16v10H9l-5 4z"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.2 2.4c-.5.2-.7.6-.7 1.1M12 15h.01"/></svg><span>Ask Kairo</span></button>
 <section class="mpage" id="mpage" hidden aria-label="Your matches">
   <header class="mph"><div class="col mphin"><button type="button" class="mpback" id="mpBack" aria-label="Back to Kairo"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="mpt"><b>Your matches <span class="mpc" id="mpCount"></span></b><small id="mpSub">Best fit first</small></div><span style="flex:1"></span><details class="dl"><summary class="btn p" aria-label="Download your matches"><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="dlt">Download</span></summary><div class="dlm"><button type="button" data-a="xlsx"><span class="dli x">XLS</span><div><b>Excel</b><small>Every role, sortable</small></div></button><button type="button" data-a="pdf"><span class="dli p">PDF</span><div><b>PDF</b><small>Clean summary to share</small></div></button></div></details></div></header>
   <div class="col" id="mpBody"></div>
@@ -709,7 +726,7 @@ function turnHtml(t, i, lastAi) {
 }
 function render() {
   const started = turns.length > 0 || !!profile.resumeText;
-  $('#hero').hidden = started; $('#dock').hidden = !started; $('#steps').hidden = !started;
+  $('#hero').hidden = started; $('#dock').hidden = !started; $('#steps').hidden = !started; document.body.classList.toggle('chat-on', started);
   let lastAi = -1; turns.forEach((t, i) => { if (t.role === 'assistant') lastAi = i; });
   // latest scan turn shows live state; older ones show their snapshot
   let lastScan = -1; turns.forEach((t, i) => { if (t.role === 'scan') lastScan = i; });
@@ -742,7 +759,7 @@ function renderOpts() {
   }
   curOpts = o; multiSel = new Set();
   box.innerHTML = o.items.map((x, i) => `<button class="opt" data-i="${i}" aria-pressed="false">${esc(x)}</button>`).join('') + (o.kind === 'multi' ? `<button class="opt done" id="doneBtn" disabled>Done</button>` : '');
-  $('#mid').textContent = dict ? 'Just speak — or tap an answer' : 'Tap an answer';
+  $('#mid').textContent = dict ? 'Answer — or ask me anything' : 'Tap an answer — or ask me anything';
 }
 $('#opts').onclick = e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -753,6 +770,8 @@ $('#opts').onclick = e => {
 };
 function answer(t) {
   const x = t.toLowerCase();
+  if (agentActs[x]) { const run = agentActs[x]; delete agentActs[x]; return run(); }
+  if (/^save kairo on whatsapp$/.test(x) && AGENT.wa) { window.open(`https://wa.me/${AGENT.wa}?text=${encodeURIComponent(`Hi Kairo! I've just registered${myName ? ' — ' + myName : ''}. Saving this chat for job updates.`)}`, '_blank'); return; }
   if (/^(something else|other|let me say)$/.test(x)) { if (dict) return startMic(); return openTyper(); }
   if (mode === 'gaps') return gapAnswer(t);
   if (/^choose file$/.test(x) || /(upload|update|new).*(resume|cv)/.test(x)) return $('#file').click();
@@ -788,7 +807,7 @@ async function assess() {
     const r = quickScan(); profile.scan = r; track({stage:Math.max(usage.stage || 0, 2), headline:r.headline, years:r.years || null});
   turns.push({role:'scan', snap:{...r}});
   const pg = pendingGaps().length;
-  turns.push({role:'assistant', content:`Lovely${myName ? ', ' + myName.split(' ')[0] : ''} — ${r.years ? `${r.years} years` : 'great experience'}${r.headline && r.headline !== 'Your profile' ? ` as a ${r.headline}` : ''}. ${pg ? `${pg} quick taps and I'll find your fit.` : 'Your profile is ready.'}\nOPTIONS: ${pg ? `Answer ${pg} questions` : 'Find my matches'} | Upload updated resume`});
+  turns.push({role:'assistant', content:`Lovely${myName ? ', ' + myName.split(' ')[0] : ''} — ${r.years ? `${r.years} years` : 'great experience'}${r.headline && r.headline !== 'Your profile' ? ` as a ${r.headline}` : ''}. ${pg ? `${pg} quick taps and I'll find your fit.` : 'Your profile is ready.'}\nOPTIONS: ${pg ? `Answer ${pg} questions` : 'Find my matches'} | Upload updated resume${window.__justReg && AGENT.wa ? ' | Save Kairo on WhatsApp' : ''}`});
   await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + (pg ? ' Shall we start? Just say yes.' : ''));
 }
 
@@ -878,9 +897,7 @@ async function send(text) {
   if (/prep|top one|details/.test(x)) { const top = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match)[0]; if (top) return openPrep(top); }
   if (/excel|pdf|export/.test(x)) return $('#menuBtn').click();
   if (/feedback|rate/.test(x)) return openFeedback();
-  turns.push({role:'user', content:text});
-  turns.push({role:'assistant', local:true, content:'Say or tap one of these.\nOPTIONS: ' + defaultOpts().items.join(' | ')});
-  render();
+  return askAgent(text, 'chat');
 }
 
 /* ---------- matching (free, in the browser) ---------- */
@@ -1150,8 +1167,8 @@ async function exportPdf(btn) {
 }
 
 /* ---------- sheets ---------- */
-function openSheet(html) { $('#sheetBody').innerHTML = html; $('#sheetBody').onclick = null; $('#scrim').classList.add('on'); $('#sheet').classList.add('on'); $('#sheet').scrollTop = 0; }
-function closeSheet() { $('#scrim').classList.remove('on'); $('#sheet').classList.remove('on'); }
+function openSheet(html) { document.body.classList.add('sheet-on'); $('#sheetBody').innerHTML = html; $('#sheetBody').onclick = null; $('#scrim').classList.add('on'); $('#sheet').classList.add('on'); $('#sheet').scrollTop = 0; }
+function closeSheet() { document.body.classList.remove('sheet-on'); $('#scrim').classList.remove('on'); $('#sheet').classList.remove('on'); }
 $('#scrim').onclick = closeSheet;
 addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet').classList.contains('on')) { e.preventDefault(); closeSheet(); } });
 $('#menuBtn').onclick = () => {
@@ -1287,6 +1304,8 @@ function openAuth(tab) {
       const now = Date.now(), blank = {exams:null, sessions:0, answered:0, sumScore:0, ratings:{}, cats:{}, sec:{sql:{round:1, done:[]}, reg:{round:1, done:[]}}, lastAt:now};
       await apiCall('db', {op:'set', path:'attempts/' + r.uid, data:{...blank, profile:{name, email, phone, phoneCc:cc, phoneNum:num, totalExp:tot, baExp:ba, sqlExp:sq, ukRegExp:uk, registeredAt:now, consentAt:now, updatedAt:now}}});
       const h = await phHash(cc + num); if (h) await apiCall('db', {op:'set', path:'phones/' + r.uid, data:{h, at:now}}).catch(() => {});
+      await apiCall('agent', {op:'welcome'}).catch(() => {});
+      try { sessionStorage.setItem('kairoJustReg', email); } catch {}
       try { localStorage.setItem('arsKnown', '1'); localStorage.removeItem('baLoggedOut_' + r.uid); } catch {}
       busyBtn(f, true, 'Welcome!'); location.reload();
     } catch (x) {
@@ -1324,6 +1343,117 @@ function enterGuest() {
 function signOut() {
   try { localStorage.setItem('baLoggedOut_' + uid, '1'); } catch {}
   location.reload();
+}
+
+/* ---------- Kairo helper: understands questions about the app; free Gemini when available, built-in guide otherwise ---------- */
+const isQuestion = t => /\?\s*$/.test(t) || /^(how|what|why|where|when|which|who|whom|can|could|is|are|do|does|did|will|would|should|help|explain|tell me|show me|i (can'?t|cannot|don'?t|am unable)|kya|kaise|kaha|kahan|kyu|kyon|kab|mujhe|batao)\b/i.test(String(t).trim());
+const KB = [
+  {k:/upload|resume|cv|file|attach|load/, a:"Tap the orange “Upload resume” button under the headline — your phone or computer’s file picker opens. Pick your resume as a PDF or Word file and I’ll read it straight away.", act:'upload'},
+  {k:/regist|sign ?up|create.*account|new account|join/, a:"Upload your resume first, then tap “Register free to unlock”. The form is pre-filled from your resume — just set a 4-digit PIN, add your experience, tick the consent box and tap “Register & see my matches”.", act:'register'},
+  {k:/sign ?in|log ?in|login|already registered/, a:"Tap “Sign in” at the top right, enter your WhatsApp number and your 4-digit PIN.", act:'signin'},
+  {k:/forgot.*pin|reset.*pin|pin.*forgot|lost.*pin/, a:"No problem — under the Sign in form there’s “Message the admin on LinkedIn”. The admin resets it, and the next PIN you enter becomes your new one."},
+  {k:/sign ?out|log ?out|logout/, a:"Tap the round initials badge at the top right, then “Sign out”. It signs you out of Kairo and ARS together.", act:'sign_out'},
+  {k:/start over|start again|reset|from scratch|first page|home/, a:"Tap the Kairo logo at the top left, or the initials badge then “Start over”. Your answers and matches clear; your ARS practice stays.", act:'start_over'},
+  {k:/match.*(%|percent|score|calculat|work)|how.*(score|percent)|fit score/, a:"Your match % adds up role fit (25), skills from the job description found in your resume (30), regulatory domain (15), experience (15), location and work mode (10), plus SQL level and Teradata/Oracle (up to 7). It’s a guide, not a guarantee."},
+  {k:/gap/, a:"Gaps are keywords the job description asks for that I couldn’t find in your resume. Add them to your resume if you have that experience, or brush up before the interview."},
+  {k:/apply|application|career(s)? (page|site)|listing/, a:"On the Matches page, tap the orange “Apply” on a role — it opens the company’s official job listing in a new tab. When you come back I’ll ask if you applied, and move it to your Applied tab.", act:'show_matches'},
+  {k:/saved|save|heart|shortlist/, a:"Tap the heart on any role to save it. Saved roles stay in your list with a “Saved” tag, and you can see them all under the Saved filter on the Matches page."},
+  {k:/applied|track/, a:"Roles you’ve applied to move to the Applied tab on the Matches page, so your main list only shows new options."},
+  {k:/matches|jobs|roles|vacanc|openings|show.*list/, a:"Your Matches page lists every role best fit first, with filters for your bar, Saved and Applied.", act:'show_matches'},
+  {k:/practi[sc]e|interview|mock|ars|prepare|preparation/, a:"ARS Learning Academy is your practice room — AI interviewers for SQL, COREP, IFRS 9 and more, a SQL Lab with Teradata and Oracle data, and a 60-minute exam. Tap “Practise” at the top.", act:'practise'},
+  {k:/exam|certif/, a:"The 60-minute exam is in ARS — pass it to earn your certificate. Tap “Practise”, then “60-min exam” at the top of ARS.", act:'practise'},
+  {k:/sql lab|teradata|oracle|query|console/, a:"In ARS open “SQL Lab” to run Teradata and Oracle SQL on practice data — use “Full screen” on the console to give it the whole screen.", act:'practise'},
+  {k:/download|excel|pdf|export/, a:"On the Matches page tap “Download” at the top right and choose Excel or PDF.", act:'download'},
+  {k:/mic|microphone|voice|speak|listen|talk/, a:"Tap the orange mic at the bottom right, or just speak when I’m listening. If your browser asks, choose Allow. In Chrome you can also click the icon left of the address bar, then Microphone, then Allow."},
+  {k:/mute|quiet|stop talking|sound|speaker/, a:"Tap the speaker icon at the top right to turn my voice off or on.", act:'voice_off'},
+  {k:/change.*(answer|preference|city|cities|salary|package|designation)|edit.*answer/, a:"Sure — tap “Change my answers” (or the badge menu, then Search preferences) and I’ll ask the quick questions again.", act:'change_answers'},
+  {k:/question|answer the|skip/, a:"I ask up to 9 quick questions — role, cities, package, SQL level, databases, regulatory areas, work mode, notice period and match level. Tap an option or just say it; say “skip” to move on."},
+  {k:/privacy|private|data|safe|secure|who can see|delete/, a:"Your resume and answers are visible only to you. The admin sees anonymous usage counts only, and your data is deleted 10 days after you register — you can register again any time."},
+  {k:/free|cost|price|pay|charge|fees/, a:"Kairo and ARS are free to use."},
+  {k:/why.*(citi|bny|hsbc|company|not see|missing)|only \d+ (roles|jobs)|few (roles|jobs)|more (roles|jobs)/, a:"I only show roles with a verified link to the employer’s own listing, so Apply always lands on the real vacancy. The list is refreshed regularly as new verified roles appear."},
+  {k:/email|welcome|message|whatsapp/, a:"After you register, a welcome email goes to the address you registered with."},
+  {k:/feedback|suggest|complain|bug|problem|not working|issue/, a:"I’m sorry about that. Tap the initials badge, then Feedback, and tell us what happened — it goes straight to the team.", act:'feedback'},
+  {k:/what (is|are) (you|kairo)|who are you|what can you do|help|guide/, a:"I’m Kairo, your BA job agent. I read your resume, ask a few quick questions, and rank Business Analyst roles in regulatory reporting by how well they fit — with links to the official listings and interview practice on ARS."}
+];
+function kbAnswer(q) {
+  const x = String(q).toLowerCase(); let best = null;
+  for (const r of KB) { const m = x.match(r.k); if (m && (!best || m[0].length > best.len)) best = {...r, len:m[0].length}; }
+  return best;
+}
+const AGENT = {ai:false, mail:false, wa:'', history:[]};
+const agentReady = fetch('/api/agent').then(r => r.json()).then(j => Object.assign(AGENT, j)).catch(() => {});
+function agentCtx() {
+  const g = typeof guest !== 'undefined' && guest, mp = $('#mpage') && !$('#mpage').hidden;
+  const q = mode === 'gaps' && gapQueue[gapIdx] ? gapQueue[gapIdx].question : '';
+  return {screen:g ? (pending ? 'first page, resume teaser shown, not registered' : 'first page, not signed in') : mp ? 'matches page' : q ? `answering quick questions; current question: ${q}` : (profile.resumeText ? 'chat after resume upload' : 'first page, signed in'), signedIn:!g, hasResume:!!(profile.resumeText || pending), matches:[...matches.values()].filter(m => jobOf(m)).length, firstName:(myName || '').split(' ')[0]};
+}
+const ACT = {
+  upload:{label:'Upload resume', run:() => $('#file').click(), at:() => (typeof guest !== 'undefined' && guest) || !profile.resumeText ? '#heroUp' : '#attBtn'},
+  register:{label:'Register free', run:() => openAuth('reg'), at:() => '#regTop', ok:() => guest},
+  signin:{label:'Sign in', run:() => openAuth('in'), at:() => '#arsLink', ok:() => guest},
+  answer_questions:{label:'Answer the questions', run:() => startGaps(), ok:() => !guest && pendingGaps().length},
+  show_matches:{label:'Open my matches', run:() => [...matches.values()].some(m => jobOf(m)) ? openMatchesPage() : send('Submit & see my matches'), ok:() => !guest && profile.resumeText},
+  change_answers:{label:'Change my answers', run:() => send('Change my answers'), ok:() => !guest && profile.resumeText},
+  start_over:{label:'Start over', run:() => askStartOver(), at:() => '#homeBtn', ok:() => !guest},
+  practise:{label:'Open ARS practice', run:() => { location.href = guest ? '/ars' : '/ars#practice'; }, at:() => '#arsLink', ok:() => !guest},
+  download:{label:'Download', run:() => { openMatchesPage(); setTimeout(() => { const d = document.querySelector('.dl'); if (d) d.open = true; }, 250); }, ok:() => !guest && [...matches.values()].some(m => jobOf(m))},
+  voice_on:{label:'Turn voice on', run:() => setVoice(true), at:() => '#ttsBtn'},
+  voice_off:{label:'Turn voice off', run:() => setVoice(false), at:() => '#ttsBtn'},
+  menu:{label:'Open menu', run:() => $('#menuBtn').click(), at:() => '#menuBtn', ok:() => !guest},
+  sign_out:{label:'Sign out', run:() => signOut(), at:() => '#menuBtn', ok:() => !guest},
+  feedback:{label:'Give feedback', run:() => openFeedback(), ok:() => !guest}
+};
+function pointAt(sel) {
+  const el = sel && document.querySelector(sel); if (!el || el.hidden || !el.getBoundingClientRect().width) return;
+  el.classList.remove('hintglow'); void el.offsetWidth; el.classList.add('hintglow'); el.scrollIntoView({block:'center', behavior:'smooth'});
+  setTimeout(() => el.classList.remove('hintglow'), 4200);
+}
+async function askAgent(q, where) {
+  q = String(q || '').trim(); if (!q) return;
+  const kb = kbAnswer(q); let out = null;
+  if (where === 'chat') { turns.push({role:'user', content:q}); busy = true; $('#hOrb').classList.add('busy'); render(); }
+  if (AGENT.ai) {
+    try {
+      if (!tokNow()) { const a = await apiCall('auth?a=anon', {}); localStorage.setItem('arsTok', a.token); }
+      out = await apiCall('agent', {op:'ask', q, ctx:agentCtx(), history:AGENT.history});
+    } catch { out = null; }
+  }
+  if (!out || !out.reply) out = kb ? {reply:kb.a, action:kb.act || 'none'} : {reply:`I can help with anything in Kairo and ARS — uploading your resume, registering, the quick questions, your matches, applying, or interview practice. What would you like to do?`, action:'none'};
+  AGENT.history.push({role:'user', text:q}, {role:'model', text:out.reply}); AGENT.history = AGENT.history.slice(-8);
+  const a = ACT[out.action], can = a && (!a.ok || a.ok());
+  track({}, {helpAsks:1});
+  if (where === 'chat') {
+    busy = false; $('#hOrb').classList.remove('busy');
+    const opts = can ? [a.label, ...defaultOpts().items.filter(i => i !== a.label)].slice(0, 3) : defaultOpts().items;
+    if (mode === 'gaps' && gapQueue[gapIdx]) turns.push({role:'assistant', local:true, content:`${out.reply}\n\nBack to your question — ${gapQueue[gapIdx].question}`});
+    else turns.push({role:'assistant', local:true, content:`${out.reply}\nOPTIONS: ${opts.join(' | ')}`});
+    if (can && a.label) agentActs[a.label.toLowerCase()] = a.run;
+    render(); saveChat();
+  } else {
+    const box = $('#askLog'); if (box) { box.insertAdjacentHTML('beforeend', `<div class="aq">${esc(q)}</div><div class="aa"><span class="orb" style="--s:22px"></span><div><p>${esc(out.reply)}</p>${can ? `<button class="btn p" type="button" data-askact="${esc(out.action)}">${esc(a.label)}</button>` : ''}</div></div>`); box.scrollTop = box.scrollHeight; }
+  }
+  speak(out.reply);
+  if (can && a.at) setTimeout(() => pointAt(a.at()), where === 'chat' ? 300 : 0);
+}
+const agentActs = {};
+function openAsk() {
+  const sug = (typeof guest !== 'undefined' && guest) ? ['How do I upload my resume?', 'Is Kairo free?', 'How do I register?', 'What is ARS?'] : ['How is my match % calculated?', 'What are gaps?', 'How do I apply?', 'How do I sign out?'];
+  openSheet(`<div class="askh"><span class="orb" style="--s:40px"></span><div><h2 style="margin:0">Ask Kairo</h2><p class="sub" style="margin:2px 0 0">Anything about Kairo or ARS — in your own words.</p></div></div>
+    <div class="asklog" id="askLog"></div>
+    <div class="chips asksug">${sug.map(x => `<button type="button" class="opt" data-ask="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+    <form class="askf" id="askF"><input id="askIn" placeholder="Type or tap the mic…" autocomplete="off" aria-label="Your question">${dict ? `<button type="button" class="askmic" id="askMic" aria-label="Speak your question"><svg class="ic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>` : ''}<button class="askgo" type="submit" aria-label="Ask"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>`);
+  const ask = t => { if (!t) return; $('#askIn').value = ''; askAgent(t, 'sheet'); };
+  $('#askF').onsubmit = e => { e.preventDefault(); ask($('#askIn').value.trim()); };
+  $('#sheetBody').onclick = e => {
+    const s2 = e.target.closest('[data-ask]'); if (s2) return ask(s2.dataset.ask);
+    const b = e.target.closest('[data-askact]'); if (b) { const a = ACT[b.dataset.askact]; closeSheet(); if (a) { a.run(); if (a.at) setTimeout(() => pointAt(a.at()), 200); } }
+  };
+  if ($('#askMic')) $('#askMic').onclick = () => {
+    let said = ''; const done = () => { dict.onFinal(() => {}); if (said.trim()) ask(said.trim()); };
+    dict.onFinal(({text}) => { said += text; }); $('#askMic').classList.add('live');
+    dict.start().then(() => setTimeout(() => { dict.stop().catch(() => {}); $('#askMic') && $('#askMic').classList.remove('live'); setTimeout(done, 400); }, 6000)).catch(() => toast('Microphone is off — type your question'));
+  };
+  setTimeout(() => $('#askIn') && $('#askIn').focus(), 200);
 }
 function askStartOver() {
   if (!profile.resumeText && !turns.length) { scrollTo({top:0, behavior:'smooth'}); return; }
@@ -1468,9 +1598,9 @@ try { applySkin(localStorage.getItem('kairo-skin') || 'sunrise'); } catch { appl
 
 /* ---------- voice + typing ---------- */
 function openTyper() { $('#typer').hidden = false; $('#mid').hidden = true; $('#micBtn').hidden = true; $('#kbBtn').hidden = true; $('#box').focus(); }
-function closeTyper() { $('#typer').hidden = true; $('#mid').hidden = false; $('#micBtn').hidden = !dict; $('#kbBtn').hidden = busy || !!dict; $('#box').value = ''; }
+function closeTyper() { $('#typer').hidden = true; $('#mid').hidden = false; $('#micBtn').hidden = !dict; $('#kbBtn').hidden = busy; $('#box').value = ''; }
 $('#kbBtn').onclick = openTyper;
-$('#typer').onsubmit = e => { e.preventDefault(); const t = $('#box').value.trim(); closeTyper(); if (t) answer(t); };
+$('#typer').onsubmit = e => { e.preventDefault(); const t = $('#box').value.trim(); closeTyper(); if (!t) return; if (mode === 'gaps' && isQuestion(t)) return askAgent(t, 'chat'); answer(t); };
 $('#box').onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#typer').requestSubmit(); } if (e.key === 'Escape') closeTyper(); };
 let quietT = null, heard = '', autoSend = false, lastHeard = 0, silenceT = null, handsFree = true, listenNext = false, quietTries = 0;
 function startMic() {
@@ -1526,6 +1656,7 @@ function heardAnswer(t) {
   const items = (curOpts.items || []).filter(i => !/^(something else|other)$/i.test(i));
   let hit = items.length ? matchSpoken(t, items, curOpts.kind === 'multi') : null;
   if (!hit && items.length) { const n = (t.match(/\d{1,3}/) || [])[0]; if (n) hit = items.find(i => i.match(/\d{1,3}/) && i.match(/\d{1,3}/)[0] === n) || null; }
+  if (!hit && isQuestion(t)) return askAgent(t, 'chat');
   answer(hit || t);
 }
 var pendingApply = null;
@@ -1575,6 +1706,7 @@ function setVoice(on) {
 }
 $('#ttsBtn').onclick = () => setVoice(!voiceOn);
 $('#mpBack').onclick = () => closeMatchesPage();
+$('#askFab').onclick = openAsk;
 document.addEventListener('click', e => { const d = document.querySelector('.dl[open]'); if (d && (!d.contains(e.target) || e.target.closest('.dlm button'))) d.open = false; });
 addEventListener('keydown', e => { if (e.key === 'Escape' && !e.defaultPrevented && !$('#mpage').hidden && !$('#sheet').classList.contains('on')) closeMatchesPage(); });
 $('#homeBtn').onclick = askStartOver;
@@ -1612,7 +1744,7 @@ const CHIPS = [['Senior BA · Pune', 91], ['Regulatory Reporting BA · Gurugram'
 $('#startBtn').onclick = () => { greeted = true; if (!tts || !voiceOn) { $('#heroUp').focus(); return toast('Voice is off here — tap Upload resume'); } greet(); };
 $('#heroUp').addEventListener('click', () => { if (!greeted && voiceOn) { greeted = true; speak('Great. Pick your resume — PDF or Word.'); } });
 function initVoice() {
-  $('#kbBtn').hidden = !!dict;
+  $('#kbBtn').hidden = false;
   if (dict) {
     $('#micBtn').hidden = false;
     dict.onState(({state}) => {
@@ -1678,10 +1810,13 @@ render();
   let first = true;
   await loadFeed();
   try { const pj = JSON.parse(sessionStorage.getItem('kairoPending') || 'null'); sessionStorage.removeItem('kairoPending');
-    if (pj && pj.text && (!profile.resumeText || !turns.length)) { profile.resumeText = pj.text; profile.fileName = pj.fileName; turns = [{role:'file', name:pj.fileName}]; render(); await persistProfile(); await assess(); }
+    var didPending = false;
+    let jr = null; try { jr = sessionStorage.getItem('kairoJustReg'); sessionStorage.removeItem('kairoJustReg'); } catch {}
+    if (jr) { await agentReady; window.__justReg = true; }
+    if (pj && pj.text && (!profile.resumeText || !turns.length)) { profile.resumeText = pj.text; profile.fileName = pj.fileName; turns = [...(jr ? [{role:'assistant', local:true, content:`🎉 Welcome${myName ? ', ' + myName.split(' ')[0] : ''}! You're registered${AGENT.mail ? ` — a welcome email is on its way to ${jr}` : ''}.`}] : []), {role:'file', name:pj.fileName}]; render(); await persistProfile(); await assess(); didPending = true; }
   } catch {}
   try { const ms = await matchCol().get(); for (const d of ms.docs) matches.set(d.id, {...d.data(), id:d.id}); } catch {}
-  if (profile.resumeText && turns.length) {
+  if (profile.resumeText && turns.length && !(typeof didPending !== 'undefined' && didPending)) {
     const fresh = profile.lastScoredAt ? [...jobs.values()].filter(j => j.status !== 'closed' && Date.parse(j.addedOn || 0) > profile.lastScoredAt - 864e5).length : 0;
     const wo = [...new Set([...(fresh ? ['Find new matches'] : []), ...defaultOpts().items])].slice(0, 4);
     turns.push({role:'assistant', local:true, content:`Welcome back${myName ? ', ' + myName.split(' ')[0] : ''} 👋${fresh ? ` ${fresh} new role${fresh === 1 ? '' : 's'} since your last visit.` : ''}\nOPTIONS: ${wo.join(' | ')}`});
