@@ -1127,8 +1127,8 @@ function applyByVoice(x) {
   if (m.status !== 'Applied') { m.status = 'Applied'; saveMatch(m); track({stage:Math.max(usage.stage || 0, 5)}, {applies:1}); }
   turns.push({role:'assistant', local:true, content:`Opening ${j.company}'s careers page for ${j.title}. Finish your application there — I've marked it Applied.\nOPTIONS: View my matches | Practise questions`});
   render(); saveChat(); speak(`Opening ${j.company}'s careers page. All the best!`);
-  const w = window.open(url, '_blank', 'noopener');
-  if (!w) toast('Tap Apply on the card to open the careers page');
+  const w = window.open(url, '_blank');
+  if (w) { try { w.opener = null; } catch (e) {} } else toast('Tap Apply on the card to open the careers page');
 }
 function askForFile() {
   turns.push({role:'assistant', local:true, content:'Tap Choose file and pick your resume — for your privacy, browsers let only you open files.\nOPTIONS: Choose file'});
