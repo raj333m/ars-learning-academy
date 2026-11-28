@@ -184,6 +184,29 @@ body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
 .jdhost{font-size:12px;color:var(--mute);margin:8px 0 0}
 .jdtx{margin:0;font-size:15px;line-height:1.55}
 .jdmsg{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:14px}.jdmsg p{margin:0 0 12px;font-size:14px;line-height:1.5}
+/* card gaps */
+.fit .gapx{font-size:12.5px;font-weight:700;color:color-mix(in srgb,var(--warn) 85%,var(--ink));line-height:1.35}.fit .gapx.none{color:var(--good)}
+/* eye-catching summary tiles */
+.pulse.pz{grid-template-columns:repeat(4,1fr);gap:12px}
+.pulse.pz>*{position:relative;overflow:hidden;border:0;border-radius:22px;padding:16px;display:grid;align-content:start;gap:4px;min-height:118px;box-shadow:0 10px 26px -18px rgba(60,30,10,.45);text-decoration:none;color:var(--ink)}
+.pulse.pz>* i{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;margin-bottom:6px;color:#fff}.pulse.pz>* i .ic{width:18px;height:18px}
+.pulse.pz b{font-size:30px;line-height:1;letter-spacing:-.03em}.pulse.pz small{font-size:12.5px;font-weight:700;color:var(--mute)}
+.pulse.pz .t1{background:linear-gradient(145deg,color-mix(in srgb,var(--acc) 16%,var(--panel)),var(--panel))}.pulse.pz .t1 i{background:var(--acc)}
+.pulse.pz .t2{background:linear-gradient(145deg,color-mix(in srgb,var(--good) 18%,var(--panel)),var(--panel))}.pulse.pz .t2 i{background:var(--good)}.pulse.pz .t2 b{color:var(--good)}
+.pulse.pz .t3{background:var(--panel);justify-items:start}.pulse.pz .t3 .ring{width:58px;height:58px;margin-bottom:4px}.pulse.pz .t3 .ring b{font-size:17px}.pulse.pz .t3 .ring b small{font-size:10px;color:inherit}
+.pulse.pz .t4{background:linear-gradient(145deg,#2a1d3a,#1a1426);color:#fff;transition:transform .15s}.pulse.pz .t4:hover{transform:translateY(-2px)}
+.pulse.pz .t4 i{background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 60%,#ffb36b))}.pulse.pz .t4 b{color:#fff}.pulse.pz .t4 b small{color:rgba(255,255,255,.7);font-size:14px}.pulse.pz .t4 small{color:rgba(255,255,255,.78)}
+.pulse.pz .t4 b.go{font-size:22px;background:linear-gradient(90deg,#fff,#ffcf9e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pulse.pz .t4::after{content:"";position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--acc) 55%,transparent),transparent 70%);opacity:.6}
+@media(max-width:520px){.pulse.pz{grid-template-columns:1fr 1fr;gap:10px}.pulse.pz>*{min-height:108px;padding:14px}.pulse.pz b{font-size:26px}}
+/* matches header */
+.mpt b{display:flex;align-items:center;gap:8px;font-size:19px}.mpc{display:inline-grid;place-items:center;min-width:26px;height:24px;padding:0 8px;border-radius:999px;background:var(--acc);color:#fff;font-size:12px;font-weight:800}
+.dl{position:relative}.dl summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:42px!important;padding:0 16px!important;font-size:14px!important}.dl summary::-webkit-details-marker{display:none}.dl summary .ic{width:18px;height:18px}
+.dlm{position:absolute;right:0;top:calc(100% + 8px);z-index:5;width:250px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -18px rgba(40,20,10,.45);padding:6px;display:grid;gap:4px;animation:pop .2s ease-out}
+.dlm button{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border:0;border-radius:12px;background:none;text-align:left;cursor:pointer;font:inherit;color:var(--ink)}.dlm button:hover{background:var(--soft)}
+.dlm b{display:block;font-size:14px}.dlm small{font-size:12px;color:var(--mute)}
+.dli{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;font-size:10px;font-weight:800;color:#fff;letter-spacing:.04em}.dli.x{background:#1d7a46}.dli.p{background:#c8361d}
+@media(max-width:520px){.dlt{display:none}.dl summary{width:42px;padding:0!important;justify-content:center}}
 /* account */
 .acct{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 16px}.acct .btn{justify-content:center;width:100%}
 #menuBtn.me{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:800;letter-spacing:.02em}
@@ -393,7 +416,7 @@ body.mp-open{overflow:hidden}body.mp-open .dock{display:none}
 </main>
 
 <section class="mpage" id="mpage" hidden aria-label="Your matches">
-  <header class="mph"><div class="col mphin"><button type="button" class="mpback" id="mpBack" aria-label="Back to Kairo"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="mpt"><b>Your matches</b><small>Best fit first</small></div><span style="flex:1"></span><button type="button" class="btn o mpx" data-a="xlsx">Excel</button><button type="button" class="btn o mpx" data-a="pdf">PDF</button></div></header>
+  <header class="mph"><div class="col mphin"><button type="button" class="mpback" id="mpBack" aria-label="Back to Kairo"><svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="mpt"><b>Your matches <span class="mpc" id="mpCount"></span></b><small id="mpSub">Best fit first</small></div><span style="flex:1"></span><details class="dl"><summary class="btn p" aria-label="Download your matches"><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="dlt">Download</span></summary><div class="dlm"><button type="button" data-a="xlsx"><span class="dli x">XLS</span><div><b>Excel</b><small>Every role, sortable</small></div></button><button type="button" data-a="pdf"><span class="dli p">PDF</span><div><b>PDF</b><small>Clean summary to share</small></div></button></div></details></div></header>
   <div class="col" id="mpBody"></div>
 </section>
 <div class="dock" id="dock" hidden><div class="col">
@@ -658,9 +681,7 @@ function cardHtml(m) {
   return `<article class="jc${m.nearMiss ? ' near' : ''}" data-id="${esc(m.id)}">
     <div class="jh"><div class="ring ${fitCls(m.match)}" style="--p:${clamp(m.match)}"><b>${clamp(m.match)}<small>%</small></b></div><div><div class="co">${avatar(j.company)}${esc(j.company)}</div><h4>${esc(j.title)}</h4></div></div>
     <div class="chips">${m.status === 'Saved' ? `<span class="chip ink">${I.heart}Saved</span>` : isApplied(m.status) ? `<span class="chip g">${I.check}Applied</span>` : ''}${m.match >= 85 ? '<span class="chip g">Strong fit</span>' : m.match >= thr ? '<span class="chip a">Good fit</span>' : '<span class="chip">Near miss</span>'}${meta}</div>
-    ${m.parts ? `<div class="fit">${Object.entries(m.parts).map(([k, v]) => `<span>${k}</span><div class="tk"><i style="--w:${clamp(v)}%;--c:var(--${v >= 80 ? 'good' : v >= 55 ? 'warn' : 'bad'})"></i></div>`).join('')}</div>` : `<p class="why">${esc(m.why)}</p>`}
-    ${m.mandatoryGaps && !/^none/i.test(m.mandatoryGaps) ? `<div class="chips">${m.mandatoryGaps.split(/,\s*/).map(g => `<span class="chip a">+ ${esc(g)}</span>`).join('')}</div>` : ''}
-    ${(() => { const l = arsLink(j); if (!l) return ''; const t = arsTopic(j)[0], v = readyFor(t); return `<a class="practise ${v == null ? '' : v >= 8 ? 'ok' : v >= 6 ? 'mid' : 'low'}" href="${esc(l.url)}" data-a="practise">${I.mic}<span>${esc(l.label.charAt(0).toUpperCase() + l.label.slice(1))} readiness</span><b>${v == null ? 'Practise' : v + '/10'}</b></a>`; })()}
+    ${(() => { const miss = scoreJob(j).miss; return `<div class="fit">${m.parts ? Object.entries(m.parts).map(([k, v]) => `<span>${k}</span><div class="tk"><i style="--w:${clamp(v)}%;--c:var(--${v >= 80 ? 'good' : v >= 55 ? 'warn' : 'bad'})"></i></div>`).join('') : ''}<span>Gaps</span><div class="gapx ${miss.length ? '' : 'none'}" title="Asked in the job description but not found in your resume">${miss.length ? esc(miss.join(' · ')) : 'None — your resume covers every keyword'}</div></div>`; })()}
     <div class="row">${safeUrl(j.applyUrl) ? `<a class="btn p" href="${esc(safeUrl(j.applyUrl))}" target="_blank" rel="noopener" data-a="apply">Apply</a>` : `<button class="btn p" data-a="prep">Details</button>`}
       <button class="btn o" data-a="prep">Details</button>
       <button class="btn i" data-a="save" aria-pressed="${m.status === 'Saved' || m.status === 'Applied'}" aria-label="Save">${I.heart}</button>
@@ -1006,10 +1027,16 @@ function openMatchesPage(push = true) {
   });
   const chip = (k, l, n) => `<button type="button" class="opt" data-mpf="${k}" aria-pressed="${mpFilter === k}">${l}${n != null ? ` · ${n}` : ''}</button>`;
   $('#mpBody').innerHTML = `
-    <div class="pulse"><div><b>${open.length}</b><small>roles to explore</small></div><div><b>${fit}</b><small>fit ${thr}%+</small></div><div class="hi"><b>${best}%</b><small>best fit</small></div><a class="rd" href="/ars" data-a="practise"><b>${rd == null ? '—' : rd + '<small>/10</small>'}</b><small>interview ready ↗</small></a></div>
+    <div class="pulse pz">
+      <div class="t1"><i>${I.list}</i><b>${open.length}</b><small>roles to explore</small></div>
+      <div class="t2"><i>${I.check}</i><b>${fit}</b><small>fit ${thr}%+</small></div>
+      <div class="t3"><span class="ring g" style="--p:${clamp(best)}"><b>${best}<small>%</small></b></span><small>best fit</small></div>
+      <a class="t4" href="${(() => { const r = readiness(); return r.sql == null && r.reg == null ? '/ars#practice' : (r.sql ?? 0) <= (r.reg ?? 0) ? '/ars#practice-sql' : '/ars#practice-credit-risk'; })()}" data-a="practise"><i>${I.mic}</i>${rd == null ? '<b class="go">Get ready</b><small>Practise interviews on ARS ↗</small>' : `<b>${rd}<small>/10</small></b><small>interview ready · practise ↗</small>`}</a>
+    </div>
     <div class="mpf">${chip('all', 'All', open.length)}${chip('fit', `${thr}%+`, fit)}${chip('saved', 'Saved', all.filter(m => m.status === 'Saved').length)}${chip('applied', 'Applied', applied)}${all.some(m => m.status === 'Not interested') ? chip('hidden', 'Hidden') : ''}</div>
     <div class="mplist">${body || `<p class="note" style="text-align:center;padding:30px 0">${mpFilter === 'applied' ? 'Roles you apply for move here.' : mpFilter === 'saved' ? 'Tap the heart on a role to save it.' : 'Nothing here yet.'}</p>`}</div>
     <p class="note" style="text-align:center;margin:18px 0 6px">Most to least likely match${applied ? ` · ${applied} applied (under Applied)` : ''} · list updated ${esc(feedInfo.updated || today())}</p>`;
+  $('#mpCount').textContent = open.length; $('#mpSub').textContent = `Best fit first · updated ${feedInfo.updated || today()}`;
   if (pg.hidden) { pg.hidden = false; document.body.classList.add('mp-open'); pg.scrollTop = 0; if (push) try { history.pushState({mp:1}, '', '#matches'); } catch {} }
   for (const b of document.querySelectorAll('[data-mpf]')) b.onclick = () => { mpFilter = b.dataset.mpf; openMatchesPage(false); };
 }
@@ -1548,6 +1575,7 @@ function setVoice(on) {
 }
 $('#ttsBtn').onclick = () => setVoice(!voiceOn);
 $('#mpBack').onclick = () => closeMatchesPage();
+document.addEventListener('click', e => { const d = document.querySelector('.dl[open]'); if (d && (!d.contains(e.target) || e.target.closest('.dlm button'))) d.open = false; });
 addEventListener('keydown', e => { if (e.key === 'Escape' && !e.defaultPrevented && !$('#mpage').hidden && !$('#sheet').classList.contains('on')) closeMatchesPage(); });
 $('#homeBtn').onclick = askStartOver;
 function greet() {
