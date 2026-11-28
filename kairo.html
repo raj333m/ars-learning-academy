@@ -599,7 +599,7 @@ function renderOpts() {
   }
   curOpts = o; multiSel = new Set();
   box.innerHTML = o.items.map((x, i) => `<button class="opt" data-i="${i}" aria-pressed="false">${esc(x)}</button>`).join('') + (o.kind === 'multi' ? `<button class="opt done" id="doneBtn" disabled>Done</button>` : '');
-  $('#mid').textContent = dict ? 'Tap an answer — or the mic to speak' : 'Tap an answer';
+  $('#mid').textContent = dict ? 'Just speak — or tap an answer' : 'Tap an answer';
 }
 $('#opts').onclick = e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -646,7 +646,7 @@ async function assess() {
   turns.push({role:'scan', snap:{...r}});
   const pg = pendingGaps().length;
   turns.push({role:'assistant', content:`${myName ? myName.split(' ')[0] + ', I' : 'I'} read your resume${r.years ? ` — ${r.years} years` : ''}${r.headline && r.headline !== 'Your profile' ? `, ${r.headline}` : ''}. ${pg ? `${pg} quick questions and your profile is ready.` : 'Your profile is ready.'}\nOPTIONS: ${pg ? `Answer ${pg} questions` : 'Find my matches'} | Upload updated resume`});
-  await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body);
+  await persistProfile(); render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + (pg ? ' Shall we start? Just say yes.' : ''));
 }
 
 /* ---------- step 3: gaps (instant, no waiting) ---------- */
@@ -678,7 +678,7 @@ function gapAnswer(t) {
   const p2 = profile.prefs;
   turns.push({role:'tool', content:'Search profile complete'});
   turns.push({role:'assistant', local:true, content:`All set${myName ? ', ' + myName.split(' ')[0] : ''}. ${[p2.roles.slice(0, 2).join(' / '), p2.locations.slice(0, 3).join(', '), p2.salary].filter(Boolean).join(' · ')}\nOPTIONS: View my matches | Change my answers`});
-  render(); saveChat(); speak('All set. Tap View my matches.');
+  render(); saveChat(); speak('All set. Shall I show your matches? Just say show my matches.');
 }
 
 /* ---------- step 4: agent search ---------- */
@@ -733,7 +733,7 @@ async function send(text) {
   if (/excel|pdf|export/.test(x)) return $('#menuBtn').click();
   if (/feedback|rate/.test(x)) return openFeedback();
   turns.push({role:'user', content:text});
-  turns.push({role:'assistant', local:true, content:'I work with taps here — choose one of these.\nOPTIONS: ' + defaultOpts().items.join(' | ')});
+  turns.push({role:'assistant', local:true, content:'Say or tap one of these.\nOPTIONS: ' + defaultOpts().items.join(' | ')});
   render();
 }
 
@@ -815,7 +815,7 @@ async function findMatches(label) {
     : `${pick.length} role${pick.length === 1 ? '' : 's'} fit you ${thr}%+${close.length ? ', plus ' + close.length + ' close' : ''}. Best: ${best.j.title} at ${best.j.company} (${best.s.match}%).\nOPTIONS: Prep me for the top one | Practise questions | Excel or PDF | Change my answers`});
   profile.lastScoredAt = Date.now(); persistProfile();
   track({stage:Math.max(usage.stage || 0, 4), bestMatch:best ? best.s.match : null}, {searches:1, matchesShown:ids.length});
-  render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body);
+  render(); saveChat(); speak(splitOpts(turns[turns.length - 1].content).body + (near || !best ? '' : ` Say apply, to open ${best.j.company}'s careers page, or say prep, for the details.`));
 }
 $('#stopBtn').onclick = () => ctl && ctl.abort();
 function showMatchesLocal() {
@@ -1062,7 +1062,7 @@ function closeTyper() { $('#typer').hidden = true; $('#mid').hidden = false; $('
 $('#kbBtn').onclick = openTyper;
 $('#typer').onsubmit = e => { e.preventDefault(); const t = $('#box').value.trim(); closeTyper(); if (t) answer(t); };
 $('#box').onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#typer').requestSubmit(); } if (e.key === 'Escape') closeTyper(); };
-let heard = '', autoSend = false, lastHeard = 0, silenceT = null;
+let quietT = null, heard = '', autoSend = false, lastHeard = 0, silenceT = null, handsFree = true, listenNext = false, quietTries = 0;
 function startMic() {
   if (!dict) return openTyper();
   if (dict.active()) { dict.stop().catch(() => {}); return; }
@@ -1074,7 +1074,10 @@ $('#micBtn').onclick = startMic;
 const norm = t => String(t || '').toLowerCase().replace(/[^a-z0-9₹$£€%+ ]/g, ' ').replace(/\s+/g, ' ').trim();
 function matchSpoken(text, items, multi) {
   const tn = ' ' + norm(text) + ' ';
-  const scored = items.map(it => { const w = norm(it).split(' ').filter(x => x.length > 1 || /\d/.test(x)); const hit = w.filter(x => tn.includes(' ' + x + ' ') || tn.includes(x)).length; return {it, s:w.length ? hit / w.length : 0}; });
+  const words = it => [...new Set(norm(it).split(' ').filter(x => x.length > 1 || /\d/.test(x)))];
+  const df = {}; for (const it of items) for (const x of words(it)) df[x] = (df[x] || 0) + 1;
+  const has = x => x.length < 3 ? tn.includes(' ' + x + ' ') : tn.includes(x);
+  const scored = items.map(it => { const w = words(it), wt = x => 1 / (df[x] || 1); const tot = w.reduce((a, x) => a + wt(x), 0), hit = w.filter(has).reduce((a, x) => a + wt(x), 0); return {it, s:tot ? hit / tot : 0}; });
   if (multi) { const pick = scored.filter(x => x.s >= .6 && !/^skip$/i.test(x.it)).map(x => x.it); return pick.length ? pick.join(', ') : null; }
   const best = scored.sort((a, b) => b.s - a.s)[0]; return best && best.s >= .6 ? best.it : null;
 }
@@ -1084,17 +1087,48 @@ function voiceIntent(t) {
   if (/(voice off|stop talking|be quiet|mute|silent mode)/.test(x)) { setVoice(false); return true; }
   if (/excel|spreadsheet/.test(x)) { exportXlsx({}); return true; }
   if (/\bpdf\b/.test(x)) { exportPdf({}); return true; }
-  if (/(show|see|open).*(match|jobs|roles|shortlist)/.test(x)) { showMatchesLocal(); return true; }
+  if (/(show|see|open).*(match|jobs|roles|shortlist)/.test(x)) { matches.size ? showMatchesLocal() : send('View my matches'); return true; }
   if (/(feedback|rate kairo|give a rating)/.test(x)) { openFeedback(); speak('Tap the stars and anything that stood out.'); return true; }
   if (mode === 'gaps' && /^(skip|next|pass|not now)/.test(x)) { gapAnswer('Skip'); return true; }
+  if (/\bapply\b/.test(x)) { applyByVoice(x); return true; }
+  if (/(prep|prepare|details|tell me more).*(top|first|best|one)|^(prep|details)$/.test(x)) { send('Prep me for the top one'); return true; }
+  if (/(view|show|see|find).*(match|jobs|roles)|^(matches|show jobs)$/.test(x) && mode !== 'gaps') { send('View my matches'); return true; }
+  if (/practi[sc]e/.test(x)) { send('Practise questions'); return true; }
+  if (/(change|edit|redo).*(answer|preference)/.test(x)) { send('Change my answers'); return true; }
+  if (/(hands free off|stop listening|i will tap|let me tap)/.test(x)) { handsFree = false; toast('Hands-free off — tap the mic when you want to speak'); return true; }
   return false;
 }
+const NUMW = {ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+const ONEW = {one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9};
+function spokenNums(t) {
+  return String(t).toLowerCase()
+    .replace(/\b(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)[\s-]?(one|two|three|four|five|six|seven|eight|nine)\b/g, (m, a, b) => NUMW[a] + ONEW[b])
+    .replace(/\b(ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\b/g, m => NUMW[m])
+    .replace(/\b(one|two|three|four|five|six|seven|eight|nine)\b/g, m => ONEW[m])
+    .replace(/\s*(percent|per cent)/g, '%').replace(/\blakhs?\b|\blacs?\b/g, 'L');
+}
 function heardAnswer(t) {
-  t = t.trim(); if (!t) return;
+  t = spokenNums(t.trim()); if (!t) return;
+  if (mode !== 'gaps' && /^(yes|yeah|yep|sure|ok|okay|go ahead|start|let'?s go|haan|ha|ji)\b/i.test(t) && (curOpts.items || []).length) return answer(curOpts.items[0]);
   if (voiceIntent(t)) return;
   const items = (curOpts.items || []).filter(i => !/^(something else|other)$/i.test(i));
-  const hit = items.length ? matchSpoken(t, items, curOpts.kind === 'multi') : null;
+  let hit = items.length ? matchSpoken(t, items, curOpts.kind === 'multi') : null;
+  if (!hit && items.length) { const n = (t.match(/\d{1,3}/) || [])[0]; if (n) hit = items.find(i => i.match(/\d{1,3}/) && i.match(/\d{1,3}/)[0] === n) || null; }
   answer(hit || t);
+}
+function applyByVoice(x) {
+  const thr = profile.prefs.threshold || 80;
+  const list = [...matches.values()].filter(m => jobOf(m) && m.status !== 'Not interested').sort((a, b) => b.match - a.match);
+  const ord = {first:0,top:0,best:0,one:0,second:1,two:1,third:2,three:2};
+  let m = list.find(z => x.includes(norm(jobOf(z).company))) || list[Object.entries(ord).find(([k]) => new RegExp('\\b' + k + '\\b').test(x))?.[1] ?? 0];
+  if (!m) { speak('Let me find your matches first.'); return send('View my matches'); }
+  const j = jobOf(m), url = safeUrl(j.applyUrl) || safeUrl(j.sourceUrl);
+  if (!url) return speak('This one has no apply link yet.');
+  if (m.status !== 'Applied') { m.status = 'Applied'; saveMatch(m); track({stage:Math.max(usage.stage || 0, 5)}, {applies:1}); }
+  turns.push({role:'assistant', local:true, content:`Opening ${j.company}'s careers page for ${j.title}. Finish your application there — I've marked it Applied.\nOPTIONS: View my matches | Practise questions`});
+  render(); saveChat(); speak(`Opening ${j.company}'s careers page. All the best!`);
+  const w = window.open(url, '_blank', 'noopener');
+  if (!w) toast('Tap Apply on the card to open the careers page');
 }
 function askForFile() {
   turns.push({role:'assistant', local:true, content:'Tap Choose file and pick your resume — for your privacy, browsers let only you open files.\nOPTIONS: Choose file'});
@@ -1103,7 +1137,7 @@ function askForFile() {
 let lastSpoken = '';
 function speak(t) {
   if (!voiceOn || !tts || !t) return;
-  lastSpoken = t;
+  lastSpoken = t; listenNext = !!(curOpts.items && curOpts.items.length) || mode === 'gaps';
   tts.speak(String(t).replace(/https:\/\/\S+/g, '').slice(0, 1900), {voice:'airy', language:'en-IN', rate:1.04}).catch(e => { if (e && e.code === 'not_granted') { setVoice(false); $('#ttsBtn').hidden = true; } });
 }
 function setVoice(on) {
@@ -1154,7 +1188,11 @@ function initVoice() {
       const live = state === 'listening' || state === 'starting';
       $('#micBtn').classList.toggle('live', live); $('#hOrb').classList.toggle('listen', live);
       if (live) { $('#mid').textContent = 'Listening…'; clearInterval(silenceT); silenceT = setInterval(() => { if (heard.trim() && Date.now() - lastHeard > 1400) dict.stop().catch(() => {}); }, 300); }
-      if (state === 'idle') { clearInterval(silenceT); const t = heard.trim(); heard = ''; if (autoSend && t) heardAnswer(t); autoSend = false; if (!busy) renderOpts(); }
+      if (state === 'idle') { clearInterval(silenceT); clearTimeout(quietT); const t = heard.trim(); heard = ''; const was = autoSend; autoSend = false;
+        if (was && t) { quietTries = 0; heardAnswer(t); }
+        else if (was && handsFree && voiceOn && quietTries < 1 && (curOpts.items || []).length) { quietTries++; listenNext = true; tts.speak('Take your time. Just say your answer, or tap one.', {rate:1.04}).catch(() => {}); }
+        if (!busy) renderOpts(); }
+      if (live) { clearTimeout(quietT); quietT = setTimeout(() => { if (!heard.trim() && dict.active()) dict.stop().catch(() => {}); }, 9000); }
     });
     dict.onPartial(({text}) => { if (text) { lastHeard = Date.now(); $('#mid').textContent = '“' + (heard + ' ' + text).trim().slice(-70) + '”'; } });
     dict.onFinal(({text}) => { heard += text; lastHeard = Date.now(); $('#mid').textContent = '“' + heard.trim().slice(-70) + '”'; });
@@ -1166,7 +1204,10 @@ function initVoice() {
     tts.onState(({state, reason}) => {
       const on = state === 'speaking' || state === 'starting';
       $('#hOrb').classList.toggle('busy', on || busy); $('#startBtn').classList.toggle('talking', on);
-      if (state === 'idle' && reason === 'completed' && dict && !busy && !$('#dock').hidden) { $('#micBtn').classList.add('invite'); $('#mid').textContent = 'Tap the mic and answer'; }
+      if (state === 'idle' && reason === 'completed' && dict && !busy && !$('#dock').hidden) {
+        if (handsFree && listenNext && !$('#sheet').classList.contains('on')) { listenNext = false; setTimeout(() => { if (!busy && !dict.active() && !(tts && tts.active())) startMic(); }, 250); }
+        else { $('#micBtn').classList.add('invite'); $('#mid').textContent = 'Tap the mic and answer'; }
+      }
     });
   } else voiceOn = false;
 }
