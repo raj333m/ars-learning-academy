@@ -416,7 +416,7 @@ a{color:var(--acc2)}
       set: async d => { await api("db", { op: "set", path, data: clone(d) }); bump(path); },
       update: async d => { await api("db", { op: "update", path, data: clone(d) }); bump(path); },
       delete: async () => { await api("db", { op: "delete", path }); bump(path); },
-      onSnapshot: (next, err) => poll(path, () => ref.get(), next, err, 30000),
+      onSnapshot: (next, err) => poll(path, () => ref.get(), next, err, 90000),
       collection: c => colRef(path + "/" + c) };
     return ref;
   }
@@ -426,7 +426,8 @@ a{color:var(--acc2)}
       add: async d => { const r = q.doc(); await r.set(d); return r; },
       where() { return q; }, orderBy() { return q; }, limit() { return q; },
       get: async () => { const docs = ((await api("db?op=list&path=" + encodeURIComponent(cpath))).docs || []).map(d => snap(d.id, d.data)); return { docs, size: docs.length, empty: !docs.length }; },
-      onSnapshot(next, err) { return poll(cpath + "/", () => q.get(), next, err, 30000); } };
+      onSnapshot(next, err) { return poll(cpath + "/", () => q.get(), next, err, 90000); },
+      onSnapshotSlow(next, err) { return poll(cpath + "/", () => q.get(), next, err, 120000); } };
     return q;
   }
   const db = { doc: docRef, collection: colRef };
@@ -1547,7 +1548,7 @@ render();
     turns.push({role:'assistant', local:true, content:`Welcome back${myName ? ', ' + myName.split(' ')[0] : ''} 👋${fresh ? ` ${fresh} new role${fresh === 1 ? '' : 's'} since your last visit.` : ''}\nOPTIONS: ${wo.join(' | ')}`});
   }
   render();
-  matchCol().onSnapshot(s => { matches.clear(); for (const d of s.docs) matches.set(d.id, {...d.data(), id:d.id}); render(); }, () => {});
+  matchCol().onSnapshotSlow(s => { matches.clear(); for (const d of s.docs) matches.set(d.id, {...d.data(), id:d.id}); render(); }, () => {});
   render();
 })();
 }

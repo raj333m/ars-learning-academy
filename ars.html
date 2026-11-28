@@ -2756,7 +2756,7 @@ body.scr-focus .fbfab{display:none!important}
       set: async d => { await api("db", { op: "set", path, data: clone(d) }); bump(path); },
       update: async d => { await api("db", { op: "update", path, data: clone(d) }); bump(path); },
       delete: async () => { await api("db", { op: "delete", path }); bump(path); },
-      onSnapshot: (next, err) => poll(path, () => ref.get(), next, err, 30000),
+      onSnapshot: (next, err) => poll(path, () => ref.get(), next, err, 90000),
       collection: c => colRef(path + "/" + c)
     };
     return ref;
@@ -2777,7 +2777,7 @@ body.scr-focus .fbfab{display:none!important}
         const ds = docs.map(d => snap(d.id, d.data));
         return { docs: ds, size: ds.length, empty: !ds.length };
       },
-      onSnapshot(next, err) { return poll(cpath + "/", () => q.get(), next, err, 30000); }
+      onSnapshot(next, err) { return poll(cpath + "/", () => q.get(), next, err, 90000); }
     };
     return q;
   }
