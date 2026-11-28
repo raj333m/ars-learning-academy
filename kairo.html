@@ -1070,7 +1070,19 @@ function track(patch = {}, inc = {}) {
 }
 const STAGES = ['Visited', 'Uploaded resume', 'Resume checked', 'Gaps filled', 'Saw matches', 'Applied'];
 async function openInsights() {
-  openSheet(`<h2>Insights</h2><p class="sub">How people use Kairo. Only you can see this.</p><div id="ins"><p class="note" style="margin-top:16px">Loading…</p></div>`);
+  openSheet(`<h2>Insights</h2><p class="sub">How people use Kairo. Only you can see this.</p><div class="row" style="margin:-6px 0 16px"><button class="btn o" id="kReset">${I.redo}Reset Kairo data</button></div><div id="ins"><p class="note" style="margin-top:16px">Loading…</p></div>`);
+  let armed = false;
+  $('#kReset').onclick = async () => {
+    const b = $('#kReset');
+    if (!armed) { armed = true; b.classList.add('p'); b.classList.remove('o'); b.textContent = 'Tap again: delete all Kairo data for everyone'; setTimeout(() => { armed = false; if (b.isConnected) { b.classList.add('o'); b.classList.remove('p'); b.textContent = 'Reset Kairo data'; } }, 6000); return; }
+    b.disabled = true; b.textContent = 'Deleting…';
+    try {
+      let t = ''; try { t = localStorage.getItem('arsTok') || ''; } catch {}
+      const r = await fetch('/api/db', {method:'POST', headers:{'content-type':'application/json', authorization:'Bearer ' + t}, body:JSON.stringify({op:'kairoReset'})});
+      const d = await r.json(); if (!r.ok) throw new Error(d.error || 'failed');
+      toast(`Kairo reset — ${d.deleted} records deleted`); setTimeout(() => location.reload(), 1200);
+    } catch (e) { b.disabled = false; b.textContent = 'Reset Kairo data'; toast('Reset failed — try again'); }
+  };
   try {
     const snap = await db.collection('kusage').get(), rows = snap.docs.map(d => ({id:d.id, ...d.data()}));
     let names = {}; try { names = await user.profiles(rows.map(r => r.id)); } catch {}
